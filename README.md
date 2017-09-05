@@ -1,6 +1,6 @@
 # pintos
 
-Make in project's build directory.
+Make in project's directory.
 ex) project1, in src/threads/
 
 > $make 
