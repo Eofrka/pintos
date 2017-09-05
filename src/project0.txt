@@ -16,7 +16,7 @@ Yuhwan Chung yuhwan96@kaist.ac.kr
 >> TAs, or extra credit, please give them here.
 
 The number of tokens you use: 0
-The contribution of each team member: All
+The contribution of each team member: Yuhwan Chung 100%
 
 ---- RUN HELLO ----
 
