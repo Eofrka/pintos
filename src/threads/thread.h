@@ -91,7 +91,17 @@ struct thread
 
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
+    
+    /* pj1 */
+    /*******/
+    int wakeup;                         /* Wakeup ticks */
+    int old_priority;                   /* Old priority */
 
+    struct lock* lock;                  /* When thread calls lock_acquire(), if the target lock's holder is not NULL, this lock is set to the lock */
+    struct list lock_list;              /* When thread calls for lock_acquire(), if the target lock's holder is NULL, push the lock into the lock_list */
+    struct semaphore* sema;             /* Point the semaphore in which this thread is waiting */ 
+    int donation_level;                 /* Donation level for priority donation */
+    /*******/
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
@@ -132,5 +142,25 @@ int thread_get_nice (void);
 void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
+
+/* pj1 */
+/*******/
+/* Global variable. */
+struct list sleep_list; /* Sleep list for sleeping threads */
+/* New function declarations */
+void thread_sleep(int64_t wakeup_ticks);
+void thread_awake(int64_t wakeup_ticks);
+void thread_preempt(void);
+void thread_preempt_on_return(void);
+int thread_max_priority_in_list(struct list* list);
+void thread_donate_priority(struct thread* src);
+void thread_restore_priority(void);
+void thread_remove_and_insert_ordered(struct list* list, struct thread* t);
+void thread_dec_donation_level(struct thread* root, int dec);
+
+bool thread_l_wakeup(struct list_elem* a, struct list_elem* b, void* aux);
+bool thread_g_priority(struct list_elem* a, struct list_elem* b, void* aux);
+
+/*******/
 
 #endif /* threads/thread.h */

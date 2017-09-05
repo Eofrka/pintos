@@ -1,0 +1,34 @@
+pintos -v -k -T 480 --bochs  -- -q  -mlfqs run mlfqs-load-1 < /dev/null 2> tests/threads/mlfqs-load-1.errors |tee tests/threads/mlfqs-load-1.output
+Writing command line to /tmp/DD1NbC4Xsw.dsk...
+squish-pty bochs -q
+Kernel command line: -q -mlfqs run mlfqs-load-1
+Pintos booting with 4,096 kB RAM...
+374 pages available in kernel pool.
+374 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+Boot complete.
+Executing 'mlfqs-load-1':
+(mlfqs-load-1) begin
+(mlfqs-load-1) spinning for up to 45 seconds, please wait...
+(mlfqs-load-1) FAIL: load average stayed below 0.5 for more than 45 seconds
+Kernel PANIC at ../../tests/threads/tests.c:97 in fail(): test failed
+Call stack: 0xc01075ac 0xc01094bb 0xc010b2e2 0xc01094fb 0xc01000a7 0xc010064f.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 4641 ticks
+Thread: 0 idle ticks, 4641 kernel ticks, 0 user ticks
+Console: 767 characters output
+Keyboard: 0 keys pressed
+Powering off...
+perl -I../.. ../../tests/threads/mlfqs-load-1.ck tests/threads/mlfqs-load-1 tests/threads/mlfqs-load-1.result
+FAIL tests/threads/mlfqs-load-1
+Kernel panic in run: PANIC at ../../tests/threads/tests.c:97 in fail(): test failed
+Call stack: 0xc01075ac 0xc01094bb 0xc010b2e2 0xc01094fb 0xc01000a7 0xc010064f
+Translation of call stack:
+0xc01075ac: debug_panic (.../../lib/kernel/debug.c:34)
+0xc01094bb: run_test (.../tests/threads/tests.c:52)
+0xc010b2e2: test_mlfqs_load_1 (...threads/mlfqs-load-1.c:41)
+0xc01094fb: run_test (.../tests/threads/tests.c:61)
+0xc01000a7: run_task (.../../../threads/init.c:270)
+0xc010064f: run_actions (.../../../threads/init.c:319)
