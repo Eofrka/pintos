@@ -403,7 +403,6 @@ sub run_bochs {
     open (BOCHSRC, ">", "bochsrc.txt") or die "bochsrc.txt: create: $!\n";
     print BOCHSRC <<EOF;
     
-display_library: nogui
 romimage: file=\$BXSHARE/BIOS-bochs-latest
 vgaromimage: file=\$BXSHARE/VGABIOS-lgpl-latest
 boot: disk
