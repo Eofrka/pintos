@@ -92,11 +92,6 @@ thread_init (void)
   lock_init (&tid_lock);
   list_init (&ready_list);
 
-  /* pj1 */
-  /*******/
-  list_init(&sleep_list);
-  /*******/
-
   /* Set up a thread structure for the running thread. */
   initial_thread = running_thread ();
   init_thread (initial_thread, "main", PRI_DEFAULT);
@@ -203,10 +198,6 @@ thread_create (const char *name, int priority,
 
   /* Add to run queue. */
   thread_unblock (t);
-  /* pj1 */
-  /*******/
-  thread_preempt();
-  /*******/
 
   return tid;
 }
@@ -244,10 +235,7 @@ thread_unblock (struct thread *t)
 
   old_level = intr_disable ();
   ASSERT (t->status == THREAD_BLOCKED);
-  /* pj1 */
-  /*******/
-  list_insert_ordered(&ready_list, &t->elem, (list_less_func *)thread_g_priority, NULL);
-  /*******/
+  list_push_back (&ready_list, &t->elem);
   t->status = THREAD_READY;
   intr_set_level (old_level);
 }
@@ -315,13 +303,8 @@ thread_yield (void)
   ASSERT (!intr_context ());
 
   old_level = intr_disable ();
-  if (curr != idle_thread)
-  { 
-    /* pj1 */
-    /*******/
-    list_insert_ordered(&ready_list, &curr->elem, (list_less_func*)thread_g_priority, NULL);
-    /*******/
-  }
+  if (curr != idle_thread) 
+    list_push_back (&ready_list, &curr->elem);
   curr->status = THREAD_READY;
   schedule ();
   intr_set_level (old_level);
@@ -331,28 +314,7 @@ thread_yield (void)
 void
 thread_set_priority (int new_priority) 
 {
-
-  /* pj1 */
-  /*******/
-  /* Disable the interrupt */
-  enum intr_level old_level;
-  old_level = intr_disable();
-
-  struct thread* cur = thread_current ();
-  if(cur->old_priority != -1 && cur->priority > new_priority)
-  {
-    cur->old_priority = new_priority;
-    /* Restore the interrupt */
-    intr_set_level(old_level); 
-  }
-  else
-  {
-    cur->priority = new_priority;
-    /* Restore the interrupt */
-    intr_set_level(old_level);
-    thread_preempt();
-  }
-  /*******/
+  thread_current ()->priority = new_priority;
 }
 
 /* Returns the current thread's priority. */
@@ -477,15 +439,6 @@ init_thread (struct thread *t, const char *name, int priority)
   strlcpy (t->name, name, sizeof t->name);
   t->stack = (uint8_t *) t + PGSIZE;
   t->priority = priority;
-  /* pj1 */
-  /*******/
-  t->wakeup = 0;
-  t->old_priority = -1;
-  t->lock = NULL;
-  list_init(&t->lock_list);
-  t->sema = NULL;
-  t->donation_level = 0;
-  /*******/
   t->magic = THREAD_MAGIC;
 }
 
@@ -602,242 +555,3 @@ allocate_tid (void)
 /* Offset of `stack' member within `struct thread'.
    Used by switch.S, which can't figure it out on its own. */
 uint32_t thread_stack_ofs = offsetof (struct thread, stack);
-
-/* pj1 */
-/*******/
-/* New function definitions */
-
-/* Disable the interrupts. Set current thread's wakeup to wakeup_ticks
-   and push current thread into sleep_list (wakeup ascending order).
-   Block the thread and restore the old interrupt level. */
-void thread_sleep(int64_t wakeup_ticks)
-{
-  enum intr_level old_level;
-  struct thread* cur;
-
-  /* Disable the interrupt. */
-  old_level = intr_disable();
-
-  cur =thread_current();
-  /* Set wakeup ticks. */
-  cur->wakeup = wakeup_ticks;
-
-  /* Push current thread into sleep_list in ascending order of wakeup. */
-  list_insert_ordered(&sleep_list, &cur->elem, (list_less_func*)thread_l_wakeup, NULL);
-
-  /* Block the thread. */
-  thread_block();
-
-  /* Restore the interrupt. */
-  intr_set_level(old_level);
-}
-
-/* Awake sleeping threads which wakeup ticks are already passed current ticks or equal to current ticks. */
-void thread_awake(int64_t cur_ticks)
-{
-    /* If sleep_list is empty, do nothing. */
-
-  if(!list_empty(&sleep_list))
-  {
-    struct list_elem* iter = list_begin(&sleep_list);
-    struct thread* t;
-
-    /* Looking through sleep_list, awake thread which wakeup ticks is already passed current ticks or equal to current ticks */
-    /* it means that t->wakeup <= cur_ticks (cur_ticks keep increasing) */
-    while(iter != list_end(&sleep_list))
-    {
-      t = list_entry(iter, struct thread, elem);
-      if(t->wakeup <= cur_ticks)
-      {
-        struct list_elem* tmp = list_next(iter); 
-        list_remove(iter);
-        iter= tmp;
-        thread_unblock(t);
-      }
-      else
-      {
-        break;
-      }
-    }
-    thread_preempt_on_return();
-  }
-}
-
-/* Compare highest priority of thread in ready_list with currently running thread's priority
-   and yield cpu for higher priority thread in ready_list. This function is not called in intr_context(). */
-
-void thread_preempt(void)
-{
-  //ASSERT(!intr_context()); Q:? why this ASSERTION caught in userprog?
-
-  /* Disable the interrupt */
-  enum intr_level old_level;
-  old_level = intr_disable();
-  if(thread_max_priority_in_list(&ready_list) > thread_get_priority())
-  {
-    /* Restore the interrupt */
-    //intr_set_level(old_level);
-    thread_yield();
-  }
-  intr_set_level(old_level);
-  
-
-}
-
-
-/* Compare highest priority of thread in ready_list with currently running thread's priority
-   and yield cpu for higher priority thread in ready_list. This function is called in intr_context(). */
-void thread_preempt_on_return(void)
-{
-  ASSERT(intr_context());
-  ASSERT(intr_get_level() == INTR_OFF);
-  if(thread_max_priority_in_list(&ready_list) > thread_get_priority())
-  {
-    intr_yield_on_return();
-  }
-
-}
-
-
-/* Return maximum priority in the list. If the list is empty, return -1. */
-int thread_max_priority_in_list(struct list* list)
-{
-  if(list_empty(list))
-  {
-    return -1;
-  }
-  return list_entry(list_begin(list), struct thread, elem)->priority;
-}
-
-/* Recursive function of priority donation */
-void thread_donate_priority(struct thread* src)
-{
-  struct thread* dst;
-  if(src->donation_level >0)
-  {
-    dst = src->lock->holder;
-    if(src->priority > dst->priority)
-    {
-      /* Donate src's priority to dst's priority. If dst's old_priority == -1, update dst's old_priority to dst->priority. */
-      if(dst->old_priority == -1)
-      {
-        dst->old_priority = dst->priority;
-      }
-      dst->priority = src->priority;
-      
-      /* Balancing the queue. */
-      if(dst->status == THREAD_READY)
-      {
-        /* Remove the dst in ready_list. O(1) */
-        /* Insert again with priority ordered. O(n) */
-        thread_remove_and_insert_ordered(&ready_list, dst);
-
-      }
-      else if(dst->status == THREAD_BLOCKED)
-      {
-        /* Remove the dst in waiting list(waiters). O(1) */
-        /* Insert again with priority ordered. O(n) */
-        thread_remove_and_insert_ordered(&dst->sema->waiters, dst);
-      }
-
-      /* Recursive call */
-      thread_donate_priority(dst);
-    }
-  }
-
-}
-
-/* Restore the priority */
-void thread_restore_priority(void)
-{
-  struct thread* cur = thread_current();
-  struct list_elem* iter;
-  struct lock* lock;
-  int tmp_max_priority = -1;
-  /* Do linear seach in current thread's lock_list to find waiting_max_priority. */
-  int waiting_max_priority = -1;
-  if(!list_empty(&cur->lock_list))
-  {
-    for(iter = list_begin(&cur->lock_list); iter != list_end(&cur->lock_list); iter=list_next(iter))
-    {
-      lock = list_entry(iter, struct lock, elem);
-      tmp_max_priority = thread_max_priority_in_list(&lock->semaphore.waiters);
-      if(waiting_max_priority < tmp_max_priority)
-      {
-        waiting_max_priority = tmp_max_priority;
-      }
-    }
-  }
-
-  /* If waiting_max_priority > cur->old_priority, restore the current thread's priority into waiting_max_priority.
-  Else, restore the current thread's priority into cur->old_priority and set cur->old_priority to -1. */
-  if(cur->old_priority != -1)
-  {
-    if(waiting_max_priority > cur->old_priority)
-    {
-      cur->priority = waiting_max_priority;
-    }
-    else
-    {
-      cur->priority = cur->old_priority;
-      cur->old_priority = -1;
-    }
-  }
-}
-
-
-
-/* Remove the target thread t from the list. Insert it again in the list in descending order of priority. */
-void thread_remove_and_insert_ordered(struct list* list, struct thread* t)
-{
-  ASSERT(!list_empty(list));
-  list_remove(&t->elem);
-  list_insert_ordered(list, &t->elem, (list_less_func*)thread_g_priority, NULL);
-}
-
-
-/* Recursive function to decrease donation level of root thread. */
-void thread_dec_donation_level(struct thread* root, int dec)
-{
-  struct list_elem* lock_elem_iter;
-  struct list_elem* thread_elem_iter;
-  struct lock* lock_iter;
-  struct thread* thread_iter;
-  struct list* waiters;
-
-
-  root->donation_level -= dec;
-  for(lock_elem_iter = list_begin(&root->lock_list); lock_elem_iter != list_end(&root->lock_list); lock_elem_iter = list_next(lock_elem_iter))
-  {
-    lock_iter = list_entry(lock_elem_iter, struct lock, elem);
-    waiters = &lock_iter->semaphore.waiters;
-    for(thread_elem_iter = list_begin(waiters); thread_elem_iter != list_end(waiters); thread_elem_iter = list_next(thread_elem_iter))
-    {
-      thread_iter = list_entry(thread_elem_iter, struct thread, elem);
-      thread_dec_donation_level(thread_iter, dec);
-    }
-
-  }
-
-}
-
-
-
-
-
-/* If thread A's wakeup < thread B's wakeup, return true. Else return false. */  
-bool thread_l_wakeup(struct list_elem* a, struct list_elem* b, void* aux UNUSED)
-{
-  return list_entry(a, struct thread, elem)->wakeup < list_entry(b, struct thread, elem)->wakeup;
-}
-
-/* If thread A's priority > thread B's priority, return true. Else return false. */
-bool thread_g_priority(struct list_elem* a, struct list_elem* b, void* aux UNUSED)
-{
-  return list_entry(a, struct thread, elem)->priority > list_entry(b, struct thread, elem)->priority;
-}
-
-
-
-
-/*******/
