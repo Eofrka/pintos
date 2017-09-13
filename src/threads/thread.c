@@ -37,6 +37,12 @@ static struct thread *initial_thread;
 /* Lock used by allocate_tid(). */
 static struct lock tid_lock;
 
+/* pj1 */
+/*******/
+/* List of sleeping threads. */
+static struct list sleep_list; 
+/*******/
+
 /* Stack frame for kernel_thread(). */
 struct kernel_thread_frame 
   {
@@ -71,6 +77,9 @@ static void schedule (void);
 void schedule_tail (struct thread *prev);
 static tid_t allocate_tid (void);
 
+
+
+
 /* Initializes the threading system by transforming the code
    that's currently running into a thread.  This can't work in
    general and it is possible in this case only because loader.S
@@ -91,7 +100,10 @@ thread_init (void)
 
   lock_init (&tid_lock);
   list_init (&ready_list);
-
+  /* pj1 */
+  /*******/
+  list_init (&sleep_list);
+  /*******/
   /* Set up a thread structure for the running thread. */
   initial_thread = running_thread ();
   init_thread (initial_thread, "main", PRI_DEFAULT);
@@ -439,6 +451,10 @@ init_thread (struct thread *t, const char *name, int priority)
   strlcpy (t->name, name, sizeof t->name);
   t->stack = (uint8_t *) t + PGSIZE;
   t->priority = priority;
+  /* pj1 */
+  /*******/
+  t->wakeup_ticks = 0;
+  /*******/
   t->magic = THREAD_MAGIC;
 }
 
@@ -555,3 +571,83 @@ allocate_tid (void)
 /* Offset of `stack' member within `struct thread'.
    Used by switch.S, which can't figure it out on its own. */
 uint32_t thread_stack_ofs = offsetof (struct thread, stack);
+
+
+/* New static function declarations. */
+/***********************************************************************************************************************/
+static bool thread_wakeup_ticks_l(const struct list_elem *a, const struct list_elem *b, void *aux);
+
+
+/***********************************************************************************************************************/
+
+/* New static function definitions. */
+
+/***********************************************************************************************************************/
+/* Returns true if ta's wakeup_ticks is less than tb's wakeup_ticks, or
+   false if ta's wakeup_ticks is greater than or equal to tb's wakeup_ticks. */
+static bool thread_wakeup_ticks_l(const struct list_elem *a, const struct list_elem *b, void *aux UNUSED)
+{
+  struct thread* ta = list_entry(a, struct thread, elem);
+  struct thread* tb = list_entry(b, struct thread, elem);
+  return ta->wakeup_ticks < tb->wakeup_ticks;
+}
+
+
+/***********************************************************************************************************************/
+/* New function definitions. */
+/***********************************************************************************************************************/
+/* Disables the interrupt. Sets current thread's wakeup_ticks to wakeup_ticks
+   and pushs current thread into sleep list (wakeup ascending order).
+   Blocks the thread and restore the old interrupt level. */
+void thread_sleep(int64_t wakeup_ticks)
+{
+  enum intr_level old_level;
+  old_level = intr_disable();
+
+  struct thread* curr = thread_current();
+  curr->wakeup_ticks = wakeup_ticks;
+  list_insert_ordered(&sleep_list, &curr->elem, (list_less_func*)thread_wakeup_ticks_l, NULL);
+  thread_block();
+  intr_set_level(old_level);
+
+}
+
+
+/* Awakes and pops threads which wakeup_ticks are less than or equal to current ticks. If priority of awaken thread can be higher than currently running thread. Therefore call intr_yield_on_return() to schedule immediately after finishing timer_interrupt(). Race condition is ok because interrupt is disabled in external interrupt context. */ 
+void thread_awake(int64_t current_ticks)
+{
+  struct list_elem* e;
+  struct list_elem* next_e;
+  struct thread* t;
+
+
+  for(e = list_begin(&sleep_list); e != list_end(&sleep_list); e = next_e)
+  {
+    t = list_entry(e, struct thread, elem); 
+    if(t->wakeup_ticks <=current_ticks)
+    {
+      /* Tricky pointer manipulation. */
+      next_e = list_next(e);
+      list_remove(e);
+      t->wakeup_ticks = 0;
+      thread_unblock(t);
+    }
+    else
+    {
+      /* It is enough to check until here. */
+      break;
+    } 
+  }
+
+  //TODO: check ready_list.
+  //thread_preempt_on_return()
+
+
+
+}
+
+
+
+
+
+/***********************************************************************************************************************/

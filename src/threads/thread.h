@@ -89,6 +89,11 @@ struct thread
     uint8_t *stack;                     /* Saved stack pointer. */
     int priority;                       /* Priority. */
 
+
+    /* pj1 */
+    /*******/
+    int64_t wakeup_ticks;               /* Wakeup ticks. */
+    /*******/
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
 
@@ -132,5 +137,12 @@ int thread_get_nice (void);
 void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
+
+
+/* New function declarations. */
+/***********************************************************************************************************************/
+void thread_sleep(int64_t wakeup_ticks);
+void thread_awake(int64_t current_ticks);
+/***********************************************************************************************************************/
 
 #endif /* threads/thread.h */
