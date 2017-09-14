@@ -8,6 +8,8 @@
 
 >> Fill in the names and email addresses of your group members.
 
+Team Name: OSOS
+Team Number: 18
 Yuhwan Chung yuhwan96@kaist.ac.kr
 
 ---- PRELIMINARIES ----
