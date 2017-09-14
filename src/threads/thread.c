@@ -800,7 +800,14 @@ void thread_donate_priority(struct thread* src)
 /* Restore the priority */
 void thread_restore_priority(void)
 {
+
   struct thread* cur = thread_current();
+  /* If cur->old_priority == -1, the current thread has not received any donations. It means that cur->priority is
+  global max priority. Therefore restoration is not needed. */
+  if(cur->old_priority == -1)
+  {
+    return;
+  }
   struct list_elem* iter;
   struct lock* lock;
   int tmp_max_priority = -1;
@@ -821,18 +828,17 @@ void thread_restore_priority(void)
 
   /* If waiting_max_priority > cur->old_priority, restore the current thread's priority into waiting_max_priority.
   Else, restore the current thread's priority into cur->old_priority and set cur->old_priority to -1. */
-  if(cur->old_priority != -1)
+
+  if(waiting_max_priority > cur->old_priority)
   {
-    if(waiting_max_priority > cur->old_priority)
-    {
-      cur->priority = waiting_max_priority;
-    }
-    else
-    {
-      cur->priority = cur->old_priority;
-      cur->old_priority = -1;
-    }
+    cur->priority = waiting_max_priority;
   }
+  else
+  {
+    cur->priority = cur->old_priority;
+    cur->old_priority = -1;
+  }
+  
 }
 
 
