@@ -343,7 +343,7 @@ thread_set_priority (int new_priority)
 
   /* pj1 */
   /*******/
-  /* Disable the interrupt */
+  /*
   enum intr_level old_level;
   old_level = intr_disable();
 
@@ -351,16 +351,68 @@ thread_set_priority (int new_priority)
   if(cur->old_priority != -1 && cur->priority > new_priority)
   {
     cur->old_priority = new_priority;
-    /* Restore the interrupt */
     intr_set_level(old_level); 
   }
   else
   {
     cur->priority = new_priority;
-    /* Restore the interrupt */
     intr_set_level(old_level);
     thread_preempt();
   }
+  */
+  enum intr_level old_level;
+  old_level = intr_disable();
+  struct thread* curr= thread_current();
+  /* case 1: current thread has not received donation. */
+  if(curr->old_priority == -1)
+  {
+    if(new_priority < curr->priority)
+    {
+      struct list_elem* lock_e;
+      struct list* lock_list = &curr->lock_list;
+      int waiting_max_priority = -1;
+      for(lock_e = list_begin(lock_list); lock_e != list_end(lock_list); lock_e = list_next(lock_e))
+      {
+        struct lock* lock = list_entry(lock_e, struct lock, elem);
+        struct list* waiters = &lock->semaphore.waiters;
+        int tmp_priority = thread_max_priority_in_list(waiters);
+        if(tmp_priority > waiting_max_priority )
+        {
+          waiting_max_priority = tmp_priority;
+        }
+
+      }
+      if(waiting_max_priority != -1)
+      {
+        curr->priority = waiting_max_priority;
+      }
+      else
+      {
+        curr->priority = new_priority;
+      }
+      thread_preempt();
+    }
+    else
+    { 
+      curr->priority = new_priority;
+    }
+  }
+  /* case 2: current thread has received donation. */
+  else
+  {
+    if(new_priority < curr->priority)
+    {
+      curr->old_priority = new_priority;
+    }
+    else
+    {
+      curr->priority = new_priority;
+    }
+  }
+  intr_set_level(old_level);
+
+
+
   /*******/
 }
 

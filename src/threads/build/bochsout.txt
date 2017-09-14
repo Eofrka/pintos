@@ -30,7 +30,7 @@
 00000000000i[     ]   SB16 support: no
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support:  
-00000000000i[MEM0 ] allocated memory at 0x2ab1fa645010. after alignment, vector=0x2ab1fa646000
+00000000000i[MEM0 ] allocated memory at 0x2b6fdf27a010. after alignment, vector=0x2b6fdf27b000
 00000000000i[MEM0 ] 4.00MB
 00000000000i[MEM0 ] rom at 0xffff0000/65536 ('/usr/local/share/bochs/BIOS-bochs-latest')
 00000000000i[MEM0 ] rom at 0xc0000/32768 ('/usr/local/share/bochs/VGABIOS-lgpl-latest')
@@ -46,7 +46,7 @@
 00000000000i[     ] init_mem of 'extfpuirq' plugin device by virtual method
 00000000000i[     ] init_mem of 'speaker' plugin device by virtual method
 00000000000i[     ] init_dev of 'harddrv' plugin device by virtual method
-00000000000i[HD   ] HD on ata0-0: '/tmp/a5VZJIC7R7.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata0-0: '/tmp/RQpmSQ65Lj.dsk' 'flat' mode 
 00000000000i[HD   ] Using boot sequence disk, none, none
 00000000000i[HD   ] Floppy boot signature check is enabled
 00000000000i[     ] init_dev of 'keyboard' plugin device by virtual method
@@ -79,8 +79,8 @@
 00032231311i[CPU  ] protected mode
 00032231311i[CPU  ] CS.d_b = 32 bit
 00032231311i[CPU  ] SS.d_b = 32 bit
-00032231311i[CPU  ] | EAX=0000006e  EBX=c010bf14  ECX=c002ff86  EDX=ffff8900
-00032231311i[CPU  ] | ESP=c002ff70  EBP=c002ff88  ESI=00000000  EDI=c010d34d
+00032231311i[CPU  ] | EAX=0000006e  EBX=c010bf74  ECX=c002ff86  EDX=ffff8900
+00032231311i[CPU  ] | ESP=c002ff70  EBP=c002ff88  ESI=00000000  EDI=c010d3ad
 00032231311i[CPU  ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af pf cf
 00032231311i[CPU  ] | SEG selector     base    limit G D
 00032231311i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
