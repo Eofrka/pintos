@@ -8,8 +8,7 @@
 
 >> Fill in the names and email addresses of your group members.
 
-FirstName LastName <email@domain.example>
-FirstName LastName <email@domain.example>
+Yuhwan Chung yuhwan96@kaist.ac.kr
 
 ---- PRELIMINARIES ----
 
