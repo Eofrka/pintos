@@ -93,6 +93,7 @@ struct thread
     /* pj1 */
     /*******/
     int64_t wakeup_ticks;               /* Wakeup ticks. */
+    int base_priority;                  /* Base priority. */
     /*******/
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
@@ -143,6 +144,7 @@ int thread_get_load_avg (void);
 /***********************************************************************************************************************/
 void thread_sleep(int64_t wakeup_ticks);
 void thread_awake(int64_t current_ticks);
+int thread_get_highest_priority(struct list* target_list);
 /***********************************************************************************************************************/
 
 #endif /* threads/thread.h */

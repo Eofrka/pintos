@@ -1,0 +1,204 @@
+pintos -v -k -T 480 --bochs  -- -q  -mlfqs run mlfqs-load-avg < /dev/null 2> tests/threads/mlfqs-load-avg.errors |tee tests/threads/mlfqs-load-avg.output
+Writing command line to /tmp/2rMBNW59tR.dsk...
+squish-pty bochs -q
+Kernel command line: -q -mlfqs run mlfqs-load-avg
+Pintos booting with 4,096 kB RAM...
+374 pages available in kernel pool.
+374 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+Boot complete.
+Executing 'mlfqs-load-avg':
+(mlfqs-load-avg) begin
+(mlfqs-load-avg) Starting 60 load threads...
+(mlfqs-load-avg) Starting threads took 1 seconds.
+(mlfqs-load-avg) After 0 seconds, load average=0.00.
+(mlfqs-load-avg) After 2 seconds, load average=0.00.
+(mlfqs-load-avg) After 4 seconds, load average=0.00.
+(mlfqs-load-avg) After 6 seconds, load average=0.00.
+(mlfqs-load-avg) After 8 seconds, load average=0.00.
+(mlfqs-load-avg) After 10 seconds, load average=0.00.
+(mlfqs-load-avg) After 12 seconds, load average=0.00.
+(mlfqs-load-avg) After 14 seconds, load average=0.00.
+(mlfqs-load-avg) After 16 seconds, load average=0.00.
+(mlfqs-load-avg) After 18 seconds, load average=0.00.
+(mlfqs-load-avg) After 20 seconds, load average=0.00.
+(mlfqs-load-avg) After 22 seconds, load average=0.00.
+(mlfqs-load-avg) After 24 seconds, load average=0.00.
+(mlfqs-load-avg) After 26 seconds, load average=0.00.
+(mlfqs-load-avg) After 28 seconds, load average=0.00.
+(mlfqs-load-avg) After 30 seconds, load average=0.00.
+(mlfqs-load-avg) After 32 seconds, load average=0.00.
+(mlfqs-load-avg) After 34 seconds, load average=0.00.
+(mlfqs-load-avg) After 36 seconds, load average=0.00.
+(mlfqs-load-avg) After 38 seconds, load average=0.00.
+(mlfqs-load-avg) After 40 seconds, load average=0.00.
+(mlfqs-load-avg) After 42 seconds, load average=0.00.
+(mlfqs-load-avg) After 44 seconds, load average=0.00.
+(mlfqs-load-avg) After 46 seconds, load average=0.00.
+(mlfqs-load-avg) After 48 seconds, load average=0.00.
+(mlfqs-load-avg) After 50 seconds, load average=0.00.
+(mlfqs-load-avg) After 52 seconds, load average=0.00.
+(mlfqs-load-avg) After 54 seconds, load average=0.00.
+(mlfqs-load-avg) After 56 seconds, load average=0.00.
+(mlfqs-load-avg) After 58 seconds, load average=0.00.
+(mlfqs-load-avg) After 60 seconds, load average=0.00.
+(mlfqs-load-avg) After 62 seconds, load average=0.00.
+(mlfqs-load-avg) After 64 seconds, load average=0.00.
+(mlfqs-load-avg) After 66 seconds, load average=0.00.
+(mlfqs-load-avg) After 68 seconds, load average=0.00.
+(mlfqs-load-avg) After 70 seconds, load average=0.00.
+(mlfqs-load-avg) After 72 seconds, load average=0.00.
+(mlfqs-load-avg) After 74 seconds, load average=0.00.
+(mlfqs-load-avg) After 76 seconds, load average=0.00.
+(mlfqs-load-avg) After 78 seconds, load average=0.00.
+(mlfqs-load-avg) After 80 seconds, load average=0.00.
+(mlfqs-load-avg) After 82 seconds, load average=0.00.
+(mlfqs-load-avg) After 84 seconds, load average=0.00.
+(mlfqs-load-avg) After 86 seconds, load average=0.00.
+(mlfqs-load-avg) After 88 seconds, load average=0.00.
+(mlfqs-load-avg) After 90 seconds, load average=0.00.
+(mlfqs-load-avg) After 92 seconds, load average=0.00.
+(mlfqs-load-avg) After 94 seconds, load average=0.00.
+(mlfqs-load-avg) After 96 seconds, load average=0.00.
+(mlfqs-load-avg) After 98 seconds, load average=0.00.
+(mlfqs-load-avg) After 100 seconds, load average=0.00.
+(mlfqs-load-avg) After 102 seconds, load average=0.00.
+(mlfqs-load-avg) After 104 seconds, load average=0.00.
+(mlfqs-load-avg) After 106 seconds, load average=0.00.
+(mlfqs-load-avg) After 108 seconds, load average=0.00.
+(mlfqs-load-avg) After 110 seconds, load average=0.00.
+(mlfqs-load-avg) After 112 seconds, load average=0.00.
+(mlfqs-load-avg) After 114 seconds, load average=0.00.
+(mlfqs-load-avg) After 116 seconds, load average=0.00.
+(mlfqs-load-avg) After 118 seconds, load average=0.00.
+(mlfqs-load-avg) After 120 seconds, load average=0.00.
+(mlfqs-load-avg) After 122 seconds, load average=0.00.
+(mlfqs-load-avg) After 124 seconds, load average=0.00.
+(mlfqs-load-avg) After 126 seconds, load average=0.00.
+(mlfqs-load-avg) After 128 seconds, load average=0.00.
+(mlfqs-load-avg) After 130 seconds, load average=0.00.
+(mlfqs-load-avg) After 132 seconds, load average=0.00.
+(mlfqs-load-avg) After 134 seconds, load average=0.00.
+(mlfqs-load-avg) After 136 seconds, load average=0.00.
+(mlfqs-load-avg) After 138 seconds, load average=0.00.
+(mlfqs-load-avg) After 140 seconds, load average=0.00.
+(mlfqs-load-avg) After 142 seconds, load average=0.00.
+(mlfqs-load-avg) After 144 seconds, load average=0.00.
+(mlfqs-load-avg) After 146 seconds, load average=0.00.
+(mlfqs-load-avg) After 148 seconds, load average=0.00.
+(mlfqs-load-avg) After 150 seconds, load average=0.00.
+(mlfqs-load-avg) After 152 seconds, load average=0.00.
+(mlfqs-load-avg) After 154 seconds, load average=0.00.
+(mlfqs-load-avg) After 156 seconds, load average=0.00.
+(mlfqs-load-avg) After 158 seconds, load average=0.00.
+(mlfqs-load-avg) After 160 seconds, load average=0.00.
+(mlfqs-load-avg) After 162 seconds, load average=0.00.
+(mlfqs-load-avg) After 164 seconds, load average=0.00.
+(mlfqs-load-avg) After 166 seconds, load average=0.00.
+(mlfqs-load-avg) After 168 seconds, load average=0.00.
+(mlfqs-load-avg) After 170 seconds, load average=0.00.
+(mlfqs-load-avg) After 172 seconds, load average=0.00.
+(mlfqs-load-avg) After 174 seconds, load average=0.00.
+(mlfqs-load-avg) After 176 seconds, load average=0.00.
+(mlfqs-load-avg) After 178 seconds, load average=0.00.
+(mlfqs-load-avg) end
+Execution of 'mlfqs-load-avg' complete.
+Timer: 18841 ticks
+Thread: 6537 idle ticks, 12307 kernel ticks, 0 user ticks
+Console: 5389 characters output
+Keyboard: 0 keys pressed
+Powering off...
+perl -I../.. ../../tests/threads/mlfqs-load-avg.ck tests/threads/mlfqs-load-avg tests/threads/mlfqs-load-avg.result
+FAIL tests/threads/mlfqs-load-avg
+Some load average values were missing or differed from those expected by more than 2.5.
+  time   actual <-> expected explanation
+------ -------- --- -------- ----------------------------------------
+     2     0.00  =  0.05     
+     4     0.00  =  0.16     
+     6     0.00  =  0.34     
+     8     0.00  =  0.58     
+    10     0.00  =  0.87     
+    12     0.00  =  1.22     
+    14     0.00  =  1.63     
+    16     0.00  =  2.09     
+    18     0.00 <<< 2.60     Too small, by 0.10.
+    20     0.00 <<< 3.16     Too small, by 0.66.
+    22     0.00 <<< 3.76     Too small, by 1.26.
+    24     0.00 <<< 4.42     Too small, by 1.92.
+    26     0.00 <<< 5.11     Too small, by 2.61.
+    28     0.00 <<< 5.85     Too small, by 3.35.
+    30     0.00 <<< 6.63     Too small, by 4.13.
+    32     0.00 <<< 7.46     Too small, by 4.96.
+    34     0.00 <<< 8.32     Too small, by 5.82.
+    36     0.00 <<< 9.22     Too small, by 6.72.
+    38     0.00 <<< 10.15    Too small, by 7.65.
+    40     0.00 <<< 11.12    Too small, by 8.62.
+    42     0.00 <<< 12.13    Too small, by 9.63.
+    44     0.00 <<< 13.16    Too small, by 10.66.
+    46     0.00 <<< 14.23    Too small, by 11.73.
+    48     0.00 <<< 15.33    Too small, by 12.83.
+    50     0.00 <<< 16.46    Too small, by 13.96.
+    52     0.00 <<< 17.62    Too small, by 15.12.
+    54     0.00 <<< 18.81    Too small, by 16.31.
+    56     0.00 <<< 20.02    Too small, by 17.52.
+    58     0.00 <<< 21.26    Too small, by 18.76.
+    60     0.00 <<< 22.52    Too small, by 20.02.
+    62     0.00 <<< 23.71    Too small, by 21.21.
+    64     0.00 <<< 24.80    Too small, by 22.30.
+    66     0.00 <<< 25.78    Too small, by 23.28.
+    68     0.00 <<< 26.66    Too small, by 24.16.
+    70     0.00 <<< 27.45    Too small, by 24.95.
+    72     0.00 <<< 28.14    Too small, by 25.64.
+    74     0.00 <<< 28.75    Too small, by 26.25.
+    76     0.00 <<< 29.27    Too small, by 26.77.
+    78     0.00 <<< 29.71    Too small, by 27.21.
+    80     0.00 <<< 30.06    Too small, by 27.56.
+    82     0.00 <<< 30.34    Too small, by 27.84.
+    84     0.00 <<< 30.55    Too small, by 28.05.
+    86     0.00 <<< 30.68    Too small, by 28.18.
+    88     0.00 <<< 30.74    Too small, by 28.24.
+    90     0.00 <<< 30.73    Too small, by 28.23.
+    92     0.00 <<< 30.66    Too small, by 28.16.
+    94     0.00 <<< 30.52    Too small, by 28.02.
+    96     0.00 <<< 30.32    Too small, by 27.82.
+    98     0.00 <<< 30.06    Too small, by 27.56.
+   100     0.00 <<< 29.74    Too small, by 27.24.
+   102     0.00 <<< 29.37    Too small, by 26.87.
+   104     0.00 <<< 28.95    Too small, by 26.45.
+   106     0.00 <<< 28.47    Too small, by 25.97.
+   108     0.00 <<< 27.94    Too small, by 25.44.
+   110     0.00 <<< 27.36    Too small, by 24.86.
+   112     0.00 <<< 26.74    Too small, by 24.24.
+   114     0.00 <<< 26.07    Too small, by 23.57.
+   116     0.00 <<< 25.36    Too small, by 22.86.
+   118     0.00 <<< 24.60    Too small, by 22.10.
+   120     0.00 <<< 23.81    Too small, by 21.31.
+   122     0.00 <<< 23.02    Too small, by 20.52.
+   124     0.00 <<< 22.26    Too small, by 19.76.
+   126     0.00 <<< 21.52    Too small, by 19.02.
+   128     0.00 <<< 20.81    Too small, by 18.31.
+   130     0.00 <<< 20.12    Too small, by 17.62.
+   132     0.00 <<< 19.46    Too small, by 16.96.
+   134     0.00 <<< 18.81    Too small, by 16.31.
+   136     0.00 <<< 18.19    Too small, by 15.69.
+   138     0.00 <<< 17.59    Too small, by 15.09.
+   140     0.00 <<< 17.01    Too small, by 14.51.
+   142     0.00 <<< 16.45    Too small, by 13.95.
+   144     0.00 <<< 15.90    Too small, by 13.40.
+   146     0.00 <<< 15.38    Too small, by 12.88.
+   148     0.00 <<< 14.87    Too small, by 12.37.
+   150     0.00 <<< 14.38    Too small, by 11.88.
+   152     0.00 <<< 13.90    Too small, by 11.40.
+   154     0.00 <<< 13.44    Too small, by 10.94.
+   156     0.00 <<< 13.00    Too small, by 10.50.
+   158     0.00 <<< 12.57    Too small, by 10.07.
+   160     0.00 <<< 12.15    Too small, by 9.65.
+   162     0.00 <<< 11.75    Too small, by 9.25.
+   164     0.00 <<< 11.36    Too small, by 8.86.
+   166     0.00 <<< 10.99    Too small, by 8.49.
+   168     0.00 <<< 10.62    Too small, by 8.12.
+   170     0.00 <<< 10.27    Too small, by 7.77.
+   172     0.00 <<< 9.93     Too small, by 7.43.
+   174     0.00 <<< 9.61     Too small, by 7.11.
+   176     0.00 <<< 9.29     Too small, by 6.79.
+   178     0.00 <<< 8.98     Too small, by 6.48.

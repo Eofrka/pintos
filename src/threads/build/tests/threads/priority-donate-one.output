@@ -1,4 +1,4 @@
-Writing command line to /tmp/21JYjXWLEL.dsk...
+Writing command line to /tmp/S9GZ39x6Lf.dsk...
 squish-pty bochs -q
 Kernel command line: -q run priority-donate-one
 Pintos booting with 4,096 kB RAM...
@@ -14,8 +14,19 @@ Executing 'priority-donate-one':
 (priority-donate-one) This should be the last line before finishing this test.
 (priority-donate-one) end
 Execution of 'priority-donate-one' complete.
-Timer: 82 ticks
-Thread: 0 idle ticks, 85 kernel ticks, 0 user ticks
+Timer: 83 ticks
+Thread: 0 idle ticks, 86 kernel ticks, 0 user ticks
 Console: 733 characters output
+Keyboard: 0 keys pressed
+Powering off...
+(priority-donate-one) acquire1: got the lock
+Kernel PANIC at ../../threads/synch.c:234 in lock_release(): assertion `lock_held_by_current_thread (lock)' failed.
+Call stack: 0xc010723c 0xc01028bc 0xc0109aba 0xc0101097.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 111 ticks
+Thread: 0 idle ticks, 111 kernel ticks, 0 user ticks
+Console: 1247 characters output
 Keyboard: 0 keys pressed
 Powering off...

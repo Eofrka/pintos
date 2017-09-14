@@ -78,7 +78,36 @@ void schedule_tail (struct thread *prev);
 static tid_t allocate_tid (void);
 
 
+/* New static function declarations. */
+/***********************************************************************************************************************/
+static bool thread_wakeup_ticks_l(const struct list_elem *a, const struct list_elem *b, void *aux);
+static bool thread_priority_g(const struct list_elem *a, const struct list_elem *b, void *aux);
 
+
+/***********************************************************************************************************************/
+
+/* New static function definitions. */
+
+/***********************************************************************************************************************/
+/* Returns true if ta's wakeup_ticks is less than tb's wakeup_ticks, or
+   false if ta's wakeup_ticks is greater than or equal to tb's wakeup_ticks. */
+static bool thread_wakeup_ticks_l(const struct list_elem *a, const struct list_elem *b, void *aux UNUSED)
+{
+  struct thread* ta = list_entry(a, struct thread, elem);
+  struct thread* tb = list_entry(b, struct thread, elem);
+  return ta->wakeup_ticks < tb->wakeup_ticks;
+}
+
+/* Returns true if ta's priority is greater than tb's priority, or
+   false if ta's priority is less than or equal to tb's priority. */
+static bool thread_priority_g(const struct list_elem *a, const struct list_elem *b, void *aux UNUSED)
+{
+  struct thread* ta = list_entry(a, struct thread, elem);
+  struct thread* tb = list_entry(b, struct thread, elem);
+  return ta->priority > tb->priority;
+
+}
+/***********************************************************************************************************************/
 
 /* Initializes the threading system by transforming the code
    that's currently running into a thread.  This can't work in
@@ -211,6 +240,22 @@ thread_create (const char *name, int priority,
   /* Add to run queue. */
   thread_unblock (t);
 
+  /* pj1 */
+  /*******/
+  /* This area is preemtvie. */
+  /* However my design allows it and if synchronization need,
+  it is caller's responsibility. */
+  enum intr_level old_level = intr_disable();
+  int highest_priority = thread_get_highest_priority(&ready_list);
+  if(highest_priority > thread_get_priority())
+  {
+    thread_yield();  
+  }
+  intr_set_level(old_level);
+
+  
+  /*******/
+
   return tid;
 }
 
@@ -247,7 +292,11 @@ thread_unblock (struct thread *t)
 
   old_level = intr_disable ();
   ASSERT (t->status == THREAD_BLOCKED);
-  list_push_back (&ready_list, &t->elem);
+  /* pj1 */
+  /*******/
+  /* Insert thread into ready_list in ascending order of priority. */
+  list_insert_ordered(&ready_list, &t->elem, (list_less_func*)thread_priority_g, NULL);
+  /*******/
   t->status = THREAD_READY;
   intr_set_level (old_level);
 }
@@ -315,8 +364,14 @@ thread_yield (void)
   ASSERT (!intr_context ());
 
   old_level = intr_disable ();
-  if (curr != idle_thread) 
-    list_push_back (&ready_list, &curr->elem);
+  if (curr != idle_thread)
+  { 
+    /* pj1 */
+    /*******/
+    /* Insert thread into ready_list in ascending order of priority. */
+    list_insert_ordered(&ready_list, &curr->elem, (list_less_func*)thread_priority_g, NULL);
+    /*******/
+  }
   curr->status = THREAD_READY;
   schedule ();
   intr_set_level (old_level);
@@ -326,8 +381,59 @@ thread_yield (void)
 void
 thread_set_priority (int new_priority) 
 {
-  thread_current ()->priority = new_priority;
-}
+  //thread_current ()->priority = new_priority;
+  /* pj1 */
+  /*******/
+  /* Atomic need! */
+  enum intr_level old_level = intr_disable();
+  struct thread* curr= thread_current();
+  /* case 1: current thread has not received donation. (curr->base_priority == -1) */
+  if(curr->base_priority == -1)
+  {
+    /* case 1-1: lowering priority. */
+    if(new_priority < curr->priority)
+    {
+      /* lower the current priority first. Since the current thread has not received any donations,
+         leave the base_priority to -1. It indicates that the thread has not received any donations. */
+      curr->priority = new_priority;
+
+
+      /* Compare the highest priority in the ready list and yield if it is necessary.
+         interrupt is disabled, so do not worry race condition. */
+      int highest_priority = thread_get_highest_priority(&ready_list);
+      if(highest_priority > curr->priority)
+      {
+        thread_yield();
+      }
+    }
+    /* case 1-2: highering priority or setting priority equally. */
+    else
+    {
+      /* lower the current priority first. Since the current thread has not received any donations,
+         leave the base_priority to -1. It indicates that the thread has not received any donations. */
+      curr->priority = new_priority;
+
+      /* We do not have to check ready list because curr->priority is the global maximum. */
+    }
+  }
+  /* case 2: current thread has received donation. (curr->base_priority != -1) */
+  else
+  {
+    /* case 2-1: lowering priority. */
+    if(new_priority < curr->priority)
+    {
+
+    }
+    /* case 2-2:highering priority or setting priority equally. */
+    else
+    {
+
+    }
+
+  }
+  intr_set_level(old_level);
+  /*******/
+} 
 
 /* Returns the current thread's priority. */
 int
@@ -454,6 +560,7 @@ init_thread (struct thread *t, const char *name, int priority)
   /* pj1 */
   /*******/
   t->wakeup_ticks = 0;
+  t->base_priority = -1;
   /*******/
   t->magic = THREAD_MAGIC;
 }
@@ -567,33 +674,13 @@ allocate_tid (void)
 
   return tid;
 }
-
+
 /* Offset of `stack' member within `struct thread'.
    Used by switch.S, which can't figure it out on its own. */
 uint32_t thread_stack_ofs = offsetof (struct thread, stack);
 
 
-/* New static function declarations. */
-/***********************************************************************************************************************/
-static bool thread_wakeup_ticks_l(const struct list_elem *a, const struct list_elem *b, void *aux);
 
-
-/***********************************************************************************************************************/
-
-/* New static function definitions. */
-
-/***********************************************************************************************************************/
-/* Returns true if ta's wakeup_ticks is less than tb's wakeup_ticks, or
-   false if ta's wakeup_ticks is greater than or equal to tb's wakeup_ticks. */
-static bool thread_wakeup_ticks_l(const struct list_elem *a, const struct list_elem *b, void *aux UNUSED)
-{
-  struct thread* ta = list_entry(a, struct thread, elem);
-  struct thread* tb = list_entry(b, struct thread, elem);
-  return ta->wakeup_ticks < tb->wakeup_ticks;
-}
-
-
-/***********************************************************************************************************************/
 /* New function definitions. */
 /***********************************************************************************************************************/
 /* Disables the interrupt. Sets current thread's wakeup_ticks to wakeup_ticks
@@ -639,15 +726,32 @@ void thread_awake(int64_t current_ticks)
     } 
   }
 
-  //TODO: check ready_list.
-  //thread_preempt_on_return()
-
-
+  /* If the highest priority of awaken threads is higher than current thread's priority, immediate yield is needed
+     after timer_interrupt(). In interrupt context, the interrupt is disabled. Therefore do not worry about race condition. */ 
+  int highest_priority = thread_get_highest_priority(&ready_list);
+  if(highest_priority > thread_get_priority())
+  {
+    intr_yield_on_return();
+  }
 
 }
 
 
-
+/* Gets the highest priority in the target list. If target list is empty, return -1. Synchornization is caller's responsibility.
+   My design choice is that always keep target_list sorted in ascending order of priority. Therefore return just front thread's
+   priority. */
+int thread_get_highest_priority(struct list* target_list)
+{
+  if(list_empty(target_list))
+  {
+    return -1;
+  }
+  else
+  {
+    struct thread* t = list_entry(list_begin(target_list), struct thread, elem);
+    return t->priority;
+  }
+}
 
 
 /***********************************************************************************************************************/
