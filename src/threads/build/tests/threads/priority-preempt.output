@@ -1,4 +1,4 @@
-Writing command line to /tmp/L0AjSiT64q.dsk...
+Writing command line to /tmp/pjAoo656bD.dsk...
 squish-pty bochs -q
 Kernel command line: -q run priority-preempt
 Pintos booting with 4,096 kB RAM...
@@ -18,7 +18,7 @@ Executing 'priority-preempt':
 (priority-preempt) end
 Execution of 'priority-preempt' complete.
 Timer: 87 ticks
-Thread: 0 idle ticks, 89 kernel ticks, 0 user ticks
+Thread: 0 idle ticks, 90 kernel ticks, 0 user ticks
 Console: 774 characters output
 Keyboard: 0 keys pressed
 Powering off...
