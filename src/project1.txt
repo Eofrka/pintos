@@ -17,6 +17,9 @@ Yuhwan Chung yuhwan96@kaist.ac.kr
 >> If you have any preliminary comments on your submission, notes for the
 >> TAs, usage of tokens, or extra credit, please give them here.
 
+The number of tokens you use: 0
+The contribution of each team member: Yuhwan Chung 100%
+
 >> Please cite any offline or online sources you consulted while
 >> preparing your submission, other than the Pintos documentation, course
 >> text, lecture notes, and course staff.
