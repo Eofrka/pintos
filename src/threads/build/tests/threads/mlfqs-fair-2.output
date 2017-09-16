@@ -1,9 +1,9 @@
-Writing command line to /tmp/pkRiHSptHA.dsk...
+Writing command line to /tmp/ocqfcrwRax.dsk...
 squish-pty bochs -q
 Kernel command line: -q -mlfqs run mlfqs-fair-2
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
-374 pages available in user pool.
+373 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 Boot complete.
 Executing 'mlfqs-fair-2':

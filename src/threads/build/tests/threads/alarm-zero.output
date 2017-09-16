@@ -1,9 +1,9 @@
-Writing command line to /tmp/QKoOqn9M0H.dsk...
+Writing command line to /tmp/UFh4vEN4Dw.dsk...
 squish-pty bochs -q
 Kernel command line: -q run alarm-zero
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
-374 pages available in user pool.
+373 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 Boot complete.
 Executing 'alarm-zero':

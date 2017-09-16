@@ -42,6 +42,13 @@ static const struct test tests[] =
     /*******/
     {"hello", test_hello},
     /*******/
+
+    /* pj1 */
+    /*******/
+    {"deadlock-lock", test_deadlock_lock},
+    {"deadlock-sema", test_deadlock_sema},
+    {"lock-reaping", test_lock_reaping},
+    /*******/
   };
 
 static const char *test_name;

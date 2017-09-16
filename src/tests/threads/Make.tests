@@ -40,6 +40,10 @@ tests/threads_SRC += tests/threads/mlfqs-block.c
 # pj0.
 tests/threads_SRC += tests/threads/hello.c
 
+# pj1.
+tests/threads_SRC += tests/threads/deadlock.c
+tests/threads_SRC += tests/threads/lock-reaping.c
+
 MLFQS_OUTPUTS = 				\
 tests/threads/mlfqs-load-1.output		\
 tests/threads/mlfqs-load-60.output		\

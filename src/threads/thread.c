@@ -15,6 +15,7 @@
 #include "userprog/process.h"
 #endif
 
+
 /* Random value for struct thread's `magic' member.
    Used to detect stack overflow.  See the big comment at the top
    of thread.h for details. */
@@ -308,6 +309,19 @@ thread_exit (void)
   /* Just set our status to dying and schedule another process.
      We will be destroyed during the call to schedule_tail(). */
   intr_disable ();
+  /* pj1 */
+  /*******/
+  struct list_elem* iter;
+  struct list_elem* next_iter;
+  struct list* lock_list = &thread_current()->lock_list;
+  for(iter = list_begin(lock_list); iter != list_end(lock_list); iter= next_iter)
+  {
+    struct lock* lock =list_entry(iter, struct lock, elem);
+    next_iter = list_next(iter);
+    list_remove(iter);
+    lock_release(lock);
+  }
+  /*******/
   thread_current ()->status = THREAD_DYING;
   schedule ();
   NOT_REACHED ();
@@ -474,6 +488,7 @@ idle (void *idle_started_ UNUSED)
     {
       /* Let someone else run. */
       intr_disable ();
+      //printf("idle thread is running\n");
       thread_block ();
 
       /* Re-enable interrupts and wait for the next one.
