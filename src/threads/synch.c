@@ -62,23 +62,22 @@ void
 sema_down (struct semaphore *sema) 
 {
   enum intr_level old_level;
-  struct thread* cur;
+  struct thread* curr;
   ASSERT (sema != NULL);
   ASSERT (!intr_context ());
 
   old_level = intr_disable ();
-  cur = thread_current();
+  curr = thread_current();
   while (sema->value == 0) 
   {
     /* pj1 */
     /*******/
     /* Insert current thread into semaphore's waiters in descending order of priority. */
-    cur->sema = sema;
-    list_insert_ordered(&sema->waiters,&cur->elem,(list_less_func*)thread_g_priority, NULL);
+    curr->sema = sema;
+    list_insert_ordered(&sema->waiters,&curr->elem,(list_less_func*)thread_priority_g, NULL);
     /* Before thread_block(), Actual priority donation needed! */
-    thread_donate_priority(cur);
+    thread_donate_priority(curr);
     /*******/
-
     thread_block ();
   }
   /* When thread unblock from sema_up(), start from here. */
@@ -133,9 +132,7 @@ sema_up (struct semaphore *sema)
     /*******/
     /* pop the highest priority thread from the waiters, and the thread is going to be unblocked. then get the priority of the thread */
     to_unblock_thread = list_entry (list_pop_front (&sema->waiters),struct thread, elem); 
-    /* Set to_unblock_thread's lock to NULL */
     to_unblock_thread->lock = NULL;
-    /* Set to unblock_thread's sema to NULL */
     to_unblock_thread->sema = NULL;
     /* Update donation level */
     int dec = to_unblock_thread->donation_level;
@@ -242,19 +239,18 @@ lock_acquire (struct lock *lock)
 
   /* pj1 */
   /*******/
-
   /* Disable the interrupt */
   enum intr_level old_level;
   old_level = intr_disable();
-  struct thread* cur = thread_current();
+  struct thread* curr = thread_current();
 
   if(lock->holder != NULL)
   {
     /* These two statements are needed for recursive call of thread_donate_priority() in sema_down() */
-    /* Current thread's lock point the lock. */
-    cur->lock = lock;
+    /* Current thread's lock points the lock. */
+    curr->lock = lock;
     /* Update the donation level. */
-    cur->donation_level = lock->holder->donation_level+1;
+    curr->donation_level = lock->holder->donation_level+1;
   }
   /*******/  
 
@@ -265,8 +261,8 @@ lock_acquire (struct lock *lock)
   /* After sema down, it means current thread is unblocked from sema_up(after return of sema_down()). */
 
   /* Insert the lock into current thread's lock_list. Order is not important because the lock has no waiting threads in the semaphore's waiters initially. */
-  list_push_back(&cur->lock_list, &lock->elem);
-  lock->holder = cur;
+  list_push_back(&curr->lock_list, &lock->elem);
+  lock->holder = curr;
   /* Restore the interrupt */
   intr_set_level(old_level);
   /*******/
@@ -392,7 +388,7 @@ cond_wait (struct condition *cond, struct lock *lock)
   for(iter = list_begin(&cond->waiters); iter != list_end(&cond->waiters); iter=list_next(iter))
   {
     tmp_waiter = list_entry(iter, struct semaphore_elem, elem);
-    if(thread_max_priority_in_list(&tmp_waiter->semaphore.waiters) < thread_current()->priority)
+    if(thread_get_max_priority(&tmp_waiter->semaphore.waiters) < thread_current()->priority)
     {
       break;
     }

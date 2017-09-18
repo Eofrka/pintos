@@ -5,7 +5,7 @@
 #include "threads/thread.h"
 
 static void
-acquire1_thread_func (void);
+acquire1_thread_func (void* aux);
 
 static struct lock lock1;
 static struct lock lock2;
@@ -14,7 +14,7 @@ static struct lock lock2;
 
 
 static void
-down1_thread_func(void); 
+down1_thread_func(void* aux); 
 
 static struct semaphore sema1;
 static struct semaphore sema2;
@@ -49,7 +49,7 @@ test_deadlock_lock (void)
 }
 
 static void
-acquire1_thread_func (void) 
+acquire1_thread_func (void* aux UNUSED) 
 {
   
   lock_acquire (&lock2);
@@ -95,7 +95,7 @@ void test_deadlock_sema(void)
 }
 
 
-static void down1_thread_func(void)
+static void down1_thread_func(void* aux UNUSED)
 {
   sema_down(&sema2);
   msg("down1: got the sema2.");

@@ -30,7 +30,7 @@
 00000000000i[     ]   SB16 support: no
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support:  
-00000000000i[MEM0 ] allocated memory at 0x7f28f530b010. after alignment, vector=0x7f28f530c000
+00000000000i[MEM0 ] allocated memory at 0x2b8a4c201010. after alignment, vector=0x2b8a4c202000
 00000000000i[MEM0 ] 4.00MB
 00000000000i[MEM0 ] rom at 0xffff0000/65536 ('/usr/local/share/bochs/BIOS-bochs-latest')
 00000000000i[MEM0 ] rom at 0xc0000/32768 ('/usr/local/share/bochs/VGABIOS-lgpl-latest')
@@ -46,7 +46,7 @@
 00000000000i[     ] init_mem of 'extfpuirq' plugin device by virtual method
 00000000000i[     ] init_mem of 'speaker' plugin device by virtual method
 00000000000i[     ] init_dev of 'harddrv' plugin device by virtual method
-00000000000i[HD   ] HD on ata0-0: '/tmp/ytZu9uCJ8N.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata0-0: '/tmp/3MARMO7Xv9.dsk' 'flat' mode 
 00000000000i[HD   ] Using boot sequence disk, none, none
 00000000000i[HD   ] Floppy boot signature check is enabled
 00000000000i[     ] init_dev of 'keyboard' plugin device by virtual method
@@ -73,28 +73,27 @@
 00000786523e[HD   ] ata0: device set to 1 which does not exist
 00000786815e[HD   ] ata1: device set to 0 which does not exist
 00000787108e[HD   ] ata1: device set to 1 which does not exist
-03891481414p[     ] >>PANIC<< SIGNAL 2 caught
-03891481414i[SYS  ] Last time is 3891
-03891481414i[NGUI ] bx_nogui_gui_c::exit() not implemented yet.
-03891481414i[CPU  ] protected mode
-03891481414i[CPU  ] CS.d_b = 32 bit
-03891481414i[CPU  ] SS.d_b = 32 bit
-03891481414i[CPU  ] | EAX=c0116000  EBX=c0101472  ECX=c0116000  EDX=00000001
-03891481414i[CPU  ] | ESP=c0116fc8  EBP=c0116fd0  ESI=00000000  EDI=00000000
-03891481414i[CPU  ] | IOPL=0 id vip vif ac vm rf nt of df IF tf SF zf af pf cf
-03891481414i[CPU  ] | SEG selector     base    limit G D
-03891481414i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
-03891481414i[CPU  ] |  CS:0008( 0001| 0|  0) 00000000 000fffff 1 1
-03891481414i[CPU  ] |  DS:0010( 0002| 0|  0) 00000000 000fffff 1 1
-03891481414i[CPU  ] |  SS:0010( 0002| 0|  0) 00000000 000fffff 1 1
-03891481414i[CPU  ] |  ES:0010( 0002| 0|  0) 00000000 000fffff 1 1
-03891481414i[CPU  ] |  FS:0010( 0002| 0|  0) 00000000 000fffff 1 1
-03891481414i[CPU  ] |  GS:0010( 0002| 0|  0) 00000000 000fffff 1 1
-03891481414i[CPU  ] | EIP=c0101499 (c0101499)
-03891481414i[CPU  ] | CR0=0x80010015 CR1=0 CR2=0x00000000
-03891481414i[CPU  ] | CR3=0x00114000 CR4=0x00000000
-03891481414i[CPU  ] >> eb
-03891481414i[CPU  ] >> f2
-03891481414i[CPU  ] >> : jmp .+0xfffffff2
-03891481414i[     ] restoring default signal behavior
-03891481414i[CTRL ] quit_sim called with exit code 1
+00032171271p[UNMP ] >>PANIC<< Shutdown port: shutdown requested
+00032171271i[SYS  ] Last time is 32
+00032171271i[NGUI ] bx_nogui_gui_c::exit() not implemented yet.
+00032171271i[CPU  ] protected mode
+00032171271i[CPU  ] CS.d_b = 32 bit
+00032171271i[CPU  ] SS.d_b = 32 bit
+00032171271i[CPU  ] | EAX=0000006e  EBX=c010c794  ECX=c002ff86  EDX=ffff8900
+00032171271i[CPU  ] | ESP=c002ff70  EBP=c002ff88  ESI=00000000  EDI=c010dc3d
+00032171271i[CPU  ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af pf cf
+00032171271i[CPU  ] | SEG selector     base    limit G D
+00032171271i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
+00032171271i[CPU  ] |  CS:0008( 0001| 0|  0) 00000000 000fffff 1 1
+00032171271i[CPU  ] |  DS:0010( 0002| 0|  0) 00000000 000fffff 1 1
+00032171271i[CPU  ] |  SS:0010( 0002| 0|  0) 00000000 000fffff 1 1
+00032171271i[CPU  ] |  ES:0010( 0002| 0|  0) 00000000 000fffff 1 1
+00032171271i[CPU  ] |  FS:0010( 0002| 0|  0) 00000000 000fffff 1 1
+00032171271i[CPU  ] |  GS:0010( 0002| 0|  0) 00000000 000fffff 1 1
+00032171271i[CPU  ] | EIP=c0100067 (c0100066)
+00032171271i[CPU  ] | CR0=0x80010015 CR1=0 CR2=0x00000000
+00032171271i[CPU  ] | CR3=0x00114000 CR4=0x00000000
+00032171271i[CPU  ] >> ee
+00032171271i[CPU  ] >> : out dx, al
+00032171271i[     ] restoring default signal behavior
+00032171271i[CTRL ] quit_sim called with exit code 1

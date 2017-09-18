@@ -1,4 +1,4 @@
-Writing command line to /tmp/ULOEEpVrMY.dsk...
+Writing command line to /tmp/1ux0K2iz3Y.dsk...
 squish-pty bochs -q
 Kernel command line: -q -mlfqs run mlfqs-nice-2
 Pintos booting with 4,096 kB RAM...
@@ -16,7 +16,7 @@ Executing 'mlfqs-nice-2':
 (mlfqs-nice-2) end
 Execution of 'mlfqs-nice-2' complete.
 Timer: 4069 ticks
-Thread: 999 idle ticks, 3075 kernel ticks, 0 user ticks
+Thread: 999 idle ticks, 3074 kernel ticks, 0 user ticks
 Console: 630 characters output
 Keyboard: 0 keys pressed
 Powering off...
