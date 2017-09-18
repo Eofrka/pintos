@@ -37,7 +37,7 @@ test_lock_reaping (void)
 static void
 acquire1_thread_func (void* aux UNUSED) 
 {
-  msg("acquire1: hello from acquire1."); 
+  printf("@hello from acquire1.\n"); 
   lock_acquire(&lock1);
   msg("acquire1: got the lock1.");
   lock_acquire(&lock2);
@@ -61,7 +61,7 @@ acquire1_thread_func (void* aux UNUSED)
 static void
 acquire2_thread_func (void* aux UNUSED)
 {
-  msg("acquire2: hello from acquire2.");
+  printf("#hello from acquire2.\n");
   lock_acquire(&lock1);
 
   msg("acquire2: got the lock1.");
@@ -74,7 +74,7 @@ acquire2_thread_func (void* aux UNUSED)
 
 static void acquire3_thread_func (void* aux UNUSED)
 {
-  msg("acquire3: hello from acquire3.");
+  printf("$hello from acquire3.\n");
   lock_acquire(&lock2);
   msg("acquire3: got the lock2.");
   msg("acquire3: critical section.");

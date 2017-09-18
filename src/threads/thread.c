@@ -220,16 +220,7 @@ thread_create (const char *name, int priority,
   thread_unblock (t);
   /* pj1 */
   /*******/
-  /* This area is preemtvie. */
-  /* However my design allows it and if synchronization need,
-  it is caller's responsibility. */
-  
-  /* Disable the interrupt */
-  enum intr_level old_level;
-  old_level = intr_disable();
   thread_preempt();
-  intr_set_level(old_level);
-
   /*******/
 
   return tid;
@@ -325,6 +316,7 @@ thread_exit (void)
   intr_disable ();
   /* pj1 */
   /*******/
+  /* Releasing remaining locks which current thread are holding. */
   struct thread* curr = thread_current();
   struct list_elem* lock_iter;
   struct list_elem* lock_next_iter;
@@ -333,7 +325,6 @@ thread_exit (void)
   {
     struct lock* lock =list_entry(lock_iter, struct lock, elem);
     lock_next_iter = list_next(lock_iter);
-    list_remove(lock_iter);
     lock_release(lock);
   }
   /*******/
@@ -374,8 +365,6 @@ thread_set_priority (int new_priority)
   /*******/
   enum intr_level old_level;
   old_level = intr_disable();
-  //To control context switch, I put this. 
-  //printf("@@@@@@@@thread_set_priority\n"); 
   struct thread* curr= thread_current();
   /* case 1: current thread has not received donation. */
   if(curr->old_priority == -1)
@@ -750,7 +739,6 @@ void thread_awake(int64_t current_ticks)
    and yields cpu for higher priority thread in ready_list. This function is not called in intr_context(). */
 void thread_preempt(void)
 {
-  //ASSERT(!intr_context()); Q:? why this ASSERTION caught in userprog?
   if(thread_get_max_priority(&ready_list) > thread_get_priority())
   {
     thread_yield();

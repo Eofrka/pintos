@@ -42,7 +42,6 @@ test_priority_change_case1 (void)
   msg ("main: thread should have priority %d.  Actual priority: %d.", 40, thread_get_priority ());
   msg("main: after this statment, lock_release(&lock) will be called.");
   lock_release(&lock);
-  msg ("acquire must already have finished.");
   msg ("Main thread should have priority %d.  Actual priority: %d.", 40, thread_get_priority ());
 }
 

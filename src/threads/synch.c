@@ -243,7 +243,6 @@ lock_acquire (struct lock *lock)
   enum intr_level old_level;
   old_level = intr_disable();
   struct thread* curr = thread_current();
-
   if(lock->holder != NULL)
   {
     /* These two statements are needed for recursive call of thread_donate_priority() in sema_down() */
@@ -383,17 +382,17 @@ cond_wait (struct condition *cond, struct lock *lock)
   /* pj1 */
   /*******/
   /* Insert the semaphore_elem "waiter" into cond->waiters(list) in descending order of thread's priority. */
-  struct list_elem* iter;
+  struct list_elem* semaphore_elem_iter;
   struct semaphore_elem* tmp_waiter;
-  for(iter = list_begin(&cond->waiters); iter != list_end(&cond->waiters); iter=list_next(iter))
+  for(semaphore_elem_iter = list_begin(&cond->waiters); semaphore_elem_iter != list_end(&cond->waiters); semaphore_elem_iter=list_next(semaphore_elem_iter))
   {
-    tmp_waiter = list_entry(iter, struct semaphore_elem, elem);
+    tmp_waiter = list_entry(semaphore_elem_iter, struct semaphore_elem, elem);
     if(thread_get_max_priority(&tmp_waiter->semaphore.waiters) < thread_current()->priority)
     {
       break;
     }
   }
-  list_insert(iter, &waiter.elem);
+  list_insert(semaphore_elem_iter, &waiter.elem);
   /*******/
   lock_release (lock);
   sema_down (&waiter.semaphore);
