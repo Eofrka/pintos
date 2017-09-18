@@ -1,5 +1,5 @@
 pintos -v -k -T 480 --bochs  -- -q  -mlfqs run mlfqs-nice-10 < /dev/null 2> tests/threads/mlfqs-nice-10.errors |tee tests/threads/mlfqs-nice-10.output
-Writing command line to /tmp/7yr2UIqAhK.dsk...
+Writing command line to /tmp/WTM2096v5c.dsk...
 squish-pty bochs -q
 Kernel command line: -q -mlfqs run mlfqs-nice-10
 Pintos booting with 4,096 kB RAM...
@@ -15,17 +15,17 @@ Executing 'mlfqs-nice-10':
 (mlfqs-nice-10) Thread 0 received 301 ticks.
 (mlfqs-nice-10) Thread 1 received 301 ticks.
 (mlfqs-nice-10) Thread 2 received 300 ticks.
-(mlfqs-nice-10) Thread 3 received 301 ticks.
-(mlfqs-nice-10) Thread 4 received 301 ticks.
+(mlfqs-nice-10) Thread 3 received 300 ticks.
+(mlfqs-nice-10) Thread 4 received 300 ticks.
 (mlfqs-nice-10) Thread 5 received 300 ticks.
 (mlfqs-nice-10) Thread 6 received 301 ticks.
 (mlfqs-nice-10) Thread 7 received 301 ticks.
-(mlfqs-nice-10) Thread 8 received 300 ticks.
+(mlfqs-nice-10) Thread 8 received 301 ticks.
 (mlfqs-nice-10) Thread 9 received 301 ticks.
 (mlfqs-nice-10) end
 Execution of 'mlfqs-nice-10' complete.
-Timer: 4138 ticks
-Thread: 991 idle ticks, 3150 kernel ticks, 0 user ticks
+Timer: 4139 ticks
+Thread: 991 idle ticks, 3151 kernel ticks, 0 user ticks
 Console: 999 characters output
 Keyboard: 0 keys pressed
 Powering off...
@@ -37,10 +37,10 @@ thread   actual <-> expected explanation
      0      301 <<< 672      Too small, by 346.
      1      301 <<< 588      Too small, by 262.
      2      300 <<< 492      Too small, by 167.
-     3      301 <<< 408      Too small, by 82.
-     4      301  =  316      
+     3      300 <<< 408      Too small, by 83.
+     4      300  =  316      
      5      300 >>> 232      Too big, by 43.
      6      301 >>> 152      Too big, by 124.
      7      301 >>> 92       Too big, by 184.
-     8      300 >>> 40       Too big, by 235.
+     8      301 >>> 40       Too big, by 236.
      9      301 >>> 8        Too big, by 268.

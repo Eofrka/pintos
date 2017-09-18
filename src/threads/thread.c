@@ -317,15 +317,27 @@ thread_exit (void)
   /* pj1 */
   /*******/
   /* Releasing remaining locks which current thread are holding. */
+
+
+
+
   struct thread* curr = thread_current();
-  struct list_elem* lock_iter;
-  struct list_elem* lock_next_iter;
-  struct list* lock_list = &curr->lock_list;
-  for(lock_iter = list_begin(lock_list); lock_iter != list_end(lock_list); lock_iter= lock_next_iter)
+  if(!list_empty(&curr->lock_list))
   {
-    struct lock* lock =list_entry(lock_iter, struct lock, elem);
-    lock_next_iter = list_next(lock_iter);
-    lock_release(lock);
+    struct list_elem* lock_iter;
+    struct list_elem* lock_next_iter;
+    struct list* lock_list = &curr->lock_list;
+
+    /* Sorting locks in descending order of max priority of the lock need!. */
+    list_sort (lock_list, (list_less_func *)lock_max_priority_ge, NULL);
+
+    for(lock_iter = list_begin(lock_list); lock_iter != list_end(lock_list); lock_iter= lock_next_iter)
+    {
+      struct lock* lock =list_entry(lock_iter, struct lock, elem);
+      lock_next_iter = list_next(lock_iter);
+      lock_release(lock);
+    }
+
   }
   /*******/
   curr->status = THREAD_DYING;
@@ -555,6 +567,7 @@ init_thread (struct thread *t, const char *name, int priority)
   list_init(&t->lock_list);
   t->sema = NULL;
   t->donation_level = 0;
+  t->cond = NULL;
   /*******/
   t->magic = THREAD_MAGIC;
 }
@@ -795,9 +808,19 @@ void thread_donate_priority(struct thread* src)
       }
       else if(dst->status == THREAD_BLOCKED)
       {
-        /* Remove the dst in waiting list(waiters). O(1) */
-        /* Insert again with priority ordered. O(n) */
-        thread_remove_and_insert_ordered(&dst->sema->waiters, dst);
+        if(dst->cond != NULL)
+        {
+          /* Remove the dst's semaphore_elem(capsule) in cond->waiters. O(1) */
+          /* Insert again with priority ordered. O(n) */
+          semphoare_elem_remove_and_insert_ordered(&dst->cond->waiters, dst);
+
+        }
+        else
+        {
+          /* Remove the dst in waiting list(waiters). O(1) */
+          /* Insert again with priority ordered. O(n) */
+          thread_remove_and_insert_ordered(&dst->sema->waiters, dst);
+        }
       }
 
       /* Recursive call */

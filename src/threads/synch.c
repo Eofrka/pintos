@@ -134,6 +134,7 @@ sema_up (struct semaphore *sema)
     to_unblock_thread = list_entry (list_pop_front (&sema->waiters),struct thread, elem); 
     to_unblock_thread->lock = NULL;
     to_unblock_thread->sema = NULL;
+    to_unblock_thread->cond = NULL;
     /* Update donation level */
     int dec = to_unblock_thread->donation_level;
     //for each lock in the to_unblock_thread->lock_list :
@@ -337,6 +338,7 @@ struct semaphore_elem
     struct semaphore semaphore;         /* This semaphore. */
   };
 
+
 /* Initializes condition variable COND.  A condition variable
    allows one piece of code to signal a condition and cooperating
    code to receive the signal and act upon it. */
@@ -382,17 +384,19 @@ cond_wait (struct condition *cond, struct lock *lock)
   /* pj1 */
   /*******/
   /* Insert the semaphore_elem "waiter" into cond->waiters(list) in descending order of thread's priority. */
+  struct thread* curr = thread_current();
   struct list_elem* semaphore_elem_iter;
-  struct semaphore_elem* tmp_waiter;
+  struct semaphore_elem* tmp_capsule;
   for(semaphore_elem_iter = list_begin(&cond->waiters); semaphore_elem_iter != list_end(&cond->waiters); semaphore_elem_iter=list_next(semaphore_elem_iter))
   {
-    tmp_waiter = list_entry(semaphore_elem_iter, struct semaphore_elem, elem);
-    if(thread_get_max_priority(&tmp_waiter->semaphore.waiters) < thread_current()->priority)
+    tmp_capsule = list_entry(semaphore_elem_iter, struct semaphore_elem, elem);
+    if(thread_get_max_priority(&tmp_capsule->semaphore.waiters) < curr->priority)
     {
       break;
     }
   }
   list_insert(semaphore_elem_iter, &waiter.elem);
+  curr->cond = cond;
   /*******/
   lock_release (lock);
   sema_down (&waiter.semaphore);
@@ -435,3 +439,50 @@ cond_broadcast (struct condition *cond, struct lock *lock)
   while (!list_empty (&cond->waiters))
     cond_signal (cond, lock);
 }
+
+
+/* pj1 */
+/*******/
+/* New function definitions. */
+/**********************************************************************************************************************************/
+/* Removes thread t's semaphore_elem(capsule) from the condition variable's waiters.
+   Inserts it(capsule) again in the list(waiters) in descending order of priority. */
+void semphoare_elem_remove_and_insert_ordered(struct list* waiters, struct thread* t)
+{
+  struct condition* cond = t->cond;
+  ASSERT(cond != NULL);
+  struct semaphore_elem* capsule;
+  struct semaphore_elem tmp_semaphore_elem;
+  uint8_t* offset = (uint8_t*)8;
+  /* Get the capsule(semaphore_elem). */
+  capsule= (struct semaphore_elem*)((uint8_t*)t->sema - offset);
+
+  /* First, remove it from the waiters. */
+  list_remove(&capsule->elem);
+
+  struct list_elem* semaphore_elem_iter;
+  struct semaphore_elem* tmp_capsule;
+
+  /* Find appropriate place to insert again. */
+  for(semaphore_elem_iter = list_begin(waiters); semaphore_elem_iter != list_end(waiters); semaphore_elem_iter=list_next(semaphore_elem_iter))
+  {
+    tmp_capsule = list_entry(semaphore_elem_iter, struct semaphore_elem, elem);
+    if(thread_get_max_priority(&tmp_capsule->semaphore.waiters) < t->priority)
+    {
+      break;
+    }
+  }
+  list_insert(semaphore_elem_iter, &capsule->elem);
+
+
+}
+
+/* If lock A's waiting max priority >= lock B's waiting max priority, returns true. Else returns false. */  
+void lock_max_priority_ge(struct list_elem* a, struct list_elem* b, void* aux)
+{
+  struct lock* lock_a = list_entry(a, struct lock, elem);
+  struct lock* lock_b = list_entry(b, struct lock, elem);
+  return thread_get_max_priority(&lock_a->semaphore.waiters) >= thread_get_max_priority(&lock_b->semaphore.waiters); 
+}
+/**********************************************************************************************************************************/
+/*******/

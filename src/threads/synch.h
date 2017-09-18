@@ -45,6 +45,15 @@ void cond_wait (struct condition *, struct lock *);
 void cond_signal (struct condition *, struct lock *);
 void cond_broadcast (struct condition *, struct lock *);
 
+/* pj1 */
+/*******/
+/* New function declarations. */
+/**********************************************************************************************************************************/
+void semphoare_elem_remove_and_insert_ordered(struct list* waiters, struct thread* t);
+void lock_max_priority_ge(struct list_elem* a, struct list_elem* b, void* aux);
+/**********************************************************************************************************************************/
+/*******/
+
 /* Optimization barrier.
 
    The compiler will not reorder operations across an

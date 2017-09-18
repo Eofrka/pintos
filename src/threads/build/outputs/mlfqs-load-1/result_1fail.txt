@@ -1,5 +1,5 @@
 pintos -v -k -T 480 --bochs  -- -q  -mlfqs run mlfqs-load-1 < /dev/null 2> tests/threads/mlfqs-load-1.errors |tee tests/threads/mlfqs-load-1.output
-Writing command line to /tmp/ZjI92EBUsh.dsk...
+Writing command line to /tmp/lReMCgoEQp.dsk...
 squish-pty bochs -q
 Kernel command line: -q -mlfqs run mlfqs-load-1
 Pintos booting with 4,096 kB RAM...
@@ -11,8 +11,8 @@ Executing 'mlfqs-load-1':
 (mlfqs-load-1) begin
 (mlfqs-load-1) spinning for up to 45 seconds, please wait...
 (mlfqs-load-1) FAIL: load average stayed below 0.5 for more than 45 seconds
-Kernel PANIC at ../../tests/threads/tests.c:105 in fail(): test failed
-Call stack: 0xc010764c 0xc010955b 0xc010b382 0xc010959b 0xc01000a7 0xc010064f.
+Kernel PANIC at ../../tests/threads/tests.c:107 in fail(): test failed
+Call stack: 0xc010775c 0xc010966b 0xc010b492 0xc01096ab 0xc01000a7 0xc010064f.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -23,12 +23,12 @@ Keyboard: 0 keys pressed
 Powering off...
 perl -I../.. ../../tests/threads/mlfqs-load-1.ck tests/threads/mlfqs-load-1 tests/threads/mlfqs-load-1.result
 FAIL tests/threads/mlfqs-load-1
-Kernel panic in run: PANIC at ../../tests/threads/tests.c:105 in fail(): test failed
-Call stack: 0xc010764c 0xc010955b 0xc010b382 0xc010959b 0xc01000a7 0xc010064f
+Kernel panic in run: PANIC at ../../tests/threads/tests.c:107 in fail(): test failed
+Call stack: 0xc010775c 0xc010966b 0xc010b492 0xc01096ab 0xc01000a7 0xc010064f
 Translation of call stack:
-0xc010764c: debug_panic (.../../lib/kernel/debug.c:34)
-0xc010955b: run_test (.../tests/threads/tests.c:60)
-0xc010b382: test_mlfqs_load_1 (...threads/mlfqs-load-1.c:41)
-0xc010959b: run_test (.../tests/threads/tests.c:69)
+0xc010775c: debug_panic (.../../lib/kernel/debug.c:34)
+0xc010966b: run_test (.../tests/threads/tests.c:62)
+0xc010b492: test_mlfqs_load_1 (...threads/mlfqs-load-1.c:41)
+0xc01096ab: run_test (.../tests/threads/tests.c:71)
 0xc01000a7: run_task (.../../../threads/init.c:270)
 0xc010064f: run_actions (.../../../threads/init.c:319)

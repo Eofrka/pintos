@@ -45,6 +45,7 @@ extern test_func test_deadlock_lock;
 extern test_func test_deadlock_sema;
 extern test_func test_lock_reaping;
 extern test_func test_priority_change_case1;
+extern test_func test_priority_condvar2;
 /*******/
 
 void msg (const char *, ...);

@@ -101,6 +101,7 @@ struct thread
     struct list lock_list;              /* When thread calls for lock_acquire(), if the target lock's holder is NULL, push the lock into the lock_list */
     struct semaphore* sema;             /* Point the semaphore in which this thread is waiting */ 
     int donation_level;                 /* Donation level for priority donation */
+    struct condition* cond;             /* Condition variable in which this thread is waiting encapsulated with semaphore_elem. */
     /*******/
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
