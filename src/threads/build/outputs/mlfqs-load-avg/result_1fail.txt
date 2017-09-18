@@ -1,9 +1,9 @@
 pintos -v -k -T 480 --bochs  -- -q  -mlfqs run mlfqs-load-avg < /dev/null 2> tests/threads/mlfqs-load-avg.errors |tee tests/threads/mlfqs-load-avg.output
-Writing command line to /tmp/eSqiYpJCEf.dsk...
+Writing command line to /tmp/fMWc4fUoB2.dsk...
 squish-pty bochs -q
 Kernel command line: -q -mlfqs run mlfqs-load-avg
 Pintos booting with 4,096 kB RAM...
-374 pages available in kernel pool.
+373 pages available in kernel pool.
 373 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 Boot complete.

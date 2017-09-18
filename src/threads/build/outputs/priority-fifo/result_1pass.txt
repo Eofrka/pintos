@@ -1,9 +1,9 @@
 pintos -v -k -T 60 --bochs  -- -q   run priority-fifo < /dev/null 2> tests/threads/priority-fifo.errors |tee tests/threads/priority-fifo.output
-Writing command line to /tmp/U8KKpDDzD6.dsk...
+Writing command line to /tmp/1VMLwWq08Z.dsk...
 squish-pty bochs -q
 Kernel command line: -q run priority-fifo
 Pintos booting with 4,096 kB RAM...
-374 pages available in kernel pool.
+373 pages available in kernel pool.
 373 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 Boot complete.

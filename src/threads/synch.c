@@ -151,6 +151,7 @@ sema_up (struct semaphore *sema)
   sema->value++;
   /* pj1 */
   /*******/
+  /* Check ready_list and yield if neccessary. */
   thread_preempt();
   /*******/
   intr_set_level (old_level);
@@ -246,8 +247,6 @@ lock_acquire (struct lock *lock)
   struct thread* curr = thread_current();
   if(lock->holder != NULL)
   {
-    /* These two statements are needed for recursive call of thread_donate_priority() in sema_down() */
-    /* Current thread's lock points the lock. */
     curr->lock = lock;
     /* Update the donation level. */
     curr->donation_level = lock->holder->donation_level+1;
@@ -258,8 +257,6 @@ lock_acquire (struct lock *lock)
 
   /* pj1 */
   /*******/
-  /* After sema down, it means current thread is unblocked from sema_up(after return of sema_down()). */
-
   /* Insert the lock into current thread's lock_list. Order is not important because the lock has no waiting threads in the semaphore's waiters initially. */
   list_push_back(&curr->lock_list, &lock->elem);
   lock->holder = curr;
@@ -302,17 +299,13 @@ lock_release (struct lock *lock)
   ASSERT (lock_held_by_current_thread (lock));
   /* pj1 */
   /*******/
-  /* Q: old_level = intr_disabel(), intr_set_level(old_level) needed? */
   /* Disable the interrupt */
   enum intr_level old_level;
   old_level = intr_disable();
-
-  // 1. Remove lock from current thread's lock_list. 
+  /* Remove lock from current thread's lock_list. */ 
   list_remove(&lock->elem);
-  
-  // 2. Priority restoration needed! 
+  /* Priority restoration needed! */ 
   thread_restore_priority();
-  
   lock->holder = NULL;
   sema_up (&lock->semaphore);
   /* Restore the interrupt */
@@ -385,17 +378,17 @@ cond_wait (struct condition *cond, struct lock *lock)
   /*******/
   /* Insert the semaphore_elem "waiter" into cond->waiters(list) in descending order of thread's priority. */
   struct thread* curr = thread_current();
-  struct list_elem* semaphore_elem_iter;
-  struct semaphore_elem* tmp_capsule;
-  for(semaphore_elem_iter = list_begin(&cond->waiters); semaphore_elem_iter != list_end(&cond->waiters); semaphore_elem_iter=list_next(semaphore_elem_iter))
+  struct list_elem* i;
+  struct semaphore_elem* tmp_waiter;
+  for(i = list_begin(&cond->waiters); i != list_end(&cond->waiters); i=list_next(i))
   {
-    tmp_capsule = list_entry(semaphore_elem_iter, struct semaphore_elem, elem);
-    if(thread_get_max_priority(&tmp_capsule->semaphore.waiters) < curr->priority)
+    tmp_waiter = list_entry(i, struct semaphore_elem, elem);
+    if(thread_get_max_priority(&tmp_waiter->semaphore.waiters) < curr->priority)
     {
       break;
     }
   }
-  list_insert(semaphore_elem_iter, &waiter.elem);
+  list_insert(i, &waiter.elem);
   curr->cond = cond;
   /*******/
   lock_release (lock);
@@ -445,44 +438,44 @@ cond_broadcast (struct condition *cond, struct lock *lock)
 /*******/
 /* New function definitions. */
 /**********************************************************************************************************************************/
-/* Removes thread t's semaphore_elem(capsule) from the condition variable's waiters.
-   Inserts it(capsule) again in the list(waiters) in descending order of priority. */
+/* Removes thread t's semaphore_elem(waiter) from the condition variable's waiters.
+   Inserts it(waiter) again in the list(waiters) in descending order of priority. */
 void semphoare_elem_remove_and_insert_ordered(struct list* waiters, struct thread* t)
 {
   struct condition* cond = t->cond;
   ASSERT(cond != NULL);
-  struct semaphore_elem* capsule;
+  struct semaphore_elem* waiter;
   struct semaphore_elem tmp_semaphore_elem;
-  uint8_t* offset = (uint8_t*)8;
-  /* Get the capsule(semaphore_elem). */
-  capsule= (struct semaphore_elem*)((uint8_t*)t->sema - offset);
+  uint8_t* offset = (uint8_t*)((unsigned)&tmp_semaphore_elem.semaphore - (unsigned)&tmp_semaphore_elem);
+  /* Get the waiter(semaphore_elem). */
+  waiter= (struct semaphore_elem*)((uint8_t*)t->sema - offset);
 
   /* First, remove it from the waiters. */
-  list_remove(&capsule->elem);
+  list_remove(&waiter->elem);
 
-  struct list_elem* semaphore_elem_iter;
-  struct semaphore_elem* tmp_capsule;
+  struct list_elem* i;
+  struct semaphore_elem* tmp_waiter;
 
   /* Find appropriate place to insert again. */
-  for(semaphore_elem_iter = list_begin(waiters); semaphore_elem_iter != list_end(waiters); semaphore_elem_iter=list_next(semaphore_elem_iter))
+  for(i = list_begin(waiters); i != list_end(waiters); i=list_next(i))
   {
-    tmp_capsule = list_entry(semaphore_elem_iter, struct semaphore_elem, elem);
-    if(thread_get_max_priority(&tmp_capsule->semaphore.waiters) < t->priority)
+    tmp_waiter = list_entry(i, struct semaphore_elem, elem);
+    if(thread_get_max_priority(&tmp_waiter->semaphore.waiters) < t->priority)
     {
       break;
     }
   }
-  list_insert(semaphore_elem_iter, &capsule->elem);
+  list_insert(i, &waiter->elem);
 
 
 }
 
-/* If lock A's waiting max priority >= lock B's waiting max priority, returns true. Else returns false. */  
-void lock_max_priority_ge(struct list_elem* a, struct list_elem* b, void* aux)
+/* If lock A's waiting max priority > lock B's waiting max priority, returns true. Else returns false. */  
+bool lock_max_priority_g(const struct list_elem* a,const struct list_elem* b, void* aux UNUSED)
 {
   struct lock* lock_a = list_entry(a, struct lock, elem);
   struct lock* lock_b = list_entry(b, struct lock, elem);
-  return thread_get_max_priority(&lock_a->semaphore.waiters) >= thread_get_max_priority(&lock_b->semaphore.waiters); 
+  return thread_get_max_priority(&lock_a->semaphore.waiters) > thread_get_max_priority(&lock_b->semaphore.waiters); 
 }
 /**********************************************************************************************************************************/
 /*******/

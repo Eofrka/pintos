@@ -1,9 +1,9 @@
 pintos -v -k -T 480 --bochs  -- -q  -mlfqs run mlfqs-load-60 < /dev/null 2> tests/threads/mlfqs-load-60.errors |tee tests/threads/mlfqs-load-60.output
-Writing command line to /tmp/Dw7EeNOmPi.dsk...
+Writing command line to /tmp/2xhhoGf6nj.dsk...
 squish-pty bochs -q
 Kernel command line: -q -mlfqs run mlfqs-load-60
 Pintos booting with 4,096 kB RAM...
-374 pages available in kernel pool.
+373 pages available in kernel pool.
 373 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 Boot complete.
@@ -104,7 +104,7 @@ Executing 'mlfqs-load-60':
 (mlfqs-load-60) end
 Execution of 'mlfqs-load-60' complete.
 Timer: 18839 ticks
-Thread: 12020 idle ticks, 6823 kernel ticks, 0 user ticks
+Thread: 12018 idle ticks, 6825 kernel ticks, 0 user ticks
 Console: 5298 characters output
 Keyboard: 0 keys pressed
 Powering off...

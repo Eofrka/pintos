@@ -1,8 +1,8 @@
-Writing command line to /tmp/59Tu00IBom.dsk...
+Writing command line to /tmp/Oh5U3ZUnzT.dsk...
 squish-pty bochs -q
 Kernel command line: -q run alarm-simultaneous
 Pintos booting with 4,096 kB RAM...
-374 pages available in kernel pool.
+373 pages available in kernel pool.
 373 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 Boot complete.

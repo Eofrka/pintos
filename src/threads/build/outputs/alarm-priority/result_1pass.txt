@@ -1,9 +1,9 @@
 pintos -v -k -T 60 --bochs  -- -q   run alarm-priority < /dev/null 2> tests/threads/alarm-priority.errors |tee tests/threads/alarm-priority.output
-Writing command line to /tmp/C5IRq7v9t9.dsk...
+Writing command line to /tmp/hPU3Sqiten.dsk...
 squish-pty bochs -q
 Kernel command line: -q run alarm-priority
 Pintos booting with 4,096 kB RAM...
-374 pages available in kernel pool.
+373 pages available in kernel pool.
 373 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 Boot complete.
@@ -21,8 +21,8 @@ Executing 'alarm-priority':
 (alarm-priority) Thread priority 21 woke up.
 (alarm-priority) end
 Execution of 'alarm-priority' complete.
-Timer: 605 ticks
-Thread: 469 idle ticks, 139 kernel ticks, 0 user ticks
+Timer: 606 ticks
+Thread: 469 idle ticks, 140 kernel ticks, 0 user ticks
 Console: 837 characters output
 Keyboard: 0 keys pressed
 Powering off...

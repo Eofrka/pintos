@@ -1,9 +1,9 @@
 pintos -v -k -T 60 --bochs  -- -q   run priority-preempt < /dev/null 2> tests/threads/priority-preempt.errors |tee tests/threads/priority-preempt.output
-Writing command line to /tmp/ADif20iAoE.dsk...
+Writing command line to /tmp/dTBWZWdMjY.dsk...
 squish-pty bochs -q
 Kernel command line: -q run priority-preempt
 Pintos booting with 4,096 kB RAM...
-374 pages available in kernel pool.
+373 pages available in kernel pool.
 373 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 Boot complete.

@@ -1,9 +1,9 @@
 pintos -v -k -T 60 --bochs  -- -q   run priority-donate-sema < /dev/null 2> tests/threads/priority-donate-sema.errors |tee tests/threads/priority-donate-sema.output
-Writing command line to /tmp/CQa3wjcyHX.dsk...
+Writing command line to /tmp/IWJGih4hac.dsk...
 squish-pty bochs -q
 Kernel command line: -q run priority-donate-sema
 Pintos booting with 4,096 kB RAM...
-374 pages available in kernel pool.
+373 pages available in kernel pool.
 373 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 Boot complete.

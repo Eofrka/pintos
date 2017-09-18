@@ -48,8 +48,11 @@ static const struct test tests[] =
     {"deadlock-lock", test_deadlock_lock},
     {"deadlock-sema", test_deadlock_sema},
     {"lock-reaping", test_lock_reaping},
+    {"lock-reaping2", test_lock_reaping2},
     {"priority-change-case1", test_priority_change_case1},
     {"priority-condvar2", test_priority_condvar2},
+    {"priority-change-2", test_priority_change_2},
+    {"priority-lifo", test_priority_lifo},
 
     /*******/
   };

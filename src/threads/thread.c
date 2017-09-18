@@ -46,11 +46,11 @@ static struct list sleep_list; /* Sleep list for sleeping threads */
 
 /* Stack frame for kernel_thread(). */
 struct kernel_thread_frame 
-  {
+{
     void *eip;                  /* Return address. */
     thread_func *function;      /* Function to call. */
     void *aux;                  /* Auxiliary data for function. */
-  };
+};
 
 /* Statistics. */
 static long long idle_ticks;    /* # of timer ticks spent idle. */
@@ -82,7 +82,8 @@ static tid_t allocate_tid (void);
 /*******/
 /* New static function declarations. */
 /*********************************************************************************************************************************/
-static bool thread_wakeup_l(struct list_elem* a, struct list_elem* b, void* aux);
+static bool thread_wakeup_l(const struct list_elem* a, const struct list_elem* b, void* aux);
+static void thread_release_locks(void);
 /*********************************************************************************************************************************/
 /*******/
 
@@ -163,7 +164,7 @@ void
 thread_print_stats (void) 
 {
   printf ("Thread: %lld idle ticks, %lld kernel ticks, %lld user ticks\n",
-          idle_ticks, kernel_ticks, user_ticks);
+    idle_ticks, kernel_ticks, user_ticks);
 }
 
 /* Creates a new kernel thread named NAME with the given initial
@@ -183,7 +184,7 @@ thread_print_stats (void)
    Priority scheduling is the goal of Problem 1-3. */
 tid_t
 thread_create (const char *name, int priority,
-               thread_func *function, void *aux) 
+ thread_func *function, void *aux) 
 {
   struct thread *t;
   struct kernel_thread_frame *kf;
@@ -220,6 +221,7 @@ thread_create (const char *name, int priority,
   thread_unblock (t);
   /* pj1 */
   /*******/
+  /* Check ready_list and yield if neccessary. */
   thread_preempt();
   /*******/
 
@@ -311,36 +313,17 @@ thread_exit (void)
   process_exit ();
 #endif
 
+
+  /* pj1 */
+  /*******/
+  /* Releasing remaining locks which current thread is holding. */
+  thread_release_locks();
+  /*******/
+
   /* Just set our status to dying and schedule another process.
      We will be destroyed during the call to schedule_tail(). */
   intr_disable ();
-  /* pj1 */
-  /*******/
-  /* Releasing remaining locks which current thread are holding. */
-
-
-
-
-  struct thread* curr = thread_current();
-  if(!list_empty(&curr->lock_list))
-  {
-    struct list_elem* lock_iter;
-    struct list_elem* lock_next_iter;
-    struct list* lock_list = &curr->lock_list;
-
-    /* Sorting locks in descending order of max priority of the lock need!. */
-    list_sort (lock_list, (list_less_func *)lock_max_priority_ge, NULL);
-
-    for(lock_iter = list_begin(lock_list); lock_iter != list_end(lock_list); lock_iter= lock_next_iter)
-    {
-      struct lock* lock =list_entry(lock_iter, struct lock, elem);
-      lock_next_iter = list_next(lock_iter);
-      lock_release(lock);
-    }
-
-  }
-  /*******/
-  curr->status = THREAD_DYING;
+  thread_current()->status = THREAD_DYING;
   schedule ();
   NOT_REACHED ();
 }
@@ -384,14 +367,14 @@ thread_set_priority (int new_priority)
     /* case 1-1: lowering priority. */
     if(new_priority < curr->priority)
     {
-      struct list_elem* lock_iter;
+      struct list_elem* i;
       struct list* lock_list = &curr->lock_list;
       int waiting_max_priority = -1;
 
       /* Do linear search to the current thread's lock_list and get the waiting_max_priority. */
-      for(lock_iter = list_begin(lock_list); lock_iter != list_end(lock_list); lock_iter = list_next(lock_iter))
+      for(i = list_begin(lock_list); i != list_end(lock_list); i = list_next(i))
       {
-        struct lock* lock = list_entry(lock_iter, struct lock, elem);
+        struct lock* lock = list_entry(i, struct lock, elem);
         struct list* waiters = &lock->semaphore.waiters;
         int tmp_priority = thread_get_max_priority(waiters);
         if(tmp_priority > waiting_max_priority )
@@ -491,11 +474,11 @@ idle (void *idle_started_ UNUSED)
   sema_up (idle_started);
 
   for (;;) 
-    {
+  {
       /* Let someone else run. */
-      intr_disable ();
+    intr_disable ();
       //printf("idle thread is running\n");
-      thread_block ();
+    thread_block ();
 
       /* Re-enable interrupts and wait for the next one.
 
@@ -509,8 +492,8 @@ idle (void *idle_started_ UNUSED)
 
          See [IA32-v2a] "HLT", [IA32-v2b] "STI", and [IA32-v3a]
          7.11.1 "HLT Instruction". */
-      asm volatile ("sti; hlt" : : : "memory");
-    }
+    asm volatile ("sti; hlt" : : : "memory");
+  }
 }
 
 /* Function used as the basis for a kernel thread. */
@@ -518,7 +501,7 @@ static void
 kernel_thread (thread_func *function, void *aux) 
 {
   ASSERT (function != NULL);
-                    
+
   intr_enable ();       /* The scheduler runs with interrupts off. */
   function (aux);       /* Execute the thread function. */
   thread_exit ();       /* If function() returns, kill the thread. */
@@ -639,10 +622,10 @@ schedule_tail (struct thread *prev)
      initial_thread because its memory was not obtained via
      palloc().) */
   if (prev != NULL && prev->status == THREAD_DYING && prev != initial_thread) 
-    {
-      ASSERT (prev != curr);
-      palloc_free_page (prev);
-    }
+  {
+    ASSERT (prev != curr);
+    palloc_free_page (prev);
+  }
 }
 
 /* Schedules a new process.  At entry, interrupts must be off and
@@ -692,9 +675,33 @@ uint32_t thread_stack_ofs = offsetof (struct thread, stack);
 /* New static function definitions. */
 /**********************************************************************************************************************************/
 /* If thread A's wakeup < thread B's wakeup, returns true. Else returns false. */  
-static bool thread_wakeup_l(struct list_elem* a, struct list_elem* b, void* aux UNUSED)
+static bool thread_wakeup_l(const struct list_elem* a, const struct list_elem* b, void* aux UNUSED)
 {
   return list_entry(a, struct thread, elem)->wakeup < list_entry(b, struct thread, elem)->wakeup;
+}
+
+/* Releases remaining locks which current thread is holding. */
+static void thread_release_locks(void)
+{
+  struct thread* curr = thread_current();
+  if(!list_empty(&curr->lock_list))
+  {
+    struct list_elem* i;
+    struct list_elem* next_i;
+    struct list* lock_list = &curr->lock_list;
+
+    /* Sort reason: prevent unlucky cases for lower priority thread staying in the ready list. */
+    /* Actually the executing order does not change whether sort or not.
+       Because of donation, current thread's priority >= all waiting threads. */
+    list_sort (lock_list, (list_less_func*)lock_max_priority_g, NULL);
+
+    for(i = list_begin(lock_list); i != list_end(lock_list); i= next_i)
+    {
+      struct lock* lock =list_entry(i, struct lock, elem);
+      next_i = list_next(i);
+      lock_release(lock);
+    }
+  }
 }
 /**********************************************************************************************************************************/
 
@@ -712,7 +719,6 @@ void thread_sleep(int64_t wakeup_ticks)
   old_level = intr_disable();
   curr =thread_current();
   curr->wakeup = wakeup_ticks;
-
   /* Push current thread into sleep_list in ascending order of wakeup. */
   list_insert_ordered(&sleep_list, &curr->elem, (list_less_func*)thread_wakeup_l, NULL);
   thread_block();
@@ -725,17 +731,17 @@ void thread_awake(int64_t current_ticks)
   /* If sleep_list is empty, do nothing. */
   if(!list_empty(&sleep_list))
   {
-    struct list_elem* thread_iter;
-    struct list_elem* thread_next_iter;
+    struct list_elem* i;
+    struct list_elem* next_i;
     /* Looking through sleep_list, awake thread which wakeup ticks is already passed current ticks or equal to current ticks */
     /* it means that t->wakeup <= current_ticks (current_ticks keep increasing) */
-    for(thread_iter = list_begin(&sleep_list); thread_iter != list_end(&sleep_list); thread_iter = thread_next_iter)
+    for(i = list_begin(&sleep_list); i != list_end(&sleep_list); i = next_i)
     {
-      struct thread* t = list_entry(thread_iter, struct thread, elem);
+      struct thread* t = list_entry(i, struct thread, elem);
       if(t->wakeup <= current_ticks)
       {
-        thread_next_iter = list_next(thread_iter); 
-        list_remove(thread_iter);
+        next_i = list_next(i); 
+        list_remove(i);
         t->wakeup = 0;
         thread_unblock(t);
       }
@@ -842,16 +848,16 @@ void thread_restore_priority(void)
     return;
   }
 
-  struct list_elem* lock_iter;
+  struct list_elem* i;
   struct lock* lock;
   int tmp_max_priority = -1;
   /* Do linear seach in current thread's lock_list to find waiting_max_priority. */
   int waiting_max_priority = -1;
   if(!list_empty(&curr->lock_list))
   {
-    for(lock_iter = list_begin(&curr->lock_list); lock_iter != list_end(&curr->lock_list); lock_iter=list_next(lock_iter))
+    for(i = list_begin(&curr->lock_list); i != list_end(&curr->lock_list); i=list_next(i))
     {
-      lock = list_entry(lock_iter, struct lock, elem);
+      lock = list_entry(i, struct lock, elem);
       tmp_max_priority = thread_get_max_priority(&lock->semaphore.waiters);
       if(waiting_max_priority < tmp_max_priority)
       {
@@ -884,21 +890,21 @@ void thread_remove_and_insert_ordered(struct list* list, struct thread* t)
 /* Recursive function to decrease donation level of root thread. */
 void thread_dec_donation_level(struct thread* root, int dec)
 {
-  struct list_elem* lock_iter;
-  struct list_elem* thread_iter;
+  struct list_elem* i;
+  struct list_elem* j;
   struct lock* lock;
   struct thread* t;
   struct list* waiters;
 
 
   root->donation_level -= dec;
-  for(lock_iter = list_begin(&root->lock_list); lock_iter != list_end(&root->lock_list); lock_iter = list_next(lock_iter))
+  for(i = list_begin(&root->lock_list); i != list_end(&root->lock_list); i = list_next(i))
   {
-    lock = list_entry(lock_iter, struct lock, elem);
+    lock = list_entry(i, struct lock, elem);
     waiters = &lock->semaphore.waiters;
-    for(thread_iter = list_begin(waiters); thread_iter != list_end(waiters); thread_iter = list_next(thread_iter))
+    for(j = list_begin(waiters); j != list_end(waiters); j = list_next(j))
     {
-      t = list_entry(thread_iter, struct thread, elem);
+      t = list_entry(j, struct thread, elem);
       thread_dec_donation_level(t, dec);
     }
 
@@ -906,9 +912,11 @@ void thread_dec_donation_level(struct thread* root, int dec)
 
 }
 /* If thread A's priority > thread B's priority, return true. Else return false. */
-bool thread_priority_g(struct list_elem* a, struct list_elem* b, void* aux UNUSED)
+bool thread_priority_g(const struct list_elem* a, const struct list_elem* b, void* aux UNUSED)
 {
   return list_entry(a, struct thread, elem)->priority > list_entry(b, struct thread, elem)->priority;
 }
+
 /**********************************************************************************************************************************/
 /*******/
+

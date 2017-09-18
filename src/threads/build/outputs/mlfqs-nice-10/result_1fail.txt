@@ -1,9 +1,9 @@
 pintos -v -k -T 480 --bochs  -- -q  -mlfqs run mlfqs-nice-10 < /dev/null 2> tests/threads/mlfqs-nice-10.errors |tee tests/threads/mlfqs-nice-10.output
-Writing command line to /tmp/WTM2096v5c.dsk...
+Writing command line to /tmp/aPQYqt9vgV.dsk...
 squish-pty bochs -q
 Kernel command line: -q -mlfqs run mlfqs-nice-10
 Pintos booting with 4,096 kB RAM...
-374 pages available in kernel pool.
+373 pages available in kernel pool.
 373 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 Boot complete.
@@ -12,16 +12,16 @@ Executing 'mlfqs-nice-10':
 (mlfqs-nice-10) Starting 10 threads...
 (mlfqs-nice-10) Starting threads took 28 ticks.
 (mlfqs-nice-10) Sleeping 40 seconds to let threads run, please wait...
-(mlfqs-nice-10) Thread 0 received 301 ticks.
+(mlfqs-nice-10) Thread 0 received 300 ticks.
 (mlfqs-nice-10) Thread 1 received 301 ticks.
-(mlfqs-nice-10) Thread 2 received 300 ticks.
-(mlfqs-nice-10) Thread 3 received 300 ticks.
+(mlfqs-nice-10) Thread 2 received 301 ticks.
+(mlfqs-nice-10) Thread 3 received 301 ticks.
 (mlfqs-nice-10) Thread 4 received 300 ticks.
-(mlfqs-nice-10) Thread 5 received 300 ticks.
-(mlfqs-nice-10) Thread 6 received 301 ticks.
-(mlfqs-nice-10) Thread 7 received 301 ticks.
-(mlfqs-nice-10) Thread 8 received 301 ticks.
-(mlfqs-nice-10) Thread 9 received 301 ticks.
+(mlfqs-nice-10) Thread 5 received 301 ticks.
+(mlfqs-nice-10) Thread 6 received 300 ticks.
+(mlfqs-nice-10) Thread 7 received 300 ticks.
+(mlfqs-nice-10) Thread 8 received 300 ticks.
+(mlfqs-nice-10) Thread 9 received 300 ticks.
 (mlfqs-nice-10) end
 Execution of 'mlfqs-nice-10' complete.
 Timer: 4139 ticks
@@ -34,13 +34,13 @@ FAIL tests/threads/mlfqs-nice-10
 Some tick counts were missing or differed from those expected by more than 25.
 thread   actual <-> expected explanation
 ------ -------- --- -------- ----------------------------------------
-     0      301 <<< 672      Too small, by 346.
+     0      300 <<< 672      Too small, by 347.
      1      301 <<< 588      Too small, by 262.
-     2      300 <<< 492      Too small, by 167.
-     3      300 <<< 408      Too small, by 83.
+     2      301 <<< 492      Too small, by 166.
+     3      301 <<< 408      Too small, by 82.
      4      300  =  316      
-     5      300 >>> 232      Too big, by 43.
-     6      301 >>> 152      Too big, by 124.
-     7      301 >>> 92       Too big, by 184.
-     8      301 >>> 40       Too big, by 236.
-     9      301 >>> 8        Too big, by 268.
+     5      301 >>> 232      Too big, by 44.
+     6      300 >>> 152      Too big, by 123.
+     7      300 >>> 92       Too big, by 183.
+     8      300 >>> 40       Too big, by 235.
+     9      300 >>> 8        Too big, by 267.

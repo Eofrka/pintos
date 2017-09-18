@@ -1,9 +1,9 @@
 pintos -v -k -T 60 --bochs  -- -q   run priority-donate-one < /dev/null 2> tests/threads/priority-donate-one.errors |tee tests/threads/priority-donate-one.output
-Writing command line to /tmp/nZFUQlBTNy.dsk...
+Writing command line to /tmp/EmzjIyt1AW.dsk...
 squish-pty bochs -q
 Kernel command line: -q run priority-donate-one
 Pintos booting with 4,096 kB RAM...
-374 pages available in kernel pool.
+373 pages available in kernel pool.
 373 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 Boot complete.
@@ -19,8 +19,8 @@ Executing 'priority-donate-one':
 (priority-donate-one) This should be the last line before finishing this test.
 (priority-donate-one) end
 Execution of 'priority-donate-one' complete.
-Timer: 109 ticks
-Thread: 0 idle ticks, 112 kernel ticks, 0 user ticks
+Timer: 110 ticks
+Thread: 0 idle ticks, 113 kernel ticks, 0 user ticks
 Console: 899 characters output
 Keyboard: 0 keys pressed
 Powering off...

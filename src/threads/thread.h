@@ -158,7 +158,8 @@ void thread_donate_priority(struct thread* src);
 void thread_restore_priority(void);
 void thread_remove_and_insert_ordered(struct list* list, struct thread* t);
 void thread_dec_donation_level(struct thread* root, int dec);
-bool thread_priority_g(struct list_elem* a, struct list_elem* b, void* aux);
+bool thread_priority_g(const struct list_elem* a, const struct list_elem* b, void* aux);
+
 /**********************************************************************************************************************************/
 /*******/
 

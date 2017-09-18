@@ -50,7 +50,7 @@ void cond_broadcast (struct condition *, struct lock *);
 /* New function declarations. */
 /**********************************************************************************************************************************/
 void semphoare_elem_remove_and_insert_ordered(struct list* waiters, struct thread* t);
-void lock_max_priority_ge(struct list_elem* a, struct list_elem* b, void* aux);
+bool lock_max_priority_g(const struct list_elem* a, const struct list_elem* b, void* aux);
 /**********************************************************************************************************************************/
 /*******/
 
