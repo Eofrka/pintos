@@ -75,7 +75,7 @@ sema_down (struct semaphore *sema)
     /* Insert current thread into semaphore's waiters in descending order of priority. */
     curr->sema = sema;
     list_insert_ordered(&sema->waiters,&curr->elem,(list_less_func*)thread_priority_g, NULL);
-    /* Before thread_block(), Actual priority donation needed! */
+    /* Before thread_block(), Actual priority donation need! */
     thread_donate_priority(curr);
     /*******/
     thread_block ();
@@ -130,16 +130,16 @@ sema_up (struct semaphore *sema)
   { 
     /* pj1 */
     /*******/
-    /* pop the highest priority thread from the waiters, and the thread is going to be unblocked. then get the priority of the thread */
+    /* pop the highest priority thread from the waiters, and the thread is going to be unblocked. */
     to_unblock_thread = list_entry (list_pop_front (&sema->waiters),struct thread, elem); 
+
+    /* Ensure the current thread is not waiting in any of them. */
     to_unblock_thread->lock = NULL;
     to_unblock_thread->sema = NULL;
     to_unblock_thread->cond = NULL;
+
     /* Update donation level */
     int dec = to_unblock_thread->donation_level;
-    //for each lock in the to_unblock_thread->lock_list :
-      // for each thread in the lock->samaphore->waiters :
-        // thread->donation_level -= dec; recursively
     if(dec !=0)
     { 
       thread_dec_donation_level(to_unblock_thread, dec);
@@ -194,7 +194,7 @@ sema_test_helper (void *sema_)
       sema_up (&sema[1]);
     }
 }
-
+
 /* Initializes LOCK.  A lock can be held by at most a single
    thread at any given time.  Our locks are not "recursive", that
    is, it is an error for the thread currently holding a lock to
@@ -241,7 +241,6 @@ lock_acquire (struct lock *lock)
 
   /* pj1 */
   /*******/
-  /* Disable the interrupt */
   enum intr_level old_level;
   old_level = intr_disable();
   struct thread* curr = thread_current();
@@ -257,10 +256,12 @@ lock_acquire (struct lock *lock)
 
   /* pj1 */
   /*******/
-  /* Insert the lock into current thread's lock_list. Order is not important because the lock has no waiting threads in the semaphore's waiters initially. */
+  /* Insert the lock into current thread's lock_list. Order is not important because
+     the lock has no waiting threads in the semaphore's waiters initially. It is just
+     my design choice. I can make the lock_list with priority queue, but when donation
+     occurs, it makes balancing more complicated. */
   list_push_back(&curr->lock_list, &lock->elem);
   lock->holder = curr;
-  /* Restore the interrupt */
   intr_set_level(old_level);
   /*******/
 
@@ -299,16 +300,14 @@ lock_release (struct lock *lock)
   ASSERT (lock_held_by_current_thread (lock));
   /* pj1 */
   /*******/
-  /* Disable the interrupt */
   enum intr_level old_level;
   old_level = intr_disable();
   /* Remove lock from current thread's lock_list. */ 
   list_remove(&lock->elem);
-  /* Priority restoration needed! */ 
+  /* Priority restoration need! */ 
   thread_restore_priority();
   lock->holder = NULL;
   sema_up (&lock->semaphore);
-  /* Restore the interrupt */
   intr_set_level(old_level);
   /*******/
 }

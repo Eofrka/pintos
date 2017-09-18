@@ -383,19 +383,19 @@ thread_set_priority (int new_priority)
         }
 
       }
-      /* case 1-1-1: waiting_max_priority is higher than new priority. */
+      /* case 1-1-1: waiting_max_priority is higher than new_priority. */
       if(waiting_max_priority > new_priority)
       {
         curr->priority = waiting_max_priority;
       }
-      /* case 1-1-2: waiting_max_priority is less than or equal to new priority. */
+      /* case 1-1-2: waiting_max_priority is less than or equal to new_priority. */
       else
       {
         curr->priority = new_priority;
       }
       thread_preempt();
     }
-    /* case 1-2: Highering priority or setting eqaul value. */
+    /* case 1-2: Highering priority or setting equal value. */
     else
     { 
       curr->priority = new_priority;
@@ -409,7 +409,7 @@ thread_set_priority (int new_priority)
     {
       curr->old_priority = new_priority;
     }
-    /* case 2-2: highering priority. */
+    /* case 2-2: highering priority or setting equal value. */
     else
     {
       curr->priority = new_priority;
@@ -690,7 +690,7 @@ static void thread_release_locks(void)
     struct list_elem* next_i;
     struct list* lock_list = &curr->lock_list;
 
-    /* Sort reason: prevent unlucky cases for lower priority thread staying in the ready list. */
+    /* Sort reason: prevent unlucky cases for lower priority thread staying in the ready_list. */
     /* Actually the executing order does not change whether sort or not.
        Because of donation, current thread's priority >= all waiting threads. */
     list_sort (lock_list, (list_less_func*)lock_max_priority_g, NULL);
@@ -755,7 +755,7 @@ void thread_awake(int64_t current_ticks)
 }
 
 /* Compares the highest priority of thread in ready_list with currently running thread's priority
-   and yields cpu for higher priority thread in ready_list. This function is not called in intr_context(). */
+   and yields cpu for higher priority thread in ready_list. */
 void thread_preempt(void)
 {
   if(thread_get_max_priority(&ready_list) > thread_get_priority())
@@ -778,7 +778,7 @@ void thread_preempt_on_return(void)
 
 }
 
-/* Returns max priority in the list. If the list is empty, return -1. */
+/* Returns max priority in the list. If the list is empty, returns -1. */
 int thread_get_max_priority(struct list* list)
 {
   if(list_empty(list))
@@ -797,7 +797,8 @@ void thread_donate_priority(struct thread* src)
     dst = src->lock->holder;
     if(src->priority > dst->priority)
     {
-      /* Donate src's priority to dst's priority. If dst's old_priority == -1, update dst's old_priority to dst->priority. */
+      /* Donate src's priority to dst's priority. If dst's old_priority == -1,
+         set dst's old_priority to dst->priority. */
       if(dst->old_priority == -1)
       {
         dst->old_priority = dst->priority;
@@ -810,14 +811,13 @@ void thread_donate_priority(struct thread* src)
         /* Remove the dst in ready_list. O(1) */
         /* Insert again with priority ordered. O(n) */
         thread_remove_and_insert_ordered(&ready_list, dst);
-
       }
       else if(dst->status == THREAD_BLOCKED)
       {
         if(dst->cond != NULL)
         {
-          /* Remove the dst's semaphore_elem(capsule) in cond->waiters. O(1) */
-          /* Insert again with priority ordered. O(n) */
+          /* Remove the dst's semaphore_elem(waiter) in cond->waiters. O(1) */
+          /* Insert it again with priority ordered. O(n) */
           semphoare_elem_remove_and_insert_ordered(&dst->cond->waiters, dst);
 
         }
@@ -828,21 +828,18 @@ void thread_donate_priority(struct thread* src)
           thread_remove_and_insert_ordered(&dst->sema->waiters, dst);
         }
       }
-
       /* Recursive call */
       thread_donate_priority(dst);
     }
   }
-
 }
 
 /* Restores the priority. */
 void thread_restore_priority(void)
 {
-
   struct thread* curr = thread_current();
   /* If curr->old_priority == -1, the current thread has not received any donations.
-     It means that curr->priority is global max priority. Therefore restoration is not needed. */
+     Therefore we do not have to restore the priority. */
   if(curr->old_priority == -1)
   {
     return;
@@ -851,8 +848,8 @@ void thread_restore_priority(void)
   struct list_elem* i;
   struct lock* lock;
   int tmp_max_priority = -1;
-  /* Do linear seach in current thread's lock_list to find waiting_max_priority. */
   int waiting_max_priority = -1;
+  /* Do linear seach in current thread's lock_list to find waiting_max_priority. */
   if(!list_empty(&curr->lock_list))
   {
     for(i = list_begin(&curr->lock_list); i != list_end(&curr->lock_list); i=list_next(i))
@@ -866,8 +863,10 @@ void thread_restore_priority(void)
     }
   }
 
-  /* If waiting_max_priority > curr->old_priority, restore the current thread's priority into waiting_max_priority.
-  Else, restore the current thread's priority into curr->old_priority and set curr->old_priority to -1. */
+  /* If waiting_max_priority > curr->old_priority,
+     restore the current thread's priority into waiting_max_priority.
+     Else, restore the current thread's priority into curr->old_priority
+     and set curr->old_priority to -1. */
   if(waiting_max_priority > curr->old_priority)
   {
     curr->priority = waiting_max_priority;
@@ -896,8 +895,10 @@ void thread_dec_donation_level(struct thread* root, int dec)
   struct thread* t;
   struct list* waiters;
 
-
   root->donation_level -= dec;
+  //for each lock in the to_unblock_thread->lock_list :
+    // for each thread in the lock->samaphore->waiters :
+      // thread->donation_level -= dec; recursively
   for(i = list_begin(&root->lock_list); i != list_end(&root->lock_list); i = list_next(i))
   {
     lock = list_entry(i, struct lock, elem);
@@ -907,9 +908,7 @@ void thread_dec_donation_level(struct thread* root, int dec)
       t = list_entry(j, struct thread, elem);
       thread_dec_donation_level(t, dec);
     }
-
   }
-
 }
 /* If thread A's priority > thread B's priority, return true. Else return false. */
 bool thread_priority_g(const struct list_elem* a, const struct list_elem* b, void* aux UNUSED)

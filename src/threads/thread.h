@@ -96,7 +96,6 @@ struct thread
     /*******/
     int wakeup;                         /* Wakeup ticks */
     int old_priority;                   /* Old priority */
-
     struct lock* lock;                  /* When thread calls lock_acquire(), if the target lock's holder is not NULL, this lock is set to the lock */
     struct list lock_list;              /* When thread calls for lock_acquire(), if the target lock's holder is NULL, push the lock into the lock_list */
     struct semaphore* sema;             /* Point the semaphore in which this thread is waiting */ 
@@ -159,7 +158,6 @@ void thread_restore_priority(void);
 void thread_remove_and_insert_ordered(struct list* list, struct thread* t);
 void thread_dec_donation_level(struct thread* root, int dec);
 bool thread_priority_g(const struct list_elem* a, const struct list_elem* b, void* aux);
-
 /**********************************************************************************************************************************/
 /*******/
 
