@@ -386,6 +386,7 @@ thread_set_priority (int new_priority)
       /* case 1-1-1: waiting_max_priority is higher than new_priority. */
       if(waiting_max_priority > new_priority)
       {
+        curr->old_priority = new_priority;
         curr->priority = waiting_max_priority;
       }
       /* case 1-1-2: waiting_max_priority is less than or equal to new_priority. */
