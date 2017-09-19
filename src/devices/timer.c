@@ -93,21 +93,17 @@ timer_elapsed (int64_t then)
 }
 
 /* Suspends execution for approximately TICKS timer ticks. */
+/* pj1 */
+/*******/
+/* To avoid confusing, I changed parameter ticks to delta_ticks. */
+/*******/
 void
-timer_sleep (int64_t ticks) 
+timer_sleep (int64_t delta_ticks) 
 {
-  int64_t start = timer_ticks ();
-
   ASSERT (intr_get_level () == INTR_ON);
-  /*
-  while(timer_elapsed(start) < ticks)
-  {
-    thread_yield();
-  }
-  */
   /* pj1 */
   /*******/
-  thread_sleep(start+ticks);
+  thread_sleep(delta_ticks);
   /*******/
 }
 

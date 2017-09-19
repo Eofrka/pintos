@@ -38,19 +38,6 @@ extern test_func test_mlfqs_block;
 extern test_func test_hello;
 /*******/
 
-
-/* pj1 */
-/*******/
-extern test_func test_deadlock_lock;
-extern test_func test_deadlock_sema;
-extern test_func test_lock_reaping;
-extern test_func test_lock_reaping2;
-extern test_func test_priority_change_case1;
-extern test_func test_priority_condvar2;
-extern test_func test_priority_change_2;
-extern test_func test_priority_lifo;
-/*******/
-
 void msg (const char *, ...);
 void fail (const char *, ...);
 void pass (void);

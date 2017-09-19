@@ -16,6 +16,8 @@
 #endif
 
 
+#include "devices/timer.h"
+
 /* Random value for struct thread's `magic' member.
    Used to detect stack overflow.  See the big comment at the top
    of thread.h for details. */
@@ -381,7 +383,6 @@ thread_set_priority (int new_priority)
         {
           waiting_max_priority = tmp_priority;
         }
-
       }
       /* case 1-1-1: waiting_max_priority is higher than new_priority. */
       if(waiting_max_priority > new_priority)
@@ -709,15 +710,16 @@ static void thread_release_locks(void)
 
 /* New function definitions */
 /**********************************************************************************************************************************/
-/* Disables the interrupts. Sets current thread's wakeup to wakeup_ticks
+/* Disables the interrupts. Sets current thread's wakeup to wakeup ticks
    and pushs current thread into sleep_list (wakeup ascending order).
    Blocks the thread and restores the old interrupt level. */
-void thread_sleep(int64_t wakeup_ticks)
+void thread_sleep(int64_t delta_ticks)
 {
   enum intr_level old_level;
   struct thread* curr;
 
   old_level = intr_disable();
+  int64_t wakeup_ticks = timer_ticks() + delta_ticks;
   curr =thread_current();
   curr->wakeup = wakeup_ticks;
   /* Push current thread into sleep_list in ascending order of wakeup. */
@@ -795,6 +797,7 @@ void thread_donate_priority(struct thread* src)
   struct thread* dst;
   if(src->donation_level >0)
   {
+    ASSERT(src->lock != NULL);
     dst = src->lock->holder;
     if(src->priority > dst->priority)
     {

@@ -40,13 +40,6 @@ tests/threads_SRC += tests/threads/mlfqs-block.c
 # pj0.
 tests/threads_SRC += tests/threads/hello.c
 
-# pj1.
-tests/threads_SRC += tests/threads/deadlock.c
-tests/threads_SRC += tests/threads/lock-reaping.c
-tests/threads_SRC += tests/threads/priority-change-more.c
-tests/threads_SRC += tests/threads/priority-condvar2.c
-tests/threads_SRC += tests/threads/priority-change-2.c
-tests/threads_SRC += tests/threads/priority-lifo.c
 
 MLFQS_OUTPUTS = 				\
 tests/threads/mlfqs-load-1.output		\

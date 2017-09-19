@@ -148,7 +148,7 @@ int thread_get_load_avg (void);
 
 /* New function declarations */
 /**********************************************************************************************************************************/
-void thread_sleep(int64_t wakeup_ticks);
+void thread_sleep(int64_t delta_ticks);
 void thread_awake(int64_t current_ticks);
 void thread_preempt(void);
 void thread_preempt_on_return(void);
