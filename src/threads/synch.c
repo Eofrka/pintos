@@ -152,7 +152,7 @@ sema_up (struct semaphore *sema)
   /* pj1 */
   /*******/
   /* Check ready_list and yield if neccessary. */
-  thread_preempt();
+  thread_check_and_yield();
   /*******/
   intr_set_level (old_level);
 

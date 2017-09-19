@@ -224,7 +224,7 @@ thread_create (const char *name, int priority,
   /* pj1 */
   /*******/
   /* Check ready_list and yield if neccessary. */
-  thread_preempt();
+  thread_check_and_yield();
   /*******/
 
   return tid;
@@ -395,7 +395,7 @@ thread_set_priority (int new_priority)
       {
         curr->priority = new_priority;
       }
-      thread_preempt();
+      thread_check_and_yield();
     }
     /* case 1-2: Highering priority or setting equal value. */
     else
@@ -753,13 +753,13 @@ void thread_awake(int64_t current_ticks)
         break;
       }
     }
-    thread_preempt_on_return();
+    thread_check_and_yield_on_return();
   }
 }
 
 /* Compares the highest priority of thread in ready_list with currently running thread's priority
    and yields cpu for higher priority thread in ready_list. */
-void thread_preempt(void)
+void thread_check_and_yield(void)
 {
   if(thread_get_max_priority(&ready_list) > thread_get_priority())
   {
@@ -770,7 +770,7 @@ void thread_preempt(void)
 /* Compares highest priority of thread in ready_list with currently running thread's priority
    and yields cpu for higher priority thread in ready_list after finishing the interrupt handling.
    This function is called in intr_context(). */
-void thread_preempt_on_return(void)
+void thread_check_and_yield_on_return(void)
 {
   ASSERT(intr_context());
   ASSERT(intr_get_level() == INTR_OFF);

@@ -150,8 +150,8 @@ int thread_get_load_avg (void);
 /**********************************************************************************************************************************/
 void thread_sleep(int64_t delta_ticks);
 void thread_awake(int64_t current_ticks);
-void thread_preempt(void);
-void thread_preempt_on_return(void);
+void thread_check_and_yield(void);
+void thread_check_and_yield_on_return(void);
 int thread_get_max_priority(struct list* list);
 void thread_donate_priority(struct thread* src);
 void thread_restore_priority(void);
