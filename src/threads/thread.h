@@ -94,7 +94,6 @@ struct thread
     
     /* pj1 */
     /*******/
-    int wakeup;                         /* Wakeup ticks */
     int old_priority;                   /* Old priority */
     struct lock* lock;                  /* When thread calls lock_acquire(), if the target lock's holder is not NULL, this lock is set to the lock */
     struct list lock_list;              /* When thread calls for lock_acquire(), if the target lock's holder is NULL, push the lock into the lock_list */
@@ -148,7 +147,7 @@ int thread_get_load_avg (void);
 
 /* New function declarations */
 /**********************************************************************************************************************************/
-void thread_sleep(int64_t delta_ticks);
+void thread_sleep(int64_t wakeup_ticks);
 void thread_awake(int64_t current_ticks);
 void thread_check_and_yield(void);
 void thread_check_and_yield_on_return(void);

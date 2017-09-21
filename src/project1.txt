@@ -40,10 +40,20 @@ Yuhwan Chung yuhwan96@kaist.ac.kr
 
 threads/thread.c
     static struct list sleep_list: timer_sleep()시 current thread가 blocked되어 이 리스트에서 waiting하고 있다.
+                               
+    struct alarm_waiter
+    {
+      int64_t wakeup_ticks;                           /* Wakeup ticks. */
+      struct thread* sleeping_thread;                 /* Sleeping thread. */
+      bool (*alarm)(struct alarm_waiter* ,int64_t);   /* Function pointer for unblocking thread. */  
+      struct list_elem elem;                          /* List element for sleep_list. */
+    };
 
-threads/thread.h
-    Added to struct thread:
-        int wakeup: timer_sleep()시 깨어날 ticks를 기억하고있다.
+    int64_t wakeup_ticks: timer_sleep()으로부터 일어날 ticks를 저장.
+    struct thread* sleeping_thread: sleeping하고 있는 thread를 point한다.
+    bool (*alarm)(struct alarm_waiter*, int64_t): timer_interrupt()에서 sleep_list를 순회하면서 만약 깨워줄 조건이 충족되면, thread_unblock()으로
+                                                  sleeping thread를 깨워주는 함수포인터.
+    struct list_elem elem: sleep_list에 insert하기 위한 list_elem.
 
 
 ---- ALGORITHMS ----
@@ -51,11 +61,11 @@ threads/thread.h
 >> A2: Briefly describe what happens in a call to timer_sleep(),
 >> including the effects of the timer interrupt handler.
 
-timer_sleep():    
-    1. interrupt를 disable시킨다.
-    2. 깨어날 ticks를 구한다.
-    3. 깨어날 ticks를 current thread의 wakeup에 저장한다.
-    4. sleep_list에 current thread를 wakeup ticks값에 대해서 오름차순으로 insert해준다.
+timer_sleep():
+    1. start ticks를 구한다.(wakeup_ticks를 계산하기위한 용도)
+    2. interrupt를 disable시킨다.
+    3. wakeup_ticks, current thread, alarm(함수포인터)를 alarm waiter에 저장한다.
+    4. sleep_list에 alarm_waiter를 wakeup_ticks값에 대해서 오름차순으로 insert해준다.
     5. current thread를 block시킨다.
     6. interrupt level을 복구해준다.
 
@@ -68,12 +78,17 @@ timer_interrupt():
        ready_list에서 max priority값과 현재 running중인 thread값보다 크다면 intr_yield_on_return()을 통해 interrupt_handler()
        마지막에 thread_yield()를 호출하도록 해줘야된다.
 
+timer_sleep()에서는 thread_sleep(), timer_interrupt()에서는 thread_awake()를 통해서 실제 logic을 구현하였다.(sleep_list를 static으로 선언했기 때문)
+    
 >> A3: What steps are taken to minimize the amount of time spent in
 >> the timer interrupt handler?
 
-timer_interrupt()에서는 thread_awake()함수가 호출되는데, 이 thread_awake()함수에서 sleep_list를 linear하게 순회하면서 쓰레드의 wakeup ticks값이
-current_ticks이하이면(이미 깨어날 시간이 지났거나, 깨어날 시간에 도달)thread를 sleep_list에서 제거하고 thread_unblock()을 통해 깨워준다. 그런데 sleep_list에 thread를 insert해줄때, 깨어날 ticks인 wakeup에 대해서 오름차순으로 정렬하여 insert해줬기 때문에 current_ticks보다 큰 wakeup ticks를
-가지고 있는 thread를 만날 경우 바로 break를 통해 추가적인 thread들을 sleep_list에서 check해줄 필요가 없게 하였다. 
+timer_interrupt()에서는 thread_awake()함수가 호출되는데, 이 thread_awake()함수에서 sleep_list를 linear하게 순회하면서 alarm_waiter의
+wakeup ticks값이 current_ticks이하이면(이미 깨어터날 시간이 지났거나, 깨어날 시간에 도달) alarm_waiter를 sleep_list에서 제거하고
+thread_unblock()을 통해 sleeping_thread를 깨워준다. 그런데 sleep_list에 alarm_waiter를 insert해줄때, wakeup_ticks에 대해서 오름차순으로
+정렬하여 insert해줬기 때문에 current_ticks보다 큰 wakeup_ticks를 가지고 있는 alarm_waiter를 만날 경우 바로 break를 통해 추가적인 thread들을
+sleep_list에서 check해줄 필요가 없게 하였다.
+(이는 alarm_waiter의 함수포인터 alarm에 해당하는 static bool alarm(struct alarm_waiter* aw, int64_t current_ticks)에 구현되어있다.)
 
 
 ---- SYNCHRONIZATION ----
@@ -93,24 +108,20 @@ context라는 특별한 context에서 실행되는데, 이 때 interrupt가 발�
 >> A5: How are race conditions avoided when a timer interrupt occurs
 >> during a call to timer_sleep()?
 
-일단 timer_sleep()에서 intr_disable()을통해 timer_interrupt()를 무시하여 sleep_list에 current thread를 insert해주는것과,
-interrupt가 disabled된 상태로 호출되는 timer_interrupt()에서 깨어날 쓰레드를 sleep_list로부터 제거해주는것이 atomic함을 보장하였다.
-
-timer_sleep()을 구현할때 사실 thread_sleep()이라는 함수를 짜서 handling했는데, thread_sleep()의 시작과 끝을 intr_disable()과
-intr_set_level(old_level)을 사용했는데,그 이유는 깨어날 ticks인 wakeup ticks를 구하고 이 값을 current thread의 wakeup에 저장할때
-또한 intr_disable()을 미리 해주지 않았다면 preemptive하므로 운이 안좋으면 sleep_list에 들어가긴했지만 timer interrupt시 곧바로
-unblock되어 원하는 ticks만큼 sleep되지 않기 때문이다.
-
+timer_sleep()에서 intr_disable()을통해 timer_interrupt()를 무시하여 sleep_list에 alarm_waiter를 insert해주는것과,
+interrupt가 disabled된 상태로 호출되는 timer_interrupt()에서 alarm_waiter를 sleep_list로부터 제거해주는것이
+atomic함을 보장하였다. timer_interrupt()에서 unblock되어 다시 cpu를 선점했을때는 처음에 disable시켜놓은 interrupt level을 
+복구해준다.
 
 ---- RATIONALE ----
 
 >> A6: Why did you choose this design? In what ways is it superior to
 >> another design you considered?
 
-timer_sleep()에서 sleep_list에 thread를 push해줄 때 wakeup tick에 대해서 오름차순으로 정렬하여 insert해주었다. 시간복잡도는 O(n).
-그리고 timer_interrupt()에서 thread를 깨워줄때, linear search를 하기는 하지만, A3에 언급한것처럼 wakeup ticks가 current ticks보다 클 경우,
-break를 통해 searching time을 최소화 시켰다. 하지만 평균 시간복잡도는 O(n)이다. sleep list를 list보다 좀 더 효율적인 자료구조로 짜면 시간복잡도에서는
-이득을 볼 수 있으나, list로 구현을 하는것이 간단하기도 하고 핀토스 manual에서도 다른 효율적인 자료구조로 짜지 않아도 된다고 했다.
+timer_sleep()에서 sleep_list에 alarm_waiter를 push해줄 때 wakeup_ticks에 대해서 오름차순으로 정렬하여 insert해주었다. 시간복잡도는 O(n).
+그리고 timer_interrupt()에서 sleeping_thread를 깨워줄때, linear search를 하기는 하지만, A3에 언급한것처럼 wakeup_ticks가 current ticks보다 클 경우,
+break를 통해 searching time을 최소화 시켰다. 하지만 평균 시간복잡도는 O(n)이다. sleep list를 list보다 좀 더 효율적인 자료구조로 짜면
+시간복잡도에서는 이득을 볼 수 있으나, list로 구현을 하는것이 간단하기도 하고 핀토스 manual에서도 다른 효율적인 자료구조로 짜지 않아도 된다고 했다.
 
 
 			 PRIORITY SCHEDULING

@@ -101,9 +101,10 @@ void
 timer_sleep (int64_t delta_ticks) 
 {
   ASSERT (intr_get_level () == INTR_ON);
+  int64_t start = timer_ticks();
   /* pj1 */
   /*******/
-  thread_sleep(delta_ticks);
+  thread_sleep(start+delta_ticks);
   /*******/
 }
 
@@ -134,7 +135,7 @@ timer_print_stats (void)
 {
   printf ("Timer: %"PRId64" ticks\n", timer_ticks ());
 }
-
+
 /* Timer interrupt handler. */
 static void
 timer_interrupt (struct intr_frame *args UNUSED)

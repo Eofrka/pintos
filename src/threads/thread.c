@@ -15,9 +15,6 @@
 #include "userprog/process.h"
 #endif
 
-
-#include "devices/timer.h"
-
 /* Random value for struct thread's `magic' member.
    Used to detect stack overflow.  See the big comment at the top
    of thread.h for details. */
@@ -44,6 +41,16 @@ static struct lock tid_lock;
 /*******/
 /* Global variable. */
 static struct list sleep_list; /* Sleep list for sleeping threads */
+
+
+/* New struct for alarm clock. */
+struct alarm_waiter
+{
+  int64_t wakeup_ticks;                           /* Wakeup ticks. */
+  struct thread* sleeping_thread;                 /* Sleeping thread. */
+  bool (*alarm)(struct alarm_waiter* ,int64_t);   /* Function pointer for unblocking thread. */  
+  struct list_elem elem;                          /* List element for sleep_list. */
+};
 /*******/
 
 /* Stack frame for kernel_thread(). */
@@ -84,7 +91,8 @@ static tid_t allocate_tid (void);
 /*******/
 /* New static function declarations. */
 /*********************************************************************************************************************************/
-static bool thread_wakeup_l(const struct list_elem* a, const struct list_elem* b, void* aux);
+static bool alarm_waiter_wakeup_ticks_l(const struct list_elem* a, const struct list_elem* b, void* aux);
+static bool alarm(struct alarm_waiter* aw, int64_t current_ticks); 
 static void thread_release_locks(void);
 /*********************************************************************************************************************************/
 /*******/
@@ -546,7 +554,6 @@ init_thread (struct thread *t, const char *name, int priority)
   t->priority = priority;
   /* pj1 */
   /*******/
-  t->wakeup = 0;
   t->old_priority = -1;
   t->lock = NULL;
   list_init(&t->lock_list);
@@ -676,10 +683,25 @@ uint32_t thread_stack_ofs = offsetof (struct thread, stack);
 /*******/
 /* New static function definitions. */
 /**********************************************************************************************************************************/
-/* If thread A's wakeup < thread B's wakeup, returns true. Else returns false. */  
-static bool thread_wakeup_l(const struct list_elem* a, const struct list_elem* b, void* aux UNUSED)
+/* If alarm waiter A's wakeup_ticks < alarm_waiter B's wakeup_ticks, returns true. Else returns false. */  
+static bool alarm_waiter_wakeup_ticks_l(const struct list_elem* a, const struct list_elem* b, void* aux UNUSED)
 {
-  return list_entry(a, struct thread, elem)->wakeup < list_entry(b, struct thread, elem)->wakeup;
+  return list_entry(a, struct alarm_waiter, elem)->wakeup_ticks < list_entry(b, struct alarm_waiter, elem)->wakeup_ticks;
+}
+
+/* If wakeup_ticks is less than or equal to current ticks, awakes sleeping thread in alarm waiter and returs ture. Else just returns false. */
+static bool alarm(struct alarm_waiter* aw, int64_t current_ticks)
+{
+  if(aw->wakeup_ticks <= current_ticks)
+  { 
+    list_remove(&aw->elem);
+    thread_unblock(aw->sleeping_thread);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 /* Releases remaining locks which current thread is holding. */
@@ -710,25 +732,27 @@ static void thread_release_locks(void)
 
 /* New function definitions */
 /**********************************************************************************************************************************/
-/* Disables the interrupts. Sets current thread's wakeup to wakeup ticks
-   and pushs current thread into sleep_list (wakeup ascending order).
-   Blocks the thread and restores the old interrupt level. */
-void thread_sleep(int64_t delta_ticks)
+/* Disables the interrupts. Sets alarm waiter's wakeup_ticks, sleeping_thread, alarm. 
+   Pushs alarm waiter into sleep_list (wakeup_ticks ascending order). Then Blocks the current thread
+   and restores the old interrupt level. */
+void thread_sleep(int64_t wakeup_ticks)
 {
   enum intr_level old_level;
-  struct thread* curr;
+  struct alarm_waiter aw;
 
   old_level = intr_disable();
-  int64_t wakeup_ticks = timer_ticks() + delta_ticks;
-  curr =thread_current();
-  curr->wakeup = wakeup_ticks;
+
+  aw.wakeup_ticks = wakeup_ticks;
+  aw.sleeping_thread = thread_current();
+  aw.alarm = alarm;
+
   /* Push current thread into sleep_list in ascending order of wakeup. */
-  list_insert_ordered(&sleep_list, &curr->elem, (list_less_func*)thread_wakeup_l, NULL);
+  list_insert_ordered(&sleep_list, &aw.elem, (list_less_func*)alarm_waiter_wakeup_ticks_l, NULL);
   thread_block();
   intr_set_level(old_level);
 }
 
-/* Awakes sleeping threads which wakeup ticks are already passed current ticks or equal to current ticks. */
+/* Awakes sleeping threads which wakeup_ticks are already passed current ticks or equal to current ticks. */
 void thread_awake(int64_t current_ticks)
 {
   /* If sleep_list is empty, do nothing. */
@@ -736,19 +760,13 @@ void thread_awake(int64_t current_ticks)
   {
     struct list_elem* i;
     struct list_elem* next_i;
-    /* Looking through sleep_list, awake thread which wakeup ticks is already passed current ticks or equal to current ticks */
-    /* it means that t->wakeup <= current_ticks (current_ticks keep increasing) */
+    /* Looking through sleep_list, awake thread which wakeup ticks is already passed current ticks or equal to current ticks.
+       If alarm waiter's wakeup_ticks > current_ticks, break. */
     for(i = list_begin(&sleep_list); i != list_end(&sleep_list); i = next_i)
     {
-      struct thread* t = list_entry(i, struct thread, elem);
-      if(t->wakeup <= current_ticks)
-      {
-        next_i = list_next(i); 
-        list_remove(i);
-        t->wakeup = 0;
-        thread_unblock(t);
-      }
-      else
+      struct alarm_waiter* aw = list_entry(i, struct alarm_waiter, elem);
+      next_i = list_next(i);
+      if(!aw->alarm(aw, current_ticks))
       {
         break;
       }
