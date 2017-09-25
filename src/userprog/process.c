@@ -18,16 +18,43 @@
 #include "threads/thread.h"
 #include "threads/vaddr.h"
 
+/* pj2 */
+/*******/
+#include "threads/malloc.h"
+#include "userprog/syscall.h"
+
+/* User program arguments. */
+struct arguments
+{
+  int argc;
+  char* argv[64];
+};
+/*******/
+
+
+
+
 static thread_func start_process NO_RETURN;
-static bool load (const char *cmdline, void (**eip) (void), void **esp);
+static bool load (char *cmdline, void (**eip) (void), void **esp);
+
+/* New static function declarations. */
+/*************************************************************************************************************************/
+static void parse_arguments(char* str, struct arguments* args);
+static void push_arguments(struct arguments* args, void** esp);
+/*************************************************************************************************************************/
+
 
 /* Starts a new thread running a user program loaded from
    FILENAME.  The new thread may be scheduled (and may even exit)
    before process_execute() returns.  Returns the new process's
    thread id, or TID_ERROR if the thread cannot be created. */
-tid_t
-process_execute (const char *file_name) 
+pid_t
+process_execute (const char *cmdline) 
 {
+  /* pj2 */
+  /*******/
+  lock_acquire(&filesys_lock);
+  /*******/
   char *fn_copy;
   tid_t tid;
 
@@ -36,21 +63,60 @@ process_execute (const char *file_name)
   fn_copy = palloc_get_page (0);
   if (fn_copy == NULL)
     return TID_ERROR;
-  strlcpy (fn_copy, file_name, PGSIZE);
+  strlcpy (fn_copy, cmdline, PGSIZE);
+
+  /* pj2 */
+  /*******/
+  /* Not deal with file name > 16 */
+  char* next;
+  char* tocken = strtok_r(fn_copy, " ", &next);
+  char file_name[16]={};
+  strlcpy(file_name, tocken, 16);
+  strlcpy (fn_copy, cmdline, PGSIZE);
+  /*******/
+
+   /* pj2 */
+  /*******/
+  /* Set current thread's load flag to false. */
+  struct thread* curr = thread_current();
+  curr->load = false;
+  ASSERT(curr->load == false);
+  /*******/
+
 
   /* Create a new thread to execute FILE_NAME. */
   tid = thread_create (file_name, PRI_DEFAULT, start_process, fn_copy);
+  /* pj2 */
+  /*******/
+  /* Wait loading in start_process(). */
+  sema_down(&curr->sema_exec);
+  /*******/
   if (tid == TID_ERROR)
     palloc_free_page (fn_copy); 
-  return tid;
+
+  /* pj2 */
+  /*******/
+  /* If load succeeded, return child thread's tid(pid), Else return PID_ERROR.
+  Before return, release filesys_lock. */
+  if(curr->load == true)
+  {
+    lock_release(&filesys_lock);
+    return tid;
+  }
+  else
+  {
+    lock_release(&filesys_lock);
+    return PID_ERROR;
+  }
+  /*******/
 }
 
 /* A thread function that loads a user process and makes it start
    running. */
 static void
-start_process (void *f_name)
+start_process (void *cmdline_)
 {
-  char *file_name = f_name;
+  char *cmdline = cmdline_;
   struct intr_frame if_;
   bool success;
 
@@ -59,10 +125,42 @@ start_process (void *f_name)
   if_.gs = if_.fs = if_.es = if_.ds = if_.ss = SEL_UDSEG;
   if_.cs = SEL_UCSEG;
   if_.eflags = FLAG_IF | FLAG_MBS;
-  success = load (file_name, &if_.eip, &if_.esp);
+  success = load (cmdline, &if_.eip, &if_.esp);
+  palloc_free_page (cmdline);
+  /* pj2 */
+  /*******/
+  struct thread* curr = thread_current();
+  struct process* ps = curr->process;
+  /* If loading is not succeeded. */
+  if (!success)
+  { 
+    /* Set pid to PID_ERROR. */
+    ps->pid = PID_ERROR;
+    /* Set exit_status to some value. */
+    ps->exit_status = -1;
+    /* Set parent thread's load flag to false. */
+    ps->parent->load = false;
 
-  /* If load failed, quit. */
-  palloc_free_page (file_name);
+    /* Wake up parent's sema_exec. */
+    sema_up(&ps->parent->sema_exec);
+    /* Call thread_exit(). (3.3.2 The process termination message is optional when a process fails to load. */
+    thread_exit ();
+  }
+  /* Loading is succeeded. */
+  else
+  {
+    /* Set pid to current thread's tid. */
+    ps->pid = curr->tid;
+    /* Push this process information into parent thread's child list. */
+    list_push_back(&ps->parent->child_list, &ps->elem);
+    /* Set parent thread's load flag to true. */
+    ps->parent->load = true;
+    /* Awake parent thread's sema_exec. */
+    sema_up(&ps->parent->sema_exec);
+  }
+  /*******/
+
+
   if (!success) 
     thread_exit ();
 
@@ -86,16 +184,131 @@ start_process (void *f_name)
    This function will be implemented in problem 2-2.  For now, it
    does nothing. */
 int
-process_wait (tid_t child_tid UNUSED) 
+process_wait (pid_t child_pid) 
 {
-  return -1;
+/* pj2 */
+  /*******/
+  struct thread* curr = thread_current();
+  struct process* ps = curr->process;
+
+  /* The process which call process_wait should not be NULL. */
+  ASSERT(ps != NULL);
+
+  /* Set ps->waiting to true if is is false. Else return -1 immediately. */
+  if(ps->waiting == false)
+  {
+    ps->waiting = true;
+  }
+  else
+  {
+    /* Already has called process_wait(). Return -1 immediately. */
+    return -1;
+  }
+
+
+  /* Searching child_pid which pid is equal to child_pid. */
+  struct list_elem* iter;
+  struct process* cps;
+  bool found_child = false;
+  for(iter = list_begin(&curr->child_list); iter != list_end(&curr->child_list); iter = list_next(iter))
+  {
+    cps = list_entry(iter, struct process, elem);
+    if(cps->pid == child_pid)
+    {
+      found_child = true;
+      break;
+    }
+  }
+
+
+
+  /* If found target (child) process, Check its zombie flag whether it is exited or not. */
+  if(found_child)
+  {
+    /* If cps->zombie == false, wait until cps->zombie changes into true. */
+    if(cps->zombie == false)
+    {
+      sema_down(&cps->sema_wait);
+      //Q? How to deal with kill by kernel case? I modified exception.c@kill() function.
+
+      /* My modification: Call syscall_exit(-1) instead thread_exit().
+      Does it(My modification of kill() function) match well to document's wait() system call specification?? 
+      => "If pid did not call exit(), but was terminated by the kernel(e.g. killed due to an exception),
+       wait(pid) must return -1." */
+
+
+       /* I think it matches to document spec because when kill() is called, syscall_exit(-1) is called. Then print termination message and set process's exit_status to -1. Then call thread_exit() and inside thread_exit(), process_exit() is called. In process_exit(), it changes process's zombie flag to true. Therefore, the process which called process_wait() does not sema_down(&cps->sema_wait) and jumps to below.
+       Below code removes child process from child_list, frees the child process, changes waiting flag of process which called process_wait to false, and returns the exit status of it which is -1 when kill() is called. */
+
+    }
+    ASSERT(cps->zombie == true);
+
+    /* Remove child process's information from the current thread's child_list. */
+    list_remove(iter);
+    /* Save child process's exit_status. */
+    int exit_status = cps->exit_status;
+    /* Resource dealloaction. */
+    SAFE_FREE(cps);
+    /* Restore current thread's waiting flag. */
+    ps->waiting = false;
+    return exit_status;
+  }
+  /* If target (child) process is not found, restore the waiting flag and return -1. */
+  else
+  {
+    ps->waiting = false;
+    return -1;
+  }
+  /*******/
 }
 
 /* Free the current process's resources. */
 void
 process_exit (void)
 {
+  /* pj2 */
+  /*******/
   struct thread *curr = thread_current ();
+  struct process* ps = curr->process;
+  ASSERT(ps != NULL); 
+  /* Set process's status into zombie. The 'struct process' will be reaped in process_wait(). */
+  ps->zombie = true;
+  
+  /* Check current thread's child_list, and pop the all child processes. 
+  If child process's status is zombie, FREE it. Else make it orphan. */
+  struct list_elem* iter;
+  struct process* cps;
+  for(iter = list_begin(&curr->child_list); iter != list_end(&curr->child_list); iter = list_next(iter))
+  {
+    cps = list_entry(list_pop_front(&curr->child_list), struct process, elem);
+    if(cps->zombie == true)
+    {
+      /* Frees already exited child process. */
+      SAFE_FREE(cps);
+    }
+    else
+    {
+      /* Make child to orphan. */
+      cps->parent = NULL;
+    }
+  }
+
+  /* Close entire file descriptor entries implicitly when process is terminated. */
+  while(!list_empty(&curr->fdt))
+  {
+    syscall_close(curr->next_fd-1);
+  }
+
+  /* Call file_close() to call file_allow_write(). This intervene filesystem, 
+  so lock_acquire() and lock_release() needed! */
+  if(curr->executable != NULL)
+  {
+    lock_acquire(&filesys_lock);
+    file_close(curr->executable);
+    lock_release(&filesys_lock);
+  }
+
+
   uint32_t *pd;
 
   /* Destroy the current process's page directory and switch back
@@ -104,7 +317,7 @@ process_exit (void)
   if (pd != NULL) 
     {
       /* Correct ordering here is crucial.  We must set
-         cur->pagedir to NULL before switching page directories,
+         curr->pagedir to NULL before switching page directories,
          so that a timer interrupt can't switch back to the
          process page directory.  We must activate the base page
          directory before destroying the process's page
@@ -114,6 +327,21 @@ process_exit (void)
       pagedir_activate (NULL);
       pagedir_destroy (pd);
     }
+
+
+
+  /* If current process is an orphan process, free its 'struct process'. There are no parent process waiting it to reap... */
+  if(ps->parent == NULL)
+  {
+    SAFE_FREE(ps);
+  }
+  /* Else, call sema_up(&ps->sema_wait) for blocking system call wait(). */
+  else
+  {
+    sema_up(&ps->sema_wait);
+  }
+  /*******/
+
 }
 
 /* Sets up the CPU for running user code in the current
@@ -195,7 +423,7 @@ struct Elf32_Phdr
 #define PF_W 2          /* Writable. */
 #define PF_R 4          /* Readable. */
 
-static bool setup_stack (void **esp);
+static bool setup_stack (void **esp, struct arguments* args);
 static bool validate_segment (const struct Elf32_Phdr *, struct file *);
 static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
                           uint32_t read_bytes, uint32_t zero_bytes,
@@ -206,7 +434,7 @@ static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
    and its initial stack pointer into *ESP.
    Returns true if successful, false otherwise. */
 bool
-load (const char *file_name, void (**eip) (void), void **esp) 
+load (char *cmdline, void (**eip) (void), void **esp) 
 {
   struct thread *t = thread_current ();
   struct Elf32_Ehdr ehdr;
@@ -214,6 +442,20 @@ load (const char *file_name, void (**eip) (void), void **esp)
   off_t file_ofs;
   bool success = false;
   int i;
+
+/* pj2 */
+  /*******/
+  /* Basic setting for argument pushing on the stack. */
+  struct arguments* args = (struct arguments*)malloc(sizeof(struct arguments));
+  if(args == NULL)
+  {
+    goto done;
+  }
+  /* Actual parsing. */
+  parse_arguments(cmdline, args);
+  /* Set file_name. */
+  const char* file_name = args->argv[0];
+  /*******/
 
   /* Allocate and activate page directory. */
   t->pagedir = pagedir_create ();
@@ -302,7 +544,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
     }
 
   /* Set up stack. */
-  if (!setup_stack (esp))
+  if (!setup_stack (esp,args))
     goto done;
 
   /* Start address. */
@@ -310,9 +552,29 @@ load (const char *file_name, void (**eip) (void), void **esp)
 
   success = true;
 
+  /* pj2 */
+  /*******/
+  /* 3.3.5 Denying writes to executables.
+  In process_execute, I wrapped it with lock_acqurie(&filesys_lock) and lock_release(&filesys_lock).
+  Therefore accessing file system is safe. */
+  struct thread* curr = thread_current();
+  curr->executable = file;
+  file_deny_write(curr->executable);
+  /*******/
  done:
   /* We arrive here whether the load is successful or not. */
-  file_close (file);
+
+  /* pj2 */
+  /*******/
+  /* If failed, call file_close(file). */
+  if(success != true)
+  {
+    file_close(file);
+  }
+
+  /* Free args */
+  SAFE_FREE(args);
+  /*******/
   return success;
 }
 
@@ -427,7 +689,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 /* Create a minimal stack by mapping a zeroed page at the top of
    user virtual memory. */
 static bool
-setup_stack (void **esp) 
+setup_stack (void **esp, struct arguments* args) 
 {
   uint8_t *kpage;
   bool success = false;
@@ -437,7 +699,14 @@ setup_stack (void **esp)
     {
       success = install_page (((uint8_t *) PHYS_BASE) - PGSIZE, kpage, true);
       if (success)
-        *esp = PHYS_BASE;
+      {
+        
+        /* pj2 */
+        /*******/
+        push_arguments(args, esp);
+        //hex_dump((uintptr_t)(*esp), *esp, PHYS_BASE - (*esp), true);
+        /*******/
+      }
       else
         palloc_free_page (kpage);
     }
@@ -463,3 +732,69 @@ install_page (void *upage, void *kpage, bool writable)
   return (pagedir_get_page (t->pagedir, upage) == NULL
           && pagedir_set_page (t->pagedir, upage, kpage, writable));
 }
+
+
+/* New static function definitions. */
+/*************************************************************************************************************************/
+static void parse_arguments(char* str, struct arguments* args)
+{
+  char* next;
+  int argc =0;
+  const char* delim = " ";
+  args->argv[argc] = strtok_r(str, delim , &next);
+  while(argc < 64 && args->argv[argc])
+  {
+    //printf("argv[%d]: [%s]\n", argc, args->argv[argc]); 
+    argc++;
+    args->argv[argc] = strtok_r(NULL, delim, &next);
+  }
+  args->argc = argc;
+  args->argv[argc] = NULL;
+}
+
+/* Push arguments into the stack. */
+static void push_arguments(struct arguments* args, void** esp)
+{
+  *esp = PHYS_BASE;
+  uint8_t* cur =(uint8_t*)*esp;
+
+  /* String pushing. */
+  int i;
+  int argc = args->argc;
+  int len = 0;
+  for(i=argc-1; i>=0; i--)
+  {
+    len = strlen(args->argv[i])+1;
+    cur = cur-len;
+    memcpy(cur, args->argv[i], len);
+    args->argv[i] = (char*)cur; 
+  }
+  /* Word-align */
+  uint32_t tmp_addr = (uint32_t)cur;
+  uint8_t* aligned_cur = (uint8_t*)(tmp_addr & -4);
+  uint32_t padding_size = (uint32_t)(cur - aligned_cur);
+  cur = aligned_cur;
+  memset(cur, 0, padding_size);
+
+  
+  /* argv[i] pushing. */
+  for(i = argc; i >=0; i--)
+  {
+    cur = cur -4;
+    *(uint32_t*)cur =(uint32_t)args->argv[i];
+  }
+  
+  /* argv, argc, fake_ret_address pushing */
+  uint32_t argv_addr =(uint32_t)cur;
+  cur = cur-4;
+  *(uint32_t*)cur = argv_addr;
+  cur = cur-4;
+  *(uint32_t*)cur = argc;
+  cur = cur-4;
+  *(uint32_t*)cur = 0;
+  /* Set esp */
+  *esp = (void*)cur;
+}
+
+/*************************************************************************************************************************/
+/*******/

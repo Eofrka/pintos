@@ -13,6 +13,7 @@
 #include "threads/vaddr.h"
 #ifdef USERPROG
 #include "userprog/process.h"
+#include "threads/malloc.h"
 #endif
 
 /* Random value for struct thread's `magic' member.
@@ -138,6 +139,33 @@ thread_start (void)
   /* Create the idle thread. */
   struct semaphore idle_started;
   sema_init (&idle_started, 0);
+/* pj2 */
+/*******/
+#ifdef USERPROG
+  /* Process initilization. */
+  struct process* ps;
+  ps = (struct process*)malloc(sizeof(struct process));
+  if(ps == NULL)
+  {
+    PANIC("not enough memory to alloacte struct process");
+  }
+
+  /* Set pid of initial_thread's process to its' tid. */
+  ps->pid = thread_current()->tid;
+  ps->exit_status = DEFAULT_EXIT_STATUS;
+  ps->zombie=false;
+  /* Initial thread has no parent. */
+  ps->parent = NULL;
+  ps->waiting = false;
+  sema_init(&ps->sema_wait, 0);
+  ps->elem.prev=NULL;
+  ps->elem.next=NULL;
+  thread_current()->process = ps;
+
+
+#endif
+/*******/  
+
   thread_create ("idle", PRI_MIN, idle, &idle_started);
 
   /* Start preemptive thread scheduling. */
@@ -212,6 +240,28 @@ thread_create (const char *name, int priority,
   /* Initialize thread. */
   init_thread (t, name, priority);
   tid = t->tid = allocate_tid ();
+
+/* pj2 */
+/*******/  
+#ifdef USERPROG
+/* Process initilization. */
+  struct process* ps;
+  ps = (struct process*)malloc(sizeof(struct process));
+  if(ps == NULL)
+  {
+    PANIC("not enough memory to alloacte struct process");
+  }
+  ps->pid = PID_DEFAULT;
+  ps->exit_status = DEFAULT_EXIT_STATUS;
+  ps->zombie=false;
+  ps->parent = thread_current();
+  ps->waiting = false;
+  sema_init(&ps->sema_wait, 0);
+  ps->elem.prev=NULL;
+  ps->elem.next=NULL;
+  t->process = ps;
+#endif
+/*******/
 
   /* Stack frame for kernel_thread(). */
   kf = alloc_frame (t, sizeof *kf);
@@ -561,6 +611,20 @@ init_thread (struct thread *t, const char *name, int priority)
   t->donation_level = 0;
   t->cond = NULL;
   /*******/
+
+/* pj2 */
+/*******/
+#ifdef USERPROG
+  /* Initialize new 'struct thread' members to default values. */
+  t->load = false;
+  sema_init(&t->sema_exec, 0);
+  t->process=NULL;
+  list_init(&t->child_list);
+  t->next_fd = 2;
+  list_init(&t->fdt);
+  t->executable = NULL;
+#endif
+/*******/
   t->magic = THREAD_MAGIC;
 }
 

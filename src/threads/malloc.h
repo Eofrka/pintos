@@ -10,4 +10,10 @@ void *calloc (size_t, size_t) __attribute__ ((malloc));
 void *realloc (void *, size_t);
 void free (void *);
 
+/* pj2 */
+/*******/
+#define SAFE_FREE(a) if(a){free(a); a=NULL;}
+/*******/
+
+
 #endif /* threads/malloc.h */

@@ -5,6 +5,14 @@
 #include <list.h>
 #include <stdint.h>
 
+/* pj2 */
+/*******/
+#ifdef USERPROG
+#include "threads/synch.h"
+#include "userprog/process.h"
+#endif
+/*******/
+
 /* States in a thread's life cycle. */
 enum thread_status
   {
@@ -104,6 +112,16 @@ struct thread
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
+    /* pj2 */
+    /*******/
+    bool load;                          /* If load succeeded in child process, true. Else false. */
+    struct semaphore sema_exec;         /* Semaphore for system call exec. (process_execute, start_process) */
+    struct process* process;            /* Information of this process. */
+    struct list child_list;             /* Child process list. (list of struct process not struct thread) */ 
+    int next_fd;                        /* Next fd to alloacte. */
+    struct list fdt;                    /* File descriptor table. */
+    struct file* executable;            /* Executable file for this process. */     
+    /*******/
 #endif
 
     /* Owned by thread.c. */
