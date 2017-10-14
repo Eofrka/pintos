@@ -21,7 +21,7 @@ static int get_user(const uint8_t* uaddr);
 static bool put_user(uint8_t* udst, uint8_t byte);
 static void* check_uaddr(uint8_t* uaddr, uint32_t bytes);
 static void* check_ustr(const char* ustr);
-static struct file_descriptor_entry* find_fde(int fd);
+static struct file_descriptor_table_entry* find_fdte(int fd);
 /*****************************************************************************************************************************/
 /* New staitc function definitions. */
 /*****************************************************************************************************************************/
@@ -93,26 +93,26 @@ static void* check_ustr(const char* ustr)
 }
 
 
-/* Find fde in fdt. If not found, return NULL. */
-static struct file_descriptor_entry* find_fde(int fd)
+/* Find fdte in fdt. If not found, return NULL. */
+static struct file_descriptor_table_entry* find_fdte(int fd)
 {
   struct thread* curr = thread_current();
   struct list_elem* iter;
-  bool found_fde = false;
-  struct file_descriptor_entry* fde;
+  bool found_fdte = false;
+  struct file_descriptor_table_entry* fdte;
   for(iter = list_begin(&curr->fdt); iter != list_end(&curr->fdt); iter = list_next(iter))
   {
-    fde = list_entry(iter, struct file_descriptor_entry, elem);
-    if(fde->fd == fd)
+    fdte = list_entry(iter, struct file_descriptor_table_entry, elem);
+    if(fdte->fd == fd)
     {
-      found_fde = true;
+      found_fdte = true;
       break;
     }
   }
 
-  if(found_fde == true)
+  if(found_fdte == true)
   {
-    return fde;
+    return fdte;
   }
   else
   {
@@ -173,7 +173,7 @@ int syscall_open(const char* file)
 {
   int ret;
   struct file* open_file;
-  struct file_descriptor_entry* fde;
+  struct file_descriptor_table_entry* fdte;
   lock_acquire(&filesys_lock);
   open_file = filesys_open(file);
 
@@ -186,21 +186,21 @@ int syscall_open(const char* file)
 
   struct thread* curr = thread_current();
 
-  /* Allocate file_descriptor_entry. */
-  fde = (struct file_descriptor_entry*)malloc(sizeof(struct file_descriptor_entry));
-  if(fde == NULL)
+  /* Allocate file_descriptor_table_entry. */
+  fdte = (struct file_descriptor_table_entry*)malloc(sizeof(struct file_descriptor_table_entry));
+  if(fdte == NULL)
   {
-    PANIC("not enough memory to allocate struct file_descriptor_entry");
+    PANIC("not enough memory to allocate struct file_descriptor_table_entry");
   }
-  fde->fd = curr->next_fd;
+  fdte->fd = curr->next_fd;
   curr->next_fd++;
-  fde->file = open_file;
-  fde->elem.prev=  NULL;
-  fde->elem.next = NULL;
+  fdte->file = open_file;
+  fdte->elem.prev=  NULL;
+  fdte->elem.next = NULL;
 
-  /* Push fde into current thread's file descriptor table(fdt). */
-  list_push_back(&curr->fdt, &fde->elem);
-  ret = fde->fd;
+  /* Push fdte into current thread's file descriptor table(fdt). */
+  list_push_back(&curr->fdt, &fdte->elem);
+  ret = fdte->fd;
 
   /* return value should not be 0 or 1. These two values are for STDIN(0), STDOUT(1). */
   ASSERT(ret != 0);
@@ -212,15 +212,15 @@ int syscall_open(const char* file)
 int syscall_filesize(int fd)
 {
   lock_acquire(&filesys_lock);
-  struct file_descriptor_entry* fde = find_fde(fd);
+  struct file_descriptor_table_entry* fdte = find_fdte(fd);
   int ret;
-  if(fde != NULL)
+  if(fdte != NULL)
   {
-    ret = file_length(fde->file);
+    ret = file_length(fdte->file);
   } 
   else
   {
-    /* Q? If fde == NULL, How to deal with it? */
+    /* Q? If fdte == NULL, How to deal with it? */
     ret = -1;
   }
   lock_release(&filesys_lock);
@@ -246,13 +246,7 @@ int syscall_read(int fd, void* buffer, unsigned size)
       }
       i++;
     }
-
-
     ret = (int)i;
-    if( ret < 0)
-    {
-      //Q? How to deal with overflow?
-    }
     lock_release(&filesys_lock);
     return ret;
 
@@ -267,8 +261,8 @@ int syscall_read(int fd, void* buffer, unsigned size)
   else
   {
     lock_acquire(&filesys_lock);
-    struct file_descriptor_entry* fde= find_fde(fd);
-    if(fde != NULL)
+    struct file_descriptor_table_entry* fdte= find_fdte(fd);
+    if(fdte != NULL)
     {
 
       unsigned i =0;
@@ -283,7 +277,7 @@ int syscall_read(int fd, void* buffer, unsigned size)
         }
         i++;
       }
-      ret = file_read(fde->file, buffer, size);
+      ret = file_read(fdte->file, buffer, size);
     }
     else
     {
@@ -307,10 +301,6 @@ int syscall_write(int fd, const void* buffer, unsigned size)
       i++;
     }
     ret = (int)i;
-    if(ret < 0)
-    {
-      //Q? How to deal with overflow?
-    }
     lock_release(&filesys_lock);
     return ret;
   }
@@ -324,10 +314,10 @@ int syscall_write(int fd, const void* buffer, unsigned size)
   else
   {
     lock_acquire(&filesys_lock);
-    struct file_descriptor_entry* fde = find_fde(fd);
-    if(fde != NULL)
+    struct file_descriptor_table_entry* fdte = find_fdte(fd);
+    if(fdte != NULL)
     {
-      ret = file_write(fde->file, buffer, size);
+      ret = file_write(fdte->file, buffer, size);
     }
     else
     {
@@ -341,28 +331,28 @@ int syscall_write(int fd, const void* buffer, unsigned size)
 void syscall_seek(int fd, unsigned position)
 {
   lock_acquire(&filesys_lock);
-  struct file_descriptor_entry* fde = find_fde(fd);
-  if(fde != NULL)
+  struct file_descriptor_table_entry* fdte = find_fdte(fd);
+  if(fdte != NULL)
   {
-    file_seek(fde->file, position); 
+    file_seek(fdte->file, position); 
   }
   lock_release(&filesys_lock);
-  /* Q? If fde == NULL, How to deal with it? */
+  /* Q? If fdte == NULL, How to deal with it? */
 }
 
 unsigned syscall_tell(int fd)
 {
   lock_acquire(&filesys_lock);
-  struct file_descriptor_entry* fde = find_fde(fd);
+  struct file_descriptor_table_entry* fdte = find_fdte(fd);
   unsigned ret;
-  if(fde != NULL)
+  if(fdte != NULL)
   {
-    ret = file_tell(fde->file);
+    ret = file_tell(fdte->file);
 
   }
   else
   {
-    /* Q? If fde == NULL, How to deal with it? */
+    /* Q? If fdte == NULL, How to deal with it? */
     ret = 0xffffffff;
   }
   lock_release(&filesys_lock);
@@ -373,27 +363,27 @@ void syscall_close(int fd)
 {
   struct thread* curr = thread_current();
   struct list_elem* iter;
-  struct file_descriptor_entry* fde;
-  bool found_fde = false;
+  struct file_descriptor_table_entry* fdte;
+  bool found_fdte = false;
 
-  /* Find file descriptor entry which fd is equal to parameter 'fd' in current thread's file descriptor table. If found fde, remove fde from the fdt, decrease thread's next_fd one, and
-  close the file. Finally free the fde which allocated at syscall_open(). Else, Do nothing. */
+  /* Find file descriptor table entry which fd is equal to parameter 'fd' in current thread's file descriptor table. If found fdte, remove fdte from the fdt, decrease thread's next_fd one, and
+  close the file. Finally free the fdte which allocated at syscall_open(). Else, Do nothing. */
   lock_acquire(&filesys_lock);
   for(iter = list_begin(&curr->fdt); iter != list_end(&curr->fdt); iter= list_next(iter))
   {
-    fde = list_entry(iter, struct file_descriptor_entry, elem);
-    if(fde->fd == fd)
+    fdte = list_entry(iter, struct file_descriptor_table_entry, elem);
+    if(fdte->fd == fd)
     {
-      found_fde = true;
+      found_fdte = true;
       break;
     }
   }
-  if(found_fde == true)
+  if(found_fdte == true)
   {
     list_remove(iter);
     curr->next_fd--;    
-    file_close(fde->file);
-    SAFE_FREE(fde);
+    file_close(fdte->file);
+    SAFE_FREE(fdte);
 
   }
   lock_release(&filesys_lock);

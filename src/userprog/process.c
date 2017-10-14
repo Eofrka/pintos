@@ -736,6 +736,7 @@ install_page (void *upage, void *kpage, bool writable)
 
 /* New static function definitions. */
 /*************************************************************************************************************************/
+/* Parses the str with deliminator " ". */
 static void parse_arguments(char* str, struct arguments* args)
 {
   char* next;
@@ -749,7 +750,6 @@ static void parse_arguments(char* str, struct arguments* args)
     args->argv[argc] = strtok_r(NULL, delim, &next);
   }
   args->argc = argc;
-  args->argv[argc] = NULL;
 }
 
 /* Push arguments into the stack. */

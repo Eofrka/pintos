@@ -1,6 +1,6 @@
-Copying tests/userprog/exit into /tmp/WM1tkefmMv.dsk...
-Writing command line to /tmp/uxPIAEqBYM.dsk...
-qemu -hda /tmp/uxPIAEqBYM.dsk -hdb /tmp/BUxPYxtHOP.dsk -hdc /tmp/WM1tkefmMv.dsk -m 4 -net none -nographic -monitor null
+Copying tests/userprog/exit into /tmp/wSd2R6ukEe.dsk...
+Writing command line to /tmp/zlUVnzfxXY.dsk...
+qemu -hda /tmp/zlUVnzfxXY.dsk -hdb /tmp/jQOp2uczK8.dsk -hdc /tmp/wSd2R6ukEe.dsk -m 4 -net none -nographic -monitor null
 Kernel command line: -q -f put exit run exit
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
@@ -16,8 +16,8 @@ Executing 'exit':
 (exit) begin
 exit: exit(57)
 Execution of 'exit' complete.
-Timer: 56 ticks
-Thread: 30 idle ticks, 27 kernel ticks, 0 user ticks
+Timer: 57 ticks
+Thread: 30 idle ticks, 26 kernel ticks, 1 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 59 reads, 204 writes
 hd1:0: 98 reads, 0 writes

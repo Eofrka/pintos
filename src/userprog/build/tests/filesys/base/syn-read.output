@@ -1,12 +1,12 @@
-Copying tests/filesys/base/syn-read into /tmp/TnaUmcTf8x.dsk...
-Copying tests/filesys/base/child-syn-read into /tmp/TnaUmcTf8x.dsk...
-Writing command line to /tmp/kJYtpVOZVx.dsk...
-qemu -hda /tmp/kJYtpVOZVx.dsk -hdb /tmp/Aa3vUexpZ2.dsk -hdc /tmp/TnaUmcTf8x.dsk -m 4 -net none -nographic -monitor null
+Copying tests/filesys/base/syn-read into /tmp/wRAUXwq26b.dsk...
+Copying tests/filesys/base/child-syn-read into /tmp/wRAUXwq26b.dsk...
+Writing command line to /tmp/pjTB6lODYE.dsk...
+qemu -hda /tmp/pjTB6lODYE.dsk -hdb /tmp/UjZyViYfcV.dsk -hdc /tmp/wRAUXwq26b.dsk -m 4 -net none -nographic -monitor null
 Kernel command line: -q -f put syn-read put child-syn-read run syn-read
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
 373 pages available in user pool.
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 145 sector (72 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 215 sector (107 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -31,6 +31,7 @@ Executing 'syn-read':
 (syn-read) exec child 9 of 10: "child-syn-read 8"
 (syn-read) exec child 10 of 10: "child-syn-read 9"
 child-syn-read: exit(6)
+child-syn-read: exit(4)
 child-syn-read: exit(1)
 child-syn-read: exit(7)
 child-syn-read: exit(3)
@@ -39,7 +40,6 @@ child-syn-read: exit(8)
 child-syn-read: exit(2)
 child-syn-read: exit(0)
 child-syn-read: exit(9)
-child-syn-read: exit(4)
 (syn-read) wait for child 1 of 10 returned 0 (expected 0)
 (syn-read) wait for child 2 of 10 returned 1 (expected 1)
 (syn-read) wait for child 3 of 10 returned 2 (expected 2)
@@ -54,9 +54,9 @@ child-syn-read: exit(4)
 syn-read: exit(0)
 Execution of 'syn-read' complete.
 Timer: 113 ticks
-Thread: 30 idle ticks, 27 kernel ticks, 56 user ticks
+Thread: 30 idle ticks, 26 kernel ticks, 57 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 10728 reads, 448 writes
+hd0:1: 10736 reads, 448 writes
 hd1:0: 215 reads, 0 writes
 Console: 2282 characters output
 Keyboard: 0 keys pressed

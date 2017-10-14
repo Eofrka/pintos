@@ -1,11 +1,11 @@
-Copying tests/userprog/rox-simple into /tmp/vBamcDrYob.dsk...
-Writing command line to /tmp/TvLvrwAEqO.dsk...
-qemu -hda /tmp/TvLvrwAEqO.dsk -hdb /tmp/2Ij3Bj9tMu.dsk -hdc /tmp/vBamcDrYob.dsk -m 4 -net none -nographic -monitor null
+Copying tests/userprog/rox-simple into /tmp/XhooZ6EGSZ.dsk...
+Writing command line to /tmp/dTWs2Af9J2.dsk...
+qemu -hda /tmp/dTWs2Af9J2.dsk -hdb /tmp/NcLZegdM9e.dsk -hdc /tmp/XhooZ6EGSZ.dsk -m 4 -net none -nographic -monitor null
 Kernel command line: -q -f put rox-simple run rox-simple
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
 373 pages available in user pool.
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  104,755,200 loops/s.
 hd0:0: detected 145 sector (72 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 98 sector (49 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -20,8 +20,8 @@ Executing 'rox-simple':
 (rox-simple) end
 rox-simple: exit(0)
 Execution of 'rox-simple' complete.
-Timer: 55 ticks
-Thread: 30 idle ticks, 24 kernel ticks, 1 user ticks
+Timer: 56 ticks
+Thread: 30 idle ticks, 25 kernel ticks, 1 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 62 reads, 204 writes
 hd1:0: 98 reads, 0 writes

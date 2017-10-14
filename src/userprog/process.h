@@ -25,7 +25,7 @@ struct process
 };
 
 /* File descriptor entry. */
-struct file_descriptor_entry
+struct file_descriptor_table_entry
 {
   int fd;                             /* File descriptor. */
   struct file* file;                  /* File table entry. */
