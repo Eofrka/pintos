@@ -160,10 +160,6 @@ start_process (void *cmdline_)
   }
   /*******/
 
-
-  if (!success) 
-    thread_exit ();
-
   /* Start the user process by simulating a return from an
      interrupt, implemented by intr_exit (in
      threads/intr-stubs.S).  Because intr_exit takes all of its
@@ -225,9 +221,7 @@ process_wait (pid_t child_pid)
   /* If found target (child) process, Check its zombie flag whether it is exited or not. */
   if(found_child)
   {
-    /* If cps->zombie == false, wait until cps->zombie changes into true. */
-    if(cps->zombie == false)
-    {
+
       sema_down(&cps->sema_wait);
       //Q? How to deal with kill by kernel case? I modified exception.c@kill() function.
 
@@ -240,7 +234,7 @@ process_wait (pid_t child_pid)
        /* I think it matches to document spec because when kill() is called, syscall_exit(-1) is called. Then print termination message and set process's exit_status to -1. Then call thread_exit() and inside thread_exit(), process_exit() is called. In process_exit(), it changes process's zombie flag to true. Therefore, the process which called process_wait() does not sema_down(&cps->sema_wait) and jumps to below.
        Below code removes child process from child_list, frees the child process, changes waiting flag of process which called process_wait to false, and returns the exit status of it which is -1 when kill() is called. */
 
-    }
+    
     ASSERT(cps->zombie == true);
 
     /* Remove child process's information from the current thread's child_list. */
