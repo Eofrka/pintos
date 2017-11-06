@@ -29,6 +29,13 @@
 #else
 #include "tests/threads/tests.h"
 #endif
+
+/* pj3 */
+/*******/
+#include"vm/page.h"
+/*******/
+
+
 #ifdef FILESYS
 #include "devices/disk.h"
 #include "filesys/filesys.h"

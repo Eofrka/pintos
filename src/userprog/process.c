@@ -22,7 +22,18 @@
 /*******/
 #include "threads/malloc.h"
 #include "userprog/syscall.h"
+/*******/
 
+
+/* pj3 */
+/*******/
+#ifdef VM
+#include "vm/page.h"
+#endif
+/*******/
+
+/* pj2 */
+/*******/
 /* User program arguments. */
 struct arguments
 {
@@ -323,7 +334,12 @@ process_exit (void)
     }
 
 
-
+/* pj3 */
+/*******/  
+#ifdef VM
+  /* Destroy the spt. */
+ spt_destroy();
+#endif    
   /* If current process is an orphan process, free its 'struct process'. There are no parent process waiting it to reap... */
   if(ps->parent == NULL)
   {
@@ -437,7 +453,7 @@ load (char *cmdline, void (**eip) (void), void **esp)
   bool success = false;
   int i;
 
-/* pj2 */
+  /* pj2 */
   /*******/
   /* Basic setting for argument pushing on the stack. */
   struct arguments* args = (struct arguments*)malloc(sizeof(struct arguments));
@@ -456,6 +472,13 @@ load (char *cmdline, void (**eip) (void), void **esp)
   if (t->pagedir == NULL) 
     goto done;
   process_activate ();
+/* pj3 */
+/*******/
+/* Initialize spt. */
+#ifdef VM  
+  spt_init();
+#endif 
+/*******/
 
   /* Open executable file. */
   file = filesys_open (file_name);
@@ -644,6 +667,47 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
   ASSERT (ofs % PGSIZE == 0);
 
   file_seek (file, ofs);
+
+
+/* pj3 */
+/*******/  
+#ifdef VM
+  while (read_bytes > 0 || zero_bytes > 0)
+  {
+    /* Do calculate how to fill this page.
+         We will read PAGE_READ_BYTES bytes from FILE
+         and zero the final PAGE_ZERO_BYTES bytes. */
+    size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
+    size_t page_zero_bytes = PGSIZE - page_read_bytes;
+
+
+    //1. Create an spte.
+    struct supplemental_page_table_entry* spte = spte_create();
+
+    //2. Initialize the spte.
+    spte->uvaddr = upage;
+    spte->state = SPTE_FILE;
+    spte->he.list_elem.prev = NULL;
+    spte->he.list_elem.next = NULL;
+    spte->file = file;
+    spte->ofs = ofs;
+    spte->page_read_bytes = page_read_bytes;
+    spte->page_zero_bytes = page_zero_bytes;
+
+    //3. Insert the spte into spt.
+    spte_print(&spte->he); 
+    spte_insert(&spt, &spte->he);
+
+
+    //4. Advance.
+    ofs += page_read_bytes;
+    read_bytes -= page_read_bytes;
+    zero_bytes -= page_zero_bytes;
+    upage += PGSIZE;
+  }
+  return true;
+#endif
+/*******/  
   while (read_bytes > 0 || zero_bytes > 0) 
     {
       /* Do calculate how to fill this page.
