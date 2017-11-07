@@ -2,6 +2,7 @@
 #include "threads/malloc.h"
 #include <debug.h>
 #include <stdio.h>
+#include "threads/thread.h"
 
 
 /* New functions defintions. */
@@ -21,9 +22,9 @@ bool spte_less (const struct hash_elem* he_a, const struct hash_elem* he_b, void
 }
 
 /* Initializes the supplemental_page_table. */
-void spt_init(void)
+void spt_init(struct hash* spt)
 {
-  bool success = hash_init(&spt, spte_hash, spte_less, NULL);
+  bool success = hash_init(spt, spte_hash, spte_less, NULL);
   if(!success)
   {
     PANIC("supplemental page table initializing is failed");
@@ -31,9 +32,9 @@ void spt_init(void)
 }
 
 /* Destroys the supplemental_page_table. */
-void spt_destroy(void)
+void spt_destroy(struct hash* spt)
 {
-  hash_destroy(&spt, spte_free);
+  hash_destroy(spt, spte_free);
 }
 
 //TODO: switch cases for enum SPTE_STATE
@@ -57,11 +58,10 @@ struct supplemental_page_table_entry* spte_create(void)
 
 
 /* Prints the spte informations. */
-void spte_print(struct hash_elem* spte_he)
+void spte_print(struct hash_elem* spte_he, void* aux UNUSED)
 {
   struct supplemental_page_table_entry* spte = hash_entry(spte_he, struct supplemental_page_table_entry, he);
-  printf("****************************************\n");
-  printf("uvaddr: 0x%x\n", (uint32_t)spte->uvaddr);
+  printf("uvaddr: [0x%08x], ", (uint32_t)spte->uvaddr);
   switch(spte->state)
   {
     case SPTE_FILE:
@@ -70,19 +70,26 @@ void spte_print(struct hash_elem* spte_he)
     case SPTE_SWAP:
       printf("SPTE_STATE: SPTE_SWAP\n");    
       break;
+    case SPTE_ZERO:
+      printf("SPTE_STATE: SPTE_ZERO\n");    
     case SPTE_LOADED:
       printf("SPTE_STATE: SPTE_LOAD\n");    
       break;
   }
-  printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 
 }
 
-
+/* Prints spt's entries. */
+void spt_print(struct hash* spt)
+{
+  printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+  printf("spt entries\n");
+  hash_apply(spt, spte_print);
+  printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+}
 /* Inserts spte into spt. If the same uvaddr is already in the spt, PANIC. */
 bool spte_insert(struct hash* spt, struct hash_elem* spte_he)
 {
-
   if(hash_insert(spt, spte_he) != NULL)
   {
     PANIC("There is already the same uvaddr spte");

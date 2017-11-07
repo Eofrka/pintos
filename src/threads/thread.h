@@ -13,6 +13,12 @@
 #endif
 /*******/
 
+/* pj3 */
+/*******/
+#ifdef VM
+#include <hash.h>
+#endif
+/*******/
 /* States in a thread's life cycle. */
 enum thread_status
   {
@@ -123,6 +129,13 @@ struct thread
     struct file* executable;            /* Executable file for this process. */     
     /*******/
 #endif
+
+/* pj3 */
+/*******/
+#ifdef VM
+    struct hash spt;                    /* Supplemental page table. */
+#endif
+/*******/     
 
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */

@@ -10,6 +10,13 @@
 #include "userprog/syscall.h"
 /*******/
 
+/* pj3 */
+/*******/
+#ifdef VM
+#include "vm/page.h"
+#endif
+/*******/ 
+
 /* Number of page faults processed. */
 static long long page_fault_cnt;
 
@@ -170,6 +177,48 @@ page_fault (struct intr_frame *f)
     return;
   }
   /*******/
+
+/* pj3 */
+/*******/
+#ifdef VM
+  //
+  struct thread* curr = thread_current();
+  spt_print(&curr->spt);
+
+
+  //1. Check the fault_addr is valid or not. It it is invalid,
+  // terminates the process and thereby frees all of its resources(this part is in process_exit()).
+
+
+
+  //2. If the memory reference is valid.
+  //2-1-1. If the fault_addr is growable stack region, grow the stack.
+
+  //2-1-2. Else skip
+
+  //2-2. Search the spt and get the spte. If there are no spte[fault_addr], terminates the process.(Also invalid case)
+
+  //3. Check the SPTE_STATE of the spte.
+  //3-1. case SPTE_FILE:
+
+  //3-2. case SPTE_SWAP:
+
+  //3-3. case SPTE_ZERO:
+
+  //4. Obtain a frame to store the page. See Section 4.1.5 [Managing the Frame Table] for details.
+
+  //5. Fetch the data into the frame.
+  //5-1. case SPTE_FILE: read it from the file.
+
+  //5-2. case SPTE_SWAP: read it from the swap slot.
+
+  //5-3. case SPTE_ZERO: zero it.
+
+  //6. Point the page table entry(actual page table entry)
+  //for the fault_addr to the physical page. (userprog/pagedir.c api)
+
+#endif   
+/*******/
 
   /* To implement virtual memory, delete the rest of the function
      body, and replace it with code that brings in the page to
