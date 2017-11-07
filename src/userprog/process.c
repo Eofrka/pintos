@@ -770,19 +770,18 @@ setup_stack (void **esp, struct arguments* args)
   //3. Insert the spte into spt.
   spte_insert(&thread_current()->spt, &spte->he);
 
-  //4. Search the spt with key: 0xbffff000 (PHYS_BASE -0x1000).
-  //5. Get an empty frame
-  //5-1. If there are remaining frame => skip
+  //4. Obtain an empty frame
+  //4-1. If there are remaining frame => skip
 
-  //5-2. Else => page replacement algorithm.
+  //4-2. Else => page replacement algorithm.
 
-  //6. Insert the frame into frame table.
+  //5. Insert the frame into frame table.
 
-  //7. Update the frame table.
+  //6. Update the frame table.
 
-  //8. Install the frame into actual page table.
+  //7. Install the frame into actual page table.
 
-  //9. Update the spte, spt.
+  //8. Update the spte, spt.
 #endif  
 /*******/
 

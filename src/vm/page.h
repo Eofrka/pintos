@@ -19,10 +19,10 @@ struct supplemental_page_table_entry
   void* uvaddr;                   /* User virtual address. */
   enum SPTE_STATE state;          /* State of spte. */
   
-
+  //struct frame_table_entry* fte;  /* Frame table entry. */
 
   struct file* file;              /* File to do lazy loading. */
-  off_t ofs;                   /* File offset. */
+  off_t ofs;                      /* File offset. */
   size_t page_read_bytes;         /* Bytes to read from FILE. */
   size_t page_zero_bytes;         /* Bytes to fill zero. */
 
@@ -43,7 +43,7 @@ struct supplemental_page_table_entry* spte_create(void);
 void spte_print(struct hash_elem* spte_he, void* aux);
 bool spte_insert(struct hash* spt, struct hash_elem* spte_he);
 void spt_print(struct hash* spt);
-
+struct supplemental_page_table_entry* spte_find(struct hash* spt, void* uvaddr);
 
 #endif
 

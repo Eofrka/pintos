@@ -134,6 +134,7 @@ struct thread
 /*******/
 #ifdef VM
     struct hash spt;                    /* Supplemental page table. */
+    uint8_t* esp;                          /* User stack pointer. */
 #endif
 /*******/     
 

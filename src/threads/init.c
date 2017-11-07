@@ -32,7 +32,10 @@
 
 /* pj3 */
 /*******/
-#include"vm/page.h"
+#ifdef VM
+#include "vm/page.h"
+#include "vm/frame.h"
+#endif
 /*******/
 
 
@@ -94,6 +97,14 @@ main (void)
   palloc_init ();
   malloc_init ();
   paging_init ();
+  
+/* pj3 */
+/*******/
+#ifdef VM
+  /* Initialize frame_table and frame_lock. */
+  frame_init();
+#endif
+/*******/
 
   /* Segmentation. */
 #ifdef USERPROG

@@ -21,7 +21,7 @@ bool spte_less (const struct hash_elem* he_a, const struct hash_elem* he_b, void
   return spte_a->uvaddr < spte_b->uvaddr;
 }
 
-/* Initializes the supplemental_page_table. */
+/* Initializes the spt. */
 void spt_init(struct hash* spt)
 {
   bool success = hash_init(spt, spte_hash, spte_less, NULL);
@@ -31,7 +31,7 @@ void spt_init(struct hash* spt)
   }
 }
 
-/* Destroys the supplemental_page_table. */
+/* Destroys the spt. */
 void spt_destroy(struct hash* spt)
 {
   hash_destroy(spt, spte_free);
@@ -101,3 +101,21 @@ bool spte_insert(struct hash* spt, struct hash_elem* spte_he)
 }
 
 
+
+/* Finds spte in the spt. Returns spte if it is in the spt, or NULL otherwise. */
+struct supplemental_page_table_entry* spte_find(struct hash* spt, void* uvaddr)
+{
+  struct supplemental_page_table_entry tmp_spte;
+  tmp_spte.uvaddr = uvaddr;
+
+  struct hash_elem* found_he = hash_find(spt, &tmp_spte.he);
+  if(found_he == NULL)
+  {
+    return NULL;
+  }
+  else
+  {
+    return hash_entry(found_he, struct supplemental_page_table_entry, he);
+  }
+
+}
