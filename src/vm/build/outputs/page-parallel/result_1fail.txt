@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/vm/page-parallel -a page-parallel -p tests/vm/child-linear -a child-linear --swap-disk=4 -- -q   -f run page-parallel < /dev/null 2> tests/vm/page-parallel.errors |tee tests/vm/page-parallel.output
-Copying tests/vm/page-parallel into /tmp/rhUKSSSih1.dsk...
-Copying tests/vm/child-linear into /tmp/rhUKSSSih1.dsk...
-Writing command line to /tmp/5dZ9aUZ2Gj.dsk...
+Copying tests/vm/page-parallel into /tmp/bDeGI7U3dH.dsk...
+Copying tests/vm/child-linear into /tmp/bDeGI7U3dH.dsk...
+Writing command line to /tmp/9XDmkQAuU7.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-parallel put child-linear run page-parallel
@@ -26,7 +26,7 @@ Executing 'page-parallel':
 (page-parallel) wait for child 0
 CLOCK ALGORITHM NEED
 Kernel PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079cc 0xc010db35 0xc010b242 0xc0101e0d 0xc0101f3f 0x80481e1 0x8048102 0x80488d0.
+Call stack: 0xc01079cc 0xc010db88 0xc010b242 0xc0101e0d 0xc0101f3f 0x80481e1 0x8048102 0x80488d0.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -43,11 +43,11 @@ Powering off...
 perl -I../.. ../../tests/vm/page-parallel.ck tests/vm/page-parallel tests/vm/page-parallel.result
 FAIL tests/vm/page-parallel
 Kernel panic in run: PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079cc 0xc010db35 0xc010b242 0xc0101e0d 0xc0101f3f 0x80481e1 0x8048102 0x80488d0
+Call stack: 0xc01079cc 0xc010db88 0xc010b242 0xc0101e0d 0xc0101f3f 0x80481e1 0x8048102 0x80488d0
 Translation of call stack:
 In kernel.o:
 0xc01079cc: debug_panic (.../../lib/kernel/debug.c:34)
-0xc010db35: fte_obtain (...build/../../vm/frame.c:35)
+0xc010db88: fte_obtain (...build/../../vm/frame.c:35)
 0xc010b242: page_fault (.../userprog/exception.c:295)
 0xc0101e0d: intr_handler (..../threads/interrupt.c:361)
 0xc0101f3f: intr_entry (threads/intr-stubs.S:38)

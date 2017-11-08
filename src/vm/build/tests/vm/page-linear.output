@@ -1,5 +1,5 @@
-Copying tests/vm/page-linear into /tmp/WUHKI7pr8C.dsk...
-Writing command line to /tmp/aRPLBlDHF3.dsk...
+Copying tests/vm/page-linear into /tmp/hlk256aq06.dsk...
+Writing command line to /tmp/FqJ0h6JRlU.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-linear run page-linear
@@ -19,7 +19,7 @@ Executing 'page-linear':
 (page-linear) initialize
 CLOCK ALGORITHM NEED
 Kernel PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079cc 0xc010db35 0xc010b242 0xc0101e0d 0xc0101f3f 0x8049790 0x80480d2 0x8048930 0x8048964.
+Call stack: 0xc01079cc 0xc010db88 0xc010b242 0xc0101e0d 0xc0101f3f 0x8049790 0x80480d2 0x8048930 0x8048964.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.

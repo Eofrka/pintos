@@ -1,7 +1,7 @@
 pintos -v -k -T 600 --bochs  --fs-disk=2 -p tests/vm/page-merge-par -a page-merge-par -p tests/vm/child-sort -a child-sort --swap-disk=4 -- -q   -f run page-merge-par < /dev/null 2> tests/vm/page-merge-par.errors |tee tests/vm/page-merge-par.output
-Copying tests/vm/page-merge-par into /tmp/RSlZNukbNd.dsk...
-Copying tests/vm/child-sort into /tmp/RSlZNukbNd.dsk...
-Writing command line to /tmp/HLPRvXMKMQ.dsk...
+Copying tests/vm/page-merge-par into /tmp/tnzAn1ezJx.dsk...
+Copying tests/vm/child-sort into /tmp/tnzAn1ezJx.dsk...
+Writing command line to /tmp/GyMKEmPX83.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-merge-par put child-sort run page-merge-par
@@ -33,7 +33,7 @@ child-sort: exit(123)
 (page-merge-par) sort chunk 7
 CLOCK ALGORITHM NEED
 Kernel PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079cc 0xc010db35 0xc010b242 0xc0101e0d 0xc0101f3f 0xc010b316 0xc010b935 0xc010bb00 0xc0101e0d 0xc0101f3f 0x804a1b5 0x804810e 0x80487d0.
+Call stack: 0xc01079cc 0xc010db88 0xc010b242 0xc0101e0d 0xc0101f3f 0xc010b316 0xc010b935 0xc010bb00 0xc0101e0d 0xc0101f3f 0x804a1b5 0x804810e 0x80487d0.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -50,11 +50,11 @@ Powering off...
 perl -I../.. ../../tests/vm/page-merge-par.ck tests/vm/page-merge-par tests/vm/page-merge-par.result
 FAIL tests/vm/page-merge-par
 Kernel panic in run: PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079cc 0xc010db35 0xc010b242 0xc0101e0d 0xc0101f3f 0xc010b316 0xc010b935 0xc010bb00 0xc0101e0d 0xc0101f3f 0x804a1b5 0x804810e 0x80487d0
+Call stack: 0xc01079cc 0xc010db88 0xc010b242 0xc0101e0d 0xc0101f3f 0xc010b316 0xc010b935 0xc010bb00 0xc0101e0d 0xc0101f3f 0x804a1b5 0x804810e 0x80487d0
 Translation of call stack:
 In kernel.o:
 0xc01079cc: debug_panic (.../../lib/kernel/debug.c:34)
-0xc010db35: fte_obtain (...build/../../vm/frame.c:35)
+0xc010db88: fte_obtain (...build/../../vm/frame.c:35)
 0xc010b242: page_fault (.../userprog/exception.c:295)
 0xc0101e0d: intr_handler (..../threads/interrupt.c:361)
 0xc0101f3f: intr_entry (threads/intr-stubs.S:38)

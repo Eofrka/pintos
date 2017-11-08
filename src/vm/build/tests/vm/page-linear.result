@@ -1,10 +1,10 @@
 FAIL
 Kernel panic in run: PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079cc 0xc010db35 0xc010b242 0xc0101e0d 0xc0101f3f 0x8049790 0x80480d2 0x8048930 0x8048964
+Call stack: 0xc01079cc 0xc010db88 0xc010b242 0xc0101e0d 0xc0101f3f 0x8049790 0x80480d2 0x8048930 0x8048964
 Translation of call stack:
 In kernel.o:
 0xc01079cc: debug_panic (.../../lib/kernel/debug.c:34)
-0xc010db35: fte_obtain (...build/../../vm/frame.c:35)
+0xc010db88: fte_obtain (...build/../../vm/frame.c:35)
 0xc010b242: page_fault (.../userprog/exception.c:295)
 0xc0101e0d: intr_handler (..../threads/interrupt.c:361)
 0xc0101f3f: intr_entry (threads/intr-stubs.S:38)

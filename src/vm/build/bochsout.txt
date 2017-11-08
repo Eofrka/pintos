@@ -30,7 +30,7 @@
 00000000000i[     ]   SB16 support: no
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support:  
-00000000000i[MEM0 ] allocated memory at 0x2b945ffeb010. after alignment, vector=0x2b945ffec000
+00000000000i[MEM0 ] allocated memory at 0x2b68d28f8010. after alignment, vector=0x2b68d28f9000
 00000000000i[MEM0 ] 4.00MB
 00000000000i[MEM0 ] rom at 0xffff0000/65536 ('/usr/local/share/bochs/BIOS-bochs-latest')
 00000000000i[MEM0 ] rom at 0xc0000/32768 ('/usr/local/share/bochs/VGABIOS-lgpl-latest')
@@ -46,10 +46,10 @@
 00000000000i[     ] init_mem of 'extfpuirq' plugin device by virtual method
 00000000000i[     ] init_mem of 'speaker' plugin device by virtual method
 00000000000i[     ] init_dev of 'harddrv' plugin device by virtual method
-00000000000i[HD   ] HD on ata0-0: '/tmp/He32TL5xWW.dsk' 'flat' mode 
-00000000000i[HD   ] HD on ata0-1: '/tmp/kLCOqSyXjO.dsk' 'flat' mode 
-00000000000i[HD   ] HD on ata1-0: '/tmp/cMKwTQ6KOR.dsk' 'flat' mode 
-00000000000i[HD   ] HD on ata1-1: '/tmp/XWQJzzXFk7.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata0-0: '/tmp/D5bjC5dtxT.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata0-1: '/tmp/KPd0MlqA5u.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata1-0: '/tmp/N5zqMSeNCR.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata1-1: '/tmp/ayKt7EGUBy.dsk' 'flat' mode 
 00000000000i[HD   ] Using boot sequence disk, none, none
 00000000000i[HD   ] Floppy boot signature check is enabled
 00000000000i[     ] init_dev of 'keyboard' plugin device by virtual method
@@ -82,8 +82,8 @@
 00017621969i[CPU  ] protected mode
 00017621969i[CPU  ] CS.d_b = 32 bit
 00017621969i[CPU  ] SS.d_b = 32 bit
-00017621969i[CPU  ] | EAX=0000006e  EBX=c010de00  ECX=c002ff86  EDX=ffff8900
-00017621969i[CPU  ] | ESP=c002ff70  EBP=c002ff88  ESI=00000000  EDI=c010f499
+00017621969i[CPU  ] | EAX=0000006e  EBX=c010de60  ECX=c002ff86  EDX=ffff8900
+00017621969i[CPU  ] | ESP=c002ff70  EBP=c002ff88  ESI=00000000  EDI=c010f4f9
 00017621969i[CPU  ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af pf cf
 00017621969i[CPU  ] | SEG selector     base    limit G D
 00017621969i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D

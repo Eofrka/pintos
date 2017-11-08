@@ -108,14 +108,23 @@ bool fte_install(void* upage, void* kpage, bool writable)
 
 void ft_print(struct list* ft)
 {
-
-
+  printf("*****************************************************\n");
+  printf("frame table entries\n");
+  lock_acquire(&frame_lock);
+  struct list_elem* iter; 
+  for(iter = list_begin(ft); iter != list_end(ft); iter = list_next(iter))
+  {
+   struct frame_table_entry* fte = list_entry(iter, struct frame_table_entry, elem);
+   fte_print(fte);
+  }
+  lock_release(&frame_lock);
+  printf("*****************************************************\n");
 }
 
 void fte_print(struct frame_table_entry* fte)
 {
   printf("kvaddr: [0x%08x]\n", (uint32_t)fte->kvaddr);
-  hex_dump((uintptr_t)(fte->kvaddr), fte->kvaddr, 4096, true); 
+  //hex_dump((uintptr_t)(fte->kvaddr), fte->kvaddr, 4096, true); 
 }
 
 

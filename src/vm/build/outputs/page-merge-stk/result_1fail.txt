@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/vm/page-merge-stk -a page-merge-stk -p tests/vm/child-qsort -a child-qsort --swap-disk=4 -- -q   -f run page-merge-stk < /dev/null 2> tests/vm/page-merge-stk.errors |tee tests/vm/page-merge-stk.output
-Copying tests/vm/page-merge-stk into /tmp/4sJJQqaiUJ.dsk...
-Copying tests/vm/child-qsort into /tmp/4sJJQqaiUJ.dsk...
-Writing command line to /tmp/5sisNZUK7s.dsk...
+Copying tests/vm/page-merge-stk into /tmp/7qNTxQWQai.dsk...
+Copying tests/vm/child-qsort into /tmp/7qNTxQWQai.dsk...
+Writing command line to /tmp/stLAcDynux.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-merge-stk put child-qsort run page-merge-stk
@@ -27,7 +27,7 @@ Executing 'page-merge-stk':
 (page-merge-stk) sort chunk 4
 CLOCK ALGORITHM NEED
 Kernel PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079cc 0xc010db35 0xc010b242 0xc0101e0d 0xc0101f3f 0x8048a61 0x8048b33 0x804824a 0x804812d 0x80489d0.
+Call stack: 0xc01079cc 0xc010db88 0xc010b242 0xc0101e0d 0xc0101f3f 0x8048a61 0x8048b33 0x804824a 0x804812d 0x80489d0.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -44,11 +44,11 @@ Powering off...
 perl -I../.. ../../tests/vm/page-merge-stk.ck tests/vm/page-merge-stk tests/vm/page-merge-stk.result
 FAIL tests/vm/page-merge-stk
 Kernel panic in run: PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079cc 0xc010db35 0xc010b242 0xc0101e0d 0xc0101f3f 0x8048a61 0x8048b33 0x804824a 0x804812d 0x80489d0
+Call stack: 0xc01079cc 0xc010db88 0xc010b242 0xc0101e0d 0xc0101f3f 0x8048a61 0x8048b33 0x804824a 0x804812d 0x80489d0
 Translation of call stack:
 In kernel.o:
 0xc01079cc: debug_panic (.../../lib/kernel/debug.c:34)
-0xc010db35: fte_obtain (...build/../../vm/frame.c:35)
+0xc010db88: fte_obtain (...build/../../vm/frame.c:35)
 0xc010b242: page_fault (.../userprog/exception.c:295)
 0xc0101e0d: intr_handler (..../threads/interrupt.c:361)
 0xc0101f3f: intr_entry (threads/intr-stubs.S:38)
