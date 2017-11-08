@@ -19,7 +19,7 @@ struct supplemental_page_table_entry
   void* uvaddr;                   /* User virtual address. */
   enum SPTE_STATE state;          /* State of spte. */
   
-  //struct frame_table_entry* fte;  /* Frame table entry. */
+  struct frame_table_entry* fte;  /* Frame table entry. */
 
   struct file* file;              /* File to do lazy loading. */
   off_t ofs;                      /* File offset. */
@@ -36,7 +36,6 @@ struct supplemental_page_table_entry
 unsigned spte_hash(const struct hash_elem *he, void* aux);
 bool spte_less (const struct hash_elem* he_a, const struct hash_elem* he_b, void* aux);
 void spt_init(struct hash* spt);
-//TODO: TND
 void spt_destroy(struct hash* spt);
 void spte_free(struct hash_elem* spte_he, void* aux);
 struct supplemental_page_table_entry* spte_create(void);
@@ -46,4 +45,3 @@ void spt_print(struct hash* spt);
 struct supplemental_page_table_entry* spte_find(struct hash* spt, void* uvaddr);
 
 #endif
-

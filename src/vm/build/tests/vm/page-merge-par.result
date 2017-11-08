@@ -1,2 +1,22 @@
 FAIL
-Run didn't produce any output
+Kernel panic in run: PANIC at ../../vm/frame.c:31 in fte_obtain(): no free frames...clock algorithm need
+Call stack: 0xc01079cc 0xc010d9a4 0xc010b033 0xc0101e0d 0xc0101f3f 0xc010b1d6 0xc010b7f5 0xc010b9c0 0xc0101e0d 0xc0101f3f 0x804a1b5 0x804810e 0x80487d0
+Translation of call stack:
+In kernel.o:
+0xc01079cc: debug_panic (.../../lib/kernel/debug.c:34)
+0xc010d9a4: fte_obtain (...build/../../vm/frame.c:34)
+0xc010b033: page_fault (.../userprog/exception.c:241)
+0xc0101e0d: intr_handler (..../threads/interrupt.c:361)
+0xc0101f3f: intr_entry (threads/intr-stubs.S:38)
+0xc010b1d6: get_user (.../../userprog/syscall.c:40)
+0xc010b7f5: check_uaddr (.../../userprog/syscall.c:68)
+0xc010b9c0: syscall_handler (...../userprog/syscall.c:483)
+0xc0101e0d: intr_handler (..../threads/interrupt.c:361)
+0xc0101f3f: intr_entry (threads/intr-stubs.S:38)
+In tests/vm/page-merge-par:
+0x0804a1b5: strlcpy (...ld/../../lib/string.c:333)
+0x0804810e: init (...ts/vm/parallel-merge.c:31)
+0x080487d0: compare_bytes (...ild/../../tests/lib.c:181)
+Translations of user virtual addresses above are based on a guess at
+the binary to use.  If this guess is incorrect, then those
+translations will be misleading.

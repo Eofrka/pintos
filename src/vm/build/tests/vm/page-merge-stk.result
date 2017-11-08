@@ -1,2 +1,19 @@
 FAIL
-Run didn't produce any output
+Kernel panic in run: PANIC at ../../vm/frame.c:31 in fte_obtain(): no free frames...clock algorithm need
+Call stack: 0xc01079cc 0xc010d9a4 0xc010b033 0xc0101e0d 0xc0101f3f 0x8048a61 0x8048b33 0x804824a 0x804812d 0x80489d0
+Translation of call stack:
+In kernel.o:
+0xc01079cc: debug_panic (.../../lib/kernel/debug.c:34)
+0xc010d9a4: fte_obtain (...build/../../vm/frame.c:34)
+0xc010b033: page_fault (.../userprog/exception.c:241)
+0xc0101e0d: intr_handler (..../threads/interrupt.c:361)
+0xc0101f3f: intr_entry (threads/intr-stubs.S:38)
+In tests/vm/page-merge-stk:
+0x08048a61: check_file (...ild/../../tests/lib.c:161)
+0x08048b33: exec_children (...uild/../../tests/lib.c:89)
+0x0804824a: sort_chunks (...ts/vm/parallel-merge.c:44)
+0x0804812d: init (...ts/vm/parallel-merge.c:32)
+0x080489d0: check_file_handle (...ild/../../tests/lib.c:145)
+Translations of user virtual addresses above are based on a guess at
+the binary to use.  If this guess is incorrect, then those
+translations will be misleading.

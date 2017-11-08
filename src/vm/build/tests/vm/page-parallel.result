@@ -1,2 +1,17 @@
 FAIL
-run: exec "child-linear": FAILED
+Kernel panic in run: PANIC at ../../vm/frame.c:31 in fte_obtain(): no free frames...clock algorithm need
+Call stack: 0xc01079cc 0xc010d9a4 0xc010b033 0xc0101e0d 0xc0101f3f 0x80481e1 0x8048102 0x80488d0
+Translation of call stack:
+In kernel.o:
+0xc01079cc: debug_panic (.../../lib/kernel/debug.c:34)
+0xc010d9a4: fte_obtain (...build/../../vm/frame.c:34)
+0xc010b033: page_fault (.../userprog/exception.c:241)
+0xc0101e0d: intr_handler (..../threads/interrupt.c:361)
+0xc0101f3f: intr_entry (threads/intr-stubs.S:38)
+In tests/vm/page-parallel:
+0x080481e1: vmsg (...uild/../../tests/lib.c:23)
+0x08048102: test_main (...sts/vm/page-parallel.c:20)
+0x080488d0: random_bytes (...ild/../../lib/random.c:70)
+Translations of user virtual addresses above are based on a guess at
+the binary to use.  If this guess is incorrect, then those
+translations will be misleading.

@@ -1,5 +1,5 @@
-Copying tests/userprog/sc-bad-sp into /tmp/EMwOVIFIst.dsk...
-Writing command line to /tmp/AuvRfdLjlV.dsk...
+Copying tests/userprog/sc-bad-sp into /tmp/O7aKtp7FfA.dsk...
+Writing command line to /tmp/5okpRgb5SZ.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put sc-bad-sp run sc-bad-sp
@@ -18,13 +18,13 @@ Executing 'sc-bad-sp':
 (sc-bad-sp) begin
 sc-bad-sp: exit(-1)
 Execution of 'sc-bad-sp' complete.
-Timer: 297 ticks
-Thread: 30 idle ticks, 238 kernel ticks, 32 user ticks
+Timer: 299 ticks
+Thread: 30 idle ticks, 237 kernel ticks, 35 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 59 reads, 204 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 898 characters output
 Keyboard: 0 keys pressed
-Exception: 1 page faults
+Exception: 6 page faults
 Powering off...

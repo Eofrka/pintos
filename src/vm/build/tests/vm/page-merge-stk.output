@@ -1,6 +1,6 @@
-Copying tests/vm/page-merge-stk into /tmp/8AZhGE6qr5.dsk...
-Copying tests/vm/child-qsort into /tmp/8AZhGE6qr5.dsk...
-Writing command line to /tmp/TslBiuP23D.dsk...
+Copying tests/vm/page-merge-stk into /tmp/sNjKOIcBR8.dsk...
+Copying tests/vm/child-qsort into /tmp/sNjKOIcBR8.dsk...
+Writing command line to /tmp/cyPxSgkpr9.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-merge-stk put child-qsort run page-merge-stk
@@ -17,14 +17,25 @@ Boot complete.
 Putting 'page-merge-stk' into the file system...
 Putting 'child-qsort' into the file system...
 Executing 'page-merge-stk':
-Execution of 'page-merge-stk' complete.
-Timer: 1574 ticks
-Thread: 30 idle ticks, 337 kernel ticks, 1214 user ticks
+(page-merge-stk) begin
+(page-merge-stk) init
+(page-merge-stk) sort chunk 0
+(page-merge-stk) sort chunk 1
+(page-merge-stk) sort chunk 2
+(page-merge-stk) sort chunk 3
+(page-merge-stk) sort chunk 4
+Kernel PANIC at ../../vm/frame.c:31 in fte_obtain(): no free frames...clock algorithm need
+Call stack: 0xc01079cc 0xc010d9a4 0xc010b033 0xc0101e0d 0xc0101f3f 0x8048a61 0x8048b33 0x804824a 0x804812d 0x80489d0.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 9792 ticks
+Thread: 30 idle ticks, 325 kernel ticks, 9437 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 88 reads, 436 writes
+hd0:1: 887 reads, 2760 writes
 hd1:0: 213 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 951 characters output
+Console: 1471 characters output
 Keyboard: 0 keys pressed
-Exception: 0 page faults
+Exception: 369 page faults
 Powering off...

@@ -15,6 +15,7 @@
 #ifdef VM
 #include "vm/page.h"
 #include "threads/vaddr.h"
+#include "vm/frame.h"
 #define MAX_STACK_SIZE 0x800000
 
 #endif
@@ -171,21 +172,12 @@ page_fault (struct intr_frame *f)
   write = (f->error_code & PF_W) != 0;
   user = (f->error_code & PF_U) != 0;
 
-  /* pj2 */
-  /*******/
-  if(!user)
-  {
-    f->eip = (void*)f->eax;
-    f->eax = 0xffffffff;
-    return;
-  }
-  /*******/
-
 /* pj3 */
 /*******/
 #ifdef VM
   //
   struct thread* curr = thread_current();
+  printf("[fault_addr]:[0x%08x]\n", fault_addr);
   spt_print(&curr->spt);
   uint8_t* esp = user? (uint8_t*)f->esp : curr->esp; 
 
@@ -222,6 +214,7 @@ page_fault (struct intr_frame *f)
     //2. Initialize the spte.
     spte->uvaddr = fault_page_vaddr;
     spte->state = SPTE_ZERO;
+    spte->fte = NULL;
     spte->file = NULL;
     spte->ofs = 0;
     spte->page_read_bytes =0;
@@ -245,20 +238,36 @@ page_fault (struct intr_frame *f)
 
 
   //3. Obtain a frame to store the page. See Section 4.1.5 [Managing the Frame Table] for details.
-
+  struct frame_table_entry* fte = fte_obtain(PAL_USER);
   
   //4. Fetch the data into the frame.
-  //4-1. case SPTE_FILE: read it from the file.
+  bool fetch_success = fte_fetch(&fte->elem, &spte->he);
+  ASSERT(fetch_success == true);
 
-  //4-2. case SPTE_SWAP: read it from the swap slot.
+  //5. Insert the frame into frame table.
+  fte_insert(&frame_table, &fte->elem);
 
-  //4-3. case SPTE_ZERO: zero it.
+  //6. Install the frame into actual page table.
+  if(!fte_install(spte->uvaddr, fte->kvaddr, spte->writable))
+  {
+    PANIC("install failed");
+  }
+  //7. Update the spte, spt.
+  spte->state = SPTE_LOADED;
+  return;
 
-  //5. Point the page table entry(actual page table entry)
-  //for the fault_addr to the physical page. (userprog/pagedir.c api)
 
 #endif   
 /*******/
+  /* pj2 */
+  /*******/
+  if(!user)
+  {
+    f->eip = (void*)f->eax;
+    f->eax = 0xffffffff;
+    return;
+  }
+  /*******/
 
   /* To implement virtual memory, delete the rest of the function
      body, and replace it with code that brings in the page to
@@ -270,4 +279,5 @@ page_fault (struct intr_frame *f)
     user ? "user" : "kernel");
   kill (f);
 }
+
 

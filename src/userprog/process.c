@@ -29,6 +29,7 @@
 /*******/
 #ifdef VM
 #include "vm/page.h"
+#include "vm/frame.h"
 #endif
 /*******/
 
@@ -687,10 +688,12 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
     //2. Initialize the spte.
     spte->uvaddr = upage;
     spte->state = SPTE_FILE;
+    spte->fte = NULL;
     spte->file = file;
     spte->ofs = ofs;
     spte->page_read_bytes = page_read_bytes;
     spte->page_zero_bytes = page_zero_bytes;
+    spte->writable = writable;
     spte->he.list_elem.prev = NULL;
     spte->he.list_elem.next = NULL;
 
@@ -710,7 +713,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 /*******/  
   while (read_bytes > 0 || zero_bytes > 0) 
   {
-      /* Do calculate how to fill this page.
+    /* Do calculate how to fill this page.
          We will read PAGE_READ_BYTES bytes from FILE
          and zero the final PAGE_ZERO_BYTES bytes. */
     size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
@@ -721,7 +724,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
     if (kpage == NULL)
       return false;
 
-      /* Load this page. */
+    /* Load this page. */
     if (file_read (file, kpage, page_read_bytes) != (int) page_read_bytes)
     {
       palloc_free_page (kpage);
@@ -729,7 +732,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
     }
     memset (kpage + page_read_bytes, 0, page_zero_bytes);
 
-      /* Add the page to the process's address space. */
+    /* Add the page to the process's address space. */
     if (!install_page (upage, kpage, writable)) 
     {
       palloc_free_page (kpage);
@@ -743,6 +746,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
   }
   return true;
 }
+
 
 /* Create a minimal stack by mapping a zeroed page at the top of
    user virtual memory. */
@@ -759,6 +763,7 @@ setup_stack (void **esp, struct arguments* args)
   //2. Initialize the spte.
   spte->uvaddr = (void*)((uint32_t)PHYS_BASE - 0x1000);
   spte->state = SPTE_ZERO;
+  spte->fte = NULL;
   spte->file = NULL;
   spte->ofs =0;
   spte->page_read_bytes =0;
@@ -771,17 +776,20 @@ setup_stack (void **esp, struct arguments* args)
   spte_insert(&thread_current()->spt, &spte->he);
 
   //4. Obtain an empty frame
-  //4-1. If there are remaining frame => skip
-
-  //4-2. Else => page replacement algorithm.
-
+  struct frame_table_entry* fte = fte_obtain(PAL_USER);
+  bool fetch_success = fte_fetch(&fte->elem, &spte->he);
+  ASSERT(fetch_success == true);
   //5. Insert the frame into frame table.
-
-  //6. Update the frame table.
-
-  //7. Install the frame into actual page table.
-
-  //8. Update the spte, spt.
+  fte_insert(&frame_table, &fte->elem);
+  //6. Install the frame into actual page table.
+  if(!fte_install(spte->uvaddr, fte->kvaddr, spte->writable))
+  {
+    PANIC("install failed");
+  }
+  //7. Update the spte, spt.
+  spte->state = SPTE_LOADED;
+  push_arguments(args,esp);
+  return true;
 #endif  
 /*******/
 

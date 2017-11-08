@@ -1,5 +1,5 @@
-Copying tests/vm/mmap-shuffle into /tmp/sX8t2ULf1U.dsk...
-Writing command line to /tmp/PeKIonkvAy.dsk...
+Copying tests/vm/mmap-shuffle into /tmp/KGzZOloTF2.dsk...
+Writing command line to /tmp/a9X8gxQtWV.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-shuffle run mmap-shuffle
@@ -24,10 +24,10 @@ Execution of 'mmap-shuffle' complete.
 Timer: 408 ticks
 Thread: 30 idle ticks, 245 kernel ticks, 136 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 89 reads, 484 writes
+hd0:1: 87 reads, 484 writes
 hd1:0: 108 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1010 characters output
 Keyboard: 0 keys pressed
-Exception: 0 page faults
+Exception: 4 page faults
 Powering off...

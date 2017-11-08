@@ -5,6 +5,7 @@
 #include <string.h>
 #include <syscall.h>
 
+
 const char *test_name;
 bool quiet = false;
 
@@ -170,14 +171,12 @@ compare_bytes (const void *read_data_, const void *expected_data_, size_t size,
 
   if (!memcmp (read_data, expected_data, size))
     return;
-  
   for (i = 0; i < size; i++)
     if (read_data[i] != expected_data[i])
       break;
   for (j = i + 1; j < size; j++)
     if (read_data[j] == expected_data[j])
       break;
-
   quiet = false;
   msg ("%zu bytes read starting at offset %zu in \"%s\" differ "
        "from expected.", j - i, ofs + i, file_name);

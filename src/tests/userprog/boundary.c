@@ -7,6 +7,8 @@
 #include <string.h>
 #include "tests/userprog/boundary.h"
 
+#include <stdio.h>
+
 static char dst[8192];
 
 /* Returns the beginning of a page.  There are at least 2048
