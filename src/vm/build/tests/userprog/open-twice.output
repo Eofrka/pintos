@@ -1,6 +1,6 @@
-Copying tests/userprog/open-twice into /tmp/ZmNopdRCoX.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/ZmNopdRCoX.dsk...
-Writing command line to /tmp/WY3McJgFe7.dsk...
+Copying tests/userprog/open-twice into /tmp/c4YQzl29nF.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/c4YQzl29nF.dsk...
+Writing command line to /tmp/yISCEyMiRu.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put open-twice put sample.txt run open-twice
@@ -23,8 +23,8 @@ Executing 'open-twice':
 (open-twice) end
 open-twice: exit(0)
 Execution of 'open-twice' complete.
-Timer: 366 ticks
-Thread: 30 idle ticks, 267 kernel ticks, 72 user ticks
+Timer: 367 ticks
+Thread: 30 idle ticks, 267 kernel ticks, 73 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 99 reads, 210 writes
 hd1:0: 100 reads, 0 writes

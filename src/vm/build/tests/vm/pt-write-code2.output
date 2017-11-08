@@ -1,6 +1,6 @@
-Copying tests/vm/pt-write-code2 into /tmp/115s0dxHPV.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/115s0dxHPV.dsk...
-Writing command line to /tmp/csnfJ5EQeP.dsk...
+Copying tests/vm/pt-write-code2 into /tmp/o7bwFMVEEW.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/o7bwFMVEEW.dsk...
+Writing command line to /tmp/VFM0HRGp18.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put pt-write-code2 put sample.txt run pt-write-code2
@@ -17,81 +17,17 @@ Boot complete.
 Putting 'pt-write-code2' into the file system...
 Putting 'sample.txt' into the file system...
 Executing 'pt-write-code2':
-[fault_addr]:[0x0804876c]
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-spt entries
-uvaddr: [0x0804c000], SPTE_STATE: SPTE_FILE
-uvaddr: [0x0804b000], SPTE_STATE: SPTE_FILE
-uvaddr: [0x0804a000], SPTE_STATE: SPTE_FILE
-uvaddr: [0x08049000], SPTE_STATE: SPTE_FILE
-uvaddr: [0x08048000], SPTE_STATE: SPTE_FILE
-uvaddr: [0xbffff000], SPTE_STATE: SPTE_LOAD
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-[fault_addr]:[0x0804c0e8]
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-spt entries
-uvaddr: [0x0804c000], SPTE_STATE: SPTE_FILE
-uvaddr: [0x0804b000], SPTE_STATE: SPTE_FILE
-uvaddr: [0x0804a000], SPTE_STATE: SPTE_FILE
-uvaddr: [0x08049000], SPTE_STATE: SPTE_FILE
-uvaddr: [0x08048000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0xbffff000], SPTE_STATE: SPTE_LOAD
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-[fault_addr]:[0x0804bbc0]
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-spt entries
-uvaddr: [0x0804c000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0x0804b000], SPTE_STATE: SPTE_FILE
-uvaddr: [0x0804a000], SPTE_STATE: SPTE_FILE
-uvaddr: [0x08049000], SPTE_STATE: SPTE_FILE
-uvaddr: [0x08048000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0xbffff000], SPTE_STATE: SPTE_LOAD
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-[fault_addr]:[0x080492c1]
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-spt entries
-uvaddr: [0x0804c000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0x0804b000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0x0804a000], SPTE_STATE: SPTE_FILE
-uvaddr: [0x08049000], SPTE_STATE: SPTE_FILE
-uvaddr: [0x08048000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0xbffff000], SPTE_STATE: SPTE_LOAD
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-[fault_addr]:[0x0804a6eb]
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-spt entries
-uvaddr: [0x0804c000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0x0804b000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0x0804a000], SPTE_STATE: SPTE_FILE
-uvaddr: [0x08049000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0x08048000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0xbffff000], SPTE_STATE: SPTE_LOAD
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 (pt-write-code2) begin
 (pt-write-code2) open "sample.txt"
-[fault_addr]:[0x080480a0]
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-spt entries
-uvaddr: [0x0804c000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0x0804b000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0x0804a000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0x08049000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0x08048000], SPTE_STATE: SPTE_LOAD
-uvaddr: [0xbffff000], SPTE_STATE: SPTE_LOAD
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 pt-write-code2: exit(-1)
-Kernel PANIC at ../../threads/synch.c:240 in lock_acquire(): assertion `!lock_held_by_current_thread (lock)' failed.
-Call stack: 0xc01079cc 0xc0103272 0xc010b2cd 0xc01099d5 0xc0101238 0xc010b6af 0xc010b045 0xc0101e0d 0xc0101f3f 0xc010b216 0xc010b76e 0xc010b9f3 0xc0101e0d 0xc0101f3f 0x804a165 0x80480e7 0x8048750 0x8048784.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Timer: 633 ticks
-Thread: 30 idle ticks, 240 kernel ticks, 363 user ticks
+Execution of 'pt-write-code2' complete.
+Timer: 348 ticks
+Thread: 30 idle ticks, 271 kernel ticks, 50 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 90 reads, 212 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 3736 characters output
+Console: 1029 characters output
 Keyboard: 0 keys pressed
 Exception: 6 page faults
 Powering off...

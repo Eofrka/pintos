@@ -42,6 +42,17 @@ void spt_destroy(struct hash* spt)
 void spte_free(struct hash_elem* spte_he, void* aux  UNUSED)
 {
   struct supplemental_page_table_entry* spte = hash_entry(spte_he, struct supplemental_page_table_entry, he);
+  //TODO://free additional data structure for each case
+  
+  //case SPTE_FILE:
+
+  //case SPTE_SWAP:
+
+  //case SPTE_ZERO:
+
+  //case SPTE_LOADED:
+
+
   SAFE_FREE(spte);
 }
 

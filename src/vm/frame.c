@@ -28,6 +28,7 @@ struct frame_table_entry* fte_obtain(enum palloc_flags flags)
   if (kpage == NULL)
   {
     //TODO: Clock algorithm.
+    printf("CLOCK ALGORITHM NEED\n");
     PANIC("no free frames...clock algorithm need");
   }
   ASSERT(kpage != NULL);
@@ -104,3 +105,17 @@ bool fte_install(void* upage, void* kpage, bool writable)
   return (pagedir_get_page (t->pagedir, upage) == NULL
     && pagedir_set_page (t->pagedir, upage, kpage, writable));
 }
+
+void ft_print(struct list* ft)
+{
+
+
+}
+
+void fte_print(struct frame_table_entry* fte)
+{
+  printf("kvaddr: [0x%08x]\n", (uint32_t)fte->kvaddr);
+  hex_dump((uintptr_t)(fte->kvaddr), fte->kvaddr, 4096, true); 
+}
+
+

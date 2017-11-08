@@ -1,6 +1,6 @@
-Copying tests/vm/page-merge-seq into /tmp/54KnZXQ5Dx.dsk...
-Copying tests/vm/child-sort into /tmp/54KnZXQ5Dx.dsk...
-Writing command line to /tmp/10zXPfXcKa.dsk...
+Copying tests/vm/page-merge-seq into /tmp/TS6vUlzZg0.dsk...
+Copying tests/vm/child-sort into /tmp/TS6vUlzZg0.dsk...
+Writing command line to /tmp/rOswCRkUh6.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-merge-seq put child-sort run page-merge-seq
@@ -52,18 +52,19 @@ child-sort: exit(123)
 (page-merge-seq) sort chunk 15
 child-sort: exit(123)
 (page-merge-seq) merge
-Kernel PANIC at ../../vm/frame.c:31 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079cc 0xc010d9a4 0xc010b033 0xc0101e0d 0xc0101f3f 0x80482c1 0x8048b10 0x8048b44.
+CLOCK ALGORITHM NEED
+Kernel PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
+Call stack: 0xc01079cc 0xc010db35 0xc010b242 0xc0101e0d 0xc0101f3f 0x80482c1 0x8048b10 0x8048b44.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 40828 ticks
-Thread: 30 idle ticks, 1604 kernel ticks, 39194 user ticks
+Timer: 40829 ticks
+Thread: 30 idle ticks, 1599 kernel ticks, 39200 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 4831 reads, 4582 writes
 hd1:0: 205 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2164 characters output
+Console: 2185 characters output
 Keyboard: 0 keys pressed
 Exception: 949 page faults
 Powering off...

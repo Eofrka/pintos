@@ -1,6 +1,6 @@
-Copying tests/vm/page-parallel into /tmp/W2yVGpPgyD.dsk...
-Copying tests/vm/child-linear into /tmp/W2yVGpPgyD.dsk...
-Writing command line to /tmp/f3Tw9qe0I7.dsk...
+Copying tests/vm/page-parallel into /tmp/rhUKSSSih1.dsk...
+Copying tests/vm/child-linear into /tmp/rhUKSSSih1.dsk...
+Writing command line to /tmp/5dZ9aUZ2Gj.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-parallel put child-linear run page-parallel
@@ -23,18 +23,19 @@ Executing 'page-parallel':
 (page-parallel) exec "child-linear"
 (page-parallel) exec "child-linear"
 (page-parallel) wait for child 0
-Kernel PANIC at ../../vm/frame.c:31 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079cc 0xc010d9a4 0xc010b033 0xc0101e0d 0xc0101f3f 0x80481e1 0x8048102 0x80488d0.
+CLOCK ALGORITHM NEED
+Kernel PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
+Call stack: 0xc01079cc 0xc010db35 0xc010b242 0xc0101e0d 0xc0101f3f 0x80481e1 0x8048102 0x80488d0.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 5210 ticks
-Thread: 30 idle ticks, 318 kernel ticks, 4862 user ticks
+Timer: 5230 ticks
+Thread: 30 idle ticks, 318 kernel ticks, 4882 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 175 reads, 410 writes
 hd1:0: 200 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1452 characters output
+Console: 1473 characters output
 Keyboard: 0 keys pressed
-Exception: 369 page faults
+Exception: 371 page faults
 Powering off...

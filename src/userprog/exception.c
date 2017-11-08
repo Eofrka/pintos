@@ -16,6 +16,8 @@
 #include "vm/page.h"
 #include "threads/vaddr.h"
 #include "vm/frame.h"
+#include "threads/malloc.h"
+
 #define MAX_STACK_SIZE 0x800000
 
 #endif
@@ -177,16 +179,54 @@ page_fault (struct intr_frame *f)
 #ifdef VM
   //
   struct thread* curr = thread_current();
-  printf("[fault_addr]:[0x%08x]\n", fault_addr);
-  spt_print(&curr->spt);
+  //printf("[fault_addr]:[0x%08x]\n", fault_addr);
+  //spt_print(&curr->spt);
+
+  /* Get the esp. */
   uint8_t* esp = user? (uint8_t*)f->esp : curr->esp; 
 
 
+  /* Get the valid spte. */
+  /*********************************************************************************************************************************/
   //1. Check the fault_addr is valid or not. It it is invalid,
   // terminates the process and thereby frees all of its resources(this part is in process_exit()).
+  if(!not_present)
+  {
+    if(!user)
+    {
+      f->eip = (void*)f->eax;
+      f->eax = 0xffffffff;
+      return;
+    }
+    /* To implement virtual memory, delete the rest of the function
+     body, and replace it with code that brings in the page to
+     which fault_addr refers. */
+    printf ("Page fault at %p: %s error %s page in %s context.\n",
+      fault_addr,
+      not_present ? "not present" : "rights violation",
+      write ? "writing" : "reading",
+      user ? "user" : "kernel");
+    kill (f);
+
+  }
+
   if(((uint32_t)fault_addr >= (uint32_t)PHYS_BASE) || ((uint32_t)fault_addr < (uint32_t)0x08048000))
   {
-    syscall_exit(-1);
+    if(!user)
+    {
+      f->eip = (void*)f->eax;
+      f->eax = 0xffffffff;
+      return;
+    }
+    /* To implement virtual memory, delete the rest of the function
+     body, and replace it with code that brings in the page to
+     which fault_addr refers. */
+    printf ("Page fault at %p: %s error %s page in %s context.\n",
+      fault_addr,
+      not_present ? "not present" : "rights violation",
+      write ? "writing" : "reading",
+      user ? "user" : "kernel");
+    kill (f);
   }
 
   //2. If the memory reference is valid.
@@ -229,17 +269,31 @@ page_fault (struct intr_frame *f)
 
   //2-1-2. Else skip
 
-  //2-2. Search the spt and get the spte. If there are no spte[fault_addr] or write to RO page, terminates the process.(Also invalid case)
+  //2-2. Search the spt and get the spte. If there are no spte[fault_addr] terminates the process.(Also invalid case)
   struct supplemental_page_table_entry* spte = spte_find(&curr->spt, fault_page_vaddr);
-  if(spte == NULL || (write == true && spte->writable == false))
+  if(spte == NULL)
   {
-    syscall_exit(-1);
+    if(!user)
+    {
+      f->eip = (void*)f->eax;
+      f->eax = 0xffffffff;
+      return;
+    }
+    /* To implement virtual memory, delete the rest of the function
+     body, and replace it with code that brings in the page to
+     which fault_addr refers. */
+    printf ("Page fault at %p: %s error %s page in %s context.\n",
+      fault_addr,
+      not_present ? "not present" : "rights violation",
+      write ? "writing" : "reading",
+      user ? "user" : "kernel");
+    kill (f);
   }
 
-
+  /*********************************************************************************************************************************/
   //3. Obtain a frame to store the page. See Section 4.1.5 [Managing the Frame Table] for details.
   struct frame_table_entry* fte = fte_obtain(PAL_USER);
-  
+
   //4. Fetch the data into the frame.
   bool fetch_success = fte_fetch(&fte->elem, &spte->he);
   ASSERT(fetch_success == true);

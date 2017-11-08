@@ -1,6 +1,6 @@
-Copying tests/vm/page-merge-mm into /tmp/XyKMteyR3X.dsk...
-Copying tests/vm/child-qsort-mm into /tmp/XyKMteyR3X.dsk...
-Writing command line to /tmp/5J9YHpGEfv.dsk...
+Copying tests/vm/page-merge-mm into /tmp/aNmimMGfeY.dsk...
+Copying tests/vm/child-qsort-mm into /tmp/aNmimMGfeY.dsk...
+Writing command line to /tmp/mRadN9cIXD.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-merge-mm put child-qsort-mm run page-merge-mm
@@ -37,18 +37,5 @@ child-qsort-mm: exit(-1)
 (page-merge-mm) wait for child 0
 (page-merge-mm) wait for child 0: FAILED
 page-merge-mm: exit(1)
-page-merge-mm: exit(-1)
-page-merge-mm: exit(-1)
-page-merge-mm: exit(-1)
 child-qsort-mm: exit(-1)
-Execution of 'page-merge-mm' complete.
-Timer: 8627 ticks
-Thread: 30 idle ticks, 1020 kernel ticks, 7581 user ticks
-hd0:0: 0 reads, 0 writes
-hd0:1: 692 reads, 4564 writes
-hd1:0: 213 reads, 0 writes
-hd1:1: 0 reads, 0 writes
-Console: 1599 characters output
-Keyboard: 0 keys pressed
-Exception: 288 page faults
-Powering off...
+Simulation terminated due to test failure.

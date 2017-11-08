@@ -1,5 +1,5 @@
-Copying tests/vm/page-linear into /tmp/4a66YKZzeK.dsk...
-Writing command line to /tmp/hMdHmrcqXN.dsk...
+Copying tests/vm/page-linear into /tmp/WUHKI7pr8C.dsk...
+Writing command line to /tmp/aRPLBlDHF3.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-linear run page-linear
@@ -17,18 +17,19 @@ Putting 'page-linear' into the file system...
 Executing 'page-linear':
 (page-linear) begin
 (page-linear) initialize
-Kernel PANIC at ../../vm/frame.c:31 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079cc 0xc010d9a4 0xc010b033 0xc0101e0d 0xc0101f3f 0x8049790 0x80480d2 0x8048930 0x8048964.
+CLOCK ALGORITHM NEED
+Kernel PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
+Call stack: 0xc01079cc 0xc010db35 0xc010b242 0xc0101e0d 0xc0101f3f 0x8049790 0x80480d2 0x8048930 0x8048964.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 2317 ticks
-Thread: 30 idle ticks, 214 kernel ticks, 2073 user ticks
+Timer: 2321 ticks
+Thread: 30 idle ticks, 214 kernel ticks, 2077 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 60 reads, 216 writes
 hd1:0: 104 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1235 characters output
+Console: 1256 characters output
 Keyboard: 0 keys pressed
 Exception: 373 page faults
 Powering off...

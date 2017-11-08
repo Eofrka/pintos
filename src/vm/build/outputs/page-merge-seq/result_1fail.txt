@@ -1,0 +1,89 @@
+pintos -v -k -T 600 --bochs  --fs-disk=2 -p tests/vm/page-merge-seq -a page-merge-seq -p tests/vm/child-sort -a child-sort --swap-disk=4 -- -q   -f run page-merge-seq < /dev/null 2> tests/vm/page-merge-seq.errors |tee tests/vm/page-merge-seq.output
+Copying tests/vm/page-merge-seq into /tmp/TS6vUlzZg0.dsk...
+Copying tests/vm/child-sort into /tmp/TS6vUlzZg0.dsk...
+Writing command line to /tmp/rOswCRkUh6.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
+Kernel command line: -q -f put page-merge-seq put child-sort run page-merge-seq
+Pintos booting with 4,096 kB RAM...
+374 pages available in kernel pool.
+373 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
+hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
+hd1:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00021"
+hd1:1: detected 8,064 sector (3 MB) disk, model "Generic 1234", serial "BXHD00022"
+Formatting file system...done.
+Boot complete.
+Putting 'page-merge-seq' into the file system...
+Putting 'child-sort' into the file system...
+Executing 'page-merge-seq':
+(page-merge-seq) begin
+(page-merge-seq) init
+(page-merge-seq) sort chunk 0
+child-sort: exit(123)
+(page-merge-seq) sort chunk 1
+child-sort: exit(123)
+(page-merge-seq) sort chunk 2
+child-sort: exit(123)
+(page-merge-seq) sort chunk 3
+child-sort: exit(123)
+(page-merge-seq) sort chunk 4
+child-sort: exit(123)
+(page-merge-seq) sort chunk 5
+child-sort: exit(123)
+(page-merge-seq) sort chunk 6
+child-sort: exit(123)
+(page-merge-seq) sort chunk 7
+child-sort: exit(123)
+(page-merge-seq) sort chunk 8
+child-sort: exit(123)
+(page-merge-seq) sort chunk 9
+child-sort: exit(123)
+(page-merge-seq) sort chunk 10
+child-sort: exit(123)
+(page-merge-seq) sort chunk 11
+child-sort: exit(123)
+(page-merge-seq) sort chunk 12
+child-sort: exit(123)
+(page-merge-seq) sort chunk 13
+child-sort: exit(123)
+(page-merge-seq) sort chunk 14
+child-sort: exit(123)
+(page-merge-seq) sort chunk 15
+child-sort: exit(123)
+(page-merge-seq) merge
+CLOCK ALGORITHM NEED
+Kernel PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
+Call stack: 0xc01079cc 0xc010db35 0xc010b242 0xc0101e0d 0xc0101f3f 0x80482c1 0x8048b10 0x8048b44.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 40829 ticks
+Thread: 30 idle ticks, 1599 kernel ticks, 39200 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 4831 reads, 4582 writes
+hd1:0: 205 reads, 0 writes
+hd1:1: 0 reads, 0 writes
+Console: 2185 characters output
+Keyboard: 0 keys pressed
+Exception: 949 page faults
+Powering off...
+perl -I../.. ../../tests/vm/page-merge-seq.ck tests/vm/page-merge-seq tests/vm/page-merge-seq.result
+FAIL tests/vm/page-merge-seq
+Kernel panic in run: PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
+Call stack: 0xc01079cc 0xc010db35 0xc010b242 0xc0101e0d 0xc0101f3f 0x80482c1 0x8048b10 0x8048b44
+Translation of call stack:
+In kernel.o:
+0xc01079cc: debug_panic (.../../lib/kernel/debug.c:34)
+0xc010db35: fte_obtain (...build/../../vm/frame.c:35)
+0xc010b242: page_fault (.../userprog/exception.c:295)
+0xc0101e0d: intr_handler (..../threads/interrupt.c:361)
+0xc0101f3f: intr_entry (threads/intr-stubs.S:38)
+In tests/vm/page-merge-seq:
+0x080482c1: merge (...ts/vm/page-merge-seq.c:98)
+0x08048b10: main (...ild/../../tests/main.c:13)
+0x08048b44: _start (.../../../lib/user/entry.c:9)
+Translations of user virtual addresses above are based on a guess at
+the binary to use.  If this guess is incorrect, then those
+translations will be misleading.

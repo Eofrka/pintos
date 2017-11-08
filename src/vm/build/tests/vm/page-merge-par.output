@@ -1,6 +1,6 @@
-Copying tests/vm/page-merge-par into /tmp/Ba4kXZTWXm.dsk...
-Copying tests/vm/child-sort into /tmp/Ba4kXZTWXm.dsk...
-Writing command line to /tmp/i6gKaDRfo1.dsk...
+Copying tests/vm/page-merge-par into /tmp/RSlZNukbNd.dsk...
+Copying tests/vm/child-sort into /tmp/RSlZNukbNd.dsk...
+Writing command line to /tmp/HLPRvXMKMQ.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-merge-par put child-sort run page-merge-par
@@ -23,22 +23,26 @@ Executing 'page-merge-par':
 (page-merge-par) sort chunk 1
 (page-merge-par) sort chunk 2
 (page-merge-par) sort chunk 3
-(page-merge-par) sort chunk 4
 child-sort: exit(123)
+(page-merge-par) sort chunk 4
 (page-merge-par) sort chunk 5
+child-sort: exit(123)
 (page-merge-par) sort chunk 6
-Kernel PANIC at ../../vm/frame.c:31 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079cc 0xc010d9a4 0xc010b033 0xc0101e0d 0xc0101f3f 0xc010b1d6 0xc010b7f5 0xc010b9c0 0xc0101e0d 0xc0101f3f 0x804a1b5 0x804810e 0x80487d0.
+child-sort: exit(123)
+(page-merge-par) sort chunk 7
+CLOCK ALGORITHM NEED
+Kernel PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
+Call stack: 0xc01079cc 0xc010db35 0xc010b242 0xc0101e0d 0xc0101f3f 0xc010b316 0xc010b935 0xc010bb00 0xc0101e0d 0xc0101f3f 0x804a1b5 0x804810e 0x80487d0.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 11255 ticks
-Thread: 30 idle ticks, 402 kernel ticks, 10823 user ticks
+Timer: 14253 ticks
+Thread: 30 idle ticks, 561 kernel ticks, 13662 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 1293 reads, 4036 writes
+hd0:1: 1638 reads, 5064 writes
 hd1:0: 207 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1589 characters output
+Console: 1684 characters output
 Keyboard: 0 keys pressed
-Exception: 404 page faults
+Exception: 478 page faults
 Powering off...
