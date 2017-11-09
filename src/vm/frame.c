@@ -1,12 +1,15 @@
 #include "vm/frame.h"
 #include "vm/page.h"
+#include "vm/swap.h"
 #include "threads/malloc.h"
 #include <debug.h>
 #include "userprog/syscall.h"
 #include "filesys/file.h"
 #include <string.h>
+#include <stdio.h>
 #include "userprog/pagedir.h"
 #include "threads/thread.h"
+#include "threads/vaddr.h"
 
 
 /* Initialize frame_table and frame_lock. */
@@ -30,10 +33,9 @@ struct frame_table_entry* fte_obtain(enum palloc_flags flags)
   if (kpage == NULL)
   {
 
-
     lock_acquire(&frame_lock);
 
-        //1. Initialize clk if it is needed.
+    //1. Initialize clk if it is needed.
     struct list* ft = &frame_table;
     struct clock* clk = &lru_approximation_clock;
     if(clk->hand == list_tail(ft))
@@ -44,17 +46,19 @@ struct frame_table_entry* fte_obtain(enum palloc_flags flags)
     //2. Get initial clock hand. 
     struct list_elem* start = clk->hand;
 
-    //3. First search.
+    
     struct frame_table_entry* tmp_fte;
     struct supplemental_page_table_entry* tmp_spte;
     struct frame_table_entry* victim_fte = NULL;
 
 
-    tmp_fte = list_entry(clk->hand, struct frame_table_entry, elem);
+
+
+
+    /*
+    //debugging
+    tmp_fte = list_entry(start, struct frame_table_entry, elem);
     tmp_spte = tmp_fte->spte;
-
-
-    
     struct list_elem* iter= start;
     uint32_t* pd = thread_current()->pagedir;
     int i=0;
@@ -82,43 +86,151 @@ struct frame_table_entry* fte_obtain(enum palloc_flags flags)
         iter = list_begin(ft);
       }
     } 
+    */
 
 
-
-    /*
-    //3-1. If accessed bit is setted, clear it. Becarful for alias.
+    //3. First search.
+    tmp_fte = list_entry(clk->hand, struct frame_table_entry, elem);
+    tmp_spte = tmp_fte->spte;
+    //3-1. If accessed bit is setted, clear it.
     uint32_t* pd =thread_current()->pagedir; 
     if(pagedir_is_accessed(pd, tmp_spte->uvaddr))
     {
       pagedir_set_accessed(pd, tmp_spte->uvaddr, false);
-      pagedir_set_accessed(pd, tmp_fte->kvaddr, false);
     }
     //3-2. Else get the victim fte and advance clock hand.
     else
     {
       victim_fte=tmp_fte;
-      clk->hand = list_next(clk->hand);
-      if(clk->hand == list_end(ft))
-      {
-        clk->hand = list_begin(ft);
-      } 
     }
+    clk->hand = list_next(clk->hand);
+    if(clk->hand == list_end(ft))
+    {
+      clk->hand = list_begin(ft);
+    } 
 
+
+    //4. search victim_fte(Accessed bit is 0) until one loop.
     if(victim_fte == NULL)
     {
+      while(clk->hand != start)
+      {
+        tmp_fte = list_entry(clk->hand, struct frame_table_entry, elem);
+        tmp_spte = tmp_fte->spte;
+        if(pagedir_is_accessed(pd, tmp_spte->uvaddr))
+        {
+          pagedir_set_accessed(pd, tmp_spte->uvaddr, false);
+          clk->hand = list_next(clk->hand);
+          if(clk->hand == list_end(ft))
+          {
+            clk->hand = list_begin(ft);
+          } 
+        }
+        else
+        {
+          victim_fte = tmp_fte;
+          clk->hand = list_next(clk->hand);
+          if(clk->hand == list_end(ft))
+          {
+            clk->hand = list_begin(ft);
+          } 
+          break;
+        }
+      }
 
-
+      //5. if all accessed bit were 1, Now all accessed bit are cleared and start fte is victim_fte.
+      if(victim_fte == NULL)
+      {
+        ASSERT(clk->hand ==start);
+        victim_fte = list_entry(clk->hand, struct frame_table_entry, elem);
+        ASSERT(pagedir_is_accessed(pd, victim_fte->spte->uvaddr) == 0);
+        clk->hand = list_next(clk->hand);
+        if(clk->hand == list_end(ft))
+        {
+          clk->hand = list_begin(ft);
+        }       
+      }    
 
     }
+
+    /*
+    //debugging
+    tmp_fte = list_entry(start, struct frame_table_entry, elem);
+    tmp_spte = tmp_fte->spte;
+    struct list_elem* iter= start;
+    int i=0;
+    printf("[%03d], upage[0x%08x], A: %d, D: %d, ", i,tmp_spte->uvaddr, pagedir_is_accessed(pd, tmp_spte->uvaddr), pagedir_is_dirty(pd, tmp_spte->uvaddr));
+    printf("[%03d], kpage[0x%08x], A: %d, D: %d\n", i,tmp_fte->kvaddr, pagedir_is_accessed(pd, tmp_fte->kvaddr), pagedir_is_dirty(pd, tmp_fte->kvaddr));
+
+    i++;
+    iter = list_next(iter);
+    if(iter == list_end(ft))
+    {
+      iter = list_begin(ft);
+    }
+
+    while(iter != start)
+    {
+      tmp_fte = list_entry(iter, struct frame_table_entry, elem);
+      tmp_spte = tmp_fte->spte;
+      printf("[%03d], upage[0x%08x], A: %d, D: %d, ", i,tmp_spte->uvaddr, pagedir_is_accessed(pd, tmp_spte->uvaddr), pagedir_is_dirty(pd, tmp_spte->uvaddr));
+      printf("[%03d], kpage[0x%08x], A: %d, D: %d\n", i,tmp_fte->kvaddr, pagedir_is_accessed(pd, tmp_fte->kvaddr), pagedir_is_dirty(pd, tmp_fte->kvaddr));
+
+      i++;
+      iter = list_next(iter);
+      if(iter == list_end(ft))
+      {
+        iter = list_begin(ft);
+      }
+    } 
+    
+    */
+
+
+    /*
+    //debugging print victim_spte and victim_fte.
+    printf("[victim], upage[0x%08x], A: %d, D: %d, ", victim_fte->spte->uvaddr, pagedir_is_accessed(pd, victim_fte->spte->uvaddr), pagedir_is_dirty(pd, victim_fte->spte->uvaddr));
+    printf("[victim], kpage[0x%08x], A: %d, D: %d\n", victim_fte->kvaddr, pagedir_is_accessed(pd, victim_fte->kvaddr), pagedir_is_dirty(pd, victim_fte->kvaddr));
     */
 
 
 
+    //6. Swap_out or pass to filesys or mark it SPTE_ZERO to indicate stack segment. Update the victim_spte(HEAD_JOB)
+    struct supplemental_page_table_entry* victim_spte = victim_fte->spte; 
+
+
+    //6-1. If victim_spte->uvaddr is dirty => swap_out()
+    if(pagedir_is_dirty(pd, victim_spte->uvaddr) || pagedir_is_dirty(pd, victim_fte->kvaddr))
+    {
+      swap_out(victim_spte,victim_fte);
+    }
+    //6-2. Else if is_stack_seg == true
+    else if(victim_spte->is_stack_seg)
+    {
+      victim_spte->state = SPTE_ZERO;
+    }
+    //6-3 Else (read-only || D:0 and writable)
+    else
+    {
+      victim_spte->state =SPTE_FILE;
+    }
+
+    //7. Remove victim_fte from the frame_table and free its resources include kvaddr and itself. 
+    list_remove(&victim_fte->elem);
+    victim_fte->spte = NULL;
+    palloc_free_page(victim_fte->kvaddr);
+    SAFE_FREE(victim_fte);
+
+    //8. Update the victim_spte.(TAIL JOB)
+    victim_spte->fte = NULL;
+    pagedir_clear_page(pd, victim_spte->uvaddr);
+
+    //9. reallocate the frame at kpage.
+    kpage = palloc_get_page(flags);
 
     lock_release(&frame_lock);
-    //TODO: Clock algorithm.
-    printf("CLOCK ALGORITHM NEED\n");
-    PANIC("no free frames...clock algorithm need");
+    //printf("CLOCK ALGORITHM NEED\n");
+    //PANIC("no free frames...clock algorithm need");
   }
   ASSERT(kpage != NULL);
   fte->kvaddr = kpage;
@@ -132,6 +244,7 @@ struct frame_table_entry* fte_obtain(enum palloc_flags flags)
 /* Fetch the data into the fte's frame by using spte's information. */
 bool fte_fetch(struct list_elem* fte_e,struct hash_elem* spte_he)
 {
+  
   struct supplemental_page_table_entry* spte = hash_entry(spte_he, struct supplemental_page_table_entry, he);
   struct frame_table_entry* fte= list_entry(fte_e, struct frame_table_entry, elem);
   switch(spte->state)
@@ -151,17 +264,21 @@ bool fte_fetch(struct list_elem* fte_e,struct hash_elem* spte_he)
     break;
     //4-2. case SPTE_SWAP: read it from the swap slot.
     case SPTE_SWAP:
+    swap_in(spte, fte);
     break;
     //4-3. case SPTE_ZERO: zero it.
     case SPTE_ZERO:
-    memset(fte->kvaddr, 0x00, (size_t)0x1000);
+    memset(fte->kvaddr, 0x00, (size_t)PGSIZE);
     break;
     case SPTE_LOADED:
+    spte_print(spte_he, NULL);
     PANIC("impossible SPTE_STATE");
     break;
   }
   spte->fte = fte;
   fte->spte = spte;
+
+
   return true;
 
 }

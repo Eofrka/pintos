@@ -1,10 +1,10 @@
-Copying tests/vm/mmap-bad-fd into /tmp/XsTz3Vy16O.dsk...
-Writing command line to /tmp/Z3ySBHD0V4.dsk...
+Copying tests/vm/mmap-bad-fd into /tmp/IeJcGr1md2.dsk...
+Writing command line to /tmp/h0YHXFTf8T.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-bad-fd run mmap-bad-fd
 Pintos booting with 4,096 kB RAM...
-374 pages available in kernel pool.
+373 pages available in kernel pool.
 373 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -19,8 +19,8 @@ Executing 'mmap-bad-fd':
 (mmap-bad-fd) try to mmap invalid fd
 mmap-bad-fd: exit(-1)
 Execution of 'mmap-bad-fd' complete.
-Timer: 314 ticks
-Thread: 30 idle ticks, 243 kernel ticks, 44 user ticks
+Timer: 315 ticks
+Thread: 30 idle ticks, 232 kernel ticks, 56 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 59 reads, 204 writes
 hd1:0: 98 reads, 0 writes

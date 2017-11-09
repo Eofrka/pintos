@@ -1,17 +1,15 @@
 FAIL
-Kernel panic in run: PANIC at ../../vm/frame.c:121 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079dc 0xc010ddb0 0xc010b252 0xc0101e1d 0xc0101f4f 0x80481e1 0x8048102 0x80488d0
+Kernel panic in run: PANIC at ../../vm/frame.c:275 in fte_fetch(): impossible SPTE_STATE
+Call stack: 0xc01079dc 0xc010db4c 0xc010b291 0xc0101e1d 0xc0101f4f 0x80481e7
 Translation of call stack:
 In kernel.o:
 0xc01079dc: debug_panic (.../../lib/kernel/debug.c:34)
-0xc010ddb0: fte_obtain (...uild/../../vm/frame.c:124)
-0xc010b252: page_fault (.../userprog/exception.c:295)
+0xc010db4c: fte_fetch (...uild/../../vm/frame.c:278)
+0xc010b291: page_fault (.../userprog/exception.c:302)
 0xc0101e1d: intr_handler (..../threads/interrupt.c:361)
 0xc0101f4f: intr_entry (threads/intr-stubs.S:38)
 In tests/vm/page-parallel:
-0x080481e1: vmsg (...uild/../../tests/lib.c:23)
-0x08048102: test_main (...sts/vm/page-parallel.c:20)
-0x080488d0: random_bytes (...ild/../../lib/random.c:70)
+0x080481e7: vmsg (...uild/../../tests/lib.c:23)
 Translations of user virtual addresses above are based on a guess at
 the binary to use.  If this guess is incorrect, then those
 translations will be misleading.

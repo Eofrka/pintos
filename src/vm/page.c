@@ -3,7 +3,8 @@
 #include <debug.h>
 #include <stdio.h>
 #include "threads/thread.h"
-
+#include "vm/swap.h"
+#include "vm/frame.h"
 
 /* New functions defintions. */
 /* Returns a hash value for supplementary page table entry spte. */
@@ -43,15 +44,33 @@ void spte_free(struct hash_elem* spte_he, void* aux  UNUSED)
 {
   struct supplemental_page_table_entry* spte = hash_entry(spte_he, struct supplemental_page_table_entry, he);
   //TODO://free additional data structure for each case
-  
-  //case SPTE_FILE:
+  struct frame_table_entry* fte;
+  switch(spte->state)
+  {
+    case SPTE_FILE:   
+    break;
+    case SPTE_SWAP:
+    swap_free(spte);
+    break;
+    case SPTE_ZERO:
+    break;
+    case SPTE_LOADED:
 
-  //case SPTE_SWAP:
 
-  //case SPTE_ZERO:
-
-  //case SPTE_LOADED:
-
+    lock_acquire(&frame_lock);
+    fte = spte->fte;
+    ASSERT(fte != NULL);
+    list_remove(&fte->elem);
+    ASSERT(fte->kvaddr != NULL);
+    ASSERT(spte != NULL);
+    uint32_t* pd = thread_current()->pagedir;
+    ASSERT(pd!=NULL);
+    palloc_free_page(fte->kvaddr);
+    pagedir_clear_page(pd, spte->uvaddr);
+    SAFE_FREE(fte);
+    lock_release(&frame_lock);
+    break;
+  }
 
   SAFE_FREE(spte);
 }
@@ -76,16 +95,16 @@ void spte_print(struct hash_elem* spte_he, void* aux UNUSED)
   switch(spte->state)
   {
     case SPTE_FILE:
-      printf("SPTE_STATE: SPTE_FILE\n");    
-      break;
+    printf("SPTE_STATE: SPTE_FILE\n");    
+    break;
     case SPTE_SWAP:
-      printf("SPTE_STATE: SPTE_SWAP\n");    
-      break;
+    printf("SPTE_STATE: SPTE_SWAP\n");    
+    break;
     case SPTE_ZERO:
-      printf("SPTE_STATE: SPTE_ZERO\n");    
+    printf("SPTE_STATE: SPTE_ZERO\n");    
     case SPTE_LOADED:
-      printf("SPTE_STATE: SPTE_LOAD\n");    
-      break;
+    printf("SPTE_STATE: SPTE_LOAD\n");    
+    break;
   }
 
 }

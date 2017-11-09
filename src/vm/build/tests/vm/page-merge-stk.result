@@ -1,19 +1,2 @@
 FAIL
-Kernel panic in run: PANIC at ../../vm/frame.c:121 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079dc 0xc010ddb0 0xc010b252 0xc0101e1d 0xc0101f4f 0x8048a61 0x8048b33 0x804824a 0x804812d 0x80489d0
-Translation of call stack:
-In kernel.o:
-0xc01079dc: debug_panic (.../../lib/kernel/debug.c:34)
-0xc010ddb0: fte_obtain (...uild/../../vm/frame.c:124)
-0xc010b252: page_fault (.../userprog/exception.c:295)
-0xc0101e1d: intr_handler (..../threads/interrupt.c:361)
-0xc0101f4f: intr_entry (threads/intr-stubs.S:38)
-In tests/vm/page-merge-stk:
-0x08048a61: check_file (...ild/../../tests/lib.c:161)
-0x08048b33: exec_children (...uild/../../tests/lib.c:89)
-0x0804824a: sort_chunks (...ts/vm/parallel-merge.c:44)
-0x0804812d: init (...ts/vm/parallel-merge.c:32)
-0x080489d0: check_file_handle (...ild/../../tests/lib.c:145)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+run: TIMEOUT after 60 seconds of host CPU time

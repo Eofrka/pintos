@@ -30,6 +30,7 @@
 #ifdef VM
 #include "vm/page.h"
 #include "vm/frame.h"
+#include "vm/swap.h"
 #endif
 /*******/
 
@@ -315,6 +316,13 @@ process_exit (void)
   }
 
 
+/* pj3 */
+/*******/  
+#ifdef VM
+  /* Destroy the spt. */
+  spt_destroy(&curr->spt);
+#endif    
+
   uint32_t *pd;
 
   /* Destroy the current process's page directory and switch back
@@ -335,12 +343,6 @@ process_exit (void)
   }
 
 
-/* pj3 */
-/*******/  
-#ifdef VM
-  /* Destroy the spt. */
-  spt_destroy(&curr->spt);
-#endif    
   /* If current process is an orphan process, free its 'struct process'. There are no parent process waiting it to reap... */
   if(ps->parent == NULL)
   {
@@ -696,7 +698,8 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
     spte->writable = writable;
     spte->he.list_elem.prev = NULL;
     spte->he.list_elem.next = NULL;
-
+    spte->is_stack_seg = false;
+    spte->swap_idx = SWAP_IDX_DEFAULT;
     //3. Insert the spte into spt.
     //spte_print(&spte->he, NULL); 
     spte_insert(&thread_current()->spt, &spte->he);
@@ -771,11 +774,13 @@ setup_stack (void **esp, struct arguments* args)
   spte->writable = true;
   spte->he.list_elem.prev = NULL;
   spte->he.list_elem.next = NULL;
-
+  spte->is_stack_seg = true;
+  spte->swap_idx = SWAP_IDX_DEFAULT;
   //3. Insert the spte into spt.
   spte_insert(&thread_current()->spt, &spte->he);
 
   //4. Obtain an empty frame
+  
   struct frame_table_entry* fte = fte_obtain(PAL_USER);
   bool fetch_success = fte_fetch(&fte->elem, &spte->he);
   ASSERT(fetch_success == true);

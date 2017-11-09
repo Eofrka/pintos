@@ -17,6 +17,7 @@
 #include "threads/vaddr.h"
 #include "vm/frame.h"
 #include "threads/malloc.h"
+#include "vm/swap.h"
 
 #define MAX_STACK_SIZE 0x800000
 
@@ -262,6 +263,8 @@ page_fault (struct intr_frame *f)
     spte->writable = true;
     spte->he.list_elem.prev = NULL;
     spte->he.list_elem.next = NULL;
+    spte->is_stack_seg = true;
+    spte->swap_idx = SWAP_IDX_DEFAULT;
 
     //3. Insert the spte into spt.
     spte_insert(&thread_current()->spt, &spte->he);

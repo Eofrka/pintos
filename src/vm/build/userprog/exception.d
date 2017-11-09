@@ -9,4 +9,5 @@ userprog/exception.o: ../../userprog/exception.c \
   ../../userprog/process.h ../../vm/page.h ../../filesys/off_t.h \
   ../../threads/vaddr.h ../../threads/loader.h ../../vm/frame.h \
   ../../vm/page.h ../../threads/synch.h ../../threads/palloc.h \
-  ../../threads/malloc.h
+  ../../threads/malloc.h ../../vm/swap.h ../../lib/kernel/bitmap.h \
+  ../../vm/frame.h

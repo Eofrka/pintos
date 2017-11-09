@@ -27,6 +27,10 @@ struct supplemental_page_table_entry
   size_t page_zero_bytes;         /* Bytes to fill zero. */
 
   bool writable;                  /* Writable by user process if this flag is true, otherwise read-only. */
+
+  bool is_stack_seg;              /* Stack segment. */
+  size_t swap_idx;                /* Swap index. */
+
   struct hash_elem he;            /* Hash table element. */
 
 };

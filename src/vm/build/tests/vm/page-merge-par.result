@@ -1,16 +1,16 @@
 FAIL
-Kernel panic in run: PANIC at ../../vm/frame.c:121 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079dc 0xc010ddb0 0xc010b252 0xc0101e1d 0xc0101f4f 0xc010b326 0xc010b945 0xc010bb10 0xc0101e1d 0xc0101f4f 0x804a1b5 0x804810e 0x80487d0
+Kernel panic in run: PANIC at ../../vm/frame.c:235 in fte_obtain(): assertion `kpage != NULL' failed.
+Call stack: 0xc01079dc 0xc010decd 0xc010b27d 0xc0101e1d 0xc0101f4f 0xc010b346 0xc010b965 0xc010bb30 0xc0101e1d 0xc0101f4f 0x804a1b5 0x804810e 0x80487d0
 Translation of call stack:
 In kernel.o:
 0xc01079dc: debug_panic (.../../lib/kernel/debug.c:34)
-0xc010ddb0: fte_obtain (...uild/../../vm/frame.c:124)
-0xc010b252: page_fault (.../userprog/exception.c:295)
+0xc010decd: fte_obtain (...uild/../../vm/frame.c:144)
+0xc010b27d: page_fault (.../userprog/exception.c:298)
 0xc0101e1d: intr_handler (..../threads/interrupt.c:361)
 0xc0101f4f: intr_entry (threads/intr-stubs.S:38)
-0xc010b326: get_user (.../../userprog/syscall.c:40)
-0xc010b945: check_uaddr (.../../userprog/syscall.c:68)
-0xc010bb10: syscall_handler (...../userprog/syscall.c:483)
+0xc010b346: get_user (.../../userprog/syscall.c:40)
+0xc010b965: check_uaddr (.../../userprog/syscall.c:68)
+0xc010bb30: syscall_handler (...../userprog/syscall.c:483)
 0xc0101e1d: intr_handler (..../threads/interrupt.c:361)
 0xc0101f4f: intr_entry (threads/intr-stubs.S:38)
 In tests/vm/page-merge-par:

@@ -12,4 +12,5 @@ userprog/process.o: ../../userprog/process.c ../../userprog/process.h \
   ../../threads/vaddr.h ../../threads/loader.h ../../threads/malloc.h \
   ../../userprog/syscall.h ../../vm/page.h ../../filesys/off_t.h \
   ../../vm/frame.h ../../vm/page.h ../../threads/synch.h \
-  ../../threads/palloc.h
+  ../../threads/palloc.h ../../vm/swap.h ../../lib/kernel/bitmap.h \
+  ../../vm/frame.h
