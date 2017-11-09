@@ -35,6 +35,7 @@
 #ifdef VM
 #include "vm/page.h"
 #include "vm/frame.h"
+#include "vm/swap.h"
 #endif
 /*******/
 
@@ -133,6 +134,14 @@ main (void)
   filesys_init (format_filesys);
 #endif
 
+/* pj3 */
+/*******/
+#ifdef VM
+  /* Initialize swap table. */
+  swap_init();
+#endif  
+/*******/
+
   printf ("Boot complete.\n");
   
   /* Run actions specified on kernel command line. */
@@ -141,6 +150,15 @@ main (void)
   /* Finish up. */
   if (power_off_when_done)
     power_off ();
+
+/* pj3 */
+/*******/
+#ifdef VM
+  /* Destroy swap table. */
+  swap_destroy();
+#endif  
+/*******/
+
   thread_exit ();
 }
 

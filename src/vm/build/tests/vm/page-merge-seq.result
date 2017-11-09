@@ -1,13 +1,13 @@
 FAIL
-Kernel panic in run: PANIC at ../../vm/frame.c:32 in fte_obtain(): no free frames...clock algorithm need
-Call stack: 0xc01079cc 0xc010db88 0xc010b242 0xc0101e0d 0xc0101f3f 0x80482c1 0x8048b10 0x8048b44
+Kernel panic in run: PANIC at ../../vm/frame.c:121 in fte_obtain(): no free frames...clock algorithm need
+Call stack: 0xc01079dc 0xc010ddb0 0xc010b252 0xc0101e1d 0xc0101f4f 0x80482c1 0x8048b10 0x8048b44
 Translation of call stack:
 In kernel.o:
-0xc01079cc: debug_panic (.../../lib/kernel/debug.c:34)
-0xc010db88: fte_obtain (...build/../../vm/frame.c:35)
-0xc010b242: page_fault (.../userprog/exception.c:295)
-0xc0101e0d: intr_handler (..../threads/interrupt.c:361)
-0xc0101f3f: intr_entry (threads/intr-stubs.S:38)
+0xc01079dc: debug_panic (.../../lib/kernel/debug.c:34)
+0xc010ddb0: fte_obtain (...uild/../../vm/frame.c:124)
+0xc010b252: page_fault (.../userprog/exception.c:295)
+0xc0101e1d: intr_handler (..../threads/interrupt.c:361)
+0xc0101f4f: intr_entry (threads/intr-stubs.S:38)
 In tests/vm/page-merge-seq:
 0x080482c1: merge (...ts/vm/page-merge-seq.c:98)
 0x08048b10: main (...ild/../../tests/main.c:13)

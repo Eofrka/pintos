@@ -1,6 +1,6 @@
-Copying tests/userprog/read-normal into /tmp/bcPszz9Fpc.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/bcPszz9Fpc.dsk...
-Writing command line to /tmp/nznGcIBqpw.dsk...
+Copying tests/userprog/read-normal into /tmp/cCRJHL6TT6.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/cCRJHL6TT6.dsk...
+Writing command line to /tmp/ytP2kVnWM0.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put read-normal put sample.txt run read-normal
@@ -24,8 +24,8 @@ Executing 'read-normal':
 (read-normal) end
 read-normal: exit(0)
 Execution of 'read-normal' complete.
-Timer: 374 ticks
-Thread: 30 idle ticks, 268 kernel ticks, 79 user ticks
+Timer: 380 ticks
+Thread: 30 idle ticks, 273 kernel ticks, 80 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 98 reads, 210 writes
 hd1:0: 100 reads, 0 writes

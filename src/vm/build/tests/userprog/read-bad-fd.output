@@ -1,5 +1,5 @@
-Copying tests/userprog/read-bad-fd into /tmp/OT1BjPG7ea.dsk...
-Writing command line to /tmp/OwVfJWaxVj.dsk...
+Copying tests/userprog/read-bad-fd into /tmp/BGNVJmZ1cH.dsk...
+Writing command line to /tmp/A2poAfI1Fr.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put read-bad-fd run read-bad-fd
@@ -19,8 +19,8 @@ Executing 'read-bad-fd':
 (read-bad-fd) end
 read-bad-fd: exit(0)
 Execution of 'read-bad-fd' complete.
-Timer: 306 ticks
-Thread: 30 idle ticks, 238 kernel ticks, 41 user ticks
+Timer: 311 ticks
+Thread: 30 idle ticks, 243 kernel ticks, 41 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 59 reads, 204 writes
 hd1:0: 98 reads, 0 writes

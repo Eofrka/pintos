@@ -1,5 +1,5 @@
-Copying tests/userprog/sc-bad-arg into /tmp/LTxfWbfjXx.dsk...
-Writing command line to /tmp/NM1jlMzRRk.dsk...
+Copying tests/userprog/sc-bad-arg into /tmp/0hYhl79Y5m.dsk...
+Writing command line to /tmp/FYePCvZOFK.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put sc-bad-arg run sc-bad-arg
@@ -18,8 +18,8 @@ Executing 'sc-bad-arg':
 (sc-bad-arg) begin
 sc-bad-arg: exit(-1)
 Execution of 'sc-bad-arg' complete.
-Timer: 300 ticks
-Thread: 30 idle ticks, 238 kernel ticks, 35 user ticks
+Timer: 305 ticks
+Thread: 30 idle ticks, 243 kernel ticks, 35 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 59 reads, 204 writes
 hd1:0: 98 reads, 0 writes

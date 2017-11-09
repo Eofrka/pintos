@@ -258,7 +258,7 @@ page_fault (struct intr_frame *f)
     spte->file = NULL;
     spte->ofs = 0;
     spte->page_read_bytes =0;
-    spte->page_zero_bytes =0x1000;
+    spte->page_zero_bytes =PGSIZE;
     spte->writable = true;
     spte->he.list_elem.prev = NULL;
     spte->he.list_elem.next = NULL;

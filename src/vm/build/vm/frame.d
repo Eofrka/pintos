@@ -5,4 +5,4 @@ vm/frame.o: ../../vm/frame.c ../../vm/frame.h ../../lib/kernel/list.h \
   ../../threads/malloc.h ../../lib/debug.h ../../userprog/syscall.h \
   ../../userprog/process.h ../../threads/thread.h ../../threads/synch.h \
   ../../userprog/process.h ../../filesys/file.h ../../filesys/off_t.h \
-  ../../lib/string.h ../../userprog/pagedir.h
+  ../../lib/string.h ../../userprog/pagedir.h ../../threads/thread.h

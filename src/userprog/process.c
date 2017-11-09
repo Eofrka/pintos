@@ -761,13 +761,13 @@ setup_stack (void **esp, struct arguments* args)
   struct supplemental_page_table_entry* spte = spte_create();
 
   //2. Initialize the spte.
-  spte->uvaddr = (void*)((uint32_t)PHYS_BASE - 0x1000);
+  spte->uvaddr = (void*)((uint32_t)PHYS_BASE - (uint32_t)PGSIZE);
   spte->state = SPTE_ZERO;
   spte->fte = NULL;
   spte->file = NULL;
   spte->ofs =0;
   spte->page_read_bytes =0;
-  spte->page_zero_bytes = 0x1000;
+  spte->page_zero_bytes = PGSIZE;
   spte->writable = true;
   spte->he.list_elem.prev = NULL;
   spte->he.list_elem.next = NULL;

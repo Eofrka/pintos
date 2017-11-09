@@ -17,13 +17,20 @@ struct frame_table_entry
   struct list_elem elem;                        /* List element for frame table. */
 };
 
+struct clock
+{
+  struct list_elem* hand;           /* Clock hand. */
+};
+
 
 /* Global variables. */
 struct list frame_table;
 struct lock frame_lock;
+struct clock lru_approximation_clock;
 
 
-/* New functions. */
+
+/* New functions declarations. */
 void frame_init(void);
 struct frame_table_entry* fte_obtain(enum palloc_flags flags);
 bool fte_fetch(struct list_elem* fte_e,struct hash_elem* spte_he);
