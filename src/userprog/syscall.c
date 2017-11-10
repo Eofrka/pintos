@@ -412,6 +412,12 @@ syscall_handler (struct intr_frame *f)
   //printf ("system call!\n");
   uint8_t* esp = (uint8_t*)f->esp;
   int syscall_num = *(int*)check_uaddr(esp, 4);
+/* pj3 */
+/*******/
+#ifdef VM
+  thread_current()->esp = esp;
+#endif
+/*******/
   void* arg1 = NULL;
   void* arg2 = NULL;
   void* arg3 = NULL;

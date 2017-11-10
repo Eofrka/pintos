@@ -625,6 +625,14 @@ init_thread (struct thread *t, const char *name, int priority)
   t->executable = NULL;
 #endif
 /*******/
+
+/* pj3 */
+/*******/
+#ifdef VM
+  //spt initialization => process.c@load()
+  t->esp = NULL;
+#endif
+/*******/  
   t->magic = THREAD_MAGIC;
 }
 

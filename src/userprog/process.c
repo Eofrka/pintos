@@ -22,7 +22,18 @@
 /*******/
 #include "threads/malloc.h"
 #include "userprog/syscall.h"
+/*******/
 
+/* pj3 */
+/*******/
+#ifdef VM
+#include "vm/page.h"
+#include "vm/frame.h"
+#endif
+/*******/
+
+/* pj2 */
+/*******/
 /* User program arguments. */
 struct arguments
 {
@@ -301,7 +312,13 @@ process_exit (void)
     file_close(curr->executable);
     lock_release(&filesys_lock);
   }
-
+/* pj3 */
+/*******/
+#ifdef VM
+  /* Destroy supplemental page table. */
+  spt_destroy(&curr->spt);
+#endif
+/*******/  
 
   uint32_t *pd;
 
@@ -456,6 +473,14 @@ load (char *cmdline, void (**eip) (void), void **esp)
   if (t->pagedir == NULL) 
     goto done;
   process_activate ();
+
+/* pj3 */
+/*******/  
+#ifdef VM
+  /* Initialize supplemental page table. */
+  spt_init(&t->spt);
+#endif  
+/*******/  
 
   /* Open executable file. */
   file = filesys_open (file_name);
@@ -644,6 +669,47 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
   ASSERT (ofs % PGSIZE == 0);
 
   file_seek (file, ofs);
+
+/* pj3 */
+/*******/
+#ifdef VM
+  struct thread* curr = thread_current();
+  uint32_t* pagedir = curr->pagedir;
+  while (read_bytes > 0 || zero_bytes > 0) 
+  {
+    /* Calculate how to fill this page.
+       We will read PAGE_READ_BYTES bytes from FILE
+       and zero the final PAGE_ZERO_BYTES bytes. */
+    size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
+    size_t page_zero_bytes = PGSIZE - page_read_bytes;
+
+   /* 1. Allocate spte. */
+    struct supplemental_page_table_entry* spte = spte_create();
+
+    /* 2. Initilize spte. */
+    spte->upage = upage;
+    spte->state = SPTE_FILE;
+    spte->pagedir = pagedir;
+    spte->writable = writable;
+    spte->file = file;
+    spte->ofs = ofs;
+    spte->page_read_bytes = page_read_bytes;
+    spte->page_zero_bytes = page_zero_bytes;
+    
+    /* 3. Insert spte into spt. */
+    spte_insert(&curr->spt, spte);    
+
+    /* Advance. */
+    read_bytes -= page_read_bytes;
+    zero_bytes -= page_zero_bytes;
+    ofs += page_read_bytes;
+    upage += PGSIZE;
+
+    
+  }
+  return true;
+#endif   
+/*******/
   while (read_bytes > 0 || zero_bytes > 0) 
     {
       /* Do calculate how to fill this page.
@@ -688,6 +754,53 @@ setup_stack (void **esp, struct arguments* args)
   uint8_t *kpage;
   bool success = false;
 
+/* pj3 */
+/*******/
+#ifdef VM
+  /* Create stack spte. */
+  struct supplemental_page_table_entry* spte = spte_create();
+  struct thread* curr  = thread_current();
+
+  spte->upage = (void*)((uint32_t)PHYS_BASE - PGSIZE);
+  spte->pagedir = curr->pagedir;
+  spte->writable = true;
+  spte->is_stack_page = true;
+
+  /* Insert spte into spt. */
+  spte_insert(&curr->spt, spte);
+
+  /* Obtain frame. */
+
+  struct frame_table_entry* fte = fte_obtain(PAL_USER);
+  fte_fetch(fte, spte);
+  fte_insert(fte);
+  
+  kpage = fte->kpage;
+
+
+  if(!fte_install(fte, spte))
+  {
+    printf("frame_install_page() failed\n");
+    lock_acquire(&frame_lock);
+    fte_remove(fte);
+    palloc_free_page(fte->kpage);
+    SAFE_FREE(fte);
+    lock_release(&frame_lock);
+    hash_delete(&curr->spt, &spte->h_elem);
+    SAFE_FREE(spte);
+    return false;
+  }
+  else
+  {
+    spte->fte = fte;
+    fte->spte = spte;
+    spte->state = SPTE_FRAME;
+    push_arguments(args, esp);
+    return true;
+  }
+  
+#endif
+/******/  
   kpage = palloc_get_page (PAL_USER | PAL_ZERO);
   if (kpage != NULL) 
     {
