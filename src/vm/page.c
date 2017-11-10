@@ -5,7 +5,7 @@
 #include "threads/thread.h"
 #include "vm/frame.h"
 #include "vm/swap.h"
-
+#include <stdio.h>
 #define MAX_STACK_SIZE 0x800000
 
 /* Returns a hash value for spt. */
@@ -94,6 +94,7 @@ void spte_insert(struct hash* spt, struct supplemental_page_table_entry* spte)
 {
   if(hash_insert(spt, &spte->h_elem) != NULL)
   {
+    printf("spt->upage: [0x%08x]\n",spte->upage);
     PANIC("The key value(upage) is already in the spt");
   }
 
@@ -135,8 +136,7 @@ bool spte_actual_load(void* fault_addr, bool not_present, uint8_t* esp)
   //frame.c@handle_page_fault() design
   //1. Obtain fte.
   //2. Fetch data into fte using spte.
-  //3. Insert fte into frame table.
-  //4. Install the page.
+  //3. Install the page.
   return handle_page_fault(spte);
 }
 

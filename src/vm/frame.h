@@ -35,7 +35,6 @@ bool handle_page_fault(struct supplemental_page_table_entry* spte);
 struct frame_table_entry* fte_obtain(enum palloc_flags flags);
 bool fte_fetch(struct frame_table_entry* fte, struct supplemental_page_table_entry* spte);
 void fte_insert(struct frame_table_entry* fte);
-void fte_remove(struct frame_table_entry* fte);
 bool fte_install(struct frame_table_entry* fte, struct supplemental_page_table_entry* spte);
 void frame_advance_iter(struct list_elem** iter_ptr);
 void* frame_realloc(enum palloc_flags flags);

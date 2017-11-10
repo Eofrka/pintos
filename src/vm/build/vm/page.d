@@ -5,4 +5,5 @@ vm/page.o: ../../vm/page.c ../../vm/page.h ../../lib/kernel/hash.h \
   ../../threads/thread.h ../../lib/kernel/list.h ../../threads/synch.h \
   ../../userprog/process.h ../../threads/thread.h ../../vm/frame.h \
   ../../threads/synch.h ../../threads/palloc.h ../../vm/swap.h \
-  ../../lib/kernel/bitmap.h ../../lib/inttypes.h
+  ../../lib/kernel/bitmap.h ../../lib/inttypes.h ../../lib/stdio.h \
+  ../../lib/stdarg.h ../../lib/kernel/stdio.h
