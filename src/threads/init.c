@@ -29,17 +29,6 @@
 #else
 #include "tests/threads/tests.h"
 #endif
-
-/* pj3 */
-/*******/
-#ifdef VM
-#include "vm/page.h"
-#include "vm/frame.h"
-#include "vm/swap.h"
-#endif
-/*******/
-
-
 #ifdef FILESYS
 #include "devices/disk.h"
 #include "filesys/filesys.h"
@@ -98,14 +87,6 @@ main (void)
   palloc_init ();
   malloc_init ();
   paging_init ();
-  
-/* pj3 */
-/*******/
-#ifdef VM
-  /* Initialize frame_table and frame_lock. */
-  frame_init();
-#endif
-/*******/
 
   /* Segmentation. */
 #ifdef USERPROG
@@ -134,14 +115,6 @@ main (void)
   filesys_init (format_filesys);
 #endif
 
-/* pj3 */
-/*******/
-#ifdef VM
-  /* Initialize swap table. */
-  swap_init();
-#endif  
-/*******/
-
   printf ("Boot complete.\n");
   
   /* Run actions specified on kernel command line. */
@@ -150,15 +123,6 @@ main (void)
   /* Finish up. */
   if (power_off_when_done)
     power_off ();
-
-/* pj3 */
-/*******/
-#ifdef VM
-  /* Destroy swap table. */
-  swap_destroy();
-#endif  
-/*******/
-
   thread_exit ();
 }
 
