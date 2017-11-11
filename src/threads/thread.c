@@ -368,17 +368,16 @@ void
 thread_exit (void) 
 {
   ASSERT (!intr_context ());
-
-#ifdef USERPROG
-  process_exit ();
-#endif
-
-
   /* pj1 */
   /*******/
   /* Releasing remaining locks which current thread is holding. */
   thread_release_locks();
   /*******/
+
+#ifdef USERPROG
+  process_exit ();
+#endif
+
 
   /* Just set our status to dying and schedule another process.
      We will be destroyed during the call to schedule_tail(). */

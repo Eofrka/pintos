@@ -1,6 +1,6 @@
-Copying tests/userprog/rox-child into /tmp/62GtZTnQCV.dsk...
-Copying tests/userprog/child-rox into /tmp/62GtZTnQCV.dsk...
-Writing command line to /tmp/0tTAmj6Xzz.dsk...
+Copying tests/userprog/rox-child into /tmp/xH4lInAR6B.dsk...
+Copying tests/userprog/child-rox into /tmp/xH4lInAR6B.dsk...
+Writing command line to /tmp/eWOYgFCUoe.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put rox-child put child-rox run rox-child
@@ -31,8 +31,8 @@ child-rox: exit(12)
 (rox-child) end
 rox-child: exit(0)
 Execution of 'rox-child' complete.
-Timer: 541 ticks
-Thread: 30 idle ticks, 348 kernel ticks, 166 user ticks
+Timer: 528 ticks
+Thread: 30 idle ticks, 339 kernel ticks, 162 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 132 reads, 430 writes
 hd1:0: 209 reads, 0 writes

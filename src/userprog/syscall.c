@@ -415,6 +415,7 @@ syscall_handler (struct intr_frame *f)
 /* pj3 */
 /*******/
 #ifdef VM
+  /* Save esp for kernel mode page fault. */
   thread_current()->esp = esp;
 #endif
 /*******/

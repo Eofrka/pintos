@@ -5,12 +5,13 @@
 #include "threads/synch.h"
 #include "vm/frame.h"
 #include "vm/page.h"
+#include "threads/synch.h"
 #define SWAP_IDX_DEFAULT 0xffffffff
 struct swap_table
 {
   struct bitmap* used_map;     /* Used: 1, free: 0. */
   struct disk* disk;           /* Swap disk. */
-
+  struct lock lock;            /* Swap lock. */
 };
 
 

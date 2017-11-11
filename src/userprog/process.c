@@ -312,6 +312,19 @@ process_exit (void)
     file_close(curr->executable);
     lock_release(&filesys_lock);
   }
+
+  /* If current process is an orphan process, free its 'struct process'. There are no parent process waiting it to reap... */
+  if(ps->parent == NULL)
+  {
+    SAFE_FREE(ps);
+  }
+  /* Else, call sema_up(&ps->sema_wait) for blocking system call wait(). */
+  else
+  {
+    sema_up(&ps->sema_wait);
+  }
+  /*******/
+
 /* pj3 */
 /*******/
 #ifdef VM
@@ -338,21 +351,6 @@ process_exit (void)
     pagedir_activate (NULL);
     pagedir_destroy (pd);
   }
-
-
-
-  /* If current process is an orphan process, free its 'struct process'. There are no parent process waiting it to reap... */
-  if(ps->parent == NULL)
-  {
-    SAFE_FREE(ps);
-  }
-  /* Else, call sema_up(&ps->sema_wait) for blocking system call wait(). */
-  else
-  {
-    sema_up(&ps->sema_wait);
-  }
-  /*******/
-
 }
 
 /* Sets up the CPU for running user code in the current
@@ -585,14 +583,15 @@ load (char *cmdline, void (**eip) (void), void **esp)
 
   /* pj2 */
   /*******/
+
+  /* Free args */
+  SAFE_FREE(args);
+  
   /* If failed, call file_close(file). */
   if(success != true)
   {
     file_close(file);
   }
-
-  /* Free args */
-  SAFE_FREE(args);
   /*******/
   return success;
 }
@@ -683,9 +682,12 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
     size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
     size_t page_zero_bytes = PGSIZE - page_read_bytes;
 
-   /* 1. Allocate spte. */
+    /* 1. Allocate spte. */
     struct supplemental_page_table_entry* spte = spte_create();
-
+    if(spte == NULL)
+    {
+      return false;
+    }
     /* 2. Initilize spte. */
     spte->upage = upage;
     spte->state = SPTE_FILE;
@@ -759,8 +761,12 @@ setup_stack (void **esp, struct arguments* args)
 #ifdef VM
   /* Create stack spte. */
   struct supplemental_page_table_entry* spte = spte_create();
-  struct thread* curr  = thread_current();
+  if(spte == NULL)
+  {
+    return false;
+  }
 
+  struct thread* curr  = thread_current();
   spte->upage = (void*)((uint32_t)PHYS_BASE - PGSIZE);
   spte->pagedir = curr->pagedir;
   spte->writable = true;
@@ -779,12 +785,14 @@ setup_stack (void **esp, struct arguments* args)
 
   if(!fte_install(fte, spte))
   {
-    printf("frame_install_page() failed\n");
+    printf("fte_install failed\n");
     lock_acquire(&frame_lock);
     list_remove(&fte->elem);
+    lock_release(&frame_lock);
     palloc_free_page(fte->kpage);
     SAFE_FREE(fte);
-    lock_release(&frame_lock);
+    
+
     hash_delete(&curr->spt, &spte->h_elem);
     SAFE_FREE(spte);
     return false;
@@ -806,12 +814,11 @@ setup_stack (void **esp, struct arguments* args)
     success = install_page (((uint8_t *) PHYS_BASE) - PGSIZE, kpage, true);
     if (success)
     {
-
-        /* pj2 */
-        /*******/
+      /* pj2 */
+      /*******/
       push_arguments(args, esp);
-        //hex_dump((uintptr_t)(*esp), *esp, PHYS_BASE - (*esp), true);
-        /*******/
+      //hex_dump((uintptr_t)(*esp), *esp, PHYS_BASE - (*esp), true);
+      /*******/
     }
     else
       palloc_free_page (kpage);

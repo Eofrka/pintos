@@ -1,5 +1,5 @@
-Copying tests/filesys/base/sm-full into /tmp/liSWec798E.dsk...
-Writing command line to /tmp/hX2sKMdt7u.dsk...
+Copying tests/filesys/base/sm-full into /tmp/JaRjTvyc2V.dsk...
+Writing command line to /tmp/DdOP0t2z7L.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put sm-full run sm-full
@@ -26,8 +26,8 @@ Executing 'sm-full':
 (sm-full) end
 sm-full: exit(0)
 Execution of 'sm-full' complete.
-Timer: 461 ticks
-Thread: 30 idle ticks, 235 kernel ticks, 199 user ticks
+Timer: 448 ticks
+Thread: 30 idle ticks, 226 kernel ticks, 195 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 103 reads, 240 writes
 hd1:0: 102 reads, 0 writes

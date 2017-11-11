@@ -70,7 +70,8 @@ struct supplemental_page_table_entry* spte_create(void)
   struct supplemental_page_table_entry* spte =(struct supplemental_page_table_entry*)malloc(sizeof(struct supplemental_page_table_entry));
   if(spte == NULL)
   {
-    PANIC("not enough memory to alloate spte");
+    //PANIC("not enough memory to allocate spte");
+    return NULL;
   }
   spte->upage = NULL;
   spte->fte = NULL;
@@ -152,11 +153,14 @@ struct supplemental_page_table_entry* spte_lookup(struct hash* spt, void* upage)
 }
 
 
-/* Inserts additional stack region spte into spt. */
+/* Inserts additional stack region spte into spt. Returns true if stack growth success. */
 void stack_growth(void* fault_page_vaddr)
 {
   struct supplemental_page_table_entry* spte = spte_create();
-  
+  if(spte == NULL)
+  {
+    PANIC("not enough memory to allocate spte");
+  }
   struct thread* curr = thread_current();
   spte->upage = fault_page_vaddr;
   spte->state= SPTE_ZERO;
