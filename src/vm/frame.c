@@ -48,14 +48,7 @@ bool handle_page_fault(struct supplemental_page_table_entry* spte)
   lock_acquire(&frame_lock);
   struct frame_table_entry* fte = fte_obtain(PAL_USER);
   lock_release(&frame_lock);
-  if(fte == NULL)
-  {
-    printf("frame_obtain() failed\n");
-    hash_delete(&curr->spt, &spte->h_elem);
-    SAFE_FREE(spte);
-    /* Not enough kernel pool memory to allocate fte. */
-    return false;
-  }
+
   //2. Fetch data into fte using spte.
   if(!fte_fetch(fte,spte))
   {
@@ -87,7 +80,14 @@ bool handle_page_fault(struct supplemental_page_table_entry* spte)
 /* Obtains a frame to store the page. If user pool is full, do page replacement algorithm. */
 struct frame_table_entry* fte_obtain(enum palloc_flags flags)
 {
-  
+  /* Allocate frame. */
+  void* kpage = palloc_get_page(flags);
+  if(kpage == NULL)
+  {
+    /* Page replacement algoritm. */
+    kpage = frame_realloc(flags);
+  }
+
   struct frame_table_entry* fte = (struct frame_table_entry*)malloc(sizeof(struct frame_table_entry));
   if(fte == NULL)
   {
@@ -100,15 +100,6 @@ struct frame_table_entry* fte_obtain(enum palloc_flags flags)
   fte->elem.prev = NULL;
   fte->elem.next = NULL;
 
-  /* Allocate frame. */
-
-  void* kpage = palloc_get_page(flags);
-  if(kpage == NULL)
-  {
-    /* Page replacement algoritm. */
-    kpage = frame_realloc(flags);
-    /**************************************************************************************************************************/
-  }
   /* Connect fte and frame. */
   fte->kpage = kpage;
   fte_insert(fte);
@@ -123,26 +114,26 @@ bool fte_fetch(struct frame_table_entry* fte, struct supplemental_page_table_ent
   switch(spte->state)
   {
     case SPTE_FRAME :
-      PANIC("SPTE_FRAME is not available spte_state to fetch");
-      break;
+    PANIC("SPTE_FRAME is not available spte_state to fetch");
+    break;
     case SPTE_FILE :
-      lock_acquire(&filesys_lock);
-      file_seek(spte->file, spte->ofs);
-      if (file_read (spte->file, fte->kpage, spte->page_read_bytes) != (int) spte->page_read_bytes)
-      {
-          lock_release(&filesys_lock);
-          return false; 
-      }
-      memset ((uint8_t*)fte->kpage + spte->page_read_bytes, 0, spte->page_zero_bytes);
+    lock_acquire(&filesys_lock);
+    file_seek(spte->file, spte->ofs);
+    if (file_read (spte->file, fte->kpage, spte->page_read_bytes) != (int) spte->page_read_bytes)
+    {
       lock_release(&filesys_lock);
-      break;
+      return false; 
+    }
+    memset ((uint8_t*)fte->kpage + spte->page_read_bytes, 0, spte->page_zero_bytes);
+    lock_release(&filesys_lock);
+    break;
     case SPTE_SWAP :
-      swap_in(spte, fte);
-      break;
+    swap_in(spte, fte);
+    break;
     case SPTE_ZERO :
-      ASSERT(spte->is_stack_page == true);
-      memset (fte->kpage, 0, PGSIZE);
-      break;
+    ASSERT(spte->is_stack_page == true);
+    memset (fte->kpage, 0, PGSIZE);
+    break;
 
   }
   return true;
@@ -152,8 +143,6 @@ bool fte_fetch(struct frame_table_entry* fte, struct supplemental_page_table_ent
 /* Inserts fte into frame_table. */
 void fte_insert(struct frame_table_entry* fte)
 {
-  ASSERT(frame_clock.clock_hand != NULL);
-  ASSERT(frame_clock.clock_hand != list_head(&frame_table));
   list_insert(frame_clock.clock_hand, &fte->elem);
 }
 
@@ -269,7 +258,7 @@ void* frame_realloc(enum palloc_flags flags)
   {
     swap_out(victim_spte, victim_fte);
   }
-    
+
 
   pagedir_clear_page(victim_pd, victim_upage);
   list_remove(&victim_fte->elem);
