@@ -770,7 +770,7 @@ setup_stack (void **esp, struct arguments* args)
   /* 2. Initialize the spte. */
   struct thread* curr  = thread_current();
   spte->upage = (void*)((uint32_t)PHYS_BASE - (uint32_t)PGSIZE);
-  //spte->state = SPTE_ZERO;
+  spte->state = SPTE_ZERO;
   spte->pagedir = curr->pagedir;
   spte->writable = true;
   spte->page_zero_bytes = (size_t)PGSIZE;
@@ -785,7 +785,7 @@ setup_stack (void **esp, struct arguments* args)
 
   /* 4. Obtain frame. */
   lock_acquire(&frame_lock);
-  struct frame_table_entry* fte = fte_obtain(PAL_USER);
+  struct frame_table_entry* fte = fte_obtain(spte,PAL_USER);
   if(fte == NULL)
   {
     hash_delete(&curr->spt, &spte->h_elem);
@@ -827,14 +827,10 @@ setup_stack (void **esp, struct arguments* args)
   }
   else
   {
-    /* 7. If install success, connect spte and fte. */
-    spte->fte = fte;
-    fte->spte = spte;
-
-    /* 8. Finally, update the spte's state into SPTE_FRAME. */
+    /* 7. Finally, update the spte's state into SPTE_FRAME. */
     spte->state = SPTE_FRAME;
 
-    /* 9. Push arguments into user stack. */
+    /* 8. Push arguments into user stack. */
     push_arguments(args, esp);
     return true;
   }

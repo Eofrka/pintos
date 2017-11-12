@@ -1,5 +1,5 @@
-Copying tests/userprog/open-missing into /tmp/w86yZC1JaT.dsk...
-Writing command line to /tmp/ZBXlwfpJDD.dsk...
+Copying tests/userprog/open-missing into /tmp/28ccN2upw9.dsk...
+Writing command line to /tmp/vBboeOn3O8.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put open-missing run open-missing
@@ -19,8 +19,8 @@ Executing 'open-missing':
 (open-missing) end
 open-missing: exit(0)
 Execution of 'open-missing' complete.
-Timer: 316 ticks
-Thread: 30 idle ticks, 230 kernel ticks, 63 user ticks
+Timer: 317 ticks
+Thread: 30 idle ticks, 228 kernel ticks, 66 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 76 reads, 204 writes
 hd1:0: 98 reads, 0 writes

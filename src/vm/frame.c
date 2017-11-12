@@ -8,7 +8,7 @@
 #include "threads/vaddr.h"
 #include "vm/swap.h"
 
-/* Initilizes frame lock and frame table. */
+/* Initilizes frame_lock and frame_table. */
 void frame_init(void)
 {
   lock_init(&frame_lock);
@@ -50,7 +50,7 @@ bool handle_page_fault(struct supplemental_page_table_entry* spte)
   /* 1. Obtain fte. */
   struct thread* curr = thread_current();
   lock_acquire(&frame_lock);
-  struct frame_table_entry* fte = fte_obtain(PAL_USER);
+  struct frame_table_entry* fte = fte_obtain(spte,PAL_USER);
   if(fte == NULL)
   {
     hash_delete(&curr->spt, &spte->h_elem);
@@ -89,18 +89,14 @@ bool handle_page_fault(struct supplemental_page_table_entry* spte)
     return false;
   }
 
-  /* 4. If install success, connect spte and fte. */
-  fte->spte= spte;
-  spte->fte = fte;
-
-  /* 5. Update the spte's state into SPTE_FRAME. */
+  /* 4. Update the spte's state into SPTE_FRAME. */
   spte->state = SPTE_FRAME;
   return true;
 
 }
 
-/* Obtains a frame to store the page. If user pool is full, do page replacement algorithm. Programmer must do synchronization. */
-struct frame_table_entry* fte_obtain(enum palloc_flags flags)
+/* Obtains a frame to store the page. If user pool is full, do page replacement algorithm. This function includes allocating a frame, allocating a fte, connecting the spte and the fte, and inserting the fte into the frame_table. Programmer must do synchronization. */
+struct frame_table_entry* fte_obtain(struct supplemental_page_table_entry* spte, enum palloc_flags flags)
 {
   /* 1. Allocate a frame. */
   void* kpage = palloc_get_page(flags);
@@ -120,10 +116,11 @@ struct frame_table_entry* fte_obtain(enum palloc_flags flags)
 
   /* 3. Initialize the fte. */
   fte->kpage = kpage;
-  fte->spte = NULL;
+  fte->spte = spte;
   fte->elem.prev = NULL;
   fte->elem.next = NULL;
 
+  spte->fte = fte;
   /* 4. Insert the fte into frame_table. */ 
   fte_insert(fte);
   return fte;
@@ -158,7 +155,7 @@ bool fte_fetch(struct frame_table_entry* fte, struct supplemental_page_table_ent
     memset (fte->kpage, 0, PGSIZE);
     break;
     default:
-      //PANIC("not available state to fetch");
+    PANIC("not available state to fetch");
     break;
 
   }
@@ -186,7 +183,7 @@ bool fte_install(struct frame_table_entry* fte, struct supplemental_page_table_e
 
 }
 
-/* Advances frame table iter. Programmer must do synchronization. */
+/* Advances frame_table iter. Programmer must do synchronization. */
 void frame_advance_iter(struct list_elem** iter_ptr)
 {
   *iter_ptr = list_next(*iter_ptr);
@@ -232,6 +229,7 @@ void* frame_realloc(enum palloc_flags flags)
   {
 
     iter_fte = list_entry(iter, struct frame_table_entry, elem);
+    //printf("iter_fte->kpage: [0x%08x], iter_fte->spte: [0x%08x]\n", iter_fte->kpage, iter_fte->spte);
     ASSERT(iter_fte->spte != NULL);
 
     uint32_t* pd = iter_fte->spte->pagedir;

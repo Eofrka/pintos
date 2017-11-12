@@ -1,5 +1,5 @@
-Copying tests/filesys/base/lg-seq-random into /tmp/tV5XEhCQFB.dsk...
-Writing command line to /tmp/7xeTRhSaKS.dsk...
+Copying tests/filesys/base/lg-seq-random into /tmp/evLlwc3tYc.dsk...
+Writing command line to /tmp/l6ZilpUd0w.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put lg-seq-random run lg-seq-random
@@ -26,8 +26,8 @@ Executing 'lg-seq-random':
 (lg-seq-random) end
 lg-seq-random: exit(0)
 Execution of 'lg-seq-random' complete.
-Timer: 1528 ticks
-Thread: 30 idle ticks, 228 kernel ticks, 1278 user ticks
+Timer: 1530 ticks
+Thread: 30 idle ticks, 229 kernel ticks, 1279 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 502 reads, 664 writes
 hd1:0: 102 reads, 0 writes

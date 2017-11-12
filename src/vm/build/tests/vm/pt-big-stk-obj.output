@@ -1,5 +1,5 @@
-Copying tests/vm/pt-big-stk-obj into /tmp/WfFU8Q9aWO.dsk...
-Writing command line to /tmp/pBtx88yyHu.dsk...
+Copying tests/vm/pt-big-stk-obj into /tmp/o6MWkbVCZ1.dsk...
+Writing command line to /tmp/GDoxJygqbP.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put pt-big-stk-obj run pt-big-stk-obj
@@ -20,8 +20,8 @@ Executing 'pt-big-stk-obj':
 (pt-big-stk-obj) end
 pt-big-stk-obj: exit(0)
 Execution of 'pt-big-stk-obj' complete.
-Timer: 606 ticks
-Thread: 30 idle ticks, 233 kernel ticks, 346 user ticks
+Timer: 608 ticks
+Thread: 30 idle ticks, 233 kernel ticks, 348 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 61 reads, 222 writes
 hd1:0: 107 reads, 0 writes

@@ -1,6 +1,6 @@
-Copying tests/vm/pt-write-code2 into /tmp/5xoiXKmceL.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/5xoiXKmceL.dsk...
-Writing command line to /tmp/2WuRXhU7et.dsk...
+Copying tests/vm/pt-write-code2 into /tmp/vGEvwAsz6p.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/vGEvwAsz6p.dsk...
+Writing command line to /tmp/P1DqDqa4P3.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put pt-write-code2 put sample.txt run pt-write-code2
@@ -21,8 +21,8 @@ Executing 'pt-write-code2':
 (pt-write-code2) open "sample.txt"
 pt-write-code2: exit(-1)
 Execution of 'pt-write-code2' complete.
-Timer: 342 ticks
-Thread: 30 idle ticks, 257 kernel ticks, 62 user ticks
+Timer: 344 ticks
+Thread: 30 idle ticks, 257 kernel ticks, 64 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 90 reads, 212 writes
 hd1:0: 101 reads, 0 writes

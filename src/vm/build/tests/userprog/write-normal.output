@@ -1,6 +1,6 @@
-Copying tests/userprog/write-normal into /tmp/SZs8JnejbJ.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/SZs8JnejbJ.dsk...
-Writing command line to /tmp/h8dcK6Y0V2.dsk...
+Copying tests/userprog/write-normal into /tmp/PGIOmulocS.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/PGIOmulocS.dsk...
+Writing command line to /tmp/NwwBEci4pe.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put write-normal put sample.txt run write-normal
@@ -23,8 +23,8 @@ Executing 'write-normal':
 (write-normal) end
 write-normal: exit(0)
 Execution of 'write-normal' complete.
-Timer: 378 ticks
-Thread: 30 idle ticks, 258 kernel ticks, 97 user ticks
+Timer: 376 ticks
+Thread: 30 idle ticks, 257 kernel ticks, 96 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 122 reads, 218 writes
 hd1:0: 101 reads, 0 writes

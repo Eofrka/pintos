@@ -32,7 +32,7 @@ struct clock frame_clock;                         /* Frame clock. */
 void frame_init(void);
 void fte_free(struct frame_table_entry* fte);
 bool handle_page_fault(struct supplemental_page_table_entry* spte);
-struct frame_table_entry* fte_obtain(enum palloc_flags flags);
+struct frame_table_entry* fte_obtain(struct supplemental_page_table_entry* spte, enum palloc_flags flags);
 bool fte_fetch(struct frame_table_entry* fte, struct supplemental_page_table_entry* spte);
 void fte_insert(struct frame_table_entry* fte);
 bool fte_install(struct frame_table_entry* fte, struct supplemental_page_table_entry* spte);

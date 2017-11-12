@@ -1,6 +1,6 @@
-Copying tests/userprog/open-boundary into /tmp/lzZSyFT1ZI.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/lzZSyFT1ZI.dsk...
-Writing command line to /tmp/247Ess4j0b.dsk...
+Copying tests/userprog/open-boundary into /tmp/4bDIj8KjCB.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/4bDIj8KjCB.dsk...
+Writing command line to /tmp/KM4gRTMof8.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put open-boundary put sample.txt run open-boundary
@@ -22,8 +22,8 @@ Executing 'open-boundary':
 (open-boundary) end
 open-boundary: exit(0)
 Execution of 'open-boundary' complete.
-Timer: 351 ticks
-Thread: 30 idle ticks, 257 kernel ticks, 71 user ticks
+Timer: 353 ticks
+Thread: 30 idle ticks, 257 kernel ticks, 73 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 90 reads, 214 writes
 hd1:0: 102 reads, 0 writes
