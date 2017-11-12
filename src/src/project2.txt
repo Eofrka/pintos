@@ -1,0 +1,385 @@
+			+-----------------------------+
+			|	           CS 330		        |    
+			|   PROJECT 2: USER PROGRAMS	|
+			| 	    DESIGN DOCUMENT     	|
+			+-----------------------------+
+
+---- GROUP ----
+
+>> Fill in the names and email addresses of your group members.
+
+Team Name: OSOS
+Team Number: 18
+Yuhwan Chung yuhwan96@kaist.ac.kr
+
+---- PRELIMINARIES ----
+
+>> If you have any preliminary comments on your submission, notes for the
+>> TAs, or extra credit, please give them here.
+
+사용할 토큰 수: 0개
+기여도: Yuhwan Chung 100%
+
+>> Please cite any offline or online sources you consulted while
+>> preparing your submission, other than the Pintos documentation, course
+>> text, lecture notes, and course staff.
+
+[strtok_r]: http://downman.tistory.com/230
+[elf header]: https://ko.wikipedia.org/wiki/ELF_%ED%8C%8C%EC%9D%BC_%ED%98%95%EC%8B%9D
+[file descriptor table]: http://ehclub.co.kr/1320
+
+
+			   ARGUMENT PASSING
+			   ================
+
+---- DATA STRUCTURES ----
+
+>> A1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+userprog/process.c
+
+	struct arguments
+	{
+  		int argc;
+  		char* argv[64];
+	};
+
+	int argc: argc
+	char* argv[64]: argv, 배열의 크기를 64로 제한한 이유는 3.3.3에 의하면 pintos utility의 cmdline arguments 제한이 128bytes이기 때문이다.
+
+---- ALGORITHMS ----
+
+>> A2: Briefly describe how you implemented argument parsing.  How do
+>> you arrange for the elements of argv[] to be in the right order?
+>> How do you avoid overflowing the stack page?
+
+cmdline을 tocken화시키는 것은 load()에서 일어나도록 구현하였다. 알고리즘은 그냥 단순히 cmdline을 ' '단위로 strtok_r()을
+사용하여 parsing을 하였다. 그리고 마지막 argv[argc]는 NULL로 채워줬다. (더이상 토큰이 없는경우 strtok_r()은 NULL 리턴).
+실제구현은 parse_arguments()라는 함수에서 구현을하였다.
+
+그리고 argument를 stack에 push하는것은 setup_stack()에서 일어나도록 구현하였는데, esp값을 PHYS_BASE로부터 push할때마다 적절히 낮춰가면서
+1. tocken화시킨 argv를 역순으로 push해준다.
+2. alignment를 맞춰준다.
+3. 이제 argv[i]들또한 역순으로 argv[argc](NULL) 을 포함하여 push해준다.
+4. 마지막으로 argv의 주소, argc, fake return address를 순서대로 push해준다. 
+실제 구현은 push_arguments()라는 함수에서 구현을 하였다.
+
+stack overflowing같은 경우는 구현하면서 딱히 신경을 안써줬는데 그 이유는 지금의 pintos는 cmdline arguments 제한이 128bytes이므로
+pintos utility 단계에서 stack overflowing이 발생하는경우를 잡아주기 때문이다. 만약 stack overflowing을 check해줘야 한다면
+push_arguments()에서 esp 값이 (PHYS_BASE - stack의 max size)미만일 경우 setup_stack()에서 false를 return시켜주면 될 것이다.
+
+---- RATIONALE ----
+
+>> A3: Why does Pintos implement strtok_r() but not strtok()?
+
+strtok()는 어디까지 검색했는지에대한 정보를 global data에 가지고 있기 때문에 thread safe하지 않다.
+
+>> A4: In Pintos, the kernel separates commands into a executable name
+>> and arguments.  In Unix-like systems, the shell does this
+>> separation.  Identify at least two advantages of the Unix approach.
+
+1. shell같은 경우는 좀 더 많은 기능이 제공된다.(ex. shell script, pipe) 
+2. shell은 user program이므로 kernel mode보다 좀더 안전하다.
+
+			     SYSTEM CALLS
+			     ============
+
+---- DATA STRUCTURES ----
+
+>> B1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+threads/thread.h
+
+	Added to struct thread:
+
+	bool load: 만약 자식 process의 load가 성공했으면 true, 아니면 false.
+	struct semaphore sema_exec: exec()에서의 synchronization을 위한 semaphore.
+	struct process* process: 이 thread의 process정보.
+	struct list child_list: 자식 process의 list. (list of struct process not struct thread) 
+	int next_fd: 다음에 할당할 fd값.
+	struct list fdt: File descriptor table.
+	struct file* executable: 이 process의 executable file(Denying Writes to Executables에서 필요함).
+
+userprog/process.h
+
+	typedef int pid_t: pid
+	#define PID_ERROR ((pid_t)-1): load 실패시 process_execute()에서 PID_ERROR값을 return.
+	#define PID_DEFAULT ((pid_t)0): default value of pid .
+	#define DEFAULT_EXIT_STATUS ((int)-1): default value of exit_status.
+
+	struct process
+	{
+	  pid_t pid;
+	  int exit_status;                    /* Exit status. */
+	  bool zombie;                        /* If this process is zombie stauts, true. Else false. */
+	  struct thread* parent;              /* Point parent thread. */
+	  bool waiting;                       /* If this process is waiting a child process, true, Else false. */
+	  struct semaphore sema_wait;         /* Semaphore for wait system call. */
+	  struct list_elem elem;              /* List element for child_list. */
+	};
+
+	pid_t pid: pid.
+	int exit_status: exit status.
+	bool zombie: 프로세스가 zombie status이면 true, 아니면 false.
+	struct thread* parent: 부모 thread를 가리킨다. 
+	bool waiting: 이 process가 자식 process를 wait하고 있으면 true, 아니면 false.
+	struct semaphore sema_wait: wait()에서의 synchronization을 위한 semaphore.
+	struct list_elem elem: child_list에 들어가기 위한 list_elem.
+
+
+	struct file_descriptor_table_entry
+	{
+	  int fd;                  
+	  struct file* file;
+	  struct list_elem elem;      
+	};
+
+	int fd: fd.
+	struct file* file: file table의 entry.
+	struct list_elem elem: fdt에 들어가기 위한 list_elem.
+
+
+userprog/syscall.h:
+
+    struct lock filesys_lock: file system에 접근할 때 mutual exclusion을 보장하기 위한 lock.
+
+
+>> B2: Describe how file descriptors are associated with open files.
+>> Are file descriptors unique within the entire OS or just within a
+>> single process?
+
+File descriptors는 전체 os에서 unique하지 않다.
+기본적으로 file descriptor table -> file table -> inode->table의 구조를 가지는데 file descriptor table은 각 process마다 하나씩 있고,
+file table은 kernel에서 모든 열린 파일들을 관리하는 table이고, inode->table이 고유의 파일 정보를 가지고 있다. inode->table만이 unique한 entity이며,
+
+한 프로세스에서 같은 파일을 2번 열면, 서로 다른 file descriptor table entry들과, 서로 다른 file table entry가 할당 되며(서로 다른 offset)
+같은 inode를 포인트하게 된다.
+
+만약 서로다른 프로세스에서 같은 파일을 각각 열면, 각 프로세스의 file descriptor table에 새로 할당된 file descriptor table entry가 추가되며,
+이둘은 서로 다른 file table entry를 포인트하며, file table entry들은 결국 같은 inode를 point하게 된다.
+
+따라서 file descripytor들은 entrie OS에서 unique하지 않고, 각각의 process에서 unique하다.
+
+
+
+---- ALGORITHMS ----
+
+>> B3: Describe your code for reading and writing user data from the
+>> kernel.
+
+3.1.5에서 소개한 2번째 방법인 put_user(), get_user를 사용한 방법으로 구현했다. 그리고 kerenl mode에서 page fault 발생 시
+
+c010af70 <get_user>:
+c010af70:	55                   	push   %ebp
+c010af71:	89 e5                	mov    %esp,%ebp
+c010af73:	89 c1                	mov    %eax,%ecx
+c010af75:	ba ff ff ff ff       	mov    $0xffffffff,%edx
+c010af7a:	3d ff ff ff bf       	cmp    $0xbfffffff,%eax
+c010af7f:	77 0a                	ja     c010af8b <get_user+0x1b>
+c010af81:	b8 89 af 10 c0       	mov    $0xc010af89,%eax               
+c010af86:	0f b6 01             	movzbl (%ecx),%eax		      
+c010af89:	89 c2                	mov    %eax,%edx
+c010af8b:	89 d0                	mov    %edx,%eax
+c010af8d:	5d                   	pop    %ebp
+c010af8e:	c3                   	ret    
+
+c010af8f <put_user>:
+c010af8f:	55                   	push   %ebp
+c010af90:	89 e5                	mov    %esp,%ebp
+c010af92:	89 c1                	mov    %eax,%ecx
+c010af94:	b8 00 00 00 00       	mov    $0x0,%eax
+c010af99:	81 f9 ff ff ff bf    	cmp    $0xbfffffff,%ecx
+c010af9f:	77 10                	ja     c010afb1 <put_user+0x22>
+c010afa1:	b8 a8 af 10 c0       	mov    $0xc010afa8,%eax
+c010afa6:	88 11                	mov    %dl,(%ecx)
+c010afa8:	83 f8 ff             	cmp    $0xffffffff,%eax
+c010afab:	0f 95 c0             	setne  %al
+c010afae:	0f b6 c0             	movzbl %al,%eax
+c010afb1:	5d                   	pop    %ebp
+c010afb2:	c3                   	ret
+
+pintos에서 주어진 c코드에서 uaddr가 PHYS_BASE이상인지 check하는 code를 추가하였다.(uaddr가 0xbfffffff보다 크다면 -1 return)
+만약 uaddr가 PHYS_BASE보다 작고, uaddr에 접근하려다 page fault가 난다면, kernel mode에서는 intr_frame인f의 member값을 아래와 같이
+f->eip = f->eax; f->eax = 0xffffffff;
+조작하여 (eax에다가 jump할 주소를 저장 해놓았기 때문) -1 or false를 return해준다. page fault가 나지 않은 경우라면 정상적으로
+byte를 read/write한다.
+
+read하는 경우는 추가로 static void* check_uaddr(uint8_t* uaddr, uint32_t bytes), static void* check_ustr(const char* ustr)를 통해
+좀 더 쉽게 check할 수 있도록 하였다. 이 함수들 내부에서 get_user()를 통해 check를 하는데, -1을 return할 경우 syscall_exit(-1)를 통해 종료하도록 하였다.
+
+write하는 경우는 일일히 1byte씩 put_user를 loop와 함께 사용하여 false를 return시 syscall_exit(-1)를 통해 종료하도록 하였다.
+
+추가적으로 file system으로부터 read/write의 경우 filesys_lock을 통해 동기화를 해준다.
+
+>> B4: Suppose a system call causes a full page (4,096 bytes) of data
+>> to be copied from user space into the kernel.  What is the least
+>> and the greatest possible number of inspections of the page table
+>> (e.g. calls to pagedir_get_page()) that might result?  What about
+>> for a system call that only copies 2 bytes of data?  Is there room
+>> for improvement in these numbers, and how much?
+
+4096 bytes의 경우
+full page의 시작부분이 page의 시작 주소인 경우 한번의 page fault로 page를 install 할 수 있다.
+4096 bytes가 연속적인 경우 full page의 시작부분이 page의 시작 주소가 아닌 경우 2번의 page fault로 page들을 install하여 cover할 수 있다.
+4096 bytes가 연속이 아닌 경우 최악의 경우에는 4096번의 page fault로 page들을 install해야 cover할 수 있다.
+
+2 bytes의 경우:
+2 bytes가 연속적이면서 single page에 2bytes가 놓이는 경우 1번의 page fault로 page를 install하여 cover 할 수 있다.
+2 bytes가 연속적이지 않으면서 single page에 놓이지 않거나 연속적이더라고 운이 않좋게 page 끝부분과 page시작부분에 걸치는 경우 2번의 page fault로 page들을 install해야 cover 할 수 있다.
+
+>> B5: Briefly describe your implementation of the "wait" system call
+>> and how it interacts with process termination.
+
+process_wait()을 통해 구현이 되어있는데, 이미 wait을 call한 경우 또 wait을 call할 경우 -1을 즉시 return한다. 만약 wait을 call한 적이 없으면 이 process의
+waiting flag를 true로 세팅하여 wait을 call했다는 것을 알려준다.
+
+그리고 자신의 child_list에서 prarmeter로 주어진 child_pid를 갖고있는 struct process를 찾는다. 만약 못 찾은 경우 waiting flag를 false로 세팅하고
+즉시 -1을 return한다.
+
+만약 child_list에서 child_pid를 갖는 struct process를 찾은 경우
+(i)만약 그 struct process가 zombie status라면, 즉시 child_list에서 그 struct process를 제거 remove해주고,
+그 struct process를 free해주고, 그 process의 exit_status값을 return해준다.
+
+(ii)만약 그 struct process가 zombie status가 아니라면, 그 struct process에 해당하는 child process가 zombie status로 될 때까지
+(syscall_exit()이 call될 때까지) 기다렸다가, zombie status로 바뀐다면 그제서야 (i)의 동작을 시행한다.
+
+(i),(ii)의 동작은 semaphore를 통해 구현했다.
+
+wait의 동작이 위와 같으려면, process_exit()시에 고아가 아닌경우에는 struct process를 free해서는 안되고, 고아인 경우에만 즉시 free를 해준다.
+
+>> B6: Any access to user program memory at a user-specified address
+>> can fail due to a bad pointer value.  Such accesses must cause the
+>> process to be terminated.  System calls are fraught with such
+>> accesses, e.g. a "write" system call requires reading the system
+>> call number from the user stack, then each of the call's three
+>> arguments, then an arbitrary amount of user memory, and any of
+>> these can fail at any point.  This poses a design and
+>> error-handling problem: how do you best avoid obscuring the primary
+>> function of code in a morass of error-handling?  Furthermore, when
+>> an error is detected, how do you ensure that all temporarily
+>> allocated resources (locks, buffers, etc.) are freed?  In a few
+>> paragraphs, describe the strategy or strategies you adopted for
+>> managing these issues.  Give an example.
+
+user memory로부터 read는 기본적으로 get_user()를 사용해서 checking을 해주고, write는 put_user()를 사용해서 checking을 해준다.
+
+user스택으로부터 system call번호 읽기, system call arguments읽기, user buffer가 valid한지 checking하기 같은 경우에는 자주 사용되기 때문에
+check_uaddr(), check_ustr()을 통해 읽을 uaddr, 읽을 바이트 수 또는 string의 주소같은 것들을 parameter로 받아서 loop를 돌면서 일일히 get_user()를
+호출하면서 checking을 하였다. 이 때 get_user()가 -1을 return한 경우 invalid한 경우이므로 syscall_exit(-1)을 통해 종료시켜줬다.
+
+user memory에 write하는 경우는 오로지 loop를 돌면서 put_user()를 통해 checking을 해줬다.(syscall_read()의 경우에만 checking필요)
+만약 put_user()가 false를 return하는 경우 syscall_exit(-1)을 통해 종료시켜줬다.
+
+temporarily allocated resources의 해제같은 경우는 상황을 보고 이전에 할당한 경우가 있으면 해제를 하고 syscall_exit(-1)을 호출하도록 하였다.
+
+example:
+handle = open ("sample.txt");
+read(handle, (char*)"Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! ", 123);
+
+
+string "Hello world! ... "의 주소는 read only인데, 여따가 123bytes만큼 handle에서 읽어서 저장(user momory에 write)시에 put_user()에서 false를 리턴함.
+따라서 즉시 syscall_exit(-1)로 종료.
+
+---- SYNCHRONIZATION ----
+
+>> B7: The "exec" system call returns -1 if loading the new executable
+>> fails, so it cannot return before the new executable has completed
+>> loading.  How does your code ensure this?  How is the load
+>> success/failure status passed back to the thread that calls "exec"?
+
+struct thread의 member에 struct semaphore sema_exec라는 semaphore를 두어
+
+process_execute()에서
+  
+  /* Create a new thread to execute FILE_NAME. */
+  tid = thread_create (file_name, PRI_DEFAULT, start_process, fn_copy);
+  /* Wait loading in start_process(). */
+  sema_down(&curr->sema_exec);
+
+thread_create()을해준다음(create시에 struct process를 할당하여 default value들을 initialize시켜준다.)start_process에서 load를 완료하고
+적절한 struct process setting을 마치기까지 sema_exec를 이용하여 기다려준다.
+
+start_process()에서는 load의 성공여부를 check한다음
+실패한 경우 pid를 PID_ERROR(-1)로 세팅하고, parent thread의 load flag를 false로 세팅한 뒤에 sema_up(부모thread의 sema_exec)를 해준다.
+성공한 경우 pid를 그제서야 현재 thread의 tid로 같게 해준다음, 부모 thread의 child_list에 자식 프로세스의 struct process를 insert해주고, 부모 thread의
+load flag를 true로 세팅한 뒤에 sema_up(부모 thread의 sema_exec)를해준다.
+
+
+process_execute()에서 load의 성공여부를 아는 방법은 struct thread에서 bool load라는 member를 두었고, struct process에서는 struct thread* parent라는
+member를 두었기 때문에 위에서도 언급했듯이 이들의 상호작용을 통해 알 수 있다.
+
+
+>> B8: Consider parent process P with child process C.  How do you
+>> ensure proper synchronization and avoid race conditions when P
+>> calls wait(C) before C exits?  After C exits?  How do you ensure
+>> that all resources are freed in each case?  How about when P
+>> terminates without waiting, before C exits?  After C exits?  Are
+>> there any special cases?
+		
+P calls wait(C) before C exits: C의 struct process의 sema_wait에서 C가 종료할 때 까지 기다린다. 그러다가 C가 종료하여 C자신의 sema_wait에게 시그널을 보내주면
+그제서야 child_list에서 C의 struct process를 제거하고 C의 exit_status를 얻어온다음 C의 struct process를 free해주고 얻어온 exit_status값을 return해준다.
+
+P calls wait(C) after C exits:
+이미 C가 exit을 했다는 것은 C의 struct process가 zombie 상태이므로 C의 sema_wait의 value가 1일 것이다.(애초에 0으로 초기화시켜놓음) 그러면
+sema_wait(C의 sema_wait)을 해주어도 기다리지 않고 즉시 child_list에서 C의 struct process를 제거하고 C의 exit_status를 얻어온다음 C의 struct process를
+free해주고 얻어온 exit_status값을 return해준다.
+
+P가 terminates한다면, P의 모든 자식 (process/thread)들은 zombie상태라면 즉시 free가 되고, zombie상태가 아니라면 고아가된다. 그리고 fdt를 순회하면서
+열린 file descriptor table entry들을 close해주고,
+
+P terminates without waiting, before C exits:
+이 경우에는 C는 zombie status가 아니므로 C는 고아가 된다. 그리고 나중에 C가 exit하는 경우, C가 고아상태이므로 exit시에 즉시 C의 struct process를 free해준다.
+
+P terminates without waiting, after C exits:
+이 경우에는 C는 zombie status이므로 즉시 C의 struct process를 즉시 free해준다.
+
+
+
+---- RATIONALE ----
+
+>> B9: Why did you choose to implement access to user memory from the
+>> kernel in the way that you did?
+
+처음에 3.1.5를 읽었을 때, 첫번째 방법이 간단하다고 했는데, 내가 느끼기에는 두번째 방법인 get_user()와 put_user()를 사용하여, page fault handler동작만
+수정해주는것이 좀 더 간단하다고 생각되었다. 물론 직접 구현하면서 lock을 acquire()한 상황에서 validity chekcing이 실패한다면 lock을 release해주고
+syscall_exit(-1)을 해주는 번거로움이 있었지만, 3.1.5의 설명에 의하면 이렇게 하는 것이 더 빠르다는 장점을 갖고 있다고 한다.
+
+>> B10: What advantages or disadvantages can you see to your design
+>> for file descriptors?
+
+struct thread에도 next_fd라는 다음에 할당할 fd값을 두어서 open()과 close를 구현하기는 쉬웠으나, struct thread의 member변수를
+차지한다는 단점이있다.
+
+>> B11: The default tid_t to pid_t mapping is the identity mapping.
+>> If you changed it, what advantages are there to your approach?
+
+나중에 확정성을 생각했을때 좀 더 좋을 것 같다.
+
+
+			   SURVEY QUESTIONS
+			   ================
+
+Answering these questions is optional, but it will help us improve the
+course in future quarters.  Feel free to tell us anything you
+want--these questions are just to spur your thoughts.  You may also
+choose to respond anonymously in the course evaluations at the end of
+the quarter.
+
+>> In your opinion, was this assignment, or any one of the three problems
+>> in it, too easy or too hard?  Did it take too long or too little time?
+
+>> Did you find that working on a particular part of the assignment gave
+>> you greater insight into some aspect of OS design?
+
+>> Is there some particular fact or hint we should give students in
+>> future quarters to help them solve the problems?  Conversely, did you
+>> find any of our guidance to be misleading?
+
+>> Do you have any suggestions for the TAs to more effectively assist
+>> students, either for future quarters or the remaining projects?
+
+>> Any other comments?

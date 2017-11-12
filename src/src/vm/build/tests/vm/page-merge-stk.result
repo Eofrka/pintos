@@ -1,0 +1,22 @@
+FAIL
+Kernel panic in run: PANIC at ../../vm/frame.c:232 in frame_realloc(): assertion `iter_fte->spte != NULL' failed.
+Call stack: 0xc01079ec 0xc010dae8 0xc010df9a 0xc010e016 0xc010d8df 0xc010b0a5 0xc0101e2d 0xc0101f5f 0x8048a61 0x8048b33 0x804824a 0x804812d 0x80489d0
+Translation of call stack:
+In kernel.o:
+0xc01079ec: debug_panic (.../../lib/kernel/debug.c:34)
+0xc010dae8: frame_realloc (...uild/../../vm/frame.c:234)
+0xc010df9a: fte_obtain (...uild/../../vm/frame.c:110)
+0xc010e016: handle_page_fault (...build/../../vm/frame.c:53)
+0xc010d8df: spte_actual_load (...build/../../vm/page.c:142)
+0xc010b0a5: page_fault (.../userprog/exception.c:177)
+0xc0101e2d: intr_handler (..../threads/interrupt.c:361)
+0xc0101f5f: intr_entry (threads/intr-stubs.S:38)
+In tests/vm/page-merge-stk:
+0x08048a61: check_file (...ild/../../tests/lib.c:160)
+0x08048b33: exec_children (...uild/../../tests/lib.c:88)
+0x0804824a: sort_chunks (...ts/vm/parallel-merge.c:44)
+0x0804812d: init (...ts/vm/parallel-merge.c:32)
+0x080489d0: check_file_handle (...ild/../../tests/lib.c:144)
+Translations of user virtual addresses above are based on a guess at
+the binary to use.  If this guess is incorrect, then those
+translations will be misleading.

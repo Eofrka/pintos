@@ -1,0 +1,41 @@
+Copying tests/vm/page-merge-stk into /tmp/GIS2MzdfgK.dsk...
+Copying tests/vm/child-qsort into /tmp/GIS2MzdfgK.dsk...
+Writing command line to /tmp/sAcNwzn5vs.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
+Kernel command line: -q -f put page-merge-stk put child-qsort run page-merge-stk
+Pintos booting with 4,096 kB RAM...
+373 pages available in kernel pool.
+373 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
+hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
+hd1:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00021"
+hd1:1: detected 8,064 sector (3 MB) disk, model "Generic 1234", serial "BXHD00022"
+Formatting file system...done.
+Boot complete.
+Putting 'page-merge-stk' into the file system...
+Putting 'child-qsort' into the file system...
+Executing 'page-merge-stk':
+(page-merge-stk) begin
+(page-merge-stk) init
+(page-merge-stk) sort chunk 0
+(page-merge-stk) sort chunk 1
+(page-merge-stk) sort chunk 2
+(page-merge-stk) sort chunk 3
+(page-merge-stk) sort chunk 4
+Kernel PANIC at ../../vm/frame.c:232 in frame_realloc(): assertion `iter_fte->spte != NULL' failed.
+Call stack: 0xc01079ec 0xc010dae8 0xc010df9a 0xc010e016 0xc010d8df 0xc010b0a5 0xc0101e2d 0xc0101f5f 0x8048a61 0x8048b33 0x804824a 0x804812d 0x80489d0.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 9820 ticks
+Thread: 30 idle ticks, 330 kernel ticks, 9460 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 879 reads, 2760 writes
+hd1:0: 213 reads, 0 writes
+hd1:1: 0 reads, 0 writes
+Console: 1513 characters output
+Keyboard: 0 keys pressed
+Exception: 369 page faults
+Powering off...

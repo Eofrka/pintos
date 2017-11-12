@@ -760,27 +760,30 @@ setup_stack (void **esp, struct arguments* args)
 /* pj3 */
 /*******/
 #ifdef VM
-  /* Create stack spte. */
+  /* 1. Create a stack spte. */
   struct supplemental_page_table_entry* spte = spte_create();
   if(spte == NULL)
   {
     return false;
   }
 
+  /* 2. Initialize the spte. */
   struct thread* curr  = thread_current();
-  spte->upage = (void*)((uint32_t)PHYS_BASE - PGSIZE);
+  spte->upage = (void*)((uint32_t)PHYS_BASE - (uint32_t)PGSIZE);
+  //spte->state = SPTE_ZERO;
   spte->pagedir = curr->pagedir;
   spte->writable = true;
+  spte->page_zero_bytes = (size_t)PGSIZE;
   spte->is_stack_page = true;
 
-  /* Insert spte into spt. */
+  /* 3. Insert the spte into spt. */
   if(!spte_insert(&curr->spt, spte))
   {
     SAFE_FREE(spte);
     return false;
   }
 
-  /* Obtain frame. */
+  /* 4. Obtain frame. */
   lock_acquire(&frame_lock);
   struct frame_table_entry* fte = fte_obtain(PAL_USER);
   if(fte == NULL)
@@ -792,7 +795,7 @@ setup_stack (void **esp, struct arguments* args)
   }
   lock_release(&frame_lock);
 
-
+  /* 5. Fetch frame. */
   if(!fte_fetch(fte, spte))
   {
     /* May not occur. */
@@ -807,6 +810,8 @@ setup_stack (void **esp, struct arguments* args)
     return false;
   }
 
+  /* 6. Install the page into original pintos's page table.
+        swapped_in page's dirty bit must be cleared because of pagedir_set_page(). */
   if(!fte_install(fte, spte))
   {
     lock_acquire(&frame_lock);
@@ -822,9 +827,14 @@ setup_stack (void **esp, struct arguments* args)
   }
   else
   {
+    /* 7. If install success, connect spte and fte. */
     spte->fte = fte;
     fte->spte = spte;
+
+    /* 8. Finally, update the spte's state into SPTE_FRAME. */
     spte->state = SPTE_FRAME;
+
+    /* 9. Push arguments into user stack. */
     push_arguments(args, esp);
     return true;
   }
