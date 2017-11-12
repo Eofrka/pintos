@@ -699,7 +699,11 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
     spte->page_zero_bytes = page_zero_bytes;
     
     /* 3. Insert spte into spt. */
-    spte_insert(&curr->spt, spte);    
+    if(!spte_insert(&curr->spt, spte))
+    {
+      SAFE_FREE(spte);
+      return false;
+    }    
 
     /* Advance. */
     read_bytes -= page_read_bytes;
@@ -773,7 +777,11 @@ setup_stack (void **esp, struct arguments* args)
   spte->is_stack_page = true;
 
   /* Insert spte into spt. */
-  spte_insert(&curr->spt, spte);
+  if(!spte_insert(&curr->spt, spte))
+  {
+    SAFE_FREE(spte);
+    return false;
+  }
 
   /* Obtain frame. */
   lock_acquire(&frame_lock);

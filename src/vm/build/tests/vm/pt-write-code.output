@@ -1,5 +1,5 @@
-Copying tests/vm/pt-write-code into /tmp/sN6KdK5Jv7.dsk...
-Writing command line to /tmp/qNSdVGTiTM.dsk...
+Copying tests/vm/pt-write-code into /tmp/0vsE0lpakU.dsk...
+Writing command line to /tmp/LIBS5MbGuV.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put pt-write-code run pt-write-code
@@ -26,7 +26,7 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0x80480a6
 pt-write-code: exit(-1)
 Execution of 'pt-write-code' complete.
 Timer: 348 ticks
-Thread: 30 idle ticks, 227 kernel ticks, 98 user ticks
+Thread: 30 idle ticks, 228 kernel ticks, 97 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 59 reads, 204 writes
 hd1:0: 98 reads, 0 writes

@@ -91,12 +91,15 @@ struct supplemental_page_table_entry* spte_create(void)
 }
 
 /* Inserts spte into spt. If the key value(upage) is already in the spt, PANIC. */
-void spte_insert(struct hash* spt, struct supplemental_page_table_entry* spte)
+bool spte_insert(struct hash* spt, struct supplemental_page_table_entry* spte)
 {
   if(hash_insert(spt, &spte->h_elem) != NULL)
   {
-    printf("spt->upage: [0x%08x]\n",spte->upage);
-    PANIC("The key value(upage) is already in the spt");
+    return false;
+  }
+  else
+  {
+    return true;
   }
 
 }
@@ -123,7 +126,10 @@ bool spte_actual_load(void* fault_addr, bool not_present, uint8_t* esp)
   /* Stack growth. */
   if(sgn)
   {
-    stack_growth(fault_page_vaddr);
+    if(!stack_growth(fault_page_vaddr))
+    {
+      return false;
+    }
   }
 
   /* Lookup fault_page in spt. */
@@ -154,12 +160,12 @@ struct supplemental_page_table_entry* spte_lookup(struct hash* spt, void* upage)
 
 
 /* Inserts additional stack region spte into spt. Returns true if stack growth success. */
-void stack_growth(void* fault_page_vaddr)
+bool stack_growth(void* fault_page_vaddr)
 {
   struct supplemental_page_table_entry* spte = spte_create();
   if(spte == NULL)
   {
-    PANIC("not enough memory to allocate spte");
+    return false;
   }
   struct thread* curr = thread_current();
   spte->upage = fault_page_vaddr;
@@ -169,7 +175,15 @@ void stack_growth(void* fault_page_vaddr)
   spte->writable = true;
   spte->is_stack_page = true;
   spte->page_zero_bytes = PGSIZE;
-  spte_insert(&curr->spt, spte);
+  if(!spte_insert(&curr->spt, spte))
+  {
+    SAFE_FREE(spte);
+    return false;
+  }
+  else
+  {
+    return true;
+  }
 }
 
 

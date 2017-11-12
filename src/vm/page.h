@@ -46,12 +46,12 @@ void spt_destroy(struct hash* spt);
 
 
 struct supplemental_page_table_entry* spte_create(void);
-void spte_insert(struct hash* spt, struct supplemental_page_table_entry* spte);
+bool spte_insert(struct hash* spt, struct supplemental_page_table_entry* spte);
 bool spte_actual_load(void* fault_addr, bool not_present, uint8_t* esp);
 
 struct supplemental_page_table_entry* spte_lookup(struct hash* spt, void* upage);
 
-void stack_growth(void* fault_page_vaddr);
+bool stack_growth(void* fault_page_vaddr);
 bool stack_growth_need(uint8_t* fault_addr, uint8_t* esp);
 
 

@@ -213,10 +213,10 @@ void* frame_realloc(enum palloc_flags flags)
 
     uint32_t* pd = iter_fte->spte->pagedir;
     void* upage = iter_fte->spte->upage;
-    if(pagedir_is_accessed(pd, upage) && pagedir_is_accessed(pd, iter_fte->kpage))
+    if(pagedir_is_accessed(pd, upage)) //&& pagedir_is_accessed(pd, iter_fte->kpage))
     {
       pagedir_set_accessed(pd, upage ,false);
-      pagedir_set_accessed(pd, iter_fte->kpage, false);
+      //pagedir_set_accessed(pd, iter_fte->kpage, false);
       if(iter == last)
       {
         frame_advance_iter(&iter);
