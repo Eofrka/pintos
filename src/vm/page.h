@@ -34,6 +34,7 @@ struct supplemental_page_table_entry
 
   size_t swap_idx;                          /* Swap idx. */
   bool is_stack_page;                       /* True if it is stack page. */
+
   struct hash_elem h_elem;                  /* Hash table element for supplemental page table. */
 
 };

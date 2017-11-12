@@ -1,6 +1,6 @@
-Copying tests/vm/page-merge-seq into /tmp/smCHRAV0Gg.dsk...
-Copying tests/vm/child-sort into /tmp/smCHRAV0Gg.dsk...
-Writing command line to /tmp/nV73EKF11O.dsk...
+Copying tests/vm/page-merge-seq into /tmp/DvvlYBaiQf.dsk...
+Copying tests/vm/child-sort into /tmp/DvvlYBaiQf.dsk...
+Writing command line to /tmp/ldxcYwJxrI.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-merge-seq put child-sort run page-merge-seq
@@ -57,12 +57,12 @@ child-sort: exit(123)
 (page-merge-seq) end
 page-merge-seq: exit(0)
 Execution of 'page-merge-seq' complete.
-Timer: 53865 ticks
-Thread: 30 idle ticks, 480 kernel ticks, 53363 user ticks
+Timer: 53861 ticks
+Thread: 30 idle ticks, 483 kernel ticks, 53356 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 4831 reads, 4582 writes
+hd0:1: 4847 reads, 4582 writes
 hd1:0: 205 reads, 0 writes
-hd1:1: 1440 reads, 2536 writes
+hd1:1: 1424 reads, 2520 writes
 Console: 1979 characters output
 Keyboard: 0 keys pressed
 Exception: 1265 page faults

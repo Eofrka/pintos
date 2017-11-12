@@ -47,13 +47,19 @@ bool handle_page_fault(struct supplemental_page_table_entry* spte)
   struct thread* curr = thread_current();
   lock_acquire(&frame_lock);
   struct frame_table_entry* fte = fte_obtain(PAL_USER);
+  if(fte == NULL)
+  {
+    hash_delete(&curr->spt, &spte->h_elem);
+    SAFE_FREE(spte);
+    lock_release(&frame_lock);
+    return false;
+  }
   lock_release(&frame_lock);
 
 
   //2. Fetch data into fte using spte.
   if(!fte_fetch(fte,spte))
   {
-    printf("fte_fetch() failed\n");
     lock_acquire(&frame_lock);
     list_remove(&fte->elem);
     lock_release(&frame_lock);
@@ -62,16 +68,18 @@ bool handle_page_fault(struct supplemental_page_table_entry* spte)
 
     hash_delete(&curr->spt, &spte->h_elem);
     SAFE_FREE(spte);
-    lock_release(&frame_lock);
     return false;
   }
 
   //3. Install the page.
   if(!fte_install(fte, spte))
   {
-    printf("fteinstall() failed\n");
+    lock_acquire(&frame_lock);
+    list_remove(&fte->elem);
+    lock_release(&frame_lock);
     palloc_free_page(fte->kpage);
     SAFE_FREE(fte);
+
     hash_delete(&curr->spt, &spte->h_elem);
     SAFE_FREE(spte);
     return false;
@@ -80,6 +88,7 @@ bool handle_page_fault(struct supplemental_page_table_entry* spte)
   fte->spte= spte;
   spte->fte = fte;
   spte->state = SPTE_FRAME;
+  //printf("kpage_dirty: %d, upage_dirty: %d\n", pagedir_is_dirty(spte->pagedir, fte->kpage), pagedir_is_dirty(spte->pagedir, spte->upage));
   return true;
 
 }
@@ -98,8 +107,8 @@ struct frame_table_entry* fte_obtain(enum palloc_flags flags)
   struct frame_table_entry* fte = (struct frame_table_entry*)malloc(sizeof(struct frame_table_entry));
   if(fte == NULL)
   {
-    /* Not enough kernel pool memory to allocate fte. */
-    PANIC("not enough memory to allocate fte");
+    palloc_free_page(kpage);
+    return NULL;
   }
 
   fte->kpage = NULL;
@@ -178,11 +187,11 @@ void frame_advance_iter(struct list_elem** iter_ptr)
 }
 
 /* Reallocates frame. */
+
 void* frame_realloc(enum palloc_flags flags)
 {
-
+  
   void* kpage = NULL;
-
   /* Find victim fte. */
   /**************************************************************************************************************************/
   struct frame_table_entry* victim_fte;
@@ -213,10 +222,9 @@ void* frame_realloc(enum palloc_flags flags)
 
     uint32_t* pd = iter_fte->spte->pagedir;
     void* upage = iter_fte->spte->upage;
-    if(pagedir_is_accessed(pd, upage)) //&& pagedir_is_accessed(pd, iter_fte->kpage))
+    if(pagedir_is_accessed(pd, upage))
     {
       pagedir_set_accessed(pd, upage ,false);
-      //pagedir_set_accessed(pd, iter_fte->kpage, false);
       if(iter == last)
       {
         frame_advance_iter(&iter);
@@ -242,35 +250,47 @@ void* frame_realloc(enum palloc_flags flags)
   uint32_t* victim_pd = victim_spte->pagedir;
 
   void* victim_upage = victim_spte->upage;
-
-  bool kpage_dirty, upage_dirty;
-  kpage_dirty = pagedir_is_dirty(victim_spte->pagedir, victim_fte->kpage);
-  upage_dirty = pagedir_is_dirty(victim_spte->pagedir, victim_spte->upage);
-
-
-
-  if(!kpage_dirty && !upage_dirty)
+  bool upage_dirty = pagedir_is_dirty(victim_pd, victim_upage);
+  bool have_been_swapped = victim_spte->swap_idx != SWAP_IDX_DEFAULT;
+  /* swap disk level replacement is required! */
+  /*
+  if(upage_dirty &&  have_been_swapped)
   {
-    if(victim_spte->is_stack_page)
-    {
-      victim_spte->state = SPTE_ZERO;
-    }
-    else
-    {
-      victim_spte->state = SPTE_FILE;
-    }
+    swap_out(victim_spte, victim_fte);
+  }
+  else if(upage_dirty && !have_been_swapped)
+  {
+    swap_out(victim_spte, victim_fte);
+  } 
+  else if(!upage_dirty && have_been_swapped)
+  {
+    victim_spte->state = SPTE_SWAP;
+    victim_spte->fte = NULL;
+    
+  }
+  */
+  if(upage_dirty || have_been_swapped)
+  {
+    swap_out(victim_spte, victim_fte);
+  }
+  else if(victim_spte->is_stack_page)
+  {
+    victim_spte->state = SPTE_ZERO;
     victim_spte->fte = NULL;
   }
   else
   {
-    swap_out(victim_spte, victim_fte);
+    victim_spte->state = SPTE_FILE;
+    victim_spte->fte = NULL;
+
   }
 
 
-  pagedir_clear_page(victim_pd, victim_upage);
   list_remove(&victim_fte->elem);
   palloc_free_page(victim_fte->kpage);
   SAFE_FREE(victim_fte);
+  pagedir_clear_page(victim_pd, victim_upage);
+
 
   kpage = palloc_get_page(flags);
   ASSERT(kpage != NULL);

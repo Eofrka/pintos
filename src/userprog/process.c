@@ -711,7 +711,6 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
     ofs += page_read_bytes;
     upage += PGSIZE;
 
-    
   }
   return true;
 #endif   
@@ -757,8 +756,6 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 static bool
 setup_stack (void **esp, struct arguments* args) 
 {
-  uint8_t *kpage;
-  bool success = false;
 
 /* pj3 */
 /*******/
@@ -786,14 +783,32 @@ setup_stack (void **esp, struct arguments* args)
   /* Obtain frame. */
   lock_acquire(&frame_lock);
   struct frame_table_entry* fte = fte_obtain(PAL_USER);
+  if(fte == NULL)
+  {
+    hash_delete(&curr->spt, &spte->h_elem);
+    SAFE_FREE(spte);
+    lock_release(&frame_lock);
+    return false;
+  }
   lock_release(&frame_lock);
-  fte_fetch(fte, spte);
-  kpage = fte->kpage;
 
+
+  if(!fte_fetch(fte, spte))
+  {
+    /* May not occur. */
+    lock_acquire(&frame_lock);
+    list_remove(&fte->elem);
+    lock_release(&frame_lock);
+    palloc_free_page(fte->kpage);
+    SAFE_FREE(fte);
+
+    hash_delete(&curr->spt, &spte->h_elem);
+    SAFE_FREE(spte);
+    return false;
+  }
 
   if(!fte_install(fte, spte))
   {
-    printf("fte_install failed\n");
     lock_acquire(&frame_lock);
     list_remove(&fte->elem);
     lock_release(&frame_lock);
@@ -815,7 +830,9 @@ setup_stack (void **esp, struct arguments* args)
   }
   
 #endif
-/******/  
+/******/
+  uint8_t *kpage;
+  bool success = false;  
   kpage = palloc_get_page (PAL_USER | PAL_ZERO);
   if (kpage != NULL) 
   {
