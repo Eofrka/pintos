@@ -1,5 +1,5 @@
-Copying tests/vm/pt-bad-addr into /tmp/ta6jQYo4zk.dsk...
-Writing command line to /tmp/lyuUQJrVXX.dsk...
+Copying tests/vm/pt-bad-addr into /tmp/3sA3fKO9qq.dsk...
+Writing command line to /tmp/sE9QGVGvW5.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put pt-bad-addr run pt-bad-addr
@@ -26,7 +26,7 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0x80480a6
 pt-bad-addr: exit(-1)
 Execution of 'pt-bad-addr' complete.
 Timer: 349 ticks
-Thread: 30 idle ticks, 229 kernel ticks, 97 user ticks
+Thread: 30 idle ticks, 228 kernel ticks, 98 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 59 reads, 204 writes
 hd1:0: 98 reads, 0 writes

@@ -4,6 +4,8 @@
 #include <hash.h>
 #include "filesys/off_t.h"
 
+#define MAX_STACK_SIZE 0x800000
+
 /* Current spte's state. */
 enum spte_state
 {
@@ -28,6 +30,9 @@ struct supplemental_page_table_entry
   size_t page_zero_bytes;                   /* Page zero bytes to initilize to 0. */
   size_t swap_idx;                          /* Swap idx. */
   bool is_stack_page;                       /* True if it is stack page. */
+
+  bool is_mmap_page;                        /* Mmap page. */
+
   struct hash_elem h_elem;                  /* Hash table element for supplemental page table. */
 
 };

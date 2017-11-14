@@ -196,7 +196,7 @@ void frame_advance_iter(struct list_elem** iter_ptr)
 /* Reallocates frame. Programmer must do synchronization. */
 void* frame_realloc(enum palloc_flags flags)
 {
-  
+
   void* kpage = NULL;
   /* Find victim fte. */
   /**************************************************************************************************************************/
@@ -295,7 +295,18 @@ void* frame_realloc(enum palloc_flags flags)
      The spte which has been swapped is dirty!. */
   if(upage_dirty || have_been_swapped)
   {
-    swap_out(victim_spte, victim_fte);
+    if(victim_spte->is_mmap_page)
+    {
+      lock_acquire(&filesys_lock);
+      file_write_at(victim_spte->file, victim_fte->kpage, victim_spte->page_read_bytes, victim_spte->ofs);
+      victim_spte->state = SPTE_FILE;
+      victim_spte->fte = NULL;
+      lock_release(&filesys_lock);
+    }
+    else
+    {
+      swap_out(victim_spte, victim_fte);
+    }
   }
   /* If the victim_spte is stack page and it is not dirty, just change state into SPTE_ZERO. */
   else if(victim_spte->is_stack_page)

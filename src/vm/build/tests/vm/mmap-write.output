@@ -1,5 +1,5 @@
-Copying tests/vm/mmap-write into /tmp/CiUvI748Fh.dsk...
-Writing command line to /tmp/HkfTl7nOF0.dsk...
+Copying tests/vm/mmap-write into /tmp/a6XoqsgLCG.dsk...
+Writing command line to /tmp/X2fQ9BH8ht.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-write run mmap-write
@@ -19,15 +19,17 @@ Executing 'mmap-write':
 (mmap-write) create "sample.txt"
 (mmap-write) open "sample.txt"
 (mmap-write) mmap "sample.txt"
-mmap-write: exit(-1)
+(mmap-write) compare read data against written data
+(mmap-write) end
+mmap-write: exit(0)
 Execution of 'mmap-write' complete.
-Timer: 347 ticks
-Thread: 30 idle ticks, 228 kernel ticks, 96 user ticks
+Timer: 383 ticks
+Thread: 30 idle ticks, 230 kernel ticks, 130 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 95 reads, 216 writes
+hd0:1: 100 reads, 218 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1001 characters output
+Console: 1071 characters output
 Keyboard: 0 keys pressed
-Exception: 5 page faults
+Exception: 6 page faults
 Powering off...

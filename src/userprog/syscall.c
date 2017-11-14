@@ -15,6 +15,17 @@
 #include "devices/input.h"
 #include "threads/init.h"
 
+/* pj3 */
+/*******/
+#ifdef VM
+#include <round.h>
+#include "vm/page.h"
+#include "vm/frame.h"
+#include "vm/swap.h"
+#include "userprog/pagedir.h"
+#endif
+/*******/
+
 /* New static function declarations. */
 /*****************************************************************************************************************************/
 static int get_user(const uint8_t* uaddr); 
@@ -389,6 +400,207 @@ void syscall_close(int fd)
   lock_release(&filesys_lock);
 }
 
+/* pj3 */
+/*******/
+#ifdef VM
+mapid_t syscall_mmap(int fd, void* addr)
+{
+  /* 0. Check addr is readable and writable. */
+  /*
+  check_uaddr(addr, (uint32_t)PGSIZE);
+  size_t i;
+  for(i =0; i<PGSIZE; i++)
+  {
+    uint8_t byte = get_user(addr+i);
+    if(put_user(addr+i, byte) == false)
+    {
+      return MAP_FAILED;
+    }
+  }
+  */
+
+
+  /* 1. Find fdte from fdt. */
+  lock_acquire(&filesys_lock);
+  struct file_descriptor_table_entry* fdte = find_fdte(fd);
+  if(fdte == NULL)
+  {
+    lock_release(&filesys_lock);
+    return MAP_FAILED;
+  }
+
+
+  /* 2. Get the file from the fdte. */
+  struct file* file = file_reopen(fdte->file);
+  if(file == NULL)
+  {
+    lock_release(&filesys_lock);
+    return MAP_FAILED;
+  }
+  off_t length = file_length(file);
+  if(length == 0)
+  {
+    lock_release(&filesys_lock);
+    return MAP_FAILED;
+  }
+
+  uint32_t read_bytes = length;
+  uint32_t zero_bytes = (ROUND_UP (length, PGSIZE) - read_bytes);
+  
+
+  /* 3. Create sptes for the file. */
+  struct thread* curr = thread_current();
+  uint32_t* pagedir = curr->pagedir;
+  off_t ofs = 0;
+  int page_cnt =0;
+  uint8_t* upage = (uint8_t*)addr;
+  while(read_bytes > 0 || zero_bytes > 0)
+  {
+    size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
+    size_t page_zero_bytes = PGSIZE - page_read_bytes;
+
+    /* Allocate spte. */
+    struct supplemental_page_table_entry* spte = spte_create();
+    if(spte == NULL)
+    {
+      lock_release(&filesys_lock);
+      return MAP_FAILED;
+    }
+
+    /* Initialize spte. */
+    spte->upage = upage;
+    spte->state = SPTE_FILE;
+    spte->pagedir = pagedir;
+    spte->writable = true;
+    spte->file = file;
+    spte->ofs = ofs;
+    spte->page_read_bytes = page_read_bytes;
+    spte->page_zero_bytes = page_zero_bytes;
+    spte->is_mmap_page = true;
+
+    /* Insert spte into spt. */
+    if(!spte_insert(&curr->spt, spte))
+    {
+      SAFE_FREE(spte);
+      lock_release(&filesys_lock);
+      return MAP_FAILED;
+    }
+
+    /* Advance. */
+    read_bytes -= page_read_bytes;
+    zero_bytes -= page_zero_bytes;
+    ofs +=page_read_bytes;
+    upage += PGSIZE;
+    page_cnt++;
+  }
+
+
+
+  /* 4. Allocate mmap_te. */
+  struct mmap_table_entry* mmap_te = (struct mmap_table_entry*)malloc(sizeof(struct mmap_table_entry));
+  if(mmap_te == NULL)
+  {
+    lock_release(&filesys_lock);
+    return MAP_FAILED;
+  }
+
+  /* 5. Initialize mmap_te. */
+  mmap_te->mapid = curr->next_mapid;
+  curr->next_mapid++;
+  mmap_te->file = file;
+  mmap_te->addr = addr;
+  mmap_te->page_cnt = page_cnt;
+  mmap_te->elem.prev=  NULL;
+  mmap_te->elem.next = NULL;
+
+  /* 6. Push mmap_te into current thread's mmap table. */
+  list_push_back(&curr->mmap_table, &mmap_te->elem);
+  lock_release(&filesys_lock);
+  return mmap_te->mapid;
+}
+
+void syscall_munmap(mapid_t mapping)
+{
+  struct list_elem* iter;
+  struct thread* curr = thread_current();
+  struct list* mmap_table =&curr->mmap_table;
+  
+  for(iter = list_begin(mmap_table); iter != list_end(mmap_table); iter = list_next(iter))
+  {
+    struct mmap_table_entry* mmap_te = list_entry(iter, struct mmap_table_entry, elem);
+    mapid_t mapid = mmap_te->mapid;
+    /* If mapid == mapping, unmap mmap_te. */
+    if(mapid == mapping)
+    {
+      list_remove(iter);
+      int page_cnt = mmap_te->page_cnt;
+      int i;
+      void* addr = mmap_te->addr;
+
+      /* Unmap all sptes. */
+      for(i=0; i<page_cnt; i++)
+      {
+        uint8_t* upage = (uint8_t*)((uint32_t)addr + (uint32_t)(i * PGSIZE));
+        struct supplemental_page_table_entry* spte = spte_lookup(&curr->spt,upage);
+        if(spte == NULL)
+        {
+          return;
+        }
+
+        struct frame_table_entry* fte = spte->fte;
+        
+        /* If the page is on physical memory. */
+        if (fte != NULL  && fte->kpage != NULL)
+        {
+          /* Remove the fte from frame table. */
+          lock_acquire(&frame_lock);
+          if(frame_clock.clock_hand == &fte->elem)
+          {
+            frame_clock.clock_hand= list_next(&fte->elem);
+            if(frame_clock.clock_hand == list_tail(&frame_table))
+            {
+              frame_clock.clock_hand = list_begin(&frame_table);
+            }
+          }
+          list_remove(&fte->elem);
+          lock_release(&frame_lock);
+          
+          /* If the page is dirty, write it into file. */
+          bool dirty = pagedir_is_dirty(spte->pagedir, upage);
+          dirty = dirty || spte->swap_idx != SWAP_IDX_DEFAULT;
+          if(dirty)
+          {
+            lock_acquire(&filesys_lock);
+            file_write_at(spte->file, fte->kpage, spte->page_read_bytes, spte->ofs);
+            lock_release(&filesys_lock);
+          }
+
+          /* Free fte's kpage and itself */
+          palloc_free_page(fte->kpage);
+          pagedir_clear_page(spte->pagedir, spte->upage);
+          SAFE_FREE(fte);  
+        }
+
+        /* Delete spte from the spt and free it. */
+        hash_delete(&curr->spt, &spte->h_elem);
+        SAFE_FREE(spte);
+      }
+      
+      lock_acquire(&filesys_lock);
+      file_close(mmap_te->file);
+      lock_release(&filesys_lock);
+      SAFE_FREE(mmap_te);
+      curr->next_mapid--;
+      break;
+    }
+    else
+    {
+      return;
+    }
+  }
+}
+#endif
+/*******/
 /****************************************************************************************************************************/
 /*******/
 
@@ -406,7 +618,7 @@ syscall_init (void)
 static void
 syscall_handler (struct intr_frame *f) 
 {
-  
+
   /* pj2 */
   /*******/
   //printf ("system call!\n");
@@ -416,7 +628,8 @@ syscall_handler (struct intr_frame *f)
 /*******/
 #ifdef VM
   /* Save esp for kernel mode page fault. */
-  thread_current()->esp = esp;
+  struct thread* curr = thread_current();
+  curr->esp = esp;
 #endif
 /*******/
   void* arg1 = NULL;
@@ -508,6 +721,38 @@ syscall_handler (struct intr_frame *f)
     fd = *(int*)arg1;
     syscall_close(fd);
     break;
+/* pj3 */
+/*******/
+#ifdef VM
+    case SYS_MMAP:
+    arg1 = check_uaddr(esp+4, 4);
+    fd = *(int*)arg1;
+    arg2 = check_uaddr(esp+8, 4);
+    void* addr = (void*)*(uint32_t*)arg2;
+
+    bool is_invalid_addr;
+    bool cond1 = addr == NULL;
+    bool cond2 = ((uint32_t)addr & (uint32_t)PGMASK) != 0;
+    bool cond3 = (uint32_t)addr >= ((uint32_t)PHYS_BASE - (uint32_t)MAX_STACK_SIZE);
+    bool cond4 = (spte_lookup(&curr->spt, addr) != NULL);
+
+    if(cond1 || cond2 || cond3 || cond4)
+    {
+      f->eax = (uint32_t)MAP_FAILED;
+    }
+    else
+    {
+      f->eax = (uint32_t)syscall_mmap(fd, addr);
+    }
+    break;
+    case SYS_MUNMAP:
+    arg1 = check_uaddr(esp+4, 4);
+    mapid_t mapping = *(mapid_t*)arg1;
+    syscall_munmap(mapping);
+    break;
+#endif     
+/*******/
+
     default:
     syscall_exit(-1);
     /********/

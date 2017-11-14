@@ -6,7 +6,7 @@
 #include "vm/frame.h"
 #include "vm/swap.h"
 #include <stdio.h>
-#define MAX_STACK_SIZE 0x800000
+
 
 /* Returns a hash value for spt. */
 unsigned spte_hash(const struct hash_elem* he, void* aux UNUSED)
@@ -84,6 +84,7 @@ struct supplemental_page_table_entry* spte_create(void)
   spte->page_zero_bytes= 0;
   spte->swap_idx = SWAP_IDX_DEFAULT;
   spte->is_stack_page = false;
+  spte->is_mmap_page = false;
   spte->h_elem.list_elem.prev = NULL;
   spte->h_elem.list_elem.next = NULL;
   return spte;

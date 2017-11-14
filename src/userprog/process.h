@@ -32,6 +32,16 @@ struct file_descriptor_table_entry
   struct list_elem elem;              /* List element for file descriptor table. */
 };
 
+/* Mmap table entry. */
+struct mmap_table_entry
+{
+  mapid_t mapid;                      /* Mmapid. */
+  void* addr;                         /* Mmap addr. */
+  struct file* file;                  /* File table entry. */
+  int page_cnt;                       /* Page count. */    
+  struct list_elem elem;              /* List element for mmap table. */
+
+};
 
 
 /*************************************************************************************************************************/

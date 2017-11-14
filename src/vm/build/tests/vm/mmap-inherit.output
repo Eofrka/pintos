@@ -1,7 +1,7 @@
-Copying tests/vm/mmap-inherit into /tmp/9hntXgGYHb.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/9hntXgGYHb.dsk...
-Copying tests/vm/child-inherit into /tmp/9hntXgGYHb.dsk...
-Writing command line to /tmp/oqFzNrKLPV.dsk...
+Copying tests/vm/mmap-inherit into /tmp/2sL32IvvDC.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/2sL32IvvDC.dsk...
+Copying tests/vm/child-inherit into /tmp/2sL32IvvDC.dsk...
+Writing command line to /tmp/x1Z9iZr2vE.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-inherit put sample.txt put child-inherit run mmap-inherit
@@ -22,15 +22,27 @@ Executing 'mmap-inherit':
 (mmap-inherit) begin
 (mmap-inherit) open "sample.txt"
 (mmap-inherit) mmap "sample.txt"
-mmap-inherit: exit(-1)
+(mmap-inherit) exec "child-inherit"
+(child-inherit) begin
+Page fault at 0x54321000: not present error writing page in user context.
+child-inherit: dying due to interrupt 0x0e (#PF Page-Fault Exception).
+Interrupt 0x0e (#PF Page-Fault Exception) at eip=0x8049580
+ cr2=54321000 error=00000006
+ eax=54321000 ebx=00000000 ecx=00001000 edx=00000000
+ esi=00000000 edi=00000000 esp=bfffff70 ebp=bfffff88
+ cs=001b ds=0023 es=0023 ss=0023
+child-inherit: exit(-1)
+(mmap-inherit) checking that mmap'd file still has same data
+(mmap-inherit) end
+mmap-inherit: exit(0)
 Execution of 'mmap-inherit' complete.
-Timer: 451 ticks
-Thread: 30 idle ticks, 362 kernel ticks, 66 user ticks
+Timer: 601 ticks
+Thread: 30 idle ticks, 365 kernel ticks, 213 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 121 reads, 420 writes
+hd0:1: 170 reads, 420 writes
 hd1:0: 204 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1113 characters output
+Console: 1647 characters output
 Keyboard: 0 keys pressed
-Exception: 4 page faults
+Exception: 12 page faults
 Powering off...

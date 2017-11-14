@@ -298,6 +298,19 @@ process_exit (void)
     }
   }
 
+
+/* pj3 */
+/*******/
+#ifdef VM
+  /* Unmap entire mmap table entries implicitly when process is terminated. */
+  while(!list_empty(&curr->mmap_table))
+  {
+    syscall_munmap(curr->next_mapid-1);
+  }
+#endif
+/*******/  
+
+
   /* Close entire file descriptor entries implicitly when process is terminated. */
   while(!list_empty(&curr->fdt))
   {

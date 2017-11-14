@@ -23,6 +23,15 @@ int syscall_write(int fd, const void* buffer, unsigned size);
 void syscall_seek(int fd, unsigned position);
 unsigned syscall_tell(int fd);
 void syscall_close(int fd);
+
+/* pj3 */
+/*******/
+#ifdef VM
+mapid_t syscall_mmap(int fd, void* addr);
+void syscall_munmap(mapid_t mapping);
+#endif
+/*******/
+
 /*****************************************************************************************************************************/
 /*******/
 

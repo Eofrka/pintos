@@ -630,6 +630,9 @@ init_thread (struct thread *t, const char *name, int priority)
 #ifdef VM
   //spt initialization => process.c@load()
   t->esp = NULL;
+  list_init(&t->mmap_table);
+  t->next_mapid = 0;
+
 #endif
 /*******/  
   t->magic = THREAD_MAGIC;

@@ -1,6 +1,6 @@
-Copying tests/vm/page-merge-mm into /tmp/XZTRyvrnOX.dsk...
-Copying tests/vm/child-qsort-mm into /tmp/XZTRyvrnOX.dsk...
-Writing command line to /tmp/BQnXSoUWCa.dsk...
+Copying tests/vm/page-merge-mm into /tmp/tIcipGbYpq.dsk...
+Copying tests/vm/child-qsort-mm into /tmp/tIcipGbYpq.dsk...
+Writing command line to /tmp/HhLYKyS439.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-merge-mm put child-qsort-mm run page-merge-mm
@@ -21,21 +21,41 @@ Executing 'page-merge-mm':
 (page-merge-mm) init
 (page-merge-mm) sort chunk 0
 (page-merge-mm) sort chunk 1
-child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 2
-child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 3
-child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 4
-child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 5
-child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 6
-child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 7
-child-qsort-mm: exit(-1)
+child-qsort-mm: exit(80)
 (page-merge-mm) wait for child 0
-(page-merge-mm) wait for child 0: FAILED
-page-merge-mm: exit(1)
-child-qsort-mm: exit(-1)
-Simulation terminated due to test failure.
+child-qsort-mm: exit(80)
+child-qsort-mm: exit(80)
+(page-merge-mm) wait for child 1
+child-qsort-mm: exit(80)
+(page-merge-mm) wait for child 2
+child-qsort-mm: exit(80)
+(page-merge-mm) wait for child 3
+child-qsort-mm: exit(80)
+child-qsort-mm: exit(80)
+(page-merge-mm) wait for child 4
+child-qsort-mm: exit(80)
+(page-merge-mm) wait for child 5
+(page-merge-mm) wait for child 6
+(page-merge-mm) wait for child 7
+(page-merge-mm) merge
+(page-merge-mm) verify
+(page-merge-mm) success, buf_idx=1,048,576
+(page-merge-mm) end
+page-merge-mm: exit(0)
+Execution of 'page-merge-mm' complete.
+Timer: 53450 ticks
+Thread: 30 idle ticks, 427 kernel ticks, 53001 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 4897 reads, 6612 writes
+hd1:0: 213 reads, 0 writes
+hd1:1: 2768 reads, 3936 writes
+Console: 1833 characters output
+Keyboard: 0 keys pressed
+Exception: 1156 page faults
+Powering off...

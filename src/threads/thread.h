@@ -7,7 +7,10 @@
 
 /* pj3 */
 /*******/
-
+#ifdef VM
+typedef int mapid_t;
+#define MAP_FAILED ((mapid_t) -1)
+#endif 
 /*******/
 
 
@@ -143,6 +146,9 @@ struct thread
 #ifdef VM
     struct hash spt;                    /* Supplemental page table. */
     uint8_t* esp;                       /* User program's stack pointer. */
+
+    struct list mmap_table;             /* Mmap table. */
+    mapid_t next_mapid;                 /* Next mapid to allocate. */ 
 #endif    
 /*******/
 
