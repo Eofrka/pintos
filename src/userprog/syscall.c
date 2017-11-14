@@ -524,7 +524,7 @@ void syscall_munmap(mapid_t mapping)
   struct list_elem* iter;
   struct thread* curr = thread_current();
   struct list* mmap_table =&curr->mmap_table;
-  
+  lock_acquire(&filesys_lock);
   for(iter = list_begin(mmap_table); iter != list_end(mmap_table); iter = list_next(iter))
   {
     struct mmap_table_entry* mmap_te = list_entry(iter, struct mmap_table_entry, elem);
@@ -544,6 +544,7 @@ void syscall_munmap(mapid_t mapping)
         struct supplemental_page_table_entry* spte = spte_lookup(&curr->spt,upage);
         if(spte == NULL)
         {
+          lock_release(&filesys_lock);
           return;
         }
 
@@ -570,11 +571,8 @@ void syscall_munmap(mapid_t mapping)
           dirty = dirty || spte->swap_idx != SWAP_IDX_DEFAULT;
           if(dirty)
           {
-            lock_acquire(&filesys_lock);
             file_write_at(spte->file, fte->kpage, spte->page_read_bytes, spte->ofs);
-            lock_release(&filesys_lock);
           }
-
           /* Free fte's kpage and itself */
           palloc_free_page(fte->kpage);
           pagedir_clear_page(spte->pagedir, spte->upage);
@@ -586,18 +584,15 @@ void syscall_munmap(mapid_t mapping)
         SAFE_FREE(spte);
       }
       
-      lock_acquire(&filesys_lock);
       file_close(mmap_te->file);
-      lock_release(&filesys_lock);
       SAFE_FREE(mmap_te);
       curr->next_mapid--;
-      break;
-    }
-    else
-    {
+      lock_release(&filesys_lock);
       return;
     }
   }
+  lock_release(&filesys_lock);
+  return;
 }
 #endif
 /*******/
