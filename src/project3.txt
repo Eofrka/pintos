@@ -18,7 +18,7 @@ Yuhwan Chung yuhwan96@kaist.ac.kr
 >> TAs, or extra credit, please give them here.
 
 project3-1에서 mmap만 빼고 lazy loading까지 한번에 구현했습니다.
-사용할 토큰 수: 1개
+사용할 토큰 수: 2개
 기여도: Yuhwan Chung 100%
 
 >> Please cite any offline or online sources you consulted while

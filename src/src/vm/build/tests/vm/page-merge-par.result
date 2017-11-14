@@ -1,9 +1,0 @@
-FAIL
-Kernel panic in run: PANIC at ../../vm/frame.c:232 in frame_realloc(): assertion `iter_fte->spte != NULL' failed.
-Call stack: 0xc01079ec 0xc010dae8 0xc010df9a 0xc010a1f4 0xc0101606
-Translation of call stack:
-0xc01079ec: debug_panic (.../../lib/kernel/debug.c:34)
-0xc010dae8: frame_realloc (...uild/../../vm/frame.c:234)
-0xc010df9a: fte_obtain (...uild/../../vm/frame.c:110)
-0xc010a1f4: setup_stack (...../userprog/process.c:788)
-0xc0101606: kernel_thread (..../../threads/thread.c:566)

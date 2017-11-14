@@ -30,7 +30,7 @@
 00000000000i[     ]   SB16 support: no
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support:  
-00000000000i[MEM0 ] allocated memory at 0x2b5d630ed010. after alignment, vector=0x2b5d630ee000
+00000000000i[MEM0 ] allocated memory at 0x2b2d5c90e010. after alignment, vector=0x2b2d5c90f000
 00000000000i[MEM0 ] 4.00MB
 00000000000i[MEM0 ] rom at 0xffff0000/65536 ('/usr/local/share/bochs/BIOS-bochs-latest')
 00000000000i[MEM0 ] rom at 0xc0000/32768 ('/usr/local/share/bochs/VGABIOS-lgpl-latest')
@@ -46,10 +46,10 @@
 00000000000i[     ] init_mem of 'extfpuirq' plugin device by virtual method
 00000000000i[     ] init_mem of 'speaker' plugin device by virtual method
 00000000000i[     ] init_dev of 'harddrv' plugin device by virtual method
-00000000000i[HD   ] HD on ata0-0: '/tmp/9Dglb6kqnC.dsk' 'flat' mode 
-00000000000i[HD   ] HD on ata0-1: '/tmp/H6TraiYP5a.dsk' 'flat' mode 
-00000000000i[HD   ] HD on ata1-0: '/tmp/SnF41eyCgY.dsk' 'flat' mode 
-00000000000i[HD   ] HD on ata1-1: '/tmp/MwQMw6W6zs.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata0-0: '/tmp/BAj369HCNO.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata0-1: '/tmp/ddDSkjwq7P.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata1-0: '/tmp/6yQSYqp77z.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata1-1: '/tmp/Nz8PPCdrVe.dsk' 'flat' mode 
 00000000000i[HD   ] Using boot sequence disk, none, none
 00000000000i[HD   ] Floppy boot signature check is enabled
 00000000000i[     ] init_dev of 'keyboard' plugin device by virtual method
