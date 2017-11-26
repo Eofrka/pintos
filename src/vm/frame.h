@@ -12,7 +12,7 @@ struct frame_table_entry
 {
   void* kpage;                                   /* Kernel virtual address of frame. */   
   struct supplemental_page_table_entry* spte;    /* Supplemental page table entry. */
-  struct list_elem elem;                        /* List element of frame table. */                
+  struct list_elem elem;                         /* List element of frame table. */                
 
 };
 

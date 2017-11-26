@@ -131,6 +131,7 @@ struct frame_table_entry* fte_obtain(struct supplemental_page_table_entry* spte,
 bool fte_fetch(struct frame_table_entry* fte, struct supplemental_page_table_entry* spte)
 {
   ASSERT(fte->kpage != NULL);
+  spte->is_fetched = false;
   switch(spte->state)
   {
     case SPTE_FRAME :
@@ -159,6 +160,7 @@ bool fte_fetch(struct frame_table_entry* fte, struct supplemental_page_table_ent
     break;
 
   }
+  spte->is_fetched = true;
   return true;
 }
 
@@ -231,7 +233,12 @@ void* frame_realloc(enum palloc_flags flags)
     iter_fte = list_entry(iter, struct frame_table_entry, elem);
     //printf("iter_fte->kpage: [0x%08x], iter_fte->spte: [0x%08x]\n", iter_fte->kpage, iter_fte->spte);
     ASSERT(iter_fte->spte != NULL);
-
+    if(iter_fte->spte->is_fetched == false)
+    {
+      frame_advance_iter(&iter);
+      fc->clock_hand=iter;
+      continue;
+    }
     uint32_t* pd = iter_fte->spte->pagedir;
     void* upage = iter_fte->spte->upage;
     /* If upage is accessed, set accessed bit of upage's pte into 0. */
@@ -326,6 +333,7 @@ void* frame_realloc(enum palloc_flags flags)
   /* Remove the victim_fte from the frame_table and free its kpage and itself. */
   list_remove(&victim_fte->elem);
   palloc_free_page(victim_fte->kpage);
+  victim_fte->kpage = NULL;
   SAFE_FREE(victim_fte);
 
   /* Clear the victim_upage mapping from victim pagedir. */

@@ -405,20 +405,6 @@ void syscall_close(int fd)
 #ifdef VM
 mapid_t syscall_mmap(int fd, void* addr)
 {
-  /* 0. Check addr is readable and writable. */
-  /*
-  check_uaddr(addr, (uint32_t)PGSIZE);
-  size_t i;
-  for(i =0; i<PGSIZE; i++)
-  {
-    uint8_t byte = get_user(addr+i);
-    if(put_user(addr+i, byte) == false)
-    {
-      return MAP_FAILED;
-    }
-  }
-  */
-
 
   /* 1. Find fdte from fdt. */
   lock_acquire(&filesys_lock);

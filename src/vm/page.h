@@ -24,7 +24,7 @@ struct supplemental_page_table_entry
   struct frame_table_entry* fte;            /* Frame table entry. */
   uint32_t* pagedir;                        /* Actual pagedir. */
   bool writable;                            /* Read-only: fasle, Writable: true. */
-  struct file* file;                        /* When page is in the executable file. */
+  struct file* file;                        /* File pointer for lazy loading. */ 
   off_t ofs;                                /* Offset of the file. */
   size_t page_read_bytes;                   /* Page read bytes from the file. */
   size_t page_zero_bytes;                   /* Page zero bytes to initilize to 0. */
@@ -32,6 +32,7 @@ struct supplemental_page_table_entry
   bool is_stack_page;                       /* True if it is stack page. */
 
   bool is_mmap_page;                        /* Mmap page. */
+  bool is_fetched;                          /* True if fetching is finished. False while fetching. */
 
   struct hash_elem h_elem;                  /* Hash table element for supplemental page table. */
 

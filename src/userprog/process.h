@@ -32,6 +32,9 @@ struct file_descriptor_table_entry
   struct list_elem elem;              /* List element for file descriptor table. */
 };
 
+/* pj3 */
+/*******/
+#ifdef VM
 /* Mmap table entry. */
 struct mmap_table_entry
 {
@@ -42,6 +45,8 @@ struct mmap_table_entry
   struct list_elem elem;              /* List element for mmap table. */
 
 };
+#endif
+/*******/
 
 
 /*************************************************************************************************************************/

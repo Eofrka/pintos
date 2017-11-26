@@ -9,7 +9,7 @@
 >> Fill in the names and email addresses of your group members.
 
 Team Name: OSOS
-Team Number: 18
+Team Number: 18 
 Yuhwan Chung yuhwan96@kaist.ac.kr
 
 ---- PRELIMINARIES ----
@@ -17,8 +17,8 @@ Yuhwan Chung yuhwan96@kaist.ac.kr
 >> If you have any preliminary comments on your submission, notes for the
 >> TAs, or extra credit, please give them here.
 
-project3-1에서 mmap만 빼고 lazy loading까지 한번에 구현했습니다.
-사용할 토큰 수: 2개
+project3-2 
+사용할 토큰 수: 0개
 기여도: Yuhwan Chung 100%
 
 >> Please cite any offline or online sources you consulted while
@@ -37,24 +37,111 @@ project3-1에서 mmap만 빼고 lazy loading까지 한번에 구현했습니다.
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
 
+vm/page.h
+
+/* Supplemental page table entry. */
+struct supplemental_page_table_entry
+{
+  void* upage;                              /* User virtual address of page. */
+  enum spte_state state;                    /* Supplemental page table entry's state. */
+  struct frame_table_entry* fte;            /* Frame table entry. */
+  uint32_t* pagedir;                        /* Actual pagedir. */
+  bool writable;                            /* Read-only: fasle, Writable: true. */
+  struct file* file;                        /* File pointer for lazy loading. */ 
+  off_t ofs;                                /* Offset of the file. */
+  size_t page_read_bytes;                   /* Page read bytes from the file. */
+  size_t page_zero_bytes;                   /* Page zero bytes to initilize to 0. */
+  size_t swap_idx;                          /* Swap idx. */
+  bool is_stack_page;                       /* True if it is stack page. */
+  bool is_mmap_page;                        /* Mmap page. */
+  bool is_fetched;                          /* True if fetching is finished. False while fetching. */
+  struct hash_elem h_elem;                  /* Hash table element for supplemental page table. */
+
+};
+
+주석으로 설명을 대체하겠다.
+
+/* Current spte's state. */
+enum spte_state
+{
+  SPTE_FRAME,
+  SPTE_FILE,
+  SPTE_SWAP,
+  SPTE_ZERO
+  
+};
+
+SPTE_FRAME: page가 physical memory에 load되어있을때 spte는 이 상태값을 가진다.
+SPTE_FILE: page가 아직 physical memory에 load되어있지는 않지만 File로 부터 load되어야 될 경우 spte는 이 상태값을 가진다.
+SPTE_SWAP: page가 swap disk에 swap_out됬을때 spte는 이 상태값을 가진다.
+SPTE_ZERO: stack page같은 경우 0으로만 채워주면 되기 때문에 spte는 이 상태값을 가진다.
+
+
+vm/frame.h
+
+/* Frame table entry. */
+struct frame_table_entry
+{
+  void* kpage;                                   /* Kernel virtual address of frame. */   
+  struct supplemental_page_table_entry* spte;    /* Supplemental page table entry. */
+  struct list_elem elem;                         /* List element of frame table. */                
+
+};
+
+
+/* Clock for page replacement algorithm. */
+struct clock
+{
+  struct list_elem* clock_hand;                   /* Clock hand which points fte's elem. */
+
+};
+
+/* Gloabal variables. */
+struct lock frame_lock;                           /* Frame lock. */
+struct list frame_table;                          /* Frame table. */
+struct clock frame_clock;                         /* Frame clock. */
+
+threads/thread.h
+
+struct thread에 추가된 member
+struct hash spt;                    /* Supplemental page table. */
+
+주석으로 설명을 대체한다.
+
 ---- ALGORITHMS ----
 
 >> A2: In a few paragraphs, describe your code for locating the frame,
 >> if any, that contains the data of a given page.
 
+handle_page_fault()부분에 자세히 나와있다. 간략하게 요약하면
+
+1. frame을 얻는다.(만약 user pool에서 frame을 할당할 수 없다면, clock algorithm으로 realloc을 한다.
+2. frame table에다 frame table entry를 insert한다.
+3. frame에다 data를 fetch한다.
+4. frame과 page를 연결시키기 위해 실제 pintos original page table에 install한다.
+
+
 >> A3: How does your code coordinate accessed and dirty bits between
 >> kernel and user virtual addresses that alias a single frame, or
 >> alternatively how do you avoid the issue?
 
+오직 user address만 고려해줬다. dirty bit같은 경우 한번 swap disk에 갔다오면 초기화가 되어 pagedir_is_dirty만으로는 알 수 없어서 swap_disk에 갔다 왔는지도
+같이 check해줬다(swap_idx != SWAP_IDX_DEFAULT).
+ 
 ---- SYNCHRONIZATION ----
 
 >> A4: When two user processes both need a new frame at the same time,
 >> how are races avoided?
 
+frame_lock을 둬서 mutual exclusion을 보장해줬다. frame_table 그리고 clock algorithm시에 clock_hand를 위해 frame_lock으로 보호해줬다.
+
 ---- RATIONALE ----
 
 >> A5: Why did you choose the data structure(s) that you did for
 >> representing virtual-to-physical mappings?
+
+hash table로 supplemental page table을 짠 이유: page마다 user virtual address가 unique하고 searching time이 const시간안에 할 수 있으므로.
+list로 frame table을 짠 이유: clock algorithm을 구현하기에 list가 hash_table보다 편하기 때문.
 
            PAGING TO AND FROM DISK
            =======================
@@ -65,18 +152,65 @@ project3-1에서 mmap만 빼고 lazy loading까지 한번에 구현했습니다.
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
 
+vm/swap.h
+
+#define SWAP_IDX_DEFAULT 0xffffffff /* swap_disk에 한번도 갔다오지 않은 spte의 swap_idx는 이값을 가지고 있다. */
+
+struct swap_table
+{
+  struct bitmap* used_map;     /* Used: 1, free: 0. */
+  struct disk* disk;           /* Swap disk. */
+  struct lock lock;            /* Swap lock. */
+};
+
+/* Global variable. */
+struct swap_table swap_table;
+
+struct bitmap* used_map: 사용가능한 swap_slot(4KB)을 알아내기위한 bitmap. used면 1, free면 0이다.
+struct disk* disk: swap disk.
+struct lock lock: global변수로 swap_table이 선언 되어있으므로 bitmap연산에 대한 mutual exclusion을 위한 lock.
+
+struct swap_table swap_table: global한 swap_table.
+
+
 ---- ALGORITHMS ----
 
 >> B2: When a frame is required but none is free, some frame must be
 >> evicted.  Describe your code for choosing a frame to evict.
 
+1. 일단 frame_table을 linear하게 쭉 clock_hand부터 훑어 보면서 한바퀴 돌때까지
+만약 그 fte의 spte의 upage에 해당하는 PTE의 accessed비트가 1이면 0으로 clear해주고 clock_hand를 advance
+만약 그 fte의 spte의 upage에 해당하는 PTE의 accessed비트가 0이면 그 fte가 victim이다. 따라서 victim_fte를 얻어내고 clock_hand는 victim_fte보다 한칸 advance시킨다. 이때 주의해야할점은 그 fte의 spte의 is_fetched가 false이면 clock_hand를 advance만 시킨다. (fetch중인 frame은 eviction대상에서 제외)
+
+만약 한바퀴를 다 돌았는데도 accessed비트가 그동안 모두1인 frame들만 만났다면, 지금 현재 clock_hand는 다시 시작 fte를 가리키고 있을테고, 그 fte의 spte의 upage에 해당하는 PTE의 accessed비트는 0으로 clear되어있으므로 원래 시작fte를 victim_fte로 얻는다. clock_hand는 victim_fte보다 한칸 advance시킨다.
+
+2. victim_fte를 찾는데 성공했으면 victim_spte의 upage가 dirty인지 check한다. 이때 pagedir_is_dirty만으로는 충분하지 않고 swap_disk에 갔다왔는지 여부를 check해줘야한다. (그 이유는 A3에서 언급했다.) 
+만약 original page와 비교해서 dirty라면 mmap page라면 file에다가 다시 write해주고, 그게아니라면 swap disk에다가 swap out해준다.
+만약 dirty가 아닌데 stack page라면 그냥 spte의 상태만 SPTE_ZERO로 바꿔주고, 그것도 아니라면 file로부터 왔는데 dirty가 아니므로 그냥 spte의 상태만 SPTE_FILE로 바꿔준다. 그리고 나머지 spte, fte pointer manipulation과 victim_fte를 frame_table로부터 remove하고 frame및 victim_fte을 free해주고 다시 frame을 palloc_get_page()로 재할당 해준다.  
+
+
 >> B3: When a process P obtains a frame that was previously used by a
 >> process Q, how do you adjust the page table (and any other data
 >> structures) to reflect the frame Q no longer has?
 
+sharing을 구현하지 않은 기준으로 생각하겠다. Process P가 이전에 사용된적이 있던 Process Q의 frame을 obtain할때 이전에 사용된적이 있던 Process Q의 frame이라는 것은 Q에서잘 사용되다가 palloc_free_page()로 인해서 free된 frame일것이다. 만약 그 frame이 pintos의 original page table에 install된 frame이라면 pagedir_clear_page()를 통해 정보를 없애주었다. 따라서 Q는 더이상 그 frame에 대한 정보를 갖고 있지 않다. (fte_free()와 frame_realloc()에서 결국 최종적으로 pagedir_clear_page()를 호출해줌.)
+
 >> B4: Explain your heuristic for deciding whether a page fault for an
 >> invalid virtual address should cause the stack to be extended into
 >> the page that faulted.
+
+첫 stack page (0xbffff000 ~ 0xc0000000)은 load()에서 이미 load를 해놨다. (argument passing을 좀 더 편하게 하기 위해서)
+그리고 invalid주소가 stack 영역인지 알기위해 check를 해주었다. 우선 stack의 max size를 8MB로 정했다. 그러면 최대로 stack이 자라서 마지막 stack page의 vaddr는
+PHYS_BASE - 8MB(stack_limit)가 될 것이다. 그리고 이미 첫번째 stack page는 load되었기 때문에 growth가 필요한 첫번째 stack page의 주소는 PHYS_BASE - PGSIZE(additional_stack_base)이다.
+그리고 stack growth가 필요한지 check하기 위해서는 user stack의 esp가 필요한데, 만약 user mode에서 page fault가 일어났다면 intr_frame의 esp를 그대로 이용하면 되지만, kernel mode에서 page fault가 난 경우 syscall_handler()에서 미리 esp정보를 struct thread에다 저장해놓고 thread_current()->esp로 esp를 얻어와야된다.
+
+stack growth가 필요한지 check하기위해서는 아래의 3가지 condition을 &&해주어 판단해주면 된다.
+1. stack_limit <=esp && esp < PHYS_BASE (esp가 user stack영역에 있는지 check)
+2. stack_limit <= fault_addr && fault_addr < additional_stack_base (실제로 fault_addr가 이미 load되어있는 첫번째 stack page의 주소영역에 없는 경우)
+3. esp <= fault_addr || esp - 4 == fault_addr || esp - 32 == fault_addr  
+
+3번 condition에서 esp <= fault_addr은 이해하기 쉬운데 esp - 4 == fault_addr || esp - 32 == fault_addr가 추가로 ||로 연결된 이유는
+PUSH나 PUSHA instruction이 esp밑의 4바이트 32바이트에서도 page fualt를 일으킬 수 있기 때문이다.
 
 ---- SYNCHRONIZATION ----
 
@@ -85,21 +219,43 @@ project3-1에서 mmap만 빼고 lazy loading까지 한번에 구현했습니다.
 >> textbook for an explanation of the necessary conditions for
 >> deadlock.)
 
+기본적으로 frame_lock을 사용해 frame_table과 frame eviction시에 global변수인 frame_clock을 lock으로 방어해줬다. swap_table또한 global변수이므로 used_map에대한 lock이 필요하여 lock을 도입하였다.(swap_lock이라고 하겠다.)
+
+deadlock이 발생할 수 있는 예로는 frame_lock과 swap_lock을 서로 기다리는 경우인데, 이 경우는 고려해야될 사항이 frame_obtain()과 swap_out()으로 좁혀진다.(2개의 lock을 모두 acquire하는 상황은 저 두 함수밖에 없도록 구현하였다.)
+그런데 swap_out()에서 swap_table에대한 lock을 acquire하기전에 반드시 frame_lock을 acquire하므로 절대 deadlock이 발생할 수 없다.
+
+P                         Q
+| 1.요청            3.대기 |
+------> frame_lock <------- 
+| 4.대기            2.요청 |
+------> swap_lock <--------
+
+이런식으로 acquire가 발생해야되는데, 2 -> 3순서로 일어나지 않도록 구현하였다.
+ 
 >> B6: A page fault in process P can cause another process Q's frame
 >> to be evicted.  How do you ensure that Q cannot access or modify
 >> the page during the eviction process?  How do you avoid a race
 >> between P evicting Q's frame and Q faulting the page back in?
+
+frame_lock을 통해 eviction이 일어날때 mutual exclusion을 보장해줬다. 좀 더 자세히 설명하자면 P에서 user pool에서 더이상 frame할당을 받지 못하여 frame realloc이 일어났는데, 그 때 victim_fte로 선택된 fte가 Q의 fte라고 가정해보자. 그러면 P에서는 그 victim_fte에 연결된 kpage를 swap out이 필요하다면 swap disk에 써주거나 file에 다시 써줄 필요가 있다면 (mmap의 경우) file에 다시 write해주고 frame table에서 그 victim_fte를 제거해주고, 다른 pointer management와함께 pagedir_clear_page()를 해준다. 그러면 Q에서는 frame_table로부터 remove된 victim_fte와 연결된 spte정보는 적당한 SPTE_STATE상태로 유효하지만 그 spte에 연결된 fte정보는 없을 것이다.
+그리고 Q에서 만약 그 spte의 upage영역의 주소에 access할 경우 page fualt가 일어난다. 그러면 Q에서는 userprog/exception.c의 page_fault()함수가 불리우고 결국 그 page를 load하려고 할 것이다. 하지만 다시 frame을 obtain하기 위해서는 P가 이미 acquire한 frame_lock을 release해주기를 기다려야한다. 이런식으로 synchornization을 해주었다.
+
 
 >> B7: Suppose a page fault in process P causes a page to be read from
 >> the file system or swap.  How do you ensure that a second process Q
 >> cannot interfere by e.g. attempting to evict the frame while it is
 >> still being read in?
 
+struct supplemental_page_table_entry에 bool is_fetched라는 member변수를 추가하여, fetch도중이면 false를 갖게하고 fetch완료시 true를 갖게하였다.
+그리고 frame evcition에서 victim을 선택할때, is_fetched가 false이면 그냥 건너뛴다.(clock_hand advance)  
+
 >> B8: Explain how you handle access to paged-out pages that occur
 >> during system calls.  Do you use page faults to bring in pages (as
 >> in user programs), or do you have a mechanism for "locking" frames
 >> into physical memory, or do you use some other design?  How do you
 >> gracefully handle attempted accesses to invalid virtual addresses?
+
+page_fault()에서 load되지 않은 page가 load되도록 하였다. (kernel mode에서 invalid한 fault_addr handling, not_present를 통한 r/o page에 write하는 경우 kill하도록 userprog/exception.c@page_fault() 코드를 짰다. 처음에는 r/o page에 write하는 경우를 bool write를 통해 판단하려 했지만 주석과 pintos document를 읽어보니 not_present로 간단하게 판단 할 수 있었다.)
 
 ---- RATIONALE ----
 
@@ -110,6 +266,11 @@ project3-1에서 mmap만 빼고 lazy loading까지 한번에 구현했습니다.
 >> where your design falls along this continuum and why you chose to
 >> design it this way.
 
+frame_table과 frame_clock을 위해서는 오직 frame_lock만을 사용하였고, swap_table의 used_map을 위해서 lock을 하나만 사용하였다.
+deadlock을 피하기 위해서는 B5에서 처럼 lock을 acquire하는 순서를 deadlock이 일어나지 않게 보장하였다. 단 2개의 lock만을 사용하여서 VM system의
+synchronization을 구현했는데, 이렇게 한 이유는 구현상 간단하기 때문이다.
+
+
        MEMORY MAPPED FILES
        ===================
 
@@ -119,14 +280,68 @@ project3-1에서 mmap만 빼고 lazy loading까지 한번에 구현했습니다.
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
 
+/threads/thread.h
+
+typedef int mapid_t;
+#define MAP_FAILED ((mapid_t) -1)
+
+
+MAP_FAILED: mmap이 실패할 경우 return값
+
+
+struct thread에 추가된 member
+
+    struct list mmap_table;             /* Mmap table. */
+    mapid_t next_mapid;                 /* Next mapid to allocate. */ 
+
+struct list mmap_table: mmap_te들을 저장하고 있는 table.
+mapid_t next_mapid: 다음에 할당할 mapid.
+
+/userprog/process.h
+
+/* Mmap table entry. */
+struct mmap_table_entry
+{
+  mapid_t mapid;                      /* Mmapid. */
+  void* addr;                         /* Mmap addr. */
+  struct file* file;                  /* File table entry. */
+  int page_cnt;                       /* Page count. */    
+  struct list_elem elem;              /* List element for mmap table. */
+
+};
+
+mapid_t 
+int page_cnt:이 mmap_table_entry에 해당되는 page의 개수
+
+
 ---- ALGORITHMS ----
 
 >> C2: Describe how memory mapped files integrate into your virtual
 >> memory subsystem.  Explain how the page fault and eviction
 >> processes differ between swap pages and other pages.
 
+page fault process
+1. Syscall_mmap()에서 mmap_te와 spte할당과 초기화 그리고 각각의 table에 insert까지 해놓는다. 
+2. Page fault가 발생하면, spte_actual_load()가 호출될 것이고, 결국 handle_page_fault()가 호출 될 것이다.
+3. frame을 obtain하였다면 fetch를 하는데
+	3-1. 만약 처음 load하는 상황이라면 1과정에서 spte의 상태를 SPTE_FILE로 해두었기 때문에 file_read()를 통해 fetch한다.
+	3-2. 만약 file에 swap out되있는 상황이라도 역시 spte의 상태가 SPTE_FILE이므로 file_read()를 통해 fetch한다. 
+4. 최종적으로 install까지 해주면 이제 성공적으로 process의 address space에서 file을 접근할 수 있다.
+
+frame eviction process
+1. 만약 victim으로 선택된 fte의 spte의 upage가 dirty이면서 동시에 mmap page라면(is_mmap_page를 통해 판단, 이는 syscall_mmap()에서 true로 세팅해놓았음)
+file에다가 file_write_at()을 통해 swap out시킨다.
+ 
+
 >> C3: Explain how you determine whether a new file mapping overlaps
 >> any existing segment.
+
+syscall_handler에서 syscall number가 SYS_MMAP인 경우 invalid addr을 check하기 위해서 4가지 condition을 || 해줌으로써 판단했다.
+    
+1. addr == NULL인 경우.
+2. addr가 PGSIZE로 align되지 않은 경우.
+3. addr가 스택영역인 경우.
+4. addr를 upage로 가지고 있는 spte가 spt에 있는 경우.(load_segment()에서 미리 code영역과 data영역에 대한 정보를 가진 spte를 spt에 넣어놓았기 때문에 이런식으로 판단해 줄 수 있다.)
 
 ---- RATIONALE ----
 
@@ -136,6 +351,9 @@ project3-1에서 mmap만 빼고 lazy loading까지 한번에 구현했습니다.
 >> that much of their implementation can be shared.  Explain why your
 >> implementation either does or does not share much of the code for
 >> the two situations.
+
+mmap page에 관한 정보를 struct supplemental_page_table_entry를 사용하여 저장해뒀다. 이 때 data demand-page from executables와의 차이를 두기 위해서 struct
+supplemental_page_table_entry의 member변수로 is_mmap_page라는 bool변수를 추가했다. 이렇게 share하는게 좀 더 구현하기 편했기 때문에 struct supplemental_page_table_entry를 mmap page도 같이 사용하였다.
 
          SURVEY QUESTIONS
          ================
