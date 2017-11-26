@@ -85,6 +85,7 @@ struct supplemental_page_table_entry* spte_create(void)
   spte->swap_idx = SWAP_IDX_DEFAULT;
   spte->is_stack_page = false;
   spte->is_mmap_page = false;
+  spte->is_fetched = false;
   spte->h_elem.list_elem.prev = NULL;
   spte->h_elem.list_elem.next = NULL;
   return spte;

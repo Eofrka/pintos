@@ -326,18 +326,6 @@ process_exit (void)
     lock_release(&filesys_lock);
   }
 
-  /* If current process is an orphan process, free its 'struct process'. There are no parent process waiting it to reap... */
-  if(ps->parent == NULL)
-  {
-    SAFE_FREE(ps);
-  }
-  /* Else, call sema_up(&ps->sema_wait) for blocking system call wait(). */
-  else
-  {
-    sema_up(&ps->sema_wait);
-  }
-  /*******/
-
 /* pj3 */
 /*******/
 #ifdef VM
@@ -364,6 +352,18 @@ process_exit (void)
     pagedir_activate (NULL);
     pagedir_destroy (pd);
   }
+
+  /* If current process is an orphan process, free its 'struct process'. There are no parent process waiting it to reap... */
+  if(ps->parent == NULL)
+  {
+    SAFE_FREE(ps);
+  }
+  /* Else, call sema_up(&ps->sema_wait) for blocking system call wait(). */
+  else
+  {
+    sema_up(&ps->sema_wait);
+  }
+  /*******/
 }
 
 /* Sets up the CPU for running user code in the current
