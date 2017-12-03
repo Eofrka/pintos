@@ -226,6 +226,8 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
       if (chunk_size <= 0)
         break;
 
+      /* pj4 */
+      /*******/
       /*
       if (sector_ofs == 0 && chunk_size == DISK_SECTOR_SIZE) 
         {
@@ -245,8 +247,8 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
           memcpy (buffer + bytes_read, bounce + sector_ofs, chunk_size);
         }
       */
-      /* pj4 */
-      /*******/
+
+      /* You should get rid of bounce buffers. Instead, copy data into and out of sectors in the buffer cache directly. */
       buffer_cache_read_at(sector_idx, buffer+bytes_read, chunk_size, sector_ofs);
       /*******/
 
@@ -271,7 +273,10 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 {
   const uint8_t *buffer = buffer_;
   off_t bytes_written = 0;
+  /* pj4 */
+  /*******/
   //uint8_t *bounce = NULL;
+  /*******/
 
   if (inode->deny_write_cnt)
     return 0;
@@ -292,6 +297,8 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
       if (chunk_size <= 0)
         break;
 
+      /* pj4 */
+      /*******/
       /*
       if (sector_ofs == 0 && chunk_size == DISK_SECTOR_SIZE) 
         {
@@ -320,8 +327,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
         }
       */
 
-      /* pj4 */
-      /*******/
+      /* You should get rid of bounce buffers. Instead, copy data into and out of sectors in the buffer cache directly. */
       buffer_cache_write_at(sector_idx, buffer+bytes_written, chunk_size, sector_ofs);
       /*******/  
 
