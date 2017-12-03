@@ -1,11 +1,11 @@
-Copying tests/userprog/halt into /tmp/vjOIO6dlPp.dsk...
-Writing command line to /tmp/caNdm0fDCC.dsk...
+Copying tests/userprog/halt into /tmp/ewhMQMI52B.dsk...
+Writing command line to /tmp/COps90URAe.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put halt run halt
 Pintos booting with 4,096 kB RAM...
-373 pages available in kernel pool.
-373 pages available in user pool.
+369 pages available in kernel pool.
+368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -16,10 +16,10 @@ Boot complete.
 Putting 'halt' into the file system...
 Executing 'halt':
 (halt) begin
-Timer: 272 ticks
-Thread: 30 idle ticks, 212 kernel ticks, 33 user ticks
+Timer: 306 ticks
+Thread: 30 idle ticks, 224 kernel ticks, 55 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 59 reads, 202 writes
+hd0:1: 31 reads, 199 writes
 hd1:0: 97 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 818 characters output

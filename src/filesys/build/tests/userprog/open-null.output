@@ -1,11 +1,11 @@
-Copying tests/userprog/open-null into /tmp/BiQjAY4meN.dsk...
-Writing command line to /tmp/bnFLx1udCV.dsk...
+Copying tests/userprog/open-null into /tmp/yBJfkQnMsF.dsk...
+Writing command line to /tmp/l5aeye1BCH.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put open-null run open-null
 Pintos booting with 4,096 kB RAM...
-373 pages available in kernel pool.
-373 pages available in user pool.
+369 pages available in kernel pool.
+368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -18,10 +18,10 @@ Executing 'open-null':
 (open-null) begin
 open-null: exit(-1)
 Execution of 'open-null' complete.
-Timer: 310 ticks
-Thread: 30 idle ticks, 235 kernel ticks, 48 user ticks
+Timer: 342 ticks
+Thread: 30 idle ticks, 256 kernel ticks, 59 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 59 reads, 204 writes
+hd0:1: 31 reads, 201 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 898 characters output

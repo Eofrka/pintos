@@ -1,13 +1,13 @@
-Copying tests/filesys/extended/syn-rw into /tmp/ZK9DdwwxKz.dsk...
-Copying tests/filesys/extended/tar into /tmp/ZK9DdwwxKz.dsk...
-Copying tests/filesys/extended/child-syn-rw into /tmp/ZK9DdwwxKz.dsk...
-Writing command line to /tmp/1swZHMdr18.dsk...
+Copying tests/filesys/extended/syn-rw into /tmp/hGCdL7qp9E.dsk...
+Copying tests/filesys/extended/tar into /tmp/hGCdL7qp9E.dsk...
+Copying tests/filesys/extended/child-syn-rw into /tmp/hGCdL7qp9E.dsk...
+Writing command line to /tmp/FzX0NildjO.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put syn-rw put tar put child-syn-rw run syn-rw
 Pintos booting with 4,096 kB RAM...
-373 pages available in kernel pool.
-373 pages available in user pool.
+369 pages available in kernel pool.
+368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -29,13 +29,13 @@ Executing 'syn-rw':
 (syn-rw) write 8 bytes at offset 0 in "logfile": FAILED
 syn-rw: exit(1)
 Execution of 'syn-rw' complete.
-Timer: 814 ticks
-Thread: 30 idle ticks, 456 kernel ticks, 331 user ticks
+Timer: 851 ticks
+Thread: 30 idle ticks, 547 kernel ticks, 277 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 282 reads, 670 writes
+hd0:1: 71 reads, 669 writes
 hd1:0: 327 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1275 characters output
+Console: 1274 characters output
 Keyboard: 0 keys pressed
-Exception: 28 page faults
+Exception: 26 page faults
 Powering off...

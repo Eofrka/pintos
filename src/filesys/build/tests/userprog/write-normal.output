@@ -1,12 +1,12 @@
-Copying tests/userprog/write-normal into /tmp/pn8MpmQBzA.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/pn8MpmQBzA.dsk...
-Writing command line to /tmp/09MLkMMzso.dsk...
+Copying tests/userprog/write-normal into /tmp/yXeifXmbRG.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/yXeifXmbRG.dsk...
+Writing command line to /tmp/2FqFKfThzo.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put write-normal put sample.txt run write-normal
 Pintos booting with 4,096 kB RAM...
-373 pages available in kernel pool.
-373 pages available in user pool.
+369 pages available in kernel pool.
+368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -23,13 +23,13 @@ Executing 'write-normal':
 (write-normal) end
 write-normal: exit(0)
 Execution of 'write-normal' complete.
-Timer: 390 ticks
-Thread: 30 idle ticks, 267 kernel ticks, 96 user ticks
+Timer: 397 ticks
+Thread: 30 idle ticks, 276 kernel ticks, 94 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 122 reads, 218 writes
+hd0:1: 38 reads, 211 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1063 characters output
+Console: 1062 characters output
 Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...

@@ -1,12 +1,12 @@
-Copying tests/userprog/wait-killed into /tmp/asGopm4uB7.dsk...
-Copying tests/userprog/child-bad into /tmp/asGopm4uB7.dsk...
-Writing command line to /tmp/WvURi57Aaz.dsk...
+Copying tests/userprog/wait-killed into /tmp/qD5t4KglJZ.dsk...
+Copying tests/userprog/child-bad into /tmp/qD5t4KglJZ.dsk...
+Writing command line to /tmp/WuVimHH3Rm.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put wait-killed put child-bad run wait-killed
 Pintos booting with 4,096 kB RAM...
-373 pages available in kernel pool.
-373 pages available in user pool.
+369 pages available in kernel pool.
+368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -24,13 +24,13 @@ child-bad: exit(-1)
 (wait-killed) end
 wait-killed: exit(0)
 Execution of 'wait-killed' complete.
-Timer: 480 ticks
-Thread: 30 idle ticks, 338 kernel ticks, 115 user ticks
+Timer: 549 ticks
+Thread: 30 idle ticks, 385 kernel ticks, 137 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 116 reads, 402 writes
+hd0:1: 59 reads, 398 writes
 hd1:0: 196 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1060 characters output
+Console: 1059 characters output
 Keyboard: 0 keys pressed
 Exception: 11 page faults
 Powering off...

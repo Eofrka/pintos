@@ -1,12 +1,12 @@
-Copying tests/filesys/base/syn-read into /tmp/Yv5OnU2PCs.dsk...
-Copying tests/filesys/base/child-syn-read into /tmp/Yv5OnU2PCs.dsk...
-Writing command line to /tmp/3mzMWX32Fz.dsk...
+Copying tests/filesys/base/syn-read into /tmp/qpcyjCLr42.dsk...
+Copying tests/filesys/base/child-syn-read into /tmp/qpcyjCLr42.dsk...
+Writing command line to /tmp/y4OSdBnRIz.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put syn-read put child-syn-read run syn-read
 Pintos booting with 4,096 kB RAM...
-373 pages available in kernel pool.
-373 pages available in user pool.
+369 pages available in kernel pool.
+368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -32,18 +32,18 @@ Executing 'syn-read':
 (syn-read) exec child 8 of 10: "child-syn-read 7"
 (syn-read) exec child 9 of 10: "child-syn-read 8"
 (syn-read) exec child 10 of 10: "child-syn-read 9"
-child-syn-read: exit(5)
-child-syn-read: exit(1)
-child-syn-read: exit(2)
 child-syn-read: exit(6)
 child-syn-read: exit(4)
-child-syn-read: exit(9)
+child-syn-read: exit(5)
+child-syn-read: exit(1)
+child-syn-read: exit(8)
 child-syn-read: exit(0)
+child-syn-read: exit(2)
 child-syn-read: exit(3)
+child-syn-read: exit(9)
 (syn-read) wait for child 1 of 10 returned 0 (expected 0)
 (syn-read) wait for child 2 of 10 returned 1 (expected 1)
 (syn-read) wait for child 3 of 10 returned 2 (expected 2)
-child-syn-read: exit(8)
 child-syn-read: exit(7)
 (syn-read) wait for child 4 of 10 returned 3 (expected 3)
 (syn-read) wait for child 5 of 10 returned 4 (expected 4)
@@ -55,13 +55,13 @@ child-syn-read: exit(7)
 (syn-read) end
 syn-read: exit(0)
 Execution of 'syn-read' complete.
-Timer: 10673 ticks
-Thread: 30 idle ticks, 446 kernel ticks, 10201 user ticks
+Timer: 4914 ticks
+Thread: 30 idle ticks, 500 kernel ticks, 4388 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 10717 reads, 448 writes
+hd0:1: 86 reads, 443 writes
 hd1:0: 215 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2400 characters output
+Console: 2395 characters output
 Keyboard: 0 keys pressed
 Exception: 45 page faults
 Powering off...

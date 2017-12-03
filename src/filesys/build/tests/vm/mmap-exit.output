@@ -1,12 +1,12 @@
-Copying tests/vm/mmap-exit into /tmp/Hfj0O6qjqQ.dsk...
-Copying tests/vm/child-mm-wrt into /tmp/Hfj0O6qjqQ.dsk...
-Writing command line to /tmp/1exjcX09wZ.dsk...
+Copying tests/vm/mmap-exit into /tmp/rOEzvBjCG8.dsk...
+Copying tests/vm/child-mm-wrt into /tmp/rOEzvBjCG8.dsk...
+Writing command line to /tmp/32CKeDsitq.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-exit put child-mm-wrt run mmap-exit
 Pintos booting with 4,096 kB RAM...
-373 pages available in kernel pool.
-373 pages available in user pool.
+369 pages available in kernel pool.
+368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -30,13 +30,13 @@ child-mm-wrt: exit(0)
 (mmap-exit) end
 mmap-exit: exit(0)
 Execution of 'mmap-exit' complete.
-Timer: 585 ticks
-Thread: 30 idle ticks, 343 kernel ticks, 215 user ticks
+Timer: 644 ticks
+Thread: 30 idle ticks, 392 kernel ticks, 225 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 171 reads, 418 writes
+hd0:1: 70 reads, 413 writes
 hd1:0: 200 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1267 characters output
+Console: 1266 characters output
 Keyboard: 0 keys pressed
 Exception: 11 page faults
 Powering off...

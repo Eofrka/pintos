@@ -1,12 +1,12 @@
-Copying tests/userprog/write-zero into /tmp/bRbH1MyCOE.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/bRbH1MyCOE.dsk...
-Writing command line to /tmp/QtCwvthfme.dsk...
+Copying tests/userprog/write-zero into /tmp/IIMXKk1Yh6.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/IIMXKk1Yh6.dsk...
+Writing command line to /tmp/reYtSPYfGb.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put write-zero put sample.txt run write-zero
 Pintos booting with 4,096 kB RAM...
-373 pages available in kernel pool.
-373 pages available in user pool.
+369 pages available in kernel pool.
+368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -22,10 +22,10 @@ Executing 'write-zero':
 (write-zero) end
 write-zero: exit(0)
 Execution of 'write-zero' complete.
-Timer: 357 ticks
-Thread: 30 idle ticks, 265 kernel ticks, 65 user ticks
+Timer: 377 ticks
+Thread: 30 idle ticks, 274 kernel ticks, 76 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 90 reads, 210 writes
+hd0:1: 36 reads, 206 writes
 hd1:0: 100 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1013 characters output

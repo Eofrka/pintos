@@ -1,12 +1,12 @@
-Copying tests/vm/mmap-clean into /tmp/6VX4cowqNl.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/6VX4cowqNl.dsk...
-Writing command line to /tmp/fxnX3wAwO4.dsk...
+Copying tests/vm/mmap-clean into /tmp/ARRNVfSX40.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/ARRNVfSX40.dsk...
+Writing command line to /tmp/pOHGkvA74s.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-clean put sample.txt run mmap-clean
 Pintos booting with 4,096 kB RAM...
-373 pages available in kernel pool.
-373 pages available in user pool.
+369 pages available in kernel pool.
+368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -28,13 +28,13 @@ Executing 'mmap-clean':
 (mmap-clean) end
 mmap-clean: exit(0)
 Execution of 'mmap-clean' complete.
-Timer: 429 ticks
-Thread: 30 idle ticks, 269 kernel ticks, 133 user ticks
+Timer: 452 ticks
+Thread: 30 idle ticks, 281 kernel ticks, 144 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 106 reads, 221 writes
+hd0:1: 39 reads, 216 writes
 hd1:0: 105 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1224 characters output
+Console: 1223 characters output
 Keyboard: 0 keys pressed
 Exception: 6 page faults
 Powering off...
