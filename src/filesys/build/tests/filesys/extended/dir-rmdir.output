@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-rmdir into /tmp/Z7nQF3njAO.dsk...
-Copying tests/filesys/extended/tar into /tmp/Z7nQF3njAO.dsk...
-Writing command line to /tmp/YLjDJGB6Dh.dsk...
+Copying tests/filesys/extended/dir-rmdir into /tmp/L9HQq7rt5F.dsk...
+Copying tests/filesys/extended/tar into /tmp/L9HQq7rt5F.dsk...
+Writing command line to /tmp/JBnhnAcGBJ.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-rmdir put tar run dir-rmdir
@@ -21,8 +21,8 @@ Executing 'dir-rmdir':
 (dir-rmdir) mkdir "a"
 dir-rmdir: exit(-1)
 Execution of 'dir-rmdir' complete.
-Timer: 491 ticks
-Thread: 30 idle ticks, 398 kernel ticks, 66 user ticks
+Timer: 510 ticks
+Thread: 30 idle ticks, 412 kernel ticks, 71 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 36 reads, 430 writes
 hd1:0: 212 reads, 0 writes

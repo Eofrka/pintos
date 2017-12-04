@@ -1,5 +1,5 @@
-Copying tests/userprog/close-stdin into /tmp/MDLwkiyjmr.dsk...
-Writing command line to /tmp/G0QallyWuA.dsk...
+Copying tests/userprog/close-stdin into /tmp/ul2iFfLcNS.dsk...
+Writing command line to /tmp/mcQAtAusz1.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put close-stdin run close-stdin
@@ -19,8 +19,8 @@ Executing 'close-stdin':
 (close-stdin) end
 close-stdin: exit(0)
 Execution of 'close-stdin' complete.
-Timer: 349 ticks
-Thread: 30 idle ticks, 257 kernel ticks, 65 user ticks
+Timer: 363 ticks
+Thread: 30 idle ticks, 266 kernel ticks, 70 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 31 reads, 201 writes
 hd1:0: 98 reads, 0 writes

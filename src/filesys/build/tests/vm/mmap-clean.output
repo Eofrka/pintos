@@ -1,6 +1,6 @@
-Copying tests/vm/mmap-clean into /tmp/ARRNVfSX40.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/ARRNVfSX40.dsk...
-Writing command line to /tmp/pOHGkvA74s.dsk...
+Copying tests/vm/mmap-clean into /tmp/VDpXbtbUpN.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/VDpXbtbUpN.dsk...
+Writing command line to /tmp/DT49D0WH7j.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-clean put sample.txt run mmap-clean
@@ -28,8 +28,8 @@ Executing 'mmap-clean':
 (mmap-clean) end
 mmap-clean: exit(0)
 Execution of 'mmap-clean' complete.
-Timer: 452 ticks
-Thread: 30 idle ticks, 281 kernel ticks, 144 user ticks
+Timer: 477 ticks
+Thread: 30 idle ticks, 297 kernel ticks, 153 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 39 reads, 216 writes
 hd1:0: 105 reads, 0 writes

@@ -1,0 +1,38 @@
+pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/vm/mmap-write -a mmap-write --swap-disk=4 -- -q   -f run mmap-write < /dev/null 2> tests/vm/mmap-write.errors |tee tests/vm/mmap-write.output
+Copying tests/vm/mmap-write into /tmp/OnjAq1W3E7.dsk...
+Writing command line to /tmp/D6eVLUVof4.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
+Kernel command line: -q -f put mmap-write run mmap-write
+Pintos booting with 4,096 kB RAM...
+369 pages available in kernel pool.
+368 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
+hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
+hd1:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00021"
+hd1:1: detected 8,064 sector (3 MB) disk, model "Generic 1234", serial "BXHD00022"
+Formatting file system...done.
+Boot complete.
+Putting 'mmap-write' into the file system...
+Executing 'mmap-write':
+(mmap-write) begin
+(mmap-write) create "sample.txt"
+(mmap-write) open "sample.txt"
+(mmap-write) mmap "sample.txt"
+(mmap-write) compare read data against written data
+(mmap-write) end
+mmap-write: exit(0)
+Execution of 'mmap-write' complete.
+Timer: 443 ticks
+Thread: 30 idle ticks, 271 kernel ticks, 145 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 39 reads, 214 writes
+hd1:0: 101 reads, 0 writes
+hd1:1: 0 reads, 0 writes
+Console: 1070 characters output
+Keyboard: 0 keys pressed
+Exception: 6 page faults
+Powering off...
+perl -I../.. ../../tests/vm/mmap-write.ck tests/vm/mmap-write tests/vm/mmap-write.result
+pass tests/vm/mmap-write

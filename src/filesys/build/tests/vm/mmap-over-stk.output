@@ -1,6 +1,6 @@
-Copying tests/vm/mmap-over-stk into /tmp/zcBAiEKXox.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/zcBAiEKXox.dsk...
-Writing command line to /tmp/DsBHr13lBU.dsk...
+Copying tests/vm/mmap-over-stk into /tmp/YRrUreNUiK.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/YRrUreNUiK.dsk...
+Writing command line to /tmp/Eq4BxDLnxd.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-over-stk put sample.txt run mmap-over-stk
@@ -23,8 +23,8 @@ Executing 'mmap-over-stk':
 (mmap-over-stk) end
 mmap-over-stk: exit(0)
 Execution of 'mmap-over-stk' complete.
-Timer: 391 ticks
-Thread: 30 idle ticks, 276 kernel ticks, 88 user ticks
+Timer: 411 ticks
+Thread: 30 idle ticks, 289 kernel ticks, 95 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 36 reads, 208 writes
 hd1:0: 101 reads, 0 writes

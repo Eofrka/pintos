@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/grow-seq-sm into /tmp/yhiWq4ozHs.dsk...
-Copying tests/filesys/extended/tar into /tmp/yhiWq4ozHs.dsk...
-Writing command line to /tmp/GhJmHrOVGR.dsk...
+Copying tests/filesys/extended/grow-seq-sm into /tmp/PWqgAPCACm.dsk...
+Copying tests/filesys/extended/tar into /tmp/PWqgAPCACm.dsk...
+Writing command line to /tmp/KxxpobjqAK.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-seq-sm put tar run grow-seq-sm
@@ -24,8 +24,8 @@ Executing 'grow-seq-sm':
 (grow-seq-sm) write 1234 bytes at offset 0 in "testme" failed: FAILED
 grow-seq-sm: exit(1)
 Execution of 'grow-seq-sm' complete.
-Timer: 556 ticks
-Thread: 30 idle ticks, 400 kernel ticks, 129 user ticks
+Timer: 582 ticks
+Thread: 30 idle ticks, 414 kernel ticks, 141 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 39 reads, 435 writes
 hd1:0: 213 reads, 0 writes

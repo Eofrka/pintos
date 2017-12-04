@@ -1,5 +1,5 @@
-Copying tests/filesys/extended/syn-rw.output into /tmp/iICvNAQ90u.dsk...
-Writing command line to /tmp/HaaNfg4BGe.dsk...
+Copying tests/filesys/extended/syn-rw.output into /tmp/YJRMnEm9qz.dsk...
+Writing command line to /tmp/aElyrZOShg.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put syn-rw.output run syn-rw-persistence
@@ -17,8 +17,8 @@ Putting 'syn-rw.output' into the file system...
 Executing 'syn-rw-persistence':
 load: syn-rw-persistence: open failed
 Execution of 'syn-rw-persistence' complete.
-Timer: 193 ticks
-Thread: 30 idle ticks, 156 kernel ticks, 10 user ticks
+Timer: 206 ticks
+Thread: 30 idle ticks, 166 kernel ticks, 13 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 7 reads, 15 writes
 hd1:0: 5 reads, 0 writes

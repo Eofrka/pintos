@@ -16,4 +16,4 @@ threads/init.o: ../../threads/init.c ../../threads/init.h \
   ../../threads/synch.h ../../threads/palloc.h ../../vm/swap.h \
   ../../lib/kernel/bitmap.h ../../lib/inttypes.h ../../vm/frame.h \
   ../../devices/disk.h ../../filesys/filesys.h ../../filesys/off_t.h \
-  ../../filesys/fsutil.h
+  ../../devices/disk.h ../../filesys/fsutil.h

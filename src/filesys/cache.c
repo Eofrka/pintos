@@ -1,6 +1,97 @@
 #include "filesys/cache.h"
 #include "filesys/filesys.h"
 #include <debug.h>
+#include "threads/thread.h"
+#include "devices/timer.h"
+#include "threads/malloc.h"
+
+
+#define WRITE_BEHIND_PERIOD 1000
+
+static void write_behind_thread(void* aux);
+static void read_ahead_thread(void* aux);
+
+
+static void write_behind_thread(void* aux UNUSED)
+{
+  while(true)
+  {
+    buffer_cache_flush_all();
+    timer_sleep(WRITE_BEHIND_PERIOD);
+
+  }
+}
+
+
+static void read_ahead_thread(void* aux UNUSED)
+{
+  while(true)
+  {
+    sema_down(&read_ahead_sema);
+
+    lock_acquire(&read_ahead_lock);
+    struct read_ahead_list_entry* rale = list_entry(list_pop_front(&read_ahead_list) , struct read_ahead_list_entry, elem);
+    lock_release(&read_ahead_lock);
+
+    lock_acquire(&buffer_cache_lock);
+    disk_sector_t sec_no = rale->sec_no;
+    struct buffer_cache_entry* bce = buffer_cache_find(sec_no);
+    if(bce == NULL)
+    {
+      /* Handling cache miss. */
+      struct buffer_cache_entry* victim_bce = buffer_cache_find_victim();
+
+      /* Actual replacement. */
+      ASSERT(victim_bce->accessed == false);
+      /* (i) victim_bce is not valid. */
+      if(victim_bce->valid == false)
+      {
+        ASSERT(victim_bce->dirty == false);
+        /* Update the victim_bce's buffer. */
+        disk_read(filesys_disk, sec_no, victim_bce->buffer);
+        victim_bce->sec_no = sec_no;
+        victim_bce->valid = true;           
+
+      }
+      /* (ii) victim_bce is valid. */
+      else
+      {
+        /* Evict the victim_bce. If victim_bce is dirty, flush it. */
+        if(victim_bce->dirty == true)
+        {
+          buffer_cache_flush(victim_bce);
+        }
+        victim_bce->sec_no = SEC_NO_DEFAULT;
+        victim_bce->valid=false;
+
+        /* Update the victim_bce's buffer. */
+        disk_read(filesys_disk, sec_no, victim_bce->buffer);
+        victim_bce->sec_no = sec_no;
+        victim_bce->valid = true;
+      }
+    }
+    SAFE_FREE(rale);
+    lock_release(&buffer_cache_lock);
+  }
+}
+
+void buffer_cache_read_ahead(disk_sector_t sec_no)
+{
+  lock_acquire(&read_ahead_lock);
+  struct read_ahead_list_entry* rale = (struct read_ahead_list_entry*)malloc(sizeof(struct read_ahead_list_entry));
+  if(rale == NULL)
+  {
+    PANIC("not enough memory to allocate rale");
+  }
+  rale->sec_no = sec_no;
+  list_push_back(&read_ahead_list, &rale->elem);
+  lock_release(&read_ahead_lock);
+
+  sema_up(&read_ahead_sema);
+
+}
+
+
 
 /* Initialize buffer cache module. */
 void buffer_cache_init(void)
@@ -16,6 +107,12 @@ void buffer_cache_init(void)
     bce->dirty = false;
   }
   lock_init(&buffer_cache_lock);
+  thread_create("write_behind_thread", PRI_MIN, write_behind_thread, NULL);
+
+  list_init(&read_ahead_list);
+  lock_init(&read_ahead_lock);
+  sema_init(&read_ahead_sema, 0);
+  thread_create("read_ahead_thread", PRI_MIN, read_ahead_thread, NULL);
   clock_index = -1;
 }
 
@@ -52,7 +149,6 @@ void buffer_cache_read_at(disk_sector_t sec_no, void* buffer, off_t size, off_t 
         buffer_cache_flush(victim_bce);
       }
       victim_bce->sec_no = SEC_NO_DEFAULT;
-      victim_bce->dirty=false;
       victim_bce->valid=false;
 
       /* Update the victim_bce's buffer. */
@@ -104,7 +200,6 @@ void buffer_cache_write_at(disk_sector_t sec_no, void* buffer, off_t size, off_t
         buffer_cache_flush(victim_bce);
       }
       victim_bce->sec_no = SEC_NO_DEFAULT;
-      victim_bce->dirty=false;
       victim_bce->valid=false;
 
       /* if offset != 0, update the victim_bce's buffer. */
@@ -240,7 +335,10 @@ void buffer_cache_flush(struct buffer_cache_entry* bce)
   if(bce->valid == true && bce->dirty==true)
   {
     disk_write(filesys_disk, bce->sec_no, bce->buffer);
+    bce->dirty=false;
   }
 
 }
+
+
 

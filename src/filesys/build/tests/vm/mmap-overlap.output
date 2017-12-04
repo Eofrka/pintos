@@ -1,6 +1,6 @@
-Copying tests/vm/mmap-overlap into /tmp/umgB4HGpg9.dsk...
-Copying tests/vm/zeros into /tmp/umgB4HGpg9.dsk...
-Writing command line to /tmp/KQFctGW9Cc.dsk...
+Copying tests/vm/mmap-overlap into /tmp/fxvgSCjvW8.dsk...
+Copying tests/vm/zeros into /tmp/fxvgSCjvW8.dsk...
+Writing command line to /tmp/RAjDMRkgNg.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-overlap put zeros run mmap-overlap
@@ -25,8 +25,8 @@ Executing 'mmap-overlap':
 (mmap-overlap) end
 mmap-overlap: exit(0)
 Execution of 'mmap-overlap' complete.
-Timer: 425 ticks
-Thread: 30 idle ticks, 288 kernel ticks, 110 user ticks
+Timer: 448 ticks
+Thread: 30 idle ticks, 303 kernel ticks, 118 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 39 reads, 232 writes
 hd1:0: 113 reads, 0 writes

@@ -1,7 +1,7 @@
-Copying tests/filesys/extended/syn-rw into /tmp/hGCdL7qp9E.dsk...
-Copying tests/filesys/extended/tar into /tmp/hGCdL7qp9E.dsk...
-Copying tests/filesys/extended/child-syn-rw into /tmp/hGCdL7qp9E.dsk...
-Writing command line to /tmp/FzX0NildjO.dsk...
+Copying tests/filesys/extended/syn-rw into /tmp/ppgsSvgCPJ.dsk...
+Copying tests/filesys/extended/tar into /tmp/ppgsSvgCPJ.dsk...
+Copying tests/filesys/extended/child-syn-rw into /tmp/ppgsSvgCPJ.dsk...
+Writing command line to /tmp/71VJBBVdhO.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put syn-rw put tar put child-syn-rw run syn-rw
@@ -29,13 +29,13 @@ Executing 'syn-rw':
 (syn-rw) write 8 bytes at offset 0 in "logfile": FAILED
 syn-rw: exit(1)
 Execution of 'syn-rw' complete.
-Timer: 851 ticks
-Thread: 30 idle ticks, 547 kernel ticks, 277 user ticks
+Timer: 891 ticks
+Thread: 30 idle ticks, 569 kernel ticks, 303 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 71 reads, 669 writes
+hd0:1: 71 reads, 664 writes
 hd1:0: 327 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1274 characters output
 Keyboard: 0 keys pressed
-Exception: 26 page faults
+Exception: 27 page faults
 Powering off...
