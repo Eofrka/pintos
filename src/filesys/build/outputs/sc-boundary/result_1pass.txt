@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/sc-boundary -a sc-boundary --swap-disk=4 -- -q   -f run sc-boundary < /dev/null 2> tests/userprog/sc-boundary.errors |tee tests/userprog/sc-boundary.output
-Copying tests/userprog/sc-boundary into /tmp/2Ecv4PrDKu.dsk...
-Writing command line to /tmp/e4735PqIg8.dsk...
+Copying tests/userprog/sc-boundary into /tmp/ujKSSUb1Op.dsk...
+Writing command line to /tmp/nVw7YdcSfv.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put sc-boundary run sc-boundary
@@ -19,10 +19,10 @@ Executing 'sc-boundary':
 (sc-boundary) begin
 sc-boundary: exit(42)
 Execution of 'sc-boundary' complete.
-Timer: 367 ticks
-Thread: 30 idle ticks, 270 kernel ticks, 70 user ticks
+Timer: 415 ticks
+Thread: 30 idle ticks, 317 kernel ticks, 71 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 31 reads, 207 writes
+hd0:1: 28 reads, 206 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 913 characters output

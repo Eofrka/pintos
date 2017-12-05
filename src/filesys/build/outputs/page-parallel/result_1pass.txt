@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/vm/page-parallel -a page-parallel -p tests/vm/child-linear -a child-linear --swap-disk=4 -- -q   -f run page-parallel < /dev/null 2> tests/vm/page-parallel.errors |tee tests/vm/page-parallel.output
-Copying tests/vm/page-parallel into /tmp/5By5ev2YDN.dsk...
-Copying tests/vm/child-linear into /tmp/5By5ev2YDN.dsk...
-Writing command line to /tmp/Rw8wxG82OK.dsk...
+Copying tests/vm/page-parallel into /tmp/dnmVofgaK2.dsk...
+Copying tests/vm/child-linear into /tmp/dnmVofgaK2.dsk...
+Writing command line to /tmp/OFPS83cN7Y.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-parallel put child-linear run page-parallel
@@ -34,12 +34,12 @@ child-linear: exit(66)
 (page-parallel) end
 page-parallel: exit(0)
 Execution of 'page-parallel' complete.
-Timer: 58512 ticks
-Thread: 30 idle ticks, 436 kernel ticks, 58049 user ticks
+Timer: 57994 ticks
+Thread: 30 idle ticks, 530 kernel ticks, 57437 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 55 reads, 406 writes
+hd0:1: 48 reads, 405 writes
 hd1:0: 200 reads, 0 writes
-hd1:1: 16520 reads, 21856 writes
+hd1:1: 16520 reads, 21344 writes
 Console: 1391 characters output
 Keyboard: 0 keys pressed
 Exception: 3111 page faults

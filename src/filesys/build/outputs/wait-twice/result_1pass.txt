@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/wait-twice -a wait-twice -p tests/userprog/child-simple -a child-simple --swap-disk=4 -- -q   -f run wait-twice < /dev/null 2> tests/userprog/wait-twice.errors |tee tests/userprog/wait-twice.output
-Copying tests/userprog/wait-twice into /tmp/VY73WdIywk.dsk...
-Copying tests/userprog/child-simple into /tmp/VY73WdIywk.dsk...
-Writing command line to /tmp/AHXU9zbdMO.dsk...
+Copying tests/userprog/wait-twice into /tmp/ZcnIqiM3lt.dsk...
+Copying tests/userprog/child-simple into /tmp/ZcnIqiM3lt.dsk...
+Writing command line to /tmp/AyEeNhPvZv.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put wait-twice put child-simple run wait-twice
@@ -26,10 +26,10 @@ child-simple: exit(81)
 (wait-twice) end
 wait-twice: exit(0)
 Execution of 'wait-twice' complete.
-Timer: 581 ticks
-Thread: 30 idle ticks, 400 kernel ticks, 154 user ticks
+Timer: 672 ticks
+Thread: 30 idle ticks, 489 kernel ticks, 156 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 59 reads, 396 writes
+hd0:1: 55 reads, 395 writes
 hd1:0: 195 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1091 characters output

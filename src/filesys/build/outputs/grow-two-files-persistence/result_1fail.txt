@@ -1,8 +1,8 @@
 rm -f tmp.dsk
 pintos-mkdisk tmp.dsk 2
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/filesys/extended/grow-two-files.output -a grow-two-files.output --swap-disk=4 -- -q   -f run grow-two-files-persistence < /dev/null 2> .errors |tee .output
-Copying tests/filesys/extended/grow-two-files.output into /tmp/3y0XEjXyHa.dsk...
-Writing command line to /tmp/JXJ7jrTCX5.dsk...
+Copying tests/filesys/extended/grow-two-files.output into /tmp/x9JWXmA3ax.dsk...
+Writing command line to /tmp/7NxJnAPPB2.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-two-files.output run grow-two-files-persistence
@@ -18,7 +18,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -36,7 +36,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -54,7 +54,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -72,7 +72,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -90,7 +90,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -108,7 +108,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -126,7 +126,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -144,7 +144,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -162,7 +162,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -180,7 +180,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -198,7 +198,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -216,7 +216,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -234,7 +234,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -252,7 +252,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -270,7 +270,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -288,7 +288,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -306,7 +306,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -324,7 +324,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -342,7 +342,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -360,7 +360,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -378,7 +378,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -396,7 +396,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -414,7 +414,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'grow-two-files.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): grow-two-files.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.

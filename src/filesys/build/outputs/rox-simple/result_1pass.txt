@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/rox-simple -a rox-simple --swap-disk=4 -- -q   -f run rox-simple < /dev/null 2> tests/userprog/rox-simple.errors |tee tests/userprog/rox-simple.output
-Copying tests/userprog/rox-simple into /tmp/W9MAv1rSlW.dsk...
-Writing command line to /tmp/5EYQGcKf5J.dsk...
+Copying tests/userprog/rox-simple into /tmp/abiKegwulR.dsk...
+Writing command line to /tmp/r33bMwxXS7.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put rox-simple run rox-simple
@@ -23,10 +23,10 @@ Executing 'rox-simple':
 (rox-simple) end
 rox-simple: exit(0)
 Execution of 'rox-simple' complete.
-Timer: 389 ticks
-Thread: 30 idle ticks, 266 kernel ticks, 96 user ticks
+Timer: 436 ticks
+Thread: 30 idle ticks, 312 kernel ticks, 97 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 32 reads, 201 writes
+hd0:1: 28 reads, 200 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1022 characters output

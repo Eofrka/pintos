@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/exec-once -a exec-once -p tests/userprog/child-simple -a child-simple --swap-disk=4 -- -q   -f run exec-once < /dev/null 2> tests/userprog/exec-once.errors |tee tests/userprog/exec-once.output
-Copying tests/userprog/exec-once into /tmp/ddSU7xt2nB.dsk...
-Copying tests/userprog/child-simple into /tmp/ddSU7xt2nB.dsk...
-Writing command line to /tmp/ETHOeU5htQ.dsk...
+Copying tests/userprog/exec-once into /tmp/4gLVZ1wfOp.dsk...
+Copying tests/userprog/child-simple into /tmp/4gLVZ1wfOp.dsk...
+Writing command line to /tmp/IMpobtXYmS.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put exec-once put child-simple run exec-once
@@ -24,10 +24,10 @@ child-simple: exit(81)
 (exec-once) end
 exec-once: exit(0)
 Execution of 'exec-once' complete.
-Timer: 564 ticks
-Thread: 30 idle ticks, 399 kernel ticks, 138 user ticks
+Timer: 657 ticks
+Thread: 30 idle ticks, 490 kernel ticks, 140 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 59 reads, 396 writes
+hd0:1: 55 reads, 395 writes
 hd1:0: 195 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1021 characters output

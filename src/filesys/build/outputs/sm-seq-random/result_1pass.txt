@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/filesys/base/sm-seq-random -a sm-seq-random --swap-disk=4 -- -q   -f run sm-seq-random < /dev/null 2> tests/filesys/base/sm-seq-random.errors |tee tests/filesys/base/sm-seq-random.output
-Copying tests/filesys/base/sm-seq-random into /tmp/bEdxcAgaPV.dsk...
-Writing command line to /tmp/Gtnw1UZPGB.dsk...
+Copying tests/filesys/base/sm-seq-random into /tmp/teKMO7E6KC.dsk...
+Writing command line to /tmp/bQofOZgw8C.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put sm-seq-random run sm-seq-random
@@ -27,10 +27,10 @@ Executing 'sm-seq-random':
 (sm-seq-random) end
 sm-seq-random: exit(0)
 Execution of 'sm-seq-random' complete.
-Timer: 533 ticks
-Thread: 30 idle ticks, 271 kernel ticks, 235 user ticks
+Timer: 587 ticks
+Thread: 30 idle ticks, 320 kernel ticks, 240 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 37 reads, 236 writes
+hd0:1: 29 reads, 223 writes
 hd1:0: 102 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1197 characters output

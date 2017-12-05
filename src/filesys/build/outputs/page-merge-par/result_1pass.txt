@@ -1,7 +1,7 @@
 pintos -v -k -T 600 --bochs  --fs-disk=2 -p tests/vm/page-merge-par -a page-merge-par -p tests/vm/child-sort -a child-sort --swap-disk=4 -- -q   -f run page-merge-par < /dev/null 2> tests/vm/page-merge-par.errors |tee tests/vm/page-merge-par.output
-Copying tests/vm/page-merge-par into /tmp/3Xj6GbvKJc.dsk...
-Copying tests/vm/child-sort into /tmp/3Xj6GbvKJc.dsk...
-Writing command line to /tmp/wf4HE5gvGI.dsk...
+Copying tests/vm/page-merge-par into /tmp/ONqKiEqQFe.dsk...
+Copying tests/vm/child-sort into /tmp/ONqKiEqQFe.dsk...
+Writing command line to /tmp/XSALeIVFHE.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-merge-par put child-sort run page-merge-par
@@ -29,20 +29,20 @@ child-sort: exit(123)
 (page-merge-par) sort chunk 5
 child-sort: exit(123)
 (page-merge-par) sort chunk 6
+child-sort: exit(123)
 (page-merge-par) sort chunk 7
-child-sort: exit(123)
 (page-merge-par) wait for child 0
-child-sort: exit(123)
 (page-merge-par) wait for child 1
+child-sort: exit(123)
 child-sort: exit(123)
 (page-merge-par) wait for child 2
 (page-merge-par) wait for child 3
+child-sort: exit(123)
 (page-merge-par) wait for child 4
 child-sort: exit(123)
 (page-merge-par) wait for child 5
 child-sort: exit(123)
 (page-merge-par) wait for child 6
-child-sort: exit(123)
 (page-merge-par) wait for child 7
 (page-merge-par) merge
 (page-merge-par) verify
@@ -50,15 +50,15 @@ child-sort: exit(123)
 (page-merge-par) end
 page-merge-par: exit(0)
 Execution of 'page-merge-par' complete.
-Timer: 45537 ticks
-Thread: 30 idle ticks, 479 kernel ticks, 45032 user ticks
+Timer: 46328 ticks
+Thread: 30 idle ticks, 572 kernel ticks, 45729 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 4375 reads, 6588 writes
+hd0:1: 4373 reads, 6587 writes
 hd1:0: 207 reads, 0 writes
-hd1:1: 2224 reads, 3416 writes
+hd1:1: 1960 reads, 3152 writes
 Console: 1829 characters output
 Keyboard: 0 keys pressed
-Exception: 1087 page faults
+Exception: 1054 page faults
 Powering off...
 perl -I../.. ../../tests/vm/page-merge-par.ck tests/vm/page-merge-par tests/vm/page-merge-par.result
 pass tests/vm/page-merge-par

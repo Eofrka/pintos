@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/read-boundary -a read-boundary -p ../../tests/userprog/sample.txt -a sample.txt --swap-disk=4 -- -q   -f run read-boundary < /dev/null 2> tests/userprog/read-boundary.errors |tee tests/userprog/read-boundary.output
-Copying tests/userprog/read-boundary into /tmp/XpaV7JxefP.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/XpaV7JxefP.dsk...
-Writing command line to /tmp/jGSEraT76S.dsk...
+Copying tests/userprog/read-boundary into /tmp/S3s1F0A75m.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/S3s1F0A75m.dsk...
+Writing command line to /tmp/m6ap8Im92Y.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put read-boundary put sample.txt run read-boundary
@@ -23,10 +23,10 @@ Executing 'read-boundary':
 (read-boundary) end
 read-boundary: exit(0)
 Execution of 'read-boundary' complete.
-Timer: 418 ticks
-Thread: 30 idle ticks, 293 kernel ticks, 98 user ticks
+Timer: 468 ticks
+Thread: 30 idle ticks, 342 kernel ticks, 99 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 37 reads, 214 writes
+hd0:1: 29 reads, 212 writes
 hd1:0: 104 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1040 characters output

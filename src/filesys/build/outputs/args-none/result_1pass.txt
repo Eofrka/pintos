@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/args-none -a args-none --swap-disk=4 -- -q   -f run args-none < /dev/null 2> tests/userprog/args-none.errors |tee tests/userprog/args-none.output
-Copying tests/userprog/args-none into /tmp/k9Ah7W3DHA.dsk...
-Writing command line to /tmp/sNDnDURaQU.dsk...
+Copying tests/userprog/args-none into /tmp/isLzge9LrQ.dsk...
+Writing command line to /tmp/LiDeaNxgJJ.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put args-none run args-none
@@ -23,10 +23,10 @@ Executing 'args-none':
 (args) end
 args-none: exit(0)
 Execution of 'args-none' complete.
-Timer: 375 ticks
-Thread: 30 idle ticks, 265 kernel ticks, 83 user ticks
+Timer: 422 ticks
+Thread: 30 idle ticks, 310 kernel ticks, 85 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 31 reads, 199 writes
+hd0:1: 28 reads, 198 writes
 hd1:0: 97 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 970 characters output

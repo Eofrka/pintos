@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/create-empty -a create-empty --swap-disk=4 -- -q   -f run create-empty < /dev/null 2> tests/userprog/create-empty.errors |tee tests/userprog/create-empty.output
-Copying tests/userprog/create-empty into /tmp/lP59JhxHgh.dsk...
-Writing command line to /tmp/2WAPSGK920.dsk...
+Copying tests/userprog/create-empty into /tmp/kb8EQvXbq2.dsk...
+Writing command line to /tmp/g0faq3MUbV.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put create-empty run create-empty
@@ -21,10 +21,10 @@ Executing 'create-empty':
 (create-empty) end
 create-empty: exit(0)
 Execution of 'create-empty' complete.
-Timer: 375 ticks
-Thread: 30 idle ticks, 266 kernel ticks, 82 user ticks
+Timer: 423 ticks
+Thread: 30 idle ticks, 312 kernel ticks, 84 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 32 reads, 203 writes
+hd0:1: 28 reads, 202 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 966 characters output

@@ -39,7 +39,7 @@ struct semaphore read_ahead_sema;           /* Semaphore for read ahead. */
 
 void buffer_cache_init(void);
 void buffer_cache_read_at(disk_sector_t sec_no, void* buffer, off_t size, off_t offset);
-void buffer_cache_write_at(disk_sector_t sec_no, void* buffer, off_t size, off_t offset);
+void buffer_cache_write_at(disk_sector_t sec_no, const void* buffer, off_t size, off_t offset);
 struct buffer_cache_entry* buffer_cache_find(disk_sector_t sec_no);
 struct buffer_cache_entry* buffer_cache_find_victim(void);
 void buffer_cache_flush_all(void);

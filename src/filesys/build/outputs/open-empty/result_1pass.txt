@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/open-empty -a open-empty --swap-disk=4 -- -q   -f run open-empty < /dev/null 2> tests/userprog/open-empty.errors |tee tests/userprog/open-empty.output
-Copying tests/userprog/open-empty into /tmp/bJXOureaey.dsk...
-Writing command line to /tmp/o7wdSDNU6n.dsk...
+Copying tests/userprog/open-empty into /tmp/3xM5cqvKis.dsk...
+Writing command line to /tmp/3LuziL8Rl1.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put open-empty run open-empty
@@ -20,10 +20,10 @@ Executing 'open-empty':
 (open-empty) end
 open-empty: exit(0)
 Execution of 'open-empty' complete.
-Timer: 369 ticks
-Thread: 30 idle ticks, 266 kernel ticks, 76 user ticks
+Timer: 416 ticks
+Thread: 30 idle ticks, 312 kernel ticks, 77 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 32 reads, 201 writes
+hd0:1: 28 reads, 200 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 921 characters output

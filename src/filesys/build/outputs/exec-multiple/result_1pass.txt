@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/exec-multiple -a exec-multiple -p tests/userprog/child-simple -a child-simple --swap-disk=4 -- -q   -f run exec-multiple < /dev/null 2> tests/userprog/exec-multiple.errors |tee tests/userprog/exec-multiple.output
-Copying tests/userprog/exec-multiple into /tmp/YU1gtHUPw2.dsk...
-Copying tests/userprog/child-simple into /tmp/YU1gtHUPw2.dsk...
-Writing command line to /tmp/tL52IP0q2W.dsk...
+Copying tests/userprog/exec-multiple into /tmp/t04kIHGFCm.dsk...
+Copying tests/userprog/child-simple into /tmp/t04kIHGFCm.dsk...
+Writing command line to /tmp/zFuFGRrHVu.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put exec-multiple put child-simple run exec-multiple
@@ -30,10 +30,10 @@ child-simple: exit(81)
 (exec-multiple) end
 exec-multiple: exit(0)
 Execution of 'exec-multiple' complete.
-Timer: 768 ticks
-Thread: 30 idle ticks, 429 kernel ticks, 312 user ticks
+Timer: 865 ticks
+Thread: 30 idle ticks, 520 kernel ticks, 318 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 65 reads, 396 writes
+hd0:1: 55 reads, 395 writes
 hd1:0: 195 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1179 characters output

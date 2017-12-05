@@ -1,6 +1,6 @@
-Copying tests/vm/mmap-misalign into /tmp/OQMvt0CLSP.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/OQMvt0CLSP.dsk...
-Writing command line to /tmp/85IksuIb2m.dsk...
+Copying tests/vm/mmap-misalign into /tmp/1DFdcnUKaz.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/1DFdcnUKaz.dsk...
+Writing command line to /tmp/WhiPVjbr8b.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-misalign put sample.txt run mmap-misalign
@@ -23,10 +23,10 @@ Executing 'mmap-misalign':
 (mmap-misalign) end
 mmap-misalign: exit(0)
 Execution of 'mmap-misalign' complete.
-Timer: 413 ticks
-Thread: 30 idle ticks, 291 kernel ticks, 95 user ticks
+Timer: 461 ticks
+Thread: 30 idle ticks, 339 kernel ticks, 95 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 36 reads, 208 writes
+hd0:1: 28 reads, 205 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1090 characters output

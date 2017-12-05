@@ -1,9 +1,9 @@
 rm -f tmp.dsk
 pintos-mkdisk tmp.dsk 2
 pintos -v -k -T 60 --bochs  --fs-disk=tmp.dsk -p tests/filesys/extended/grow-seq-lg -a grow-seq-lg -p tests/filesys/extended/tar -a tar --swap-disk=4 -- -q   -f run grow-seq-lg < /dev/null 2> tests/filesys/extended/grow-seq-lg.errors |tee tests/filesys/extended/grow-seq-lg.output
-Copying tests/filesys/extended/grow-seq-lg into /tmp/839qOTKGnD.dsk...
-Copying tests/filesys/extended/tar into /tmp/839qOTKGnD.dsk...
-Writing command line to /tmp/FaWJzWd00Q.dsk...
+Copying tests/filesys/extended/grow-seq-lg into /tmp/k0uJj18XA1.dsk...
+Copying tests/filesys/extended/tar into /tmp/k0uJj18XA1.dsk...
+Writing command line to /tmp/4wVrVHp5v9.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-seq-lg put tar run grow-seq-lg
@@ -27,10 +27,10 @@ Executing 'grow-seq-lg':
 (grow-seq-lg) write 1234 bytes at offset 0 in "testme" failed: FAILED
 grow-seq-lg: exit(1)
 Execution of 'grow-seq-lg' complete.
-Timer: 815 ticks
-Thread: 30 idle ticks, 414 kernel ticks, 374 user ticks
+Timer: 915 ticks
+Thread: 30 idle ticks, 512 kernel ticks, 376 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 39 reads, 435 writes
+hd0:1: 33 reads, 434 writes
 hd1:0: 213 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1118 characters output
@@ -38,7 +38,7 @@ Keyboard: 0 keys pressed
 Exception: 22 page faults
 Powering off...
 pintos -v -k -T 60  --bochs --fs-disk=tmp.dsk -g fs.tar -a tests/filesys/extended/grow-seq-lg.tar --swap-disk=4 -- -q  run 'tar fs.tar /' < /dev/null 2> tests/filesys/extended/grow-seq-lg-persistence.errors |tee tests/filesys/extended/grow-seq-lg-persistence.output
-Writing command line to /tmp/pKeNXIrZZ8.dsk...
+Writing command line to /tmp/muJOQlrZxA.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run 'tar fs.tar /' get fs.tar
@@ -57,17 +57,17 @@ error writing archive
 tar: exit(1)
 Execution of 'tar fs.tar /' complete.
 Getting 'fs.tar' from the file system...
-Timer: 258 ticks
-Thread: 30 idle ticks, 146 kernel ticks, 85 user ticks
+Timer: 260 ticks
+Thread: 30 idle ticks, 147 kernel ticks, 86 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 35 reads, 3 writes
+hd0:1: 29 reads, 3 writes
 hd1:0: 0 reads, 1 writes
 hd1:1: 0 reads, 0 writes
 Console: 876 characters output
 Keyboard: 0 keys pressed
 Exception: 4 page faults
 Powering off...
-Copying tests/filesys/extended/grow-seq-lg.tar out of /tmp/bLhy4WLux5.dsk...
+Copying tests/filesys/extended/grow-seq-lg.tar out of /tmp/8pliVGPHh2.dsk...
 rm -f tmp.dsk
 perl -I../.. ../../tests/filesys/extended/grow-seq-lg.ck tests/filesys/extended/grow-seq-lg tests/filesys/extended/grow-seq-lg.result
 FAIL tests/filesys/extended/grow-seq-lg

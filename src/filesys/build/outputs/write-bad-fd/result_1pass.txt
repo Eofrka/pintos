@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/write-bad-fd -a write-bad-fd --swap-disk=4 -- -q   -f run write-bad-fd < /dev/null 2> tests/userprog/write-bad-fd.errors |tee tests/userprog/write-bad-fd.output
-Copying tests/userprog/write-bad-fd into /tmp/7kVsui3OFX.dsk...
-Writing command line to /tmp/aNS6DsqVoC.dsk...
+Copying tests/userprog/write-bad-fd into /tmp/MLPIXsHXIt.dsk...
+Writing command line to /tmp/38qNjtgml5.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put write-bad-fd run write-bad-fd
@@ -20,10 +20,10 @@ Executing 'write-bad-fd':
 (write-bad-fd) end
 write-bad-fd: exit(0)
 Execution of 'write-bad-fd' complete.
-Timer: 365 ticks
-Thread: 30 idle ticks, 266 kernel ticks, 72 user ticks
+Timer: 412 ticks
+Thread: 30 idle ticks, 312 kernel ticks, 73 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 31 reads, 201 writes
+hd0:1: 28 reads, 200 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 937 characters output

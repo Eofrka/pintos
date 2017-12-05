@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/args-many -a args-many --swap-disk=4 -- -q   -f run 'args-many a b c d e f g h i j k l m n o p q r s t u v' < /dev/null 2> tests/userprog/args-many.errors |tee tests/userprog/args-many.output
-Copying tests/userprog/args-many into /tmp/q8EV2dt3Vv.dsk...
-Writing command line to /tmp/fFyuZFfYzj.dsk...
+Copying tests/userprog/args-many into /tmp/7x2HYa3G09.dsk...
+Writing command line to /tmp/gB6sQ0FzhI.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put args-many run 'args-many a b c d e f g h i j k l m n o p q r s t u v'
@@ -45,10 +45,10 @@ Executing 'args-many a b c d e f g h i j k l m n o p q r s t u v':
 (args) end
 args-many: exit(0)
 Execution of 'args-many a b c d e f g h i j k l m n o p q r s t u v' complete.
-Timer: 508 ticks
-Thread: 30 idle ticks, 275 kernel ticks, 205 user ticks
+Timer: 555 ticks
+Thread: 30 idle ticks, 320 kernel ticks, 208 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 31 reads, 199 writes
+hd0:1: 28 reads, 198 writes
 hd1:0: 97 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1582 characters output

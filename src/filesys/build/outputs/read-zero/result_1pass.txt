@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/read-zero -a read-zero -p ../../tests/userprog/sample.txt -a sample.txt --swap-disk=4 -- -q   -f run read-zero < /dev/null 2> tests/userprog/read-zero.errors |tee tests/userprog/read-zero.output
-Copying tests/userprog/read-zero into /tmp/OtrcUXI6Ir.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/OtrcUXI6Ir.dsk...
-Writing command line to /tmp/vwdBIwpnPB.dsk...
+Copying tests/userprog/read-zero into /tmp/vD9PQqba2r.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/vD9PQqba2r.dsk...
+Writing command line to /tmp/sGtj9SMtMO.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put read-zero put sample.txt run read-zero
@@ -23,10 +23,10 @@ Executing 'read-zero':
 (read-zero) end
 read-zero: exit(0)
 Execution of 'read-zero' complete.
-Timer: 396 ticks
-Thread: 30 idle ticks, 288 kernel ticks, 81 user ticks
+Timer: 445 ticks
+Thread: 30 idle ticks, 335 kernel ticks, 83 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 36 reads, 206 writes
+hd0:1: 28 reads, 204 writes
 hd1:0: 100 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1004 characters output

@@ -1,9 +1,9 @@
 rm -f tmp.dsk
 pintos-mkdisk tmp.dsk 2
 pintos -v -k -T 60 --bochs  --fs-disk=tmp.dsk -p tests/filesys/extended/grow-file-size -a grow-file-size -p tests/filesys/extended/tar -a tar --swap-disk=4 -- -q   -f run grow-file-size < /dev/null 2> tests/filesys/extended/grow-file-size.errors |tee tests/filesys/extended/grow-file-size.output
-Copying tests/filesys/extended/grow-file-size into /tmp/MW3o9XP3so.dsk...
-Copying tests/filesys/extended/tar into /tmp/MW3o9XP3so.dsk...
-Writing command line to /tmp/ydwwpakaCZ.dsk...
+Copying tests/filesys/extended/grow-file-size into /tmp/2INYlvoK1s.dsk...
+Copying tests/filesys/extended/tar into /tmp/2INYlvoK1s.dsk...
+Writing command line to /tmp/dXqRUOSDlU.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-file-size put tar run grow-file-size
@@ -27,10 +27,10 @@ Executing 'grow-file-size':
 (grow-file-size) write 37 bytes at offset 0 in "testfile" failed: FAILED
 grow-file-size: exit(1)
 Execution of 'grow-file-size' complete.
-Timer: 572 ticks
-Thread: 30 idle ticks, 415 kernel ticks, 130 user ticks
+Timer: 673 ticks
+Thread: 30 idle ticks, 514 kernel ticks, 132 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 39 reads, 435 writes
+hd0:1: 33 reads, 434 writes
 hd1:0: 213 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1157 characters output
@@ -38,7 +38,7 @@ Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...
 pintos -v -k -T 60  --bochs --fs-disk=tmp.dsk -g fs.tar -a tests/filesys/extended/grow-file-size.tar --swap-disk=4 -- -q  run 'tar fs.tar /' < /dev/null 2> tests/filesys/extended/grow-file-size-persistence.errors |tee tests/filesys/extended/grow-file-size-persistence.output
-Writing command line to /tmp/5QVZykaQlE.dsk...
+Writing command line to /tmp/rLlC5AqFqb.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run 'tar fs.tar /' get fs.tar
@@ -57,17 +57,17 @@ error writing archive
 tar: exit(1)
 Execution of 'tar fs.tar /' complete.
 Getting 'fs.tar' from the file system...
-Timer: 258 ticks
-Thread: 30 idle ticks, 146 kernel ticks, 85 user ticks
+Timer: 260 ticks
+Thread: 30 idle ticks, 147 kernel ticks, 86 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 35 reads, 3 writes
+hd0:1: 29 reads, 3 writes
 hd1:0: 0 reads, 1 writes
 hd1:1: 0 reads, 0 writes
 Console: 876 characters output
 Keyboard: 0 keys pressed
 Exception: 4 page faults
 Powering off...
-Copying tests/filesys/extended/grow-file-size.tar out of /tmp/7rroIr6Dng.dsk...
+Copying tests/filesys/extended/grow-file-size.tar out of /tmp/tkAD4pctie.dsk...
 rm -f tmp.dsk
 perl -I../.. ../../tests/filesys/extended/grow-file-size.ck tests/filesys/extended/grow-file-size tests/filesys/extended/grow-file-size.result
 FAIL tests/filesys/extended/grow-file-size

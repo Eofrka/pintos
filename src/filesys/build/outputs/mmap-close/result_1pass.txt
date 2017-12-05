@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/vm/mmap-close -a mmap-close -p ../../tests/vm/sample.txt -a sample.txt --swap-disk=4 -- -q   -f run mmap-close < /dev/null 2> tests/vm/mmap-close.errors |tee tests/vm/mmap-close.output
-Copying tests/vm/mmap-close into /tmp/inDBHwbkAF.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/inDBHwbkAF.dsk...
-Writing command line to /tmp/RSM3amAJFq.dsk...
+Copying tests/vm/mmap-close into /tmp/2yIuohptPx.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/2yIuohptPx.dsk...
+Writing command line to /tmp/R9x3H8nX7R.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-close put sample.txt run mmap-close
@@ -24,10 +24,10 @@ Executing 'mmap-close':
 (mmap-close) end
 mmap-close: exit(0)
 Execution of 'mmap-close' complete.
-Timer: 426 ticks
-Thread: 30 idle ticks, 294 kernel ticks, 105 user ticks
+Timer: 476 ticks
+Thread: 30 idle ticks, 343 kernel ticks, 106 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 38 reads, 214 writes
+hd0:1: 30 reads, 211 writes
 hd1:0: 104 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1045 characters output

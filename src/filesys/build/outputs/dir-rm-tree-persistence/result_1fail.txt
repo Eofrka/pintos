@@ -1,8 +1,8 @@
 rm -f tmp.dsk
 pintos-mkdisk tmp.dsk 2
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/filesys/extended/dir-rm-tree.output -a dir-rm-tree.output --swap-disk=4 -- -q   -f run dir-rm-tree-persistence < /dev/null 2> .errors |tee .output
-Copying tests/filesys/extended/dir-rm-tree.output into /tmp/INpMi1X7lP.dsk...
-Writing command line to /tmp/wLC8B0WOa8.dsk...
+Copying tests/filesys/extended/dir-rm-tree.output into /tmp/6MtEdpbs4S.dsk...
+Writing command line to /tmp/vKd0i0SrH4.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-rm-tree.output run dir-rm-tree-persistence
@@ -18,7 +18,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -36,7 +36,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -54,7 +54,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -72,7 +72,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -90,7 +90,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -108,7 +108,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -126,7 +126,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -144,7 +144,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -162,7 +162,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -180,7 +180,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -198,7 +198,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -216,7 +216,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -234,7 +234,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -252,7 +252,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -270,7 +270,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -288,7 +288,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -306,7 +306,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -324,7 +324,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -342,7 +342,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -360,7 +360,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -378,7 +378,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -396,7 +396,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -414,7 +414,7 @@ Formatting file system...done.
 Boot complete.
 Putting 'dir-rm-tree.output' into the file system...
 Kernel PANIC at ../../filesys/fsutil.c:114 in fsutil_put(): dir-rm-tree.output: create failed
-Call stack: 0xc01079fc 0xc010d890 0xc01006e4.
+Call stack: 0xc01079fc 0xc010d8a0 0xc01006e4.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
@@ -423,7 +423,5 @@ Kernel command line: -q -f put dir-rm-tree.output run dir-rm-tree-persistence
 Pintos booting with 4,096 kB RAM...
 369 pages available in kernel pool.
 368 pages available in user pool.
-Calibrating timer...  204,600 loops/s.
-hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
-hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234",Simulation terminated due to kernel panic.
+Simulation terminated due to kernel panic.
 pintos -v -k -T 60  --bochs --fs-disk=2 -g fs.tar -a .tar --swap-disk=4 -- -q  run 'tar fs.tar /' < /dev/null 2> -persistence.errors |tee -persistence.output

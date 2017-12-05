@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/vm/mmap-write -a mmap-write --swap-disk=4 -- -q   -f run mmap-write < /dev/null 2> tests/vm/mmap-write.errors |tee tests/vm/mmap-write.output
-Copying tests/vm/mmap-write into /tmp/OnjAq1W3E7.dsk...
-Writing command line to /tmp/D6eVLUVof4.dsk...
+Copying tests/vm/mmap-write into /tmp/Y5sAOwiT3G.dsk...
+Writing command line to /tmp/vyIdFFazOS.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-write run mmap-write
@@ -24,10 +24,10 @@ Executing 'mmap-write':
 (mmap-write) end
 mmap-write: exit(0)
 Execution of 'mmap-write' complete.
-Timer: 443 ticks
-Thread: 30 idle ticks, 271 kernel ticks, 145 user ticks
+Timer: 493 ticks
+Thread: 30 idle ticks, 320 kernel ticks, 146 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 39 reads, 214 writes
+hd0:1: 31 reads, 211 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1070 characters output

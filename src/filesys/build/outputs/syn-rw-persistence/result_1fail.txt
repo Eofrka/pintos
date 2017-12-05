@@ -1,8 +1,8 @@
 rm -f tmp.dsk
 pintos-mkdisk tmp.dsk 2
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/filesys/extended/syn-rw.output -a syn-rw.output --swap-disk=4 -- -q   -f run syn-rw-persistence < /dev/null 2> .errors |tee .output
-Copying tests/filesys/extended/syn-rw.output into /tmp/YJRMnEm9qz.dsk...
-Writing command line to /tmp/aElyrZOShg.dsk...
+Copying tests/filesys/extended/syn-rw.output into /tmp/l1ZXebupmj.dsk...
+Writing command line to /tmp/EPNT7P2ec3.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put syn-rw.output run syn-rw-persistence
@@ -20,13 +20,13 @@ Putting 'syn-rw.output' into the file system...
 Executing 'syn-rw-persistence':
 load: syn-rw-persistence: open failed
 Execution of 'syn-rw-persistence' complete.
-Timer: 206 ticks
-Thread: 30 idle ticks, 166 kernel ticks, 13 user ticks
+Timer: 209 ticks
+Thread: 30 idle ticks, 168 kernel ticks, 14 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 7 reads, 15 writes
+hd0:1: 0 reads, 9 writes
 hd1:0: 5 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 930 characters output
+Console: 929 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

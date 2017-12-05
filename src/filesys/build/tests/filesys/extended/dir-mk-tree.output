@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-mk-tree into /tmp/0jeKPuSppj.dsk...
-Copying tests/filesys/extended/tar into /tmp/0jeKPuSppj.dsk...
-Writing command line to /tmp/HT1zCS6vlc.dsk...
+Copying tests/filesys/extended/dir-mk-tree into /tmp/CBuCbw3mAv.dsk...
+Copying tests/filesys/extended/tar into /tmp/CBuCbw3mAv.dsk...
+Writing command line to /tmp/5lE31Yc5S2.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-mk-tree put tar run dir-mk-tree
@@ -21,10 +21,10 @@ Executing 'dir-mk-tree':
 (dir-mk-tree) creating /0/0/0/0 through /3/2/2/3...
 dir-mk-tree: exit(-1)
 Execution of 'dir-mk-tree' complete.
-Timer: 524 ticks
-Thread: 30 idle ticks, 418 kernel ticks, 79 user ticks
+Timer: 626 ticks
+Thread: 30 idle ticks, 519 kernel ticks, 80 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 37 reads, 440 writes
+hd0:1: 34 reads, 439 writes
 hd1:0: 217 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1011 characters output

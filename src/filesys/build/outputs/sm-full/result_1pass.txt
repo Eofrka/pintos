@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/filesys/base/sm-full -a sm-full --swap-disk=4 -- -q   -f run sm-full < /dev/null 2> tests/filesys/base/sm-full.errors |tee tests/filesys/base/sm-full.output
-Copying tests/filesys/base/sm-full into /tmp/kIDnKHFml6.dsk...
-Writing command line to /tmp/jAGK6Xh8B5.dsk...
+Copying tests/filesys/base/sm-full into /tmp/ks2zuN429Z.dsk...
+Writing command line to /tmp/EOHwdjOmZy.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put sm-full run sm-full
@@ -27,10 +27,10 @@ Executing 'sm-full':
 (sm-full) end
 sm-full: exit(0)
 Execution of 'sm-full' complete.
-Timer: 514 ticks
-Thread: 30 idle ticks, 270 kernel ticks, 217 user ticks
+Timer: 567 ticks
+Thread: 30 idle ticks, 318 kernel ticks, 222 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 37 reads, 236 writes
+hd0:1: 29 reads, 223 writes
 hd1:0: 102 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1093 characters output

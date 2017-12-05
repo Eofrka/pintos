@@ -1,8 +1,8 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/multi-child-fd -a multi-child-fd -p ../../tests/userprog/sample.txt -a sample.txt -p tests/userprog/child-close -a child-close --swap-disk=4 -- -q   -f run multi-child-fd < /dev/null 2> tests/userprog/multi-child-fd.errors |tee tests/userprog/multi-child-fd.output
-Copying tests/userprog/multi-child-fd into /tmp/poqiTMMkod.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/poqiTMMkod.dsk...
-Copying tests/userprog/child-close into /tmp/poqiTMMkod.dsk...
-Writing command line to /tmp/NOvFHyCpTg.dsk...
+Copying tests/userprog/multi-child-fd into /tmp/MxiTHvJNxJ.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/MxiTHvJNxJ.dsk...
+Copying tests/userprog/child-close into /tmp/MxiTHvJNxJ.dsk...
+Writing command line to /tmp/fJlzWOw4An.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put multi-child-fd put sample.txt put child-close run multi-child-fd
@@ -30,10 +30,10 @@ child-close: exit(0)
 (multi-child-fd) end
 multi-child-fd: exit(0)
 Execution of 'multi-child-fd' complete.
-Timer: 649 ticks
-Thread: 30 idle ticks, 437 kernel ticks, 185 user ticks
+Timer: 749 ticks
+Thread: 30 idle ticks, 533 kernel ticks, 189 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 68 reads, 425 writes
+hd0:1: 61 reads, 424 writes
 hd1:0: 210 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1256 characters output

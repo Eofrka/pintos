@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/multi-recurse -a multi-recurse --swap-disk=4 -- -q   -f run 'multi-recurse 15' < /dev/null 2> tests/userprog/multi-recurse.errors |tee tests/userprog/multi-recurse.output
-Copying tests/userprog/multi-recurse into /tmp/ERn2NThqCi.dsk...
-Writing command line to /tmp/m1jfDZnJs3.dsk...
+Copying tests/userprog/multi-recurse into /tmp/I0o6dOXJHh.dsk...
+Writing command line to /tmp/81WDb0o2yO.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put multi-recurse run 'multi-recurse 15'
@@ -80,10 +80,10 @@ multi-recurse: exit(14)
 (multi-recurse) end 15
 multi-recurse: exit(15)
 Execution of 'multi-recurse 15' complete.
-Timer: 1617 ticks
-Thread: 30 idle ticks, 427 kernel ticks, 1163 user ticks
+Timer: 1672 ticks
+Thread: 30 idle ticks, 478 kernel ticks, 1167 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 49 reads, 223 writes
+hd0:1: 31 reads, 222 writes
 hd1:0: 109 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 2622 characters output

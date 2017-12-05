@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/grow-two-files into /tmp/hDCRR9fhnK.dsk...
-Copying tests/filesys/extended/tar into /tmp/hDCRR9fhnK.dsk...
-Writing command line to /tmp/8GWfHHZ720.dsk...
+Copying tests/filesys/extended/grow-two-files into /tmp/GKWpV01mFY.dsk...
+Copying tests/filesys/extended/tar into /tmp/GKWpV01mFY.dsk...
+Writing command line to /tmp/LouPzgIrU0.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-two-files put tar run grow-two-files
@@ -26,10 +26,10 @@ Executing 'grow-two-files':
 (grow-two-files) write 250 bytes at offset 0 in "a" returned 0: FAILED
 grow-two-files: exit(1)
 Execution of 'grow-two-files' complete.
-Timer: 655 ticks
-Thread: 30 idle ticks, 418 kernel ticks, 210 user ticks
+Timer: 759 ticks
+Thread: 30 idle ticks, 517 kernel ticks, 215 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 43 reads, 440 writes
+hd0:1: 34 reads, 439 writes
 hd1:0: 215 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1206 characters output

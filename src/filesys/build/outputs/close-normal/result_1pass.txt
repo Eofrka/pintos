@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/close-normal -a close-normal -p ../../tests/userprog/sample.txt -a sample.txt --swap-disk=4 -- -q   -f run close-normal < /dev/null 2> tests/userprog/close-normal.errors |tee tests/userprog/close-normal.output
-Copying tests/userprog/close-normal into /tmp/Kq4QiQJLiu.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/Kq4QiQJLiu.dsk...
-Writing command line to /tmp/hCA4B0hhpE.dsk...
+Copying tests/userprog/close-normal into /tmp/Fn8QRe1U2H.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/Fn8QRe1U2H.dsk...
+Writing command line to /tmp/GovQmqmZLs.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put close-normal put sample.txt run close-normal
@@ -24,10 +24,10 @@ Executing 'close-normal':
 (close-normal) end
 close-normal: exit(0)
 Execution of 'close-normal' complete.
-Timer: 406 ticks
-Thread: 30 idle ticks, 288 kernel ticks, 91 user ticks
+Timer: 455 ticks
+Thread: 30 idle ticks, 336 kernel ticks, 92 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 36 reads, 206 writes
+hd0:1: 28 reads, 204 writes
 hd1:0: 100 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1065 characters output

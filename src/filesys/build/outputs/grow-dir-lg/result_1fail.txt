@@ -1,9 +1,9 @@
 rm -f tmp.dsk
 pintos-mkdisk tmp.dsk 2
 pintos -v -k -T 60 --bochs  --fs-disk=tmp.dsk -p tests/filesys/extended/grow-dir-lg -a grow-dir-lg -p tests/filesys/extended/tar -a tar --swap-disk=4 -- -q   -f run grow-dir-lg < /dev/null 2> tests/filesys/extended/grow-dir-lg.errors |tee tests/filesys/extended/grow-dir-lg.output
-Copying tests/filesys/extended/grow-dir-lg into /tmp/5wOJVdZBPK.dsk...
-Copying tests/filesys/extended/tar into /tmp/5wOJVdZBPK.dsk...
-Writing command line to /tmp/eMyPbAgSZT.dsk...
+Copying tests/filesys/extended/grow-dir-lg into /tmp/q5tSL0QzmN.dsk...
+Copying tests/filesys/extended/tar into /tmp/q5tSL0QzmN.dsk...
+Writing command line to /tmp/Wzw9Uz8RXB.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-dir-lg put tar run grow-dir-lg
@@ -24,10 +24,10 @@ Executing 'grow-dir-lg':
 (grow-dir-lg) mkdir /x
 grow-dir-lg: exit(-1)
 Execution of 'grow-dir-lg' complete.
-Timer: 515 ticks
-Thread: 30 idle ticks, 415 kernel ticks, 73 user ticks
+Timer: 614 ticks
+Thread: 30 idle ticks, 514 kernel ticks, 73 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 36 reads, 434 writes
+hd0:1: 33 reads, 433 writes
 hd1:0: 214 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 982 characters output
@@ -35,7 +35,7 @@ Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...
 pintos -v -k -T 60  --bochs --fs-disk=tmp.dsk -g fs.tar -a tests/filesys/extended/grow-dir-lg.tar --swap-disk=4 -- -q  run 'tar fs.tar /' < /dev/null 2> tests/filesys/extended/grow-dir-lg-persistence.errors |tee tests/filesys/extended/grow-dir-lg-persistence.output
-Writing command line to /tmp/Rr3cr6qgWa.dsk...
+Writing command line to /tmp/0mESrRdw1n.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run 'tar fs.tar /' get fs.tar
@@ -54,17 +54,17 @@ error writing archive
 tar: exit(1)
 Execution of 'tar fs.tar /' complete.
 Getting 'fs.tar' from the file system...
-Timer: 255 ticks
-Thread: 30 idle ticks, 144 kernel ticks, 84 user ticks
+Timer: 258 ticks
+Thread: 30 idle ticks, 146 kernel ticks, 85 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 35 reads, 3 writes
+hd0:1: 29 reads, 3 writes
 hd1:0: 0 reads, 1 writes
 hd1:1: 0 reads, 0 writes
 Console: 876 characters output
 Keyboard: 0 keys pressed
 Exception: 4 page faults
 Powering off...
-Copying tests/filesys/extended/grow-dir-lg.tar out of /tmp/kd9W6kRcJG.dsk...
+Copying tests/filesys/extended/grow-dir-lg.tar out of /tmp/GkGjghxO4k.dsk...
 rm -f tmp.dsk
 perl -I../.. ../../tests/filesys/extended/grow-dir-lg.ck tests/filesys/extended/grow-dir-lg tests/filesys/extended/grow-dir-lg.result
 FAIL tests/filesys/extended/grow-dir-lg

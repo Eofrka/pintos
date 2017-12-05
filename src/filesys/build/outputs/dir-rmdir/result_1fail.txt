@@ -1,9 +1,9 @@
 rm -f tmp.dsk
 pintos-mkdisk tmp.dsk 2
 pintos -v -k -T 60 --bochs  --fs-disk=tmp.dsk -p tests/filesys/extended/dir-rmdir -a dir-rmdir -p tests/filesys/extended/tar -a tar --swap-disk=4 -- -q   -f run dir-rmdir < /dev/null 2> tests/filesys/extended/dir-rmdir.errors |tee tests/filesys/extended/dir-rmdir.output
-Copying tests/filesys/extended/dir-rmdir into /tmp/L9HQq7rt5F.dsk...
-Copying tests/filesys/extended/tar into /tmp/L9HQq7rt5F.dsk...
-Writing command line to /tmp/JBnhnAcGBJ.dsk...
+Copying tests/filesys/extended/dir-rmdir into /tmp/JjNtYmXVQi.dsk...
+Copying tests/filesys/extended/tar into /tmp/JjNtYmXVQi.dsk...
+Writing command line to /tmp/TVcZ06vwxH.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-rmdir put tar run dir-rmdir
@@ -24,10 +24,10 @@ Executing 'dir-rmdir':
 (dir-rmdir) mkdir "a"
 dir-rmdir: exit(-1)
 Execution of 'dir-rmdir' complete.
-Timer: 510 ticks
-Thread: 30 idle ticks, 412 kernel ticks, 71 user ticks
+Timer: 610 ticks
+Thread: 30 idle ticks, 510 kernel ticks, 73 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 36 reads, 430 writes
+hd0:1: 33 reads, 429 writes
 hd1:0: 212 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 967 characters output
@@ -35,7 +35,7 @@ Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...
 pintos -v -k -T 60  --bochs --fs-disk=tmp.dsk -g fs.tar -a tests/filesys/extended/dir-rmdir.tar --swap-disk=4 -- -q  run 'tar fs.tar /' < /dev/null 2> tests/filesys/extended/dir-rmdir-persistence.errors |tee tests/filesys/extended/dir-rmdir-persistence.output
-Writing command line to /tmp/0LvIG1FLPm.dsk...
+Writing command line to /tmp/Gi6cZO1BXg.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run 'tar fs.tar /' get fs.tar
@@ -54,17 +54,17 @@ error writing archive
 tar: exit(1)
 Execution of 'tar fs.tar /' complete.
 Getting 'fs.tar' from the file system...
-Timer: 255 ticks
-Thread: 30 idle ticks, 144 kernel ticks, 84 user ticks
+Timer: 258 ticks
+Thread: 30 idle ticks, 146 kernel ticks, 85 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 35 reads, 3 writes
+hd0:1: 29 reads, 3 writes
 hd1:0: 0 reads, 1 writes
 hd1:1: 0 reads, 0 writes
 Console: 876 characters output
 Keyboard: 0 keys pressed
 Exception: 4 page faults
 Powering off...
-Copying tests/filesys/extended/dir-rmdir.tar out of /tmp/TxxHoEzrhN.dsk...
+Copying tests/filesys/extended/dir-rmdir.tar out of /tmp/HyOn0HjyZe.dsk...
 rm -f tmp.dsk
 perl -I../.. ../../tests/filesys/extended/dir-rmdir.ck tests/filesys/extended/dir-rmdir tests/filesys/extended/dir-rmdir.result
 FAIL tests/filesys/extended/dir-rmdir

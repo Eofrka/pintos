@@ -1,8 +1,8 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/vm/mmap-inherit -a mmap-inherit -p ../../tests/vm/sample.txt -a sample.txt -p tests/vm/child-inherit -a child-inherit --swap-disk=4 -- -q   -f run mmap-inherit < /dev/null 2> tests/vm/mmap-inherit.errors |tee tests/vm/mmap-inherit.output
-Copying tests/vm/mmap-inherit into /tmp/YPBedBbULi.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/YPBedBbULi.dsk...
-Copying tests/vm/child-inherit into /tmp/YPBedBbULi.dsk...
-Writing command line to /tmp/Jx8tGVRUSn.dsk...
+Copying tests/vm/mmap-inherit into /tmp/zarW6T0fXS.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/zarW6T0fXS.dsk...
+Copying tests/vm/child-inherit into /tmp/zarW6T0fXS.dsk...
+Writing command line to /tmp/oe4OU1W7fi.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-inherit put sample.txt put child-inherit run mmap-inherit
@@ -37,10 +37,10 @@ child-inherit: exit(-1)
 (mmap-inherit) end
 mmap-inherit: exit(0)
 Execution of 'mmap-inherit' complete.
-Timer: 713 ticks
-Thread: 30 idle ticks, 431 kernel ticks, 255 user ticks
+Timer: 809 ticks
+Thread: 30 idle ticks, 525 kernel ticks, 257 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 71 reads, 413 writes
+hd0:1: 64 reads, 411 writes
 hd1:0: 204 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1646 characters output

@@ -172,7 +172,7 @@ void buffer_cache_read_at(disk_sector_t sec_no, void* buffer, off_t size, off_t 
 }
 
 /* Writes BUFFER's data to bce which sec_no is SEC_NO. The amount of to_write bytes is SIZE and start position is OFFSET. */
-void buffer_cache_write_at(disk_sector_t sec_no, void* buffer, off_t size, off_t offset)
+void buffer_cache_write_at(disk_sector_t sec_no, const void* buffer, off_t size, off_t offset)
 {
   lock_acquire(&buffer_cache_lock);
   /* Find bce which sec_no is SEC_NO. */

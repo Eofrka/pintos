@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/close-twice -a close-twice -p ../../tests/userprog/sample.txt -a sample.txt --swap-disk=4 -- -q   -f run close-twice < /dev/null 2> tests/userprog/close-twice.errors |tee tests/userprog/close-twice.output
-Copying tests/userprog/close-twice into /tmp/pfTFpVXehX.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/pfTFpVXehX.dsk...
-Writing command line to /tmp/cwocvLzSMN.dsk...
+Copying tests/userprog/close-twice into /tmp/0PT6WAySrz.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/0PT6WAySrz.dsk...
+Writing command line to /tmp/27Tt4yledS.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put close-twice put sample.txt run close-twice
@@ -25,10 +25,10 @@ Executing 'close-twice':
 (close-twice) end
 close-twice: exit(0)
 Execution of 'close-twice' complete.
-Timer: 415 ticks
-Thread: 30 idle ticks, 288 kernel ticks, 100 user ticks
+Timer: 463 ticks
+Thread: 30 idle ticks, 336 kernel ticks, 100 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 36 reads, 206 writes
+hd0:1: 28 reads, 204 writes
 hd1:0: 100 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1095 characters output

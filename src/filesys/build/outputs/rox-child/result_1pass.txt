@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/rox-child -a rox-child -p tests/userprog/child-rox -a child-rox --swap-disk=4 -- -q   -f run rox-child < /dev/null 2> tests/userprog/rox-child.errors |tee tests/userprog/rox-child.output
-Copying tests/userprog/rox-child into /tmp/xoEXZ88tZj.dsk...
-Copying tests/userprog/child-rox into /tmp/xoEXZ88tZj.dsk...
-Writing command line to /tmp/xvsHZkOndL.dsk...
+Copying tests/userprog/rox-child into /tmp/7VW9sIaMnQ.dsk...
+Copying tests/userprog/child-rox into /tmp/7VW9sIaMnQ.dsk...
+Writing command line to /tmp/JnZLUaOfWQ.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put rox-child put child-rox run rox-child
@@ -32,10 +32,10 @@ child-rox: exit(12)
 (rox-child) end
 rox-child: exit(0)
 Execution of 'rox-child' complete.
-Timer: 646 ticks
-Thread: 30 idle ticks, 414 kernel ticks, 205 user ticks
+Timer: 747 ticks
+Thread: 30 idle ticks, 511 kernel ticks, 209 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 66 reads, 425 writes
+hd0:1: 59 reads, 424 writes
 hd1:0: 209 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1250 characters output

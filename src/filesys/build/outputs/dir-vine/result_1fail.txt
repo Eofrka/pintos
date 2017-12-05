@@ -1,9 +1,9 @@
 rm -f tmp.dsk
 pintos-mkdisk tmp.dsk 2
 pintos -v -k -T 150 --bochs  --fs-disk=tmp.dsk -p tests/filesys/extended/dir-vine -a dir-vine -p tests/filesys/extended/tar -a tar --swap-disk=4 -- -q   -f run dir-vine < /dev/null 2> tests/filesys/extended/dir-vine.errors |tee tests/filesys/extended/dir-vine.output
-Copying tests/filesys/extended/dir-vine into /tmp/lCAYtQvS1p.dsk...
-Copying tests/filesys/extended/tar into /tmp/lCAYtQvS1p.dsk...
-Writing command line to /tmp/tqK5zPzRzh.dsk...
+Copying tests/filesys/extended/dir-vine into /tmp/Oe6hlzixf6.dsk...
+Copying tests/filesys/extended/tar into /tmp/Oe6hlzixf6.dsk...
+Writing command line to /tmp/2ET2F33QQJ.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-vine put tar run dir-vine
@@ -24,10 +24,10 @@ Executing 'dir-vine':
 (dir-vine) creating many levels of files and directories...
 dir-vine: exit(-1)
 Execution of 'dir-vine' complete.
-Timer: 525 ticks
-Thread: 30 idle ticks, 416 kernel ticks, 82 user ticks
+Timer: 625 ticks
+Thread: 30 idle ticks, 516 kernel ticks, 82 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 39 reads, 438 writes
+hd0:1: 36 reads, 437 writes
 hd1:0: 216 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 998 characters output
@@ -35,7 +35,7 @@ Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...
 pintos -v -k -T 60  --bochs --fs-disk=tmp.dsk -g fs.tar -a tests/filesys/extended/dir-vine.tar --swap-disk=4 -- -q  run 'tar fs.tar /' < /dev/null 2> tests/filesys/extended/dir-vine-persistence.errors |tee tests/filesys/extended/dir-vine-persistence.output
-Writing command line to /tmp/fkD0Cjlfnn.dsk...
+Writing command line to /tmp/QfQQGnV67A.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run 'tar fs.tar /' get fs.tar
@@ -54,17 +54,17 @@ error writing archive
 tar: exit(1)
 Execution of 'tar fs.tar /' complete.
 Getting 'fs.tar' from the file system...
-Timer: 256 ticks
-Thread: 30 idle ticks, 144 kernel ticks, 84 user ticks
+Timer: 258 ticks
+Thread: 30 idle ticks, 146 kernel ticks, 85 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 35 reads, 3 writes
+hd0:1: 29 reads, 3 writes
 hd1:0: 0 reads, 1 writes
 hd1:1: 0 reads, 0 writes
 Console: 876 characters output
 Keyboard: 0 keys pressed
 Exception: 4 page faults
 Powering off...
-Copying tests/filesys/extended/dir-vine.tar out of /tmp/1kAjZ9un7a.dsk...
+Copying tests/filesys/extended/dir-vine.tar out of /tmp/MqJUf9hBQ6.dsk...
 rm -f tmp.dsk
 perl -I../.. ../../tests/filesys/extended/dir-vine.ck tests/filesys/extended/dir-vine tests/filesys/extended/dir-vine.result
 FAIL tests/filesys/extended/dir-vine

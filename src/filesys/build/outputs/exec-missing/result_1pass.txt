@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/exec-missing -a exec-missing --swap-disk=4 -- -q   -f run exec-missing < /dev/null 2> tests/userprog/exec-missing.errors |tee tests/userprog/exec-missing.output
-Copying tests/userprog/exec-missing into /tmp/45jJpkjWAr.dsk...
-Writing command line to /tmp/1hBuTxRbqD.dsk...
+Copying tests/userprog/exec-missing into /tmp/hQefh6hfwl.dsk...
+Writing command line to /tmp/TtqEfVRjGu.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put exec-missing run exec-missing
@@ -22,10 +22,10 @@ load: no-such-file: open failed
 (exec-missing) end
 exec-missing: exit(0)
 Execution of 'exec-missing' complete.
-Timer: 395 ticks
-Thread: 30 idle ticks, 271 kernel ticks, 97 user ticks
+Timer: 442 ticks
+Thread: 30 idle ticks, 317 kernel ticks, 98 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 32 reads, 201 writes
+hd0:1: 28 reads, 200 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1009 characters output

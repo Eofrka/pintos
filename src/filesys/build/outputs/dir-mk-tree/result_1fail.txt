@@ -1,9 +1,9 @@
 rm -f tmp.dsk
 pintos-mkdisk tmp.dsk 2
 pintos -v -k -T 60 --bochs  --fs-disk=tmp.dsk -p tests/filesys/extended/dir-mk-tree -a dir-mk-tree -p tests/filesys/extended/tar -a tar --swap-disk=4 -- -q   -f run dir-mk-tree < /dev/null 2> tests/filesys/extended/dir-mk-tree.errors |tee tests/filesys/extended/dir-mk-tree.output
-Copying tests/filesys/extended/dir-mk-tree into /tmp/0jeKPuSppj.dsk...
-Copying tests/filesys/extended/tar into /tmp/0jeKPuSppj.dsk...
-Writing command line to /tmp/HT1zCS6vlc.dsk...
+Copying tests/filesys/extended/dir-mk-tree into /tmp/CBuCbw3mAv.dsk...
+Copying tests/filesys/extended/tar into /tmp/CBuCbw3mAv.dsk...
+Writing command line to /tmp/5lE31Yc5S2.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-mk-tree put tar run dir-mk-tree
@@ -24,10 +24,10 @@ Executing 'dir-mk-tree':
 (dir-mk-tree) creating /0/0/0/0 through /3/2/2/3...
 dir-mk-tree: exit(-1)
 Execution of 'dir-mk-tree' complete.
-Timer: 524 ticks
-Thread: 30 idle ticks, 418 kernel ticks, 79 user ticks
+Timer: 626 ticks
+Thread: 30 idle ticks, 519 kernel ticks, 80 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 37 reads, 440 writes
+hd0:1: 34 reads, 439 writes
 hd1:0: 217 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1011 characters output
@@ -35,7 +35,7 @@ Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...
 pintos -v -k -T 60  --bochs --fs-disk=tmp.dsk -g fs.tar -a tests/filesys/extended/dir-mk-tree.tar --swap-disk=4 -- -q  run 'tar fs.tar /' < /dev/null 2> tests/filesys/extended/dir-mk-tree-persistence.errors |tee tests/filesys/extended/dir-mk-tree-persistence.output
-Writing command line to /tmp/R6cnMRtvOV.dsk...
+Writing command line to /tmp/q67X0qvFAr.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run 'tar fs.tar /' get fs.tar
@@ -54,17 +54,17 @@ error writing archive
 tar: exit(1)
 Execution of 'tar fs.tar /' complete.
 Getting 'fs.tar' from the file system...
-Timer: 256 ticks
-Thread: 30 idle ticks, 144 kernel ticks, 84 user ticks
+Timer: 259 ticks
+Thread: 30 idle ticks, 146 kernel ticks, 86 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 35 reads, 3 writes
+hd0:1: 29 reads, 3 writes
 hd1:0: 0 reads, 1 writes
 hd1:1: 0 reads, 0 writes
 Console: 876 characters output
 Keyboard: 0 keys pressed
 Exception: 4 page faults
 Powering off...
-Copying tests/filesys/extended/dir-mk-tree.tar out of /tmp/zzVsq5dLjR.dsk...
+Copying tests/filesys/extended/dir-mk-tree.tar out of /tmp/DwkrWA8q6m.dsk...
 rm -f tmp.dsk
 perl -I../.. ../../tests/filesys/extended/dir-mk-tree.ck tests/filesys/extended/dir-mk-tree tests/filesys/extended/dir-mk-tree.result
 FAIL tests/filesys/extended/dir-mk-tree

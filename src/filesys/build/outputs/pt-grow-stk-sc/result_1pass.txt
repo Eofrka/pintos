@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/vm/pt-grow-stk-sc -a pt-grow-stk-sc --swap-disk=4 -- -q   -f run pt-grow-stk-sc < /dev/null 2> tests/vm/pt-grow-stk-sc.errors |tee tests/vm/pt-grow-stk-sc.output
-Copying tests/vm/pt-grow-stk-sc into /tmp/TK7cd7DDqw.dsk...
-Writing command line to /tmp/a1eEwAO0Cz.dsk...
+Copying tests/vm/pt-grow-stk-sc into /tmp/Don0vkZYHf.dsk...
+Writing command line to /tmp/a4FQZQ4r4D.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put pt-grow-stk-sc run pt-grow-stk-sc
@@ -26,10 +26,10 @@ Executing 'pt-grow-stk-sc':
 (pt-grow-stk-sc) end
 pt-grow-stk-sc: exit(0)
 Execution of 'pt-grow-stk-sc' complete.
-Timer: 473 ticks
-Thread: 30 idle ticks, 270 kernel ticks, 176 user ticks
+Timer: 522 ticks
+Thread: 30 idle ticks, 317 kernel ticks, 178 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 39 reads, 214 writes
+hd0:1: 31 reads, 211 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1193 characters output

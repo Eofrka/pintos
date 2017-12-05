@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-open into /tmp/ebzYEv5Pdj.dsk...
-Copying tests/filesys/extended/tar into /tmp/ebzYEv5Pdj.dsk...
-Writing command line to /tmp/D03qBfR7d3.dsk...
+Copying tests/filesys/extended/dir-open into /tmp/MsXLDvyKWM.dsk...
+Copying tests/filesys/extended/tar into /tmp/MsXLDvyKWM.dsk...
+Writing command line to /tmp/HV0IKv5yKA.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-open put tar run dir-open
@@ -21,10 +21,10 @@ Executing 'dir-open':
 (dir-open) mkdir "xyzzy"
 dir-open: exit(-1)
 Execution of 'dir-open' complete.
-Timer: 511 ticks
-Thread: 30 idle ticks, 414 kernel ticks, 70 user ticks
+Timer: 612 ticks
+Thread: 30 idle ticks, 511 kernel ticks, 74 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 36 reads, 432 writes
+hd0:1: 33 reads, 431 writes
 hd1:0: 213 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 963 characters output

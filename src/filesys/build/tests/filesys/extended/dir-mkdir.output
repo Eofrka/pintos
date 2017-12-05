@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-mkdir into /tmp/ddbGeYKvsG.dsk...
-Copying tests/filesys/extended/tar into /tmp/ddbGeYKvsG.dsk...
-Writing command line to /tmp/aPv5e1QgJr.dsk...
+Copying tests/filesys/extended/dir-mkdir into /tmp/pwjO1JrqzE.dsk...
+Copying tests/filesys/extended/tar into /tmp/pwjO1JrqzE.dsk...
+Writing command line to /tmp/wyF9O5vsSU.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-mkdir put tar run dir-mkdir
@@ -21,10 +21,10 @@ Executing 'dir-mkdir':
 (dir-mkdir) mkdir "a"
 dir-mkdir: exit(-1)
 Execution of 'dir-mkdir' complete.
-Timer: 510 ticks
-Thread: 30 idle ticks, 412 kernel ticks, 71 user ticks
+Timer: 610 ticks
+Thread: 30 idle ticks, 510 kernel ticks, 73 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 36 reads, 430 writes
+hd0:1: 33 reads, 429 writes
 hd1:0: 212 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 967 characters output

@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/filesys/base/lg-seq-block -a lg-seq-block --swap-disk=4 -- -q   -f run lg-seq-block < /dev/null 2> tests/filesys/base/lg-seq-block.errors |tee tests/filesys/base/lg-seq-block.output
-Copying tests/filesys/base/lg-seq-block into /tmp/7gLdxwUuvU.dsk...
-Writing command line to /tmp/cuo1JYMF7D.dsk...
+Copying tests/filesys/base/lg-seq-block into /tmp/SeV9mVm6PC.dsk...
+Writing command line to /tmp/RRxjXAvRii.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put lg-seq-block run lg-seq-block
@@ -27,10 +27,10 @@ Executing 'lg-seq-block':
 (lg-seq-block) end
 lg-seq-block: exit(0)
 Execution of 'lg-seq-block' complete.
-Timer: 1615 ticks
-Thread: 30 idle ticks, 262 kernel ticks, 1326 user ticks
+Timer: 1732 ticks
+Thread: 30 idle ticks, 310 kernel ticks, 1395 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 186 reads, 508 writes
+hd0:1: 183 reads, 507 writes
 hd1:0: 102 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1185 characters output

@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/close-bad-fd -a close-bad-fd --swap-disk=4 -- -q   -f run close-bad-fd < /dev/null 2> tests/userprog/close-bad-fd.errors |tee tests/userprog/close-bad-fd.output
-Copying tests/userprog/close-bad-fd into /tmp/2HtzyRz8AR.dsk...
-Writing command line to /tmp/H4rLlzYomZ.dsk...
+Copying tests/userprog/close-bad-fd into /tmp/7vzghamSRA.dsk...
+Writing command line to /tmp/R1YbdgSQTF.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put close-bad-fd run close-bad-fd
@@ -20,10 +20,10 @@ Executing 'close-bad-fd':
 (close-bad-fd) end
 close-bad-fd: exit(0)
 Execution of 'close-bad-fd' complete.
-Timer: 364 ticks
-Thread: 30 idle ticks, 266 kernel ticks, 71 user ticks
+Timer: 411 ticks
+Thread: 30 idle ticks, 312 kernel ticks, 72 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 31 reads, 201 writes
+hd0:1: 28 reads, 200 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 937 characters output

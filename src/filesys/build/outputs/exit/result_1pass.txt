@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/exit -a exit --swap-disk=4 -- -q   -f run exit < /dev/null 2> tests/userprog/exit.errors |tee tests/userprog/exit.output
-Copying tests/userprog/exit into /tmp/lENYEVEsF1.dsk...
-Writing command line to /tmp/ckMyGzO6zS.dsk...
+Copying tests/userprog/exit into /tmp/HHv6PYDVt5.dsk...
+Writing command line to /tmp/XDBLva5xBm.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put exit run exit
@@ -19,10 +19,10 @@ Executing 'exit':
 (exit) begin
 exit: exit(57)
 Execution of 'exit' complete.
-Timer: 355 ticks
-Thread: 30 idle ticks, 264 kernel ticks, 64 user ticks
+Timer: 401 ticks
+Thread: 30 idle ticks, 309 kernel ticks, 65 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 31 reads, 201 writes
+hd0:1: 28 reads, 200 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 863 characters output

@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/close-stdin -a close-stdin --swap-disk=4 -- -q   -f run close-stdin < /dev/null 2> tests/userprog/close-stdin.errors |tee tests/userprog/close-stdin.output
-Copying tests/userprog/close-stdin into /tmp/ul2iFfLcNS.dsk...
-Writing command line to /tmp/mcQAtAusz1.dsk...
+Copying tests/userprog/close-stdin into /tmp/FQOtcO0zk3.dsk...
+Writing command line to /tmp/tjDIfvAZDo.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put close-stdin run close-stdin
@@ -20,10 +20,10 @@ Executing 'close-stdin':
 (close-stdin) end
 close-stdin: exit(0)
 Execution of 'close-stdin' complete.
-Timer: 363 ticks
-Thread: 30 idle ticks, 266 kernel ticks, 70 user ticks
+Timer: 410 ticks
+Thread: 30 idle ticks, 312 kernel ticks, 71 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 31 reads, 201 writes
+hd0:1: 28 reads, 200 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 929 characters output

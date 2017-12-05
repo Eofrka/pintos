@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/vm/pt-write-code2 -a pt-write-code2 -p ../../tests/vm/sample.txt -a sample.txt --swap-disk=4 -- -q   -f run pt-write-code2 < /dev/null 2> tests/vm/pt-write-code2.errors |tee tests/vm/pt-write-code2.output
-Copying tests/vm/pt-write-code2 into /tmp/syO0GwSUaW.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/syO0GwSUaW.dsk...
-Writing command line to /tmp/CpWph0OZgT.dsk...
+Copying tests/vm/pt-write-code2 into /tmp/eup30VDXJn.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/eup30VDXJn.dsk...
+Writing command line to /tmp/UCiHTZ31dO.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put pt-write-code2 put sample.txt run pt-write-code2
@@ -22,10 +22,10 @@ Executing 'pt-write-code2':
 (pt-write-code2) open "sample.txt"
 pt-write-code2: exit(-1)
 Execution of 'pt-write-code2' complete.
-Timer: 396 ticks
-Thread: 30 idle ticks, 290 kernel ticks, 79 user ticks
+Timer: 446 ticks
+Thread: 30 idle ticks, 338 kernel ticks, 81 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 36 reads, 208 writes
+hd0:1: 28 reads, 205 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1029 characters output

@@ -94,14 +94,24 @@ inode_create (disk_sector_t sector, off_t length)
       disk_inode->magic = INODE_MAGIC;
       if (free_map_allocate (sectors, &disk_inode->start))
         {
-          disk_write (filesys_disk, sector, disk_inode);
+          /* pj4 */
+          /*******/
+          //disk_write (filesys_disk, sector, disk_inode);
+          buffer_cache_write_at(sector, disk_inode, DISK_SECTOR_SIZE, 0);
+          /*******/
           if (sectors > 0) 
             {
               static char zeros[DISK_SECTOR_SIZE];
               size_t i;
               
-              for (i = 0; i < sectors; i++) 
-                disk_write (filesys_disk, disk_inode->start + i, zeros); 
+              for (i = 0; i < sectors; i++)
+              { 
+                /* pj4 */
+                /*******/
+                //disk_write (filesys_disk, disk_inode->start + i, zeros); 
+                buffer_cache_write_at(disk_inode->start+i, zeros, DISK_SECTOR_SIZE,0);
+                /*******/              
+              }
             }
           success = true; 
         } 
@@ -142,7 +152,11 @@ inode_open (disk_sector_t sector)
   inode->open_cnt = 1;
   inode->deny_write_cnt = 0;
   inode->removed = false;
-  disk_read (filesys_disk, inode->sector, &inode->data);
+  /* pj4 */
+  /*******/
+  //disk_read (filesys_disk, inode->sector, &inode->data);
+  buffer_cache_read_at(sector, &inode->data, DISK_SECTOR_SIZE, 0);
+  /*******/
   return inode;
 }
 

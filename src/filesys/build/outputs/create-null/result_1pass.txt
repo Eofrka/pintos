@@ -1,6 +1,6 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/create-null -a create-null --swap-disk=4 -- -q   -f run create-null < /dev/null 2> tests/userprog/create-null.errors |tee tests/userprog/create-null.output
-Copying tests/userprog/create-null into /tmp/XxsoHmT6ji.dsk...
-Writing command line to /tmp/drem2NfAb3.dsk...
+Copying tests/userprog/create-null into /tmp/KVqWMBWtka.dsk...
+Writing command line to /tmp/UcbNljXH0F.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put create-null run create-null
@@ -19,10 +19,10 @@ Executing 'create-null':
 (create-null) begin
 create-null: exit(-1)
 Execution of 'create-null' complete.
-Timer: 359 ticks
-Thread: 30 idle ticks, 266 kernel ticks, 66 user ticks
+Timer: 407 ticks
+Thread: 30 idle ticks, 313 kernel ticks, 67 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 31 reads, 201 writes
+hd0:1: 28 reads, 200 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 912 characters output

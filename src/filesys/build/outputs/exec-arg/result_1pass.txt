@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/userprog/exec-arg -a exec-arg -p tests/userprog/child-args -a child-args --swap-disk=4 -- -q   -f run exec-arg < /dev/null 2> tests/userprog/exec-arg.errors |tee tests/userprog/exec-arg.output
-Copying tests/userprog/exec-arg into /tmp/3bXCWl0nwj.dsk...
-Copying tests/userprog/child-args into /tmp/3bXCWl0nwj.dsk...
-Writing command line to /tmp/vytqtEyB7D.dsk...
+Copying tests/userprog/exec-arg into /tmp/NBHwNwJo55.dsk...
+Copying tests/userprog/child-args into /tmp/NBHwNwJo55.dsk...
+Writing command line to /tmp/SEQWVJATOb.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put exec-arg put child-args run exec-arg
@@ -29,10 +29,10 @@ child-args: exit(0)
 (exec-arg) end
 exec-arg: exit(0)
 Execution of 'exec-arg' complete.
-Timer: 590 ticks
-Thread: 30 idle ticks, 397 kernel ticks, 166 user ticks
+Timer: 683 ticks
+Thread: 30 idle ticks, 489 kernel ticks, 167 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 59 reads, 396 writes
+hd0:1: 55 reads, 395 writes
 hd1:0: 195 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1107 characters output

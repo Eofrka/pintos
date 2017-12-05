@@ -1,7 +1,7 @@
 pintos -v -k -T 60 --bochs  --fs-disk=2 -p tests/vm/pt-bad-read -a pt-bad-read -p ../../tests/vm/sample.txt -a sample.txt --swap-disk=4 -- -q   -f run pt-bad-read < /dev/null 2> tests/vm/pt-bad-read.errors |tee tests/vm/pt-bad-read.output
-Copying tests/vm/pt-bad-read into /tmp/i314rhd4bK.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/i314rhd4bK.dsk...
-Writing command line to /tmp/ZsijynMDiv.dsk...
+Copying tests/vm/pt-bad-read into /tmp/jj0DsMJZ3Y.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/jj0DsMJZ3Y.dsk...
+Writing command line to /tmp/NIntZoPoNa.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put pt-bad-read put sample.txt run pt-bad-read
@@ -22,10 +22,10 @@ Executing 'pt-bad-read':
 (pt-bad-read) open "sample.txt"
 pt-bad-read: exit(-1)
 Execution of 'pt-bad-read' complete.
-Timer: 395 ticks
-Thread: 30 idle ticks, 290 kernel ticks, 78 user ticks
+Timer: 442 ticks
+Thread: 30 idle ticks, 336 kernel ticks, 79 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 36 reads, 208 writes
+hd0:1: 28 reads, 205 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1005 characters output
