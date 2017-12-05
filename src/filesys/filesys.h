@@ -14,8 +14,8 @@
 
 /* pj4 */
 /*******/
-#define FILESYS_DISK_MAX_BYTES 1<<23
-#define FILESYS_DISK_MAX_SECTORS (FILESYS_DISK_MAX_BYTES / DISK_SECTOR_SIZE)
+//#define FILESYS_DISK_MAX_BYTES 1<<23
+//#define FILESYS_DISK_MAX_SECTORS (FILESYS_DISK_MAX_BYTES / DISK_SECTOR_SIZE)
 /*******/
 
 /* Disk used for file system. */
