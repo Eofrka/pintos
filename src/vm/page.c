@@ -28,7 +28,6 @@ bool spte_less(const struct hash_elem* he_a, const struct hash_elem* he_b, void*
 /* Frees spte. If additional free is needed, free it. */
 void spte_free(struct hash_elem* he, void* aux UNUSED)
 {
-
   struct supplemental_page_table_entry* spte = hash_entry(he, struct supplemental_page_table_entry, h_elem);
 
   switch(spte->state)

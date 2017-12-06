@@ -84,13 +84,13 @@ byte_to_sector (const struct inode *inode, off_t pos)
       buffer_cache_read_at(disk_inode->doubly_indirect_block, tmp_doubly_indirect_block, DISK_SECTOR_SIZE, 0);
 
       size_t tmp_delta = logical_block_no - DIRECT_BLOCK_CNT - 128;
-      size_t doubly_indirect_block_offset = tmp_delta/128;
+      size_t intermediate_offset = tmp_delta/128;
 
       disk_sector_t tmp_intermediate_block[128];
-      buffer_cache_read_at(tmp_doubly_indirect_block[doubly_indirect_block_offset],tmp_intermediate_block, DISK_SECTOR_SIZE, 0); 
+      buffer_cache_read_at(tmp_doubly_indirect_block[intermediate_offset],tmp_intermediate_block, DISK_SECTOR_SIZE, 0); 
 
-      size_t connection_block_offset = tmp_delta % 128;
-      return tmp_intermediate_block[connection_block_offset];
+      size_t doubly_indirect_block_offset = tmp_delta % 128;
+      return tmp_intermediate_block[doubly_indirect_block_offset];
     }
 
   }
@@ -175,7 +175,6 @@ inode_create (disk_sector_t sector, off_t length)
       {
         free_map_allocate(1, &disk_inode->direct_blocks[dbi]);
       }
-
       //(ii) indirect block initialization.
       /* Required data structure. */
       disk_sector_t tmp_indirect_block[128];

@@ -1,5 +1,5 @@
-Copying tests/vm/pt-grow-stack into /tmp/bsucmlRll5.dsk...
-Writing command line to /tmp/gi0JS0IUtF.dsk...
+Copying tests/vm/pt-grow-stack into /tmp/hFkRVLtkIH.dsk...
+Writing command line to /tmp/fyZ8t8UbCs.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put pt-grow-stack run pt-grow-stack
@@ -21,7 +21,7 @@ Executing 'pt-grow-stack':
 pt-grow-stack: exit(0)
 Execution of 'pt-grow-stack' complete.
 Timer: 561 ticks
-Thread: 30 idle ticks, 436 kernel ticks, 99 user ticks
+Thread: 30 idle ticks, 435 kernel ticks, 99 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 31 reads, 219 writes
 hd1:0: 107 reads, 0 writes

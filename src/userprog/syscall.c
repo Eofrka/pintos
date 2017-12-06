@@ -551,7 +551,7 @@ void syscall_munmap(mapid_t mapping)
             }
           }
           list_remove(&fte->elem);
-          lock_release(&frame_lock);
+
           
           /* If the page is dirty, write it into file. */
           bool dirty = pagedir_is_dirty(spte->pagedir, upage);
@@ -564,6 +564,7 @@ void syscall_munmap(mapid_t mapping)
           palloc_free_page(fte->kpage);
           pagedir_clear_page(spte->pagedir, spte->upage);
           SAFE_FREE(fte);  
+          lock_release(&frame_lock);
         }
 
         /* Delete spte from the spt and free it. */

@@ -307,9 +307,11 @@ process_exit (void)
   {
     syscall_munmap(curr->next_mapid-1);
   }
+
+  /* Destroy supplemental page table. */
+  spt_destroy(&curr->spt);
 #endif
 /*******/  
-
 
   /* Close entire file descriptor entries implicitly when process is terminated. */
   while(!list_empty(&curr->fdt))
@@ -325,14 +327,6 @@ process_exit (void)
     file_close(curr->executable);
     lock_release(&filesys_lock);
   }
-
-/* pj3 */
-/*******/
-#ifdef VM
-  /* Destroy supplemental page table. */
-  spt_destroy(&curr->spt);
-#endif
-/*******/  
 
   uint32_t *pd;
 

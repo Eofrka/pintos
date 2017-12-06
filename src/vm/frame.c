@@ -33,7 +33,6 @@ void fte_free(struct frame_table_entry* fte)
   }
   
   list_remove(&fte->elem);
-  lock_release(&frame_lock);
   ASSERT(fte->kpage != NULL);
   struct supplemental_page_table_entry* spte = fte->spte;
   ASSERT(spte != NULL);
@@ -41,6 +40,7 @@ void fte_free(struct frame_table_entry* fte)
   palloc_free_page(fte->kpage);
   pagedir_clear_page(spte->pagedir, spte->upage);
   SAFE_FREE(fte);
+  lock_release(&frame_lock);
   
 }
 
@@ -168,6 +168,7 @@ bool fte_fetch(struct frame_table_entry* fte, struct supplemental_page_table_ent
 /* Inserts fte into frame_table. */
 void fte_insert(struct frame_table_entry* fte)
 {
+  /*
   struct list_elem* elem = frame_clock.clock_hand;
   bool interior_true= (elem != NULL && elem->prev != NULL && elem->next != NULL);
   bool tail_true = elem != NULL && elem->prev != NULL && elem->next == NULL;
@@ -177,7 +178,15 @@ void fte_insert(struct frame_table_entry* fte)
     printf("clcok_hand->prev: [0x%08x]\n", elem->prev);
     printf("clock_hand->next: [0x%08x]\n", elem->next);
   }
-  
+  */
+  /*
+  struct list_elem* elem = frame_clock.clock_hand;
+  bool head_true = elem != NULL && elem->prev == NULL && elem->next != NULL;
+  if(head_true)
+  {
+    printf("@\n");
+  }
+  */
   list_insert(frame_clock.clock_hand, &fte->elem);
 }
 
