@@ -146,6 +146,7 @@ void buffer_cache_read_at(disk_sector_t sec_no, void* buffer, off_t size, off_t 
       /* Evict the victim_bce. If victim_bce is dirty, flush it. */
       if(victim_bce->dirty == true)
       {
+        //printf("victim_bce->sec_no: %d\n", victim_bce->sec_no);
         buffer_cache_flush(victim_bce);
       }
       victim_bce->sec_no = SEC_NO_DEFAULT;
@@ -227,7 +228,7 @@ void buffer_cache_write_at(disk_sector_t sec_no, const void* buffer, off_t size,
 
 
 
-/* Returns valid bce which sec_no is SEC_NO. If it is not exist, return NULL.  Programmer needs mutual exclusion. */
+/* Returns valid bce which sec_no is SEC_NO. If it is not exist, return NULL. Programmer needs mutual exclusion. */
 struct buffer_cache_entry* buffer_cache_find(disk_sector_t sec_no)
 {
 
@@ -236,7 +237,7 @@ struct buffer_cache_entry* buffer_cache_find(disk_sector_t sec_no)
   for(index = 0; index < BUFFER_CACHE_SIZE; index++)
   {
     target_bce = &buffer_cache[index];
-    if(target_bce->sec_no == sec_no && target_bce->valid)
+    if((target_bce->sec_no == sec_no )&& target_bce->valid)
     {
       return target_bce;
     }

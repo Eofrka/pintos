@@ -168,6 +168,16 @@ bool fte_fetch(struct frame_table_entry* fte, struct supplemental_page_table_ent
 /* Inserts fte into frame_table. */
 void fte_insert(struct frame_table_entry* fte)
 {
+  struct list_elem* elem = frame_clock.clock_hand;
+  bool interior_true= (elem != NULL && elem->prev != NULL && elem->next != NULL);
+  bool tail_true = elem != NULL && elem->prev != NULL && elem->next == NULL;
+  if(!interior_true && !tail_true)
+  {
+    printf("clock_hand:       [0x%08x]\n", elem); 
+    printf("clcok_hand->prev: [0x%08x]\n", elem->prev);
+    printf("clock_hand->next: [0x%08x]\n", elem->next);
+  }
+  
   list_insert(frame_clock.clock_hand, &fte->elem);
 }
 

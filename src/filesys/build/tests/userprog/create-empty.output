@@ -1,10 +1,10 @@
-Copying tests/userprog/create-empty into /tmp/9ldRcl8Uqq.dsk...
-Writing command line to /tmp/TJkGBzkcyV.dsk...
+Copying tests/userprog/create-empty into /tmp/56g39o6pwL.dsk...
+Writing command line to /tmp/p0tv3MVbbp.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put create-empty run create-empty
 Pintos booting with 4,096 kB RAM...
-369 pages available in kernel pool.
+368 pages available in kernel pool.
 368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -20,10 +20,10 @@ Executing 'create-empty':
 (create-empty) end
 create-empty: exit(0)
 Execution of 'create-empty' complete.
-Timer: 423 ticks
-Thread: 30 idle ticks, 312 kernel ticks, 84 user ticks
+Timer: 517 ticks
+Thread: 30 idle ticks, 407 kernel ticks, 83 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 202 writes
+hd0:1: 29 reads, 203 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 966 characters output

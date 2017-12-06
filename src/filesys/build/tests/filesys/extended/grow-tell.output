@@ -1,11 +1,11 @@
-Copying tests/filesys/extended/grow-tell into /tmp/miJf0SCdLj.dsk...
-Copying tests/filesys/extended/tar into /tmp/miJf0SCdLj.dsk...
-Writing command line to /tmp/GwZCs2Ez8g.dsk...
+Copying tests/filesys/extended/grow-tell into /tmp/WOJgJmU548.dsk...
+Copying tests/filesys/extended/tar into /tmp/WOJgJmU548.dsk...
+Writing command line to /tmp/4lqSPkK0pd.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-tell put tar run grow-tell
 Pintos booting with 4,096 kB RAM...
-369 pages available in kernel pool.
+368 pages available in kernel pool.
 368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -24,13 +24,13 @@ Executing 'grow-tell':
 (grow-tell) write 37 bytes at offset 0 in "foobar" failed: FAILED
 grow-tell: exit(1)
 Execution of 'grow-tell' complete.
-Timer: 664 ticks
-Thread: 30 idle ticks, 512 kernel ticks, 125 user ticks
+Timer: 1050 ticks
+Thread: 30 idle ticks, 898 kernel ticks, 125 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 33 reads, 434 writes
+hd0:1: 35 reads, 436 writes
 hd1:0: 213 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1094 characters output
+Console: 1095 characters output
 Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...

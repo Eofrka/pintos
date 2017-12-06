@@ -171,6 +171,7 @@ page_fault (struct intr_frame *f)
 /* pj3 */
 /*******/ 
 #ifdef VM
+  
   struct thread* curr = thread_current();
   uint8_t* esp = user? (uint8_t*)f->esp : curr->esp; 
   bool load_success = spte_actual_load(fault_addr, not_present, esp);

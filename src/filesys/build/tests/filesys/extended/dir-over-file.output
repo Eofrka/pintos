@@ -1,11 +1,11 @@
-Copying tests/filesys/extended/dir-over-file into /tmp/PLgKXZcZLt.dsk...
-Copying tests/filesys/extended/tar into /tmp/PLgKXZcZLt.dsk...
-Writing command line to /tmp/CnvRWtZf40.dsk...
+Copying tests/filesys/extended/dir-over-file into /tmp/ks4iwUOIN4.dsk...
+Copying tests/filesys/extended/tar into /tmp/ks4iwUOIN4.dsk...
+Writing command line to /tmp/ivjsALLR9Q.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-over-file put tar run dir-over-file
 Pintos booting with 4,096 kB RAM...
-369 pages available in kernel pool.
+368 pages available in kernel pool.
 368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -21,10 +21,10 @@ Executing 'dir-over-file':
 (dir-over-file) mkdir "abc"
 dir-over-file: exit(-1)
 Execution of 'dir-over-file' complete.
-Timer: 615 ticks
-Thread: 30 idle ticks, 513 kernel ticks, 75 user ticks
+Timer: 996 ticks
+Thread: 30 idle ticks, 894 kernel ticks, 75 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 33 reads, 429 writes
+hd0:1: 35 reads, 431 writes
 hd1:0: 212 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1001 characters output

@@ -1,11 +1,11 @@
-Copying tests/vm/mmap-read into /tmp/CkfS5fJqZm.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/CkfS5fJqZm.dsk...
-Writing command line to /tmp/dbNmvmRaVr.dsk...
+Copying tests/vm/mmap-read into /tmp/uiWnoYMVxa.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/uiWnoYMVxa.dsk...
+Writing command line to /tmp/Qd3yNvZy6B.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-read put sample.txt run mmap-read
 Pintos booting with 4,096 kB RAM...
-369 pages available in kernel pool.
+368 pages available in kernel pool.
 368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -23,10 +23,10 @@ Executing 'mmap-read':
 (mmap-read) end
 mmap-read: exit(0)
 Execution of 'mmap-read' complete.
-Timer: 477 ticks
-Thread: 30 idle ticks, 343 kernel ticks, 107 user ticks
+Timer: 580 ticks
+Thread: 30 idle ticks, 447 kernel ticks, 106 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 30 reads, 211 writes
+hd0:1: 31 reads, 212 writes
 hd1:0: 104 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1035 characters output

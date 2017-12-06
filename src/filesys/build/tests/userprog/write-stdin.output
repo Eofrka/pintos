@@ -1,10 +1,10 @@
-Copying tests/userprog/write-stdin into /tmp/GLG83HXsQk.dsk...
-Writing command line to /tmp/DWUMdlyLdG.dsk...
+Copying tests/userprog/write-stdin into /tmp/iueyrAkaR8.dsk...
+Writing command line to /tmp/wiQ3QTEfSd.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put write-stdin run write-stdin
 Pintos booting with 4,096 kB RAM...
-369 pages available in kernel pool.
+368 pages available in kernel pool.
 368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -19,10 +19,10 @@ Executing 'write-stdin':
 (write-stdin) end
 write-stdin: exit(0)
 Execution of 'write-stdin' complete.
-Timer: 410 ticks
-Thread: 30 idle ticks, 312 kernel ticks, 71 user ticks
+Timer: 505 ticks
+Thread: 30 idle ticks, 406 kernel ticks, 72 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 200 writes
+hd0:1: 29 reads, 201 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 929 characters output

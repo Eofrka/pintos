@@ -1,11 +1,11 @@
-Copying tests/filesys/extended/dir-open into /tmp/YaHAgkJxUP.dsk...
-Copying tests/filesys/extended/tar into /tmp/YaHAgkJxUP.dsk...
-Writing command line to /tmp/oevj5Lz52U.dsk...
+Copying tests/filesys/extended/dir-open into /tmp/KS6465ubZX.dsk...
+Copying tests/filesys/extended/tar into /tmp/KS6465ubZX.dsk...
+Writing command line to /tmp/0H3ysRhAEZ.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-open put tar run dir-open
 Pintos booting with 4,096 kB RAM...
-369 pages available in kernel pool.
+368 pages available in kernel pool.
 368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -21,10 +21,10 @@ Executing 'dir-open':
 (dir-open) mkdir "xyzzy"
 dir-open: exit(-1)
 Execution of 'dir-open' complete.
-Timer: 612 ticks
-Thread: 30 idle ticks, 511 kernel ticks, 74 user ticks
+Timer: 998 ticks
+Thread: 30 idle ticks, 898 kernel ticks, 73 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 33 reads, 431 writes
+hd0:1: 35 reads, 433 writes
 hd1:0: 213 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 963 characters output

@@ -5,7 +5,9 @@
 ./src/filesys/file.h
 ./src/filesys/filesys.c
 ./src/filesys/free-map.h
+./src/filesys/cache.h
 ./src/filesys/filesys.h
+./src/filesys/cache.c
 ./src/filesys/off_t.h
 ./src/filesys/fsutil.h
 ./src/filesys/file.c

@@ -1,11 +1,11 @@
-Copying tests/vm/page-merge-stk into /tmp/maplmZO0ju.dsk...
-Copying tests/vm/child-qsort into /tmp/maplmZO0ju.dsk...
-Writing command line to /tmp/gmqpaKol4J.dsk...
+Copying tests/vm/page-merge-stk into /tmp/Od7LFFZYcP.dsk...
+Copying tests/vm/child-qsort into /tmp/Od7LFFZYcP.dsk...
+Writing command line to /tmp/qkCwYU1oMi.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-merge-stk put child-qsort run page-merge-stk
 Pintos booting with 4,096 kB RAM...
-369 pages available in kernel pool.
+368 pages available in kernel pool.
 368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -23,15 +23,15 @@ Executing 'page-merge-stk':
 (page-merge-stk) sort chunk 1
 (page-merge-stk) sort chunk 2
 (page-merge-stk) sort chunk 3
+child-qsort: exit(72)
 (page-merge-stk) sort chunk 4
+child-qsort: exit(72)
 (page-merge-stk) sort chunk 5
 child-qsort: exit(72)
 (page-merge-stk) sort chunk 6
 (page-merge-stk) sort chunk 7
 child-qsort: exit(72)
 (page-merge-stk) wait for child 0
-child-qsort: exit(72)
-child-qsort: exit(72)
 (page-merge-stk) wait for child 1
 (page-merge-stk) wait for child 2
 child-qsort: exit(72)
@@ -39,8 +39,8 @@ child-qsort: exit(72)
 (page-merge-stk) wait for child 3
 (page-merge-stk) wait for child 4
 child-qsort: exit(72)
-(page-merge-stk) wait for child 5
 child-qsort: exit(72)
+(page-merge-stk) wait for child 5
 (page-merge-stk) wait for child 6
 (page-merge-stk) wait for child 7
 (page-merge-stk) merge
@@ -49,13 +49,13 @@ child-qsort: exit(72)
 (page-merge-stk) end
 page-merge-stk: exit(0)
 Execution of 'page-merge-stk' complete.
-Timer: 67721 ticks
-Thread: 30 idle ticks, 581 kernel ticks, 67114 user ticks
+Timer: 111037 ticks
+Thread: 30 idle ticks, 968 kernel ticks, 110042 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 4367 reads, 6599 writes
+hd0:1: 4477 reads, 6625 writes
 hd1:0: 213 reads, 0 writes
-hd1:1: 2480 reads, 3680 writes
-Console: 1831 characters output
+hd1:1: 2912 reads, 4104 writes
+Console: 1833 characters output
 Keyboard: 0 keys pressed
-Exception: 1118 page faults
+Exception: 1172 page faults
 Powering off...

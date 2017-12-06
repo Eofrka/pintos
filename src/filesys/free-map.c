@@ -82,3 +82,21 @@ free_map_create (void)
   if (!bitmap_write (free_map, free_map_file))
     PANIC ("can't write free map");
 }
+
+
+/* Returns true if cnt sectors are free(whether it is consecutive or not. */
+bool free_map_possible(size_t cnt)
+{
+  size_t i;
+
+  for(i =0; i<cnt; i++)
+  {
+    disk_sector_t sector = bitmap_scan(free_map, 0, 1, false);
+    if(sector == BITMAP_ERROR)
+    {
+      return false;
+    }
+  }
+  return true;
+
+}

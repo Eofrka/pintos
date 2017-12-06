@@ -1,10 +1,10 @@
-Copying tests/userprog/write-bad-fd into /tmp/p9saqsoHsI.dsk...
-Writing command line to /tmp/Ns0z2fDlgv.dsk...
+Copying tests/userprog/write-bad-fd into /tmp/wlUEJSM9dT.dsk...
+Writing command line to /tmp/EUJnqxtTw2.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put write-bad-fd run write-bad-fd
 Pintos booting with 4,096 kB RAM...
-369 pages available in kernel pool.
+368 pages available in kernel pool.
 368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -19,10 +19,10 @@ Executing 'write-bad-fd':
 (write-bad-fd) end
 write-bad-fd: exit(0)
 Execution of 'write-bad-fd' complete.
-Timer: 412 ticks
-Thread: 30 idle ticks, 312 kernel ticks, 73 user ticks
+Timer: 508 ticks
+Thread: 30 idle ticks, 409 kernel ticks, 72 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 200 writes
+hd0:1: 29 reads, 201 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 937 characters output

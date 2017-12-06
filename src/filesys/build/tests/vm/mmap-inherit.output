@@ -1,12 +1,12 @@
-Copying tests/vm/mmap-inherit into /tmp/HFlfDztGwj.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/HFlfDztGwj.dsk...
-Copying tests/vm/child-inherit into /tmp/HFlfDztGwj.dsk...
-Writing command line to /tmp/1mUKm6NBjY.dsk...
+Copying tests/vm/mmap-inherit into /tmp/VJpfU8nRCi.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/VJpfU8nRCi.dsk...
+Copying tests/vm/child-inherit into /tmp/VJpfU8nRCi.dsk...
+Writing command line to /tmp/dcI6A3bKOv.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-inherit put sample.txt put child-inherit run mmap-inherit
 Pintos booting with 4,096 kB RAM...
-369 pages available in kernel pool.
+368 pages available in kernel pool.
 368 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -36,13 +36,13 @@ child-inherit: exit(-1)
 (mmap-inherit) end
 mmap-inherit: exit(0)
 Execution of 'mmap-inherit' complete.
-Timer: 809 ticks
-Thread: 30 idle ticks, 525 kernel ticks, 257 user ticks
+Timer: 1167 ticks
+Thread: 30 idle ticks, 882 kernel ticks, 258 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 64 reads, 411 writes
+hd0:1: 66 reads, 413 writes
 hd1:0: 204 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1646 characters output
+Console: 1647 characters output
 Keyboard: 0 keys pressed
 Exception: 12 page faults
 Powering off...
