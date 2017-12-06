@@ -37,6 +37,19 @@ void fte_free(struct frame_table_entry* fte)
   struct supplemental_page_table_entry* spte = fte->spte;
   ASSERT(spte != NULL);
   ASSERT(spte->pagedir != NULL);
+
+  if(spte->is_mmap_page)
+  {
+    void* upage = spte->upage;
+    /* If the page is dirty, write it into file. */
+    bool dirty = pagedir_is_dirty(spte->pagedir, upage);
+    dirty = dirty || spte->swap_idx != SWAP_IDX_DEFAULT;
+    if(dirty)
+    {
+      file_write_at(spte->file, fte->kpage, spte->page_read_bytes, spte->ofs);
+    }
+  }
+
   palloc_free_page(fte->kpage);
   pagedir_clear_page(spte->pagedir, spte->upage);
   SAFE_FREE(fte);

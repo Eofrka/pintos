@@ -1,4 +1,4 @@
-Writing command line to /tmp/5YuDyyR2Jt.dsk...
+Writing command line to /tmp/9YGB6wCitv.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run 'tar fs.tar /' get fs.tar
@@ -383,4 +383,14 @@ Kernel command line: -q run 'tar fs.tar /' get fs.tar
 Pintos booting with 4,096 kB RAM...
 368 pages available in kernel pool.
 368 pages available in user pool.
-CalibratiSimulation terminated due to kernel panic.
+Calibrating timer...  204,600 loops/s.
+hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
+hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
+hd1:0: detected 3,024 sector (1 MB) disk, model "Generic 1234", serial "BXHD00021"
+hd1:1: detected 8,064 sector (3 MB) disk, model "Generic 1234", serial "BXHD00022"
+Boot complete.
+Executing 'tar fs.tar /':
+fs.tar: create failed
+tar: exit(1)
+Execution of 'tar fs.tar /' complete.
+Simulation terminated due to kernel panic.
