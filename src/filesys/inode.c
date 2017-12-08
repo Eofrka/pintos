@@ -161,7 +161,7 @@ static void inode_release(struct inode* inode)
       }
     }
 
-    size_t i;
+    size_t i; //logical block number.
     disk_sector_t tmp_sec_no;
     for(i=0; i<total_logical_blocks; i++)
     {
@@ -244,9 +244,6 @@ static void file_growth(struct inode* inode, off_t final_length)
     size_t start = current_child_blocks;  //start logical block number.
     size_t end = final_child_blocks-1;  //end logical block number.
 
-    size_t i;
-
-
     disk_sector_t* indirect_block_buffer = (disk_sector_t*)calloc(128, sizeof(disk_sector_t));
     if(indirect_block_buffer == NULL)
     {
@@ -272,6 +269,8 @@ static void file_growth(struct inode* inode, off_t final_length)
     bool is_tmp_intermediate_block_buffer_ready = false;
 
     disk_sector_t tmp_sec_no;
+
+    size_t i; //logical block number
     for(i = start; i<= end; i++)
     {
       //(i) direct
@@ -741,10 +740,10 @@ inode_close (struct inode *inode)
   /* Release resources if this was the last opener. */
   if (--inode->open_cnt == 0)
   {
-      /* Remove from inode list and release lock. */
+    /* Remove from inode list and release lock. */
     list_remove (&inode->elem);
 
-      /* Deallocate blocks if removed. */
+    /* Deallocate blocks if removed. */
     if (inode->removed) 
     {
       /* pj4 */
@@ -781,16 +780,16 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
 
   while (size > 0) 
   {
-      /* Disk sector to read, starting byte offset within sector. */
+    /* Disk sector to read, starting byte offset within sector. */
     disk_sector_t sector_idx = byte_to_sector (inode, offset);
     int sector_ofs = offset % DISK_SECTOR_SIZE;
 
-      /* Bytes left in inode, bytes left in sector, lesser of the two. */
+    /* Bytes left in inode, bytes left in sector, lesser of the two. */
     off_t inode_left = inode_length (inode) - offset;
     int sector_left = DISK_SECTOR_SIZE - sector_ofs;
     int min_left = inode_left < sector_left ? inode_left : sector_left;
 
-      /* Number of bytes to actually copy out of this sector. */
+    /* Number of bytes to actually copy out of this sector. */
     int chunk_size = size < min_left ? size : min_left;
     if (chunk_size <= 0)
       break;
@@ -817,14 +816,14 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
         }
       */
 
-      /* You should get rid of bounce buffers. Instead, copy data into and out of sectors in the buffer cache directly. */
+    /* You should get rid of bounce buffers. Instead, copy data into and out of sectors in the buffer cache directly. */
     buffer_cache_read_at(sector_idx, buffer+bytes_read, chunk_size, sector_ofs);
 
     disk_sector_t next_sector_idx = sector_idx + 1;
     buffer_cache_read_ahead(next_sector_idx);
-      /*******/
+    /*******/
 
-      /* Advance. */
+    /* Advance. */
     size -= chunk_size;
     offset += chunk_size;
     bytes_read += chunk_size;
@@ -861,16 +860,16 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 
   while (size > 0) 
   {
-      /* Sector to write, starting byte offset within sector. */
+    /* Sector to write, starting byte offset within sector. */
     disk_sector_t sector_idx = byte_to_sector (inode, offset);
     int sector_ofs = offset % DISK_SECTOR_SIZE;
 
-      /* Bytes left in inode, bytes left in sector, lesser of the two. */
+    /* Bytes left in inode, bytes left in sector, lesser of the two. */
     off_t inode_left = inode_length (inode) - offset;
     int sector_left = DISK_SECTOR_SIZE - sector_ofs;
     int min_left = inode_left < sector_left ? inode_left : sector_left;
 
-      /* Number of bytes to actually write into this sector. */
+    /* Number of bytes to actually write into this sector. */
     int chunk_size = size < min_left ? size : min_left;
     if (chunk_size <= 0)
       break;
@@ -904,11 +903,11 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
         }
       */
 
-      /* You should get rid of bounce buffers. Instead, copy data into and out of sectors in the buffer cache directly. */
+    /* You should get rid of bounce buffers. Instead, copy data into and out of sectors in the buffer cache directly. */
     buffer_cache_write_at(sector_idx, buffer+bytes_written, chunk_size, sector_ofs);
-      /*******/  
+    /*******/  
 
-      /* Advance. */
+    /* Advance. */
     size -= chunk_size;
     offset += chunk_size;
     bytes_written += chunk_size;
