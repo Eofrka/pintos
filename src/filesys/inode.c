@@ -16,7 +16,12 @@
 /* Identifies an inode. */
 #define INODE_MAGIC 0x494e4f44
 
-#define DIRECT_BLOCK_CNT 64
+/* pj4 */
+/*******/
+/* Direct block cnt in inode_disk. */
+#define MAX_DIRECT_BLOCK_CNT 64
+#define MAX_LOGICAL_BLOCK_CNT (MAX_DIRECT_BLOCK_CNT + 128 + 16384)  
+/*******/
 
 /* On-disk inode.
    Must be exactly DISK_SECTOR_SIZE bytes long. */
@@ -24,10 +29,14 @@ struct inode_disk
 {
     off_t length;                                       /* File size in bytes. */
     unsigned magic;                                     /* Magic number. */
-    disk_sector_t direct_blocks[DIRECT_BLOCK_CNT];      /* Direct blocks. */  
+
+    /* pj4 */
+    /*******/
+    disk_sector_t direct_blocks[MAX_DIRECT_BLOCK_CNT];  /* Direct blocks. */
     disk_sector_t indirect_block;                       /* Indirect block. */
     disk_sector_t doubly_indirect_block;                /* Doubly indirect block. */
     uint32_t unused[60];                                /* Not used. */
+    /*******/
 };
 
 /* Returns the number of sectors to allocate for an inode SIZE
@@ -37,6 +46,8 @@ bytes_to_sectors (off_t size)
 {
   return DIV_ROUND_UP (size, DISK_SECTOR_SIZE);
 }
+
+
 
 /* In-memory inode. */
 struct inode 
@@ -50,8 +61,330 @@ struct inode
 };
 
 
+/* pj4 */
+/*******/
+/* Rename bytes_to_sectors. */
+/* Changes length(bytes) to logical blocks. */
+static inline size_t length_to_logical_blocks(off_t length)
+{
+  return DIV_ROUND_UP(length, DISK_SECTOR_SIZE);
+}
+/*******/
 
+
+/* pj4 */
+/*******/
+/* New static function declarations. */
+static size_t get_additional_blocks(struct inode_disk* disk_inode, off_t final_length);
+static size_t get_child_blocks(off_t length);
 static void inode_release(struct inode* inode);
+static void file_growth(struct inode* inode, off_t final_length);
+
+/* New static function definitions. */
+static size_t get_additional_blocks(struct inode_disk* disk_inode, off_t final_length)
+{
+  off_t current_length = disk_inode->length;
+  ASSERT(current_length <= final_length);
+  //trivial case.
+  if(current_length == final_length)
+  {
+    return 0;
+  }
+
+  size_t additional_blocks = 0;
+  size_t current_child_blocks = get_child_blocks(current_length);
+  size_t final_child_blocks = get_child_blocks(final_length);
+  additional_blocks = final_child_blocks - current_child_blocks;
+
+  return additional_blocks;
+}
+
+static size_t get_child_blocks(off_t length)
+{
+  size_t logical_blocks = length_to_logical_blocks(length);
+  //(i)
+  if(logical_blocks <= MAX_DIRECT_BLOCK_CNT)
+  {
+    return logical_blocks;
+  }
+  //(ii) 
+  else if(logical_blocks <= MAX_DIRECT_BLOCK_CNT + 128)
+  {
+    return logical_blocks + 1;
+  }
+  //(iii)
+  else
+  {
+    size_t intermediate_blocks = (logical_blocks - 193)/128 + 1;
+    return logical_blocks + 1 + 1 + intermediate_blocks;
+  }
+}
+
+static void inode_release(struct inode* inode)
+{
+  free_map_release (inode->sector, 1);
+  //free_map_release (inode->data.start,bytes_to_sectors (inode->data.length)); 
+  struct inode_disk* disk_inode = &inode->data;
+  size_t length = disk_inode->length;
+
+  if(length > 0)
+  {
+    size_t total_logical_blocks = length_to_logical_blocks(length);
+    disk_sector_t* indirect_block_buffer=NULL;
+    disk_sector_t* doubly_indirect_block_buffer = NULL;
+    disk_sector_t* tmp_intermediate_block_buffer = NULL;
+
+    // indirect
+    if(total_logical_blocks > MAX_DIRECT_BLOCK_CNT)
+    {
+      indirect_block_buffer = (disk_sector_t*)calloc(128, sizeof(disk_sector_t));
+      if(indirect_block_buffer == NULL)
+      {
+        PANIC("not enough memory to allocate indirect_block_buffer");
+      }
+    }
+    // doubly indirect
+    if(total_logical_blocks > MAX_DIRECT_BLOCK_CNT + 128)
+    {
+      doubly_indirect_block_buffer = (disk_sector_t*)calloc(128, sizeof(disk_sector_t));
+      if(doubly_indirect_block_buffer == NULL)
+      {
+        SAFE_FREE(indirect_block_buffer);
+        PANIC("not enough memory to allocate doubly_indirect_block_buffer");        
+      }
+      tmp_intermediate_block_buffer = (disk_sector_t*)calloc(128, sizeof(disk_sector_t));
+      if(tmp_intermediate_block_buffer == NULL)
+      {
+        SAFE_FREE(indirect_block_buffer);
+        SAFE_FREE(doubly_indirect_block_buffer);
+        PANIC("not enough memory to allocate tmp_intermediate_block_buffer");
+      }
+    }
+
+    size_t i;
+    disk_sector_t tmp_sec_no;
+    for(i=0; i<total_logical_blocks; i++)
+    {
+      //(i) direct
+      if(i<MAX_DIRECT_BLOCK_CNT)
+      {
+        tmp_sec_no = disk_inode->direct_blocks[i];
+        free_map_release(tmp_sec_no, 1);
+      }
+      //(ii) indirect
+      else if(i < MAX_DIRECT_BLOCK_CNT + 128)
+      {
+        if(i == MAX_DIRECT_BLOCK_CNT)
+        {
+          tmp_sec_no = disk_inode->indirect_block;
+          buffer_cache_read_at(tmp_sec_no, indirect_block_buffer, DISK_SECTOR_SIZE, 0);
+          free_map_release(tmp_sec_no, 1);
+        }
+        size_t j = i - MAX_DIRECT_BLOCK_CNT;
+        tmp_sec_no = indirect_block_buffer[j];
+        free_map_release(tmp_sec_no, 1);
+      }
+      //(iii) doubly indirect
+      else
+      {
+        if( i== MAX_DIRECT_BLOCK_CNT + 128)
+        {
+          tmp_sec_no = disk_inode->doubly_indirect_block;
+          buffer_cache_read_at(tmp_sec_no, doubly_indirect_block_buffer, DISK_SECTOR_SIZE, 0);
+          free_map_release(tmp_sec_no, 1);
+        }
+
+        size_t delta = i - MAX_DIRECT_BLOCK_CNT - 128;
+        size_t j = delta/128;
+        size_t k = delta % 128;
+
+        if( k == 0 )
+        {
+          tmp_sec_no = doubly_indirect_block_buffer[j];
+          buffer_cache_read_at(tmp_sec_no, tmp_intermediate_block_buffer,DISK_SECTOR_SIZE, 0);
+          free_map_release(tmp_sec_no, 1);
+        }
+        tmp_sec_no = tmp_intermediate_block_buffer[k];
+        free_map_release(tmp_sec_no, 1);
+
+      }
+    }
+
+    SAFE_FREE(indirect_block_buffer);
+    SAFE_FREE(doubly_indirect_block_buffer);
+    SAFE_FREE(tmp_intermediate_block_buffer);
+
+  }
+
+
+}
+
+
+static void file_growth(struct inode* inode, off_t final_length)
+{
+  struct inode_disk* disk_inode = &inode->data;
+  off_t current_length = disk_inode->length;
+  if(current_length >= final_length)
+  {
+    //file growth is not needed.
+    return;
+  }
+
+  size_t additional_blocks = 0;
+  size_t current_child_blocks = get_child_blocks(current_length);
+  size_t final_child_blocks = get_child_blocks(final_length);
+  additional_blocks = final_child_blocks - current_child_blocks;
+
+  if(additional_blocks > 0)
+  {
+    if(free_map_possible(additional_blocks) == false)
+    {
+      PANIC("not enough sectors in filesys_disk to allocate additional blocks for file growth");
+    }
+    size_t start = current_child_blocks;  //start logical block number.
+    size_t end = final_child_blocks-1;  //end logical block number.
+
+    size_t i;
+
+
+    disk_sector_t* indirect_block_buffer = (disk_sector_t*)calloc(128, sizeof(disk_sector_t));
+    if(indirect_block_buffer == NULL)
+    {
+      PANIC("not enough memory to allocate indirect_block_buffer");
+    }
+    disk_sector_t* doubly_indirect_block_buffer = (disk_sector_t*)calloc(128, sizeof(disk_sector_t));
+    if(doubly_indirect_block_buffer == NULL)
+    {
+      SAFE_FREE(indirect_block_buffer);
+      PANIC("not enough memory to allocate doubly_indirect_block_buffer");      
+    }
+    disk_sector_t* tmp_intermediate_block_buffer = (disk_sector_t*)calloc(128, sizeof(disk_sector_t));
+    if(tmp_intermediate_block_buffer == NULL)
+    {
+      SAFE_FREE(indirect_block_buffer);
+      SAFE_FREE(doubly_indirect_block_buffer);
+      PANIC("not enough memory to allocate tmp_intermediate_block_buffer");
+
+    }
+
+    bool is_indirect_block_buffer_ready = false;
+    bool is_doubly_indirect_block_buffer_ready = false;
+    bool is_tmp_intermediate_block_buffer_ready = false;
+
+    disk_sector_t tmp_sec_no;
+    for(i = start; i<= end; i++)
+    {
+      //(i) direct
+      if( i < MAX_DIRECT_BLOCK_CNT )
+      {
+        free_map_allocate(1, &tmp_sec_no);
+        disk_inode->direct_blocks[i] = tmp_sec_no;
+      }
+      //(ii) indirect
+      else if( i < MAX_DIRECT_BLOCK_CNT + 128)
+      {
+        if(is_indirect_block_buffer_ready == false)
+        {
+          if( i == MAX_DIRECT_BLOCK_CNT)
+          {
+            free_map_allocate(1, &tmp_sec_no);
+            disk_inode->indirect_block = tmp_sec_no;
+          } 
+          else
+          {
+            tmp_sec_no = disk_inode->indirect_block;
+            buffer_cache_read_at(tmp_sec_no, indirect_block_buffer, DISK_SECTOR_SIZE, 0);
+          }
+          is_indirect_block_buffer_ready = true;
+        }
+
+        size_t j = i - MAX_DIRECT_BLOCK_CNT;
+        free_map_allocate(1, &tmp_sec_no);
+        indirect_block_buffer[j] = tmp_sec_no;
+
+        if( j == 127 || i == end )
+        {
+          tmp_sec_no = disk_inode->indirect_block;
+          buffer_cache_write_at(tmp_sec_no, indirect_block_buffer, DISK_SECTOR_SIZE, 0);
+        } 
+
+      }
+      //(iii) doubly indirect
+      else
+      {
+        if(is_doubly_indirect_block_buffer_ready == false)
+        {
+          if( i == MAX_DIRECT_BLOCK_CNT + 128)
+          {
+            free_map_allocate(1, &tmp_sec_no);
+            disk_inode->doubly_indirect_block = tmp_sec_no;
+          }
+          else
+          {
+            tmp_sec_no = disk_inode->doubly_indirect_block;
+            buffer_cache_read_at(tmp_sec_no, doubly_indirect_block_buffer, DISK_SECTOR_SIZE, 0);
+          }
+          is_doubly_indirect_block_buffer_ready = true;
+        }
+
+        size_t delta = i - MAX_DIRECT_BLOCK_CNT - 128;
+        size_t j = delta/128;
+        size_t k = delta%128;
+
+        if(is_tmp_intermediate_block_buffer_ready == false)
+        {
+          if(k == 0)
+          {
+            free_map_allocate(1, &tmp_sec_no);
+            doubly_indirect_block_buffer[j] = tmp_sec_no;
+          }
+          else
+          {
+            tmp_sec_no = doubly_indirect_block_buffer[j];
+            buffer_cache_read_at(tmp_sec_no,tmp_intermediate_block_buffer, DISK_SECTOR_SIZE, 0);
+          }
+          is_tmp_intermediate_block_buffer_ready = true;
+        }
+
+        free_map_allocate(1, &tmp_sec_no);
+        tmp_intermediate_block_buffer[k] = tmp_sec_no;
+
+        if(k == 127 || i == end)
+        {
+          tmp_sec_no = doubly_indirect_block_buffer[j];
+          buffer_cache_write_at(tmp_sec_no, tmp_intermediate_block_buffer, DISK_SECTOR_SIZE, 0);
+        } 
+
+        if( i== end)
+        {
+          tmp_sec_no = disk_inode->doubly_indirect_block;
+          buffer_cache_write_at(tmp_sec_no,doubly_indirect_block_buffer, DISK_SECTOR_SIZE, 0);
+        }
+      }
+    }
+
+
+    disk_inode->length = final_length;
+
+    /* Finally write disk_inode into buffer cache. */
+    buffer_cache_write_at(inode->sector, disk_inode, DISK_SECTOR_SIZE, 0);
+
+    SAFE_FREE(tmp_intermediate_block_buffer);
+    SAFE_FREE(doubly_indirect_block_buffer);
+    SAFE_FREE(indirect_block_buffer);
+
+
+
+  }
+  else
+  {
+    disk_inode->length = final_length;
+    buffer_cache_write_at(inode->sector, disk_inode, DISK_SECTOR_SIZE, 0);
+  }
+
+}
+
+/*******/
 
 /* Returns the disk sector that contains byte offset POS within
    INODE.
@@ -65,39 +398,59 @@ byte_to_sector (const struct inode *inode, off_t pos)
   {
     //return inode->data.start + pos / DISK_SECTOR_SIZE;
     struct inode_disk* disk_inode = (struct inode_disk*)&inode->data;
-    size_t logical_block_no = pos/DISK_SECTOR_SIZE;
-    if(logical_block_no <DIRECT_BLOCK_CNT)
+    disk_sector_t ret_sec_no = -1;
+    size_t i = pos/DISK_SECTOR_SIZE; //logical block number of pos.
+    if(i <MAX_DIRECT_BLOCK_CNT)
     {
-      return disk_inode->direct_blocks[logical_block_no];
+      ret_sec_no = disk_inode->direct_blocks[i];
+      return ret_sec_no;
     }
-    else if(DIRECT_BLOCK_CNT <= logical_block_no && logical_block_no < DIRECT_BLOCK_CNT + 128)
+    else if(MAX_DIRECT_BLOCK_CNT <= i && i < MAX_DIRECT_BLOCK_CNT + 128)
     {
-      disk_sector_t tmp_indirect_block[128];
-      size_t indirect_block_offset = logical_block_no - DIRECT_BLOCK_CNT; 
-      buffer_cache_read_at(disk_inode->indirect_block, tmp_indirect_block, DISK_SECTOR_SIZE, 0);
-      return tmp_indirect_block[indirect_block_offset];
+      disk_sector_t* indirect_block_buffer = (disk_sector_t*)calloc(128, sizeof(disk_sector_t));
+      if(indirect_block_buffer == NULL)
+      {
+        return -1;
+      }
+      buffer_cache_read_at(disk_inode->indirect_block, indirect_block_buffer, DISK_SECTOR_SIZE, 0);
+      size_t j = i - MAX_DIRECT_BLOCK_CNT;
+      ret_sec_no = indirect_block_buffer[j];
+      SAFE_FREE(indirect_block_buffer);
+      return ret_sec_no;
     }
     else
     {
 
-      disk_sector_t tmp_doubly_indirect_block[128];
-      buffer_cache_read_at(disk_inode->doubly_indirect_block, tmp_doubly_indirect_block, DISK_SECTOR_SIZE, 0);
+      disk_sector_t* doubly_indirect_block_buffer = (disk_sector_t*)calloc(128, sizeof(disk_sector_t));
+      if(doubly_indirect_block_buffer == NULL)
+      {
+        return -1;
+      }
+      disk_sector_t* tmp_intermediate_block_buffer = (disk_sector_t*)calloc(128, sizeof(disk_sector_t));
+      if(tmp_intermediate_block_buffer == NULL)
+      {
+        SAFE_FREE(doubly_indirect_block_buffer);
+        return -1;
+      }
 
-      size_t tmp_delta = logical_block_no - DIRECT_BLOCK_CNT - 128;
-      size_t intermediate_offset = tmp_delta/128;
+      buffer_cache_read_at(disk_inode->doubly_indirect_block, doubly_indirect_block_buffer, DISK_SECTOR_SIZE, 0);
 
-      disk_sector_t tmp_intermediate_block[128];
-      buffer_cache_read_at(tmp_doubly_indirect_block[intermediate_offset],tmp_intermediate_block, DISK_SECTOR_SIZE, 0); 
+      size_t delta = i - MAX_DIRECT_BLOCK_CNT - 128;
+      size_t j = delta/128;
 
-      size_t doubly_indirect_block_offset = tmp_delta % 128;
-      return tmp_intermediate_block[doubly_indirect_block_offset];
+      buffer_cache_read_at(doubly_indirect_block_buffer[j],tmp_intermediate_block_buffer, DISK_SECTOR_SIZE, 0); 
+
+      size_t k = delta % 128;
+      ret_sec_no= tmp_intermediate_block_buffer[k];
+      SAFE_FREE(doubly_indirect_block_buffer);
+      SAFE_FREE(tmp_intermediate_block_buffer);
+      return ret_sec_no;
     }
 
   }
   else
     return -1;
 }
-
 /* List of open inodes, so that opening a single inode twice
    returns the same `struct inode'. */
 static struct list open_inodes;
@@ -123,164 +476,197 @@ inode_create (disk_sector_t sector, off_t length)
   /* If this assertion fails, the inode structure is not exactly
      one sector in size, and you should fix that. */
   ASSERT (sizeof *disk_inode == DISK_SECTOR_SIZE);
-
   disk_inode = calloc (1, sizeof *disk_inode);
+
+  /*
   if (disk_inode != NULL)
   {
-    /* pj4 */
-    /*******/
-    /* Get total sectors for this inode. */
-    size_t total_sectors = bytes_to_sectors (length);
+    size_t sectors = bytes_to_sectors (length);
     disk_inode->length = length;
     disk_inode->magic = INODE_MAGIC;
-
-    if(total_sectors == 0)
+    if (free_map_allocate (sectors, &disk_inode->start))
     {
+
+      //disk_write (filesys_disk, sector, disk_inode);
+      buffer_cache_write_at(sector, disk_inode, DISK_SECTOR_SIZE, 0);
+      if (sectors > 0) 
+      {
+        static char zeros[DISK_SECTOR_SIZE];
+        size_t i;
+
+        for (i = 0; i < sectors; i++)
+        { 
+          //disk_write (filesys_disk, disk_inode->start + i, zeros); 
+          buffer_cache_write_at(disk_inode->start+i, zeros, DISK_SECTOR_SIZE,0);
+        }
+      }
+      success = true; 
+    } 
+    free (disk_inode);
+  }
+  return success;
+  */
+
+  /* pj4 */
+  /*******/
+  if( disk_inode != NULL)
+  { 
+    disk_inode->length = 0;
+    disk_inode->magic = INODE_MAGIC;
+    off_t final_length = length;
+    size_t total_logical_blocks = length_to_logical_blocks(length);
+
+    /* Get additional blocks to allocate. */
+    size_t additional_blocks = get_additional_blocks(disk_inode, final_length); 
+    
+    //printf("final_length: [%d], total_logical_blocks: [%d], additional_blocks: [%d]\n", final_length, total_logical_blocks, additional_blocks); 
+
+    /* If additional blocks are not needed, just initialize disk_inode with simple informations
+       and write it into the buffer cache. Then free disk_inode and return true. */
+    if(additional_blocks == 0)
+    {
+      disk_inode->length = final_length;
       buffer_cache_write_at(sector, disk_inode, DISK_SECTOR_SIZE, 0);
       SAFE_FREE(disk_inode);
       return true;
     }
-    else
+
+    /* Check there is enough sectors in the filesys_disk. */
+    if(free_map_possible(additional_blocks) == false)
     {
-      size_t actuall_total_sectors;
-      if(total_sectors <= DIRECT_BLOCK_CNT)
-      {
-        actuall_total_sectors = total_sectors;
-      }
-      else if(total_sectors <= DIRECT_BLOCK_CNT + 128)
-      {
-        actuall_total_sectors = total_sectors + 1;
-      }
-      else
-      {
-        size_t total_intermediate_block_cnt = ((total_sectors -DIRECT_BLOCK_CNT - 128) + 127) /128;
-        actuall_total_sectors = total_sectors + 1 + 1 + total_intermediate_block_cnt;
-      }
-      bool is_possible = free_map_possible(actuall_total_sectors);
-      if(is_possible == false)
+      SAFE_FREE(disk_inode);
+      return false;
+    }
+
+    
+    /* Zero-filled data block. */
+    static char zeros[DISK_SECTOR_SIZE]; 
+
+    disk_sector_t* indirect_block_buffer = NULL;
+    disk_sector_t* doubly_indirect_block_buffer = NULL;
+    disk_sector_t* tmp_intermediate_block_buffer = NULL;
+
+    // indirect
+    if(total_logical_blocks > MAX_DIRECT_BLOCK_CNT)
+    {
+      indirect_block_buffer = (disk_sector_t*)calloc(128, sizeof(disk_sector_t));
+      if(indirect_block_buffer == NULL)
       {
         SAFE_FREE(disk_inode);
         return false;
       }
-
-
-      /* zero-data block. */
-      static char zeros[DISK_SECTOR_SIZE];
-
-
-      //(i) direct blocks initialization.
-      size_t total_direct_blocks = total_sectors <= DIRECT_BLOCK_CNT? total_sectors : DIRECT_BLOCK_CNT;
-      size_t dbi; //direct block index.
-      for(dbi =0; dbi <total_direct_blocks;dbi++)
-      {
-        free_map_allocate(1, &disk_inode->direct_blocks[dbi]);
-      }
-      //(ii) indirect block initialization.
-      /* Required data structure. */
-      disk_sector_t tmp_indirect_block[128];
       
-
-      if(total_sectors > DIRECT_BLOCK_CNT)
-      { 
-        size_t total_indirect_blocks = total_sectors <=(DIRECT_BLOCK_CNT + 128)? (total_sectors - DIRECT_BLOCK_CNT) : 128;
-        
-        /* Allocate indirect block itself in the filesys_disk. */
-        free_map_allocate(1, &disk_inode->indirect_block);
-
-
-        /* Allocate indirect block's data blocks. */ 
-        size_t idbi;
-        for(idbi = 0; idbi < total_indirect_blocks; idbi++)
-        {
-          free_map_allocate(1, &tmp_indirect_block[idbi]);
-        }
-      }
-
-      //(iii) doubly indirect block
-      // doubly indirect block ------> intermediate blocks(MAX: 128) --------> data blocks(MAX: 128)
-      // 1 doubly indirect block can cover 128 * 128 blocks.
-      disk_sector_t tmp_doubly_indirect_block[128];
-      disk_sector_t tmp_intermediate_block[128];
-      disk_sector_t dirty_data_block_index;
-      if(total_sectors > DIRECT_BLOCK_CNT+128)
-      {
-
-        /* Allocate doubly indirect block. */
-        free_map_allocate(1, &disk_inode->doubly_indirect_block);
-
-        size_t extra_sectors = (total_sectors - DIRECT_BLOCK_CNT - 128);
-        size_t total_intermediate_block_cnt = (extra_sectors + 127) /128;
-        
-        size_t intermediate_bi; //intermediate block index
-        
-        /* Allocate intermediate blocks which have 128 data blocks and their data blocks. */
-        /* Also write data blocks and intermediate blocks into buffer cache. */ 
-        size_t doubly_idbi; //doubly indirect block index(tmp_interemediate_block[doubly_idbi] is data sector number).
-        for(intermediate_bi = 0; intermediate_bi < total_intermediate_block_cnt - 1; intermediate_bi++)
-        {
-          free_map_allocate(1, &tmp_doubly_indirect_block[intermediate_bi]);
-          for(doubly_idbi =0; doubly_idbi < 128; doubly_idbi++)
-          {
-            disk_sector_t data_sec_no;
-            free_map_allocate(1, &data_sec_no);
-            //printf("DEBUG: tmp_intermediate_block[%d]: %d\n", doubly_idbi, data_sec_no);
-            tmp_intermediate_block[doubly_idbi] = data_sec_no;
-            buffer_cache_write_at(data_sec_no, zeros, DISK_SECTOR_SIZE, 0);
-          }
-          buffer_cache_write_at(tmp_doubly_indirect_block[intermediate_bi],tmp_intermediate_block , DISK_SECTOR_SIZE, 0);
-
-        }
-
-        /* Allocate the last intermediate block and its data blocks. */
-        /* Also write data blocks and intermediate blocks into buffer cache. */ 
-        free_map_allocate(1, &tmp_doubly_indirect_block[total_intermediate_block_cnt-1]);
-        dirty_data_block_index = (extra_sectors - 1)%128;
-        for(doubly_idbi = 0; doubly_idbi <= dirty_data_block_index; doubly_idbi++)
-        {
-          disk_sector_t data_sec_no;
-          free_map_allocate(1, &data_sec_no);
-          tmp_intermediate_block[doubly_idbi] = data_sec_no;
-          buffer_cache_write_at(data_sec_no, zeros, DISK_SECTOR_SIZE, 0);
-        }
-        buffer_cache_write_at(tmp_doubly_indirect_block[total_intermediate_block_cnt-1], tmp_intermediate_block, DISK_SECTOR_SIZE, 0);
-
-        buffer_cache_write_at(disk_inode->doubly_indirect_block, tmp_doubly_indirect_block, DISK_SECTOR_SIZE, 0);
-
-      }
-
-      /* Write disk_inode and data blocks into the buffer cache. */
-      
-      //1. Write disk_inode itself. 
-      buffer_cache_write_at(sector, disk_inode, DISK_SECTOR_SIZE, 0);
-
-      //2. Write direct blocks.
-      size_t i;
-      for(i =0; i<total_direct_blocks; i++)
-      {
-        buffer_cache_write_at(disk_inode->direct_blocks[i], zeros, DISK_SECTOR_SIZE, 0); 
-      }
-
-      //3. Write indirect block and its data blocks.
-      if(total_sectors > DIRECT_BLOCK_CNT)
-      {
-        size_t total_indirect_blocks = total_sectors <=(DIRECT_BLOCK_CNT + 128)? (total_sectors - DIRECT_BLOCK_CNT) : 128;
-        //3-1. Write indirect block.
-        buffer_cache_write_at(disk_inode->indirect_block, tmp_indirect_block, DISK_SECTOR_SIZE, 0);
-
-        //3-2. Write indirect block's data blocks.
-        for(i=0; i<total_indirect_blocks; i++)
-        {
-          buffer_cache_write_at(tmp_indirect_block[i], zeros, DISK_SECTOR_SIZE, 0);
-        }
-      }
-
-      //4. intermediate blocks and their data blocks are already written in the buffer cache. 
-      SAFE_FREE (disk_inode);
-      return true;
     }
-  }
 
-  return false;
+    // doubly indirect
+    if(total_logical_blocks > MAX_DIRECT_BLOCK_CNT + 128)
+    {
+      doubly_indirect_block_buffer = (disk_sector_t*)calloc(128, sizeof(disk_sector_t));
+      if(doubly_indirect_block_buffer == NULL)
+      {
+        SAFE_FREE(indirect_block_buffer);
+        SAFE_FREE(disk_inode);
+        return false;
+      }
+      tmp_intermediate_block_buffer = (disk_sector_t*)calloc(128, sizeof(disk_sector_t));
+      if(tmp_intermediate_block_buffer == NULL)
+      {
+        SAFE_FREE(doubly_indirect_block_buffer);
+        SAFE_FREE(indirect_block_buffer);
+        SAFE_FREE(disk_inode);
+        return false;
+      }
+    }
+
+
+    /* Now, we are ready to allocate the additional blocks.
+       We don't have to worry about failing. */
+    disk_inode->length = final_length;
+
+
+    size_t i;
+    disk_sector_t tmp_sec_no;
+    for(i=0; i<total_logical_blocks; i++)
+    {
+      //(i) direct
+      if(i<MAX_DIRECT_BLOCK_CNT)
+      {
+        free_map_allocate(1, &tmp_sec_no);
+        disk_inode->direct_blocks[i] = tmp_sec_no;
+        buffer_cache_write_at(tmp_sec_no, zeros, DISK_SECTOR_SIZE, 0);
+      }
+      //(ii) indirect
+      else if( i <MAX_DIRECT_BLOCK_CNT + 128)
+      {
+        if(i == MAX_DIRECT_BLOCK_CNT)
+        {
+          free_map_allocate(1, &tmp_sec_no);
+          disk_inode->indirect_block = tmp_sec_no;
+        }
+
+        free_map_allocate(1, &tmp_sec_no);
+        size_t j = i - MAX_DIRECT_BLOCK_CNT;
+        indirect_block_buffer[j] = tmp_sec_no;
+        buffer_cache_write_at(tmp_sec_no, zeros,DISK_SECTOR_SIZE, 0);
+
+        if(j == 127 || i == total_logical_blocks - 1)
+        {
+          tmp_sec_no = disk_inode->indirect_block;
+          buffer_cache_write_at(tmp_sec_no, indirect_block_buffer, DISK_SECTOR_SIZE, 0);
+        }
+
+      }
+      //(iii) doubly indirect
+      else
+      {
+        if(i == MAX_DIRECT_BLOCK_CNT + 128)
+        {
+          free_map_allocate(1, &tmp_sec_no);
+          disk_inode->doubly_indirect_block = tmp_sec_no;
+        }
+
+        size_t delta = i - MAX_DIRECT_BLOCK_CNT - 128;
+        size_t j = delta / 128;
+        size_t k = delta % 128;
+
+        if(k == 0)
+        {
+          free_map_allocate(1, &tmp_sec_no);
+          doubly_indirect_block_buffer[j] = tmp_sec_no;
+        }
+
+        free_map_allocate(1, &tmp_sec_no);
+        tmp_intermediate_block_buffer[k] = tmp_sec_no;
+        buffer_cache_write_at(tmp_sec_no, zeros, DISK_SECTOR_SIZE, 0);
+
+        if(k == 127 || i == total_logical_blocks - 1)
+        {
+          tmp_sec_no = doubly_indirect_block_buffer[j];
+          buffer_cache_write_at(tmp_sec_no, tmp_intermediate_block_buffer, DISK_SECTOR_SIZE, 0);
+        }
+
+        if(i==total_logical_blocks - 1)
+        {
+          tmp_sec_no = disk_inode->doubly_indirect_block;
+          buffer_cache_write_at(tmp_sec_no, doubly_indirect_block_buffer , DISK_SECTOR_SIZE, 0);
+        }
+
+      }
+    }
+
+    /* Finally write disk_inode into buffer cache. */
+    buffer_cache_write_at(sector, disk_inode, DISK_SECTOR_SIZE, 0);
+
+    SAFE_FREE(tmp_intermediate_block_buffer);
+    SAFE_FREE(doubly_indirect_block_buffer);
+    SAFE_FREE(indirect_block_buffer);
+    SAFE_FREE(disk_inode);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 
 
   /*******/
@@ -355,14 +741,16 @@ inode_close (struct inode *inode)
   /* Release resources if this was the last opener. */
   if (--inode->open_cnt == 0)
   {
-    /* Remove from inode list and release lock. */
+      /* Remove from inode list and release lock. */
     list_remove (&inode->elem);
 
-    /* Deallocate blocks if removed. */
+      /* Deallocate blocks if removed. */
     if (inode->removed) 
     {
       /* pj4 */
+      /*******/
       inode_release(inode);
+      /*******/ 
     }
 
     free (inode); 
@@ -429,12 +817,12 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
         }
       */
 
-    /* You should get rid of bounce buffers. Instead, copy data into and out of sectors in the buffer cache directly. */
+      /* You should get rid of bounce buffers. Instead, copy data into and out of sectors in the buffer cache directly. */
     buffer_cache_read_at(sector_idx, buffer+bytes_read, chunk_size, sector_ofs);
 
-    disk_sector_t next_sector_idx = byte_to_sector (inode, offset + DISK_SECTOR_SIZE);
+    disk_sector_t next_sector_idx = sector_idx + 1;
     buffer_cache_read_ahead(next_sector_idx);
-    /*******/
+      /*******/
 
       /* Advance. */
     size -= chunk_size;
@@ -464,6 +852,12 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 
   if (inode->deny_write_cnt)
     return 0;
+
+  /* pj4 */
+  /*******/
+  off_t final_length = offset+ size;
+  file_growth(inode, final_length);
+  /*******/
 
   while (size > 0) 
   {
@@ -498,7 +892,6 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
               if (bounce == NULL)
                 break;
             }
-
           // If the sector contains data before or after the chunk
           //   we're writing, then we need to read in the sector
           //   first.  Otherwise we start with a sector of all zeros. 
@@ -511,11 +904,11 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
         }
       */
 
-    /* You should get rid of bounce buffers. Instead, copy data into and out of sectors in the buffer cache directly. */
+      /* You should get rid of bounce buffers. Instead, copy data into and out of sectors in the buffer cache directly. */
     buffer_cache_write_at(sector_idx, buffer+bytes_written, chunk_size, sector_ofs);
-    /*******/  
+      /*******/  
 
-    /* Advance. */
+      /* Advance. */
     size -= chunk_size;
     offset += chunk_size;
     bytes_written += chunk_size;
@@ -551,98 +944,3 @@ inode_length (const struct inode *inode)
 {
   return inode->data.length;
 }
-
-
-
-static void inode_release(struct inode* inode)
-{
-  free_map_release (inode->sector, 1);
-  //free_map_release (inode->data.start,bytes_to_sectors (inode->data.length)); 
-  struct inode_disk* disk_inode = &inode->data;
-  size_t length = disk_inode->length;
-
-  if(length > 0)
-  {
-    size_t total_sectors = bytes_to_sectors(length);
-    bool is_indirect = false;
-    bool is_doulby_indirect = false;
-    if(DIRECT_BLOCK_CNT < total_sectors)
-    {
-      is_indirect = true;
-    }
-    if(DIRECT_BLOCK_CNT+128 < total_sectors)
-    {
-      is_doulby_indirect = true;
-
-    }
-    //(i) direct blocks release.
-    size_t total_direct_blocks = total_sectors <= DIRECT_BLOCK_CNT? total_sectors : DIRECT_BLOCK_CNT;
-    size_t dbi; //direct block index
-    for(dbi = 0; dbi <total_direct_blocks; dbi++)
-    {
-      free_map_release(disk_inode->direct_blocks[dbi], 1);
-    }
-
-    //(ii) indirect blocks release.
-    if(is_indirect == true)
-    {
-      size_t total_indirect_blocks = total_sectors <= (DIRECT_BLOCK_CNT + 128)? (total_sectors - DIRECT_BLOCK_CNT) : 128;
-
-      disk_sector_t tmp_indirect_block[128];
-      buffer_cache_read_at(disk_inode->indirect_block, tmp_indirect_block, DISK_SECTOR_SIZE, 0);
-
-      size_t idbi; //indirect block index
-      for(idbi = 0; idbi < total_indirect_blocks; idbi++)
-      {
-        free_map_release(tmp_indirect_block[idbi], 1);
-      }
-      free_map_release(disk_inode->indirect_block, 1);
-    }
-
-    //(iii) doubly indirect blocks release.
-    if(is_doulby_indirect == true)
-    {
-
-      disk_sector_t tmp_doubly_indirect_block[128];
-      buffer_cache_read_at(disk_inode->doubly_indirect_block, tmp_doubly_indirect_block, DISK_SECTOR_SIZE, 0);
-
-      disk_sector_t tmp_intermediate_block[128];
-      disk_sector_t dirty_data_block_index;
-
-      size_t extra_sectors = (total_sectors - DIRECT_BLOCK_CNT - 128);
-      size_t total_intermediate_block_cnt = (extra_sectors + 127) /128;
-
-      size_t intermediate_bi; //intermediate block index
-      size_t doubly_idbi;
-
-
-      for(intermediate_bi = 0; intermediate_bi < total_intermediate_block_cnt - 1; intermediate_bi++)
-      {
-        buffer_cache_read_at(tmp_doubly_indirect_block[intermediate_bi], tmp_intermediate_block, DISK_SECTOR_SIZE, 0);
-
-        for(doubly_idbi =0; doubly_idbi < 128; doubly_idbi++)
-        {
-          free_map_release(tmp_intermediate_block[doubly_idbi], 1);
-        }
-        free_map_release(tmp_doubly_indirect_block[intermediate_bi], 1);
-      }
-
-      buffer_cache_read_at(tmp_doubly_indirect_block[total_intermediate_block_cnt-1], tmp_intermediate_block, DISK_SECTOR_SIZE, 0);
-      dirty_data_block_index = (extra_sectors-1)%128;
-      for(doubly_idbi= 0; doubly_idbi <=dirty_data_block_index; doubly_idbi++)
-      {
-        free_map_release(tmp_intermediate_block[doubly_idbi], 1);
-      }
-      free_map_release(tmp_doubly_indirect_block[total_intermediate_block_cnt-1], 1);
-
-      free_map_release(disk_inode->doubly_indirect_block, 1);
-
-    }
-
-
-
-  }
-
-}
-
-

@@ -1,5 +1,5 @@
-Copying tests/userprog/open-null into /tmp/QdADB9H6me.dsk...
-Writing command line to /tmp/0g5x8k2i2e.dsk...
+Copying tests/userprog/open-null into /tmp/HZYR1HyrIu.dsk...
+Writing command line to /tmp/EkMuVJkxfj.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put open-null run open-null
@@ -18,10 +18,10 @@ Executing 'open-null':
 (open-null) begin
 open-null: exit(-1)
 Execution of 'open-null' complete.
-Timer: 499 ticks
-Thread: 30 idle ticks, 406 kernel ticks, 66 user ticks
+Timer: 520 ticks
+Thread: 30 idle ticks, 427 kernel ticks, 66 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 29 reads, 201 writes
+hd0:1: 28 reads, 202 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 898 characters output

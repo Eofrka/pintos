@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/grow-root-lg into /tmp/zxMASGtBXE.dsk...
-Copying tests/filesys/extended/tar into /tmp/zxMASGtBXE.dsk...
-Writing command line to /tmp/4VmhnlBNrV.dsk...
+Copying tests/filesys/extended/grow-root-lg into /tmp/YdoGuUSFI3.dsk...
+Copying tests/filesys/extended/tar into /tmp/YdoGuUSFI3.dsk...
+Writing command line to /tmp/3xX0Bozst8.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-root-lg put tar run grow-root-lg
@@ -33,16 +33,51 @@ Executing 'grow-root-lg':
 (grow-root-lg) creating and checking "file12"
 (grow-root-lg) creating and checking "file13"
 (grow-root-lg) creating and checking "file14"
-(grow-root-lg) create "file14": FAILED
-grow-root-lg: exit(1)
+(grow-root-lg) creating and checking "file15"
+(grow-root-lg) creating and checking "file16"
+(grow-root-lg) creating and checking "file17"
+(grow-root-lg) creating and checking "file18"
+(grow-root-lg) creating and checking "file19"
+(grow-root-lg) creating and checking "file20"
+(grow-root-lg) creating and checking "file21"
+(grow-root-lg) creating and checking "file22"
+(grow-root-lg) creating and checking "file23"
+(grow-root-lg) creating and checking "file24"
+(grow-root-lg) creating and checking "file25"
+(grow-root-lg) creating and checking "file26"
+(grow-root-lg) creating and checking "file27"
+(grow-root-lg) creating and checking "file28"
+(grow-root-lg) creating and checking "file29"
+(grow-root-lg) creating and checking "file30"
+(grow-root-lg) creating and checking "file31"
+(grow-root-lg) creating and checking "file32"
+(grow-root-lg) creating and checking "file33"
+(grow-root-lg) creating and checking "file34"
+(grow-root-lg) creating and checking "file35"
+(grow-root-lg) creating and checking "file36"
+(grow-root-lg) creating and checking "file37"
+(grow-root-lg) creating and checking "file38"
+(grow-root-lg) creating and checking "file39"
+(grow-root-lg) creating and checking "file40"
+(grow-root-lg) creating and checking "file41"
+(grow-root-lg) creating and checking "file42"
+(grow-root-lg) creating and checking "file43"
+(grow-root-lg) creating and checking "file44"
+(grow-root-lg) creating and checking "file45"
+(grow-root-lg) creating and checking "file46"
+(grow-root-lg) creating and checking "file47"
+(grow-root-lg) creating and checking "file48"
+(grow-root-lg) creating and checking "file49"
+(grow-root-lg) end
+grow-root-lg: exit(0)
 Execution of 'grow-root-lg' complete.
-Timer: 1768 ticks
-Thread: 30 idle ticks, 900 kernel ticks, 841 user ticks
+Timer: 4923 ticks
+Thread: 30 idle ticks, 959 kernel ticks, 3937 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 35 reads, 465 writes
+hd0:1: 33 reads, 539 writes
 hd1:0: 213 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1686 characters output
+Console: 3277 characters output
 Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...

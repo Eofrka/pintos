@@ -22,6 +22,7 @@ void fte_free(struct frame_table_entry* fte)
 
   /* If the clock_hand points to the fte which we are going to free, Advance the clock_hand.
      This pointer manipulation is very important!!. */
+
   lock_acquire(&frame_lock);
   if(frame_clock.clock_hand == &fte->elem)
   {

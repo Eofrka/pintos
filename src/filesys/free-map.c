@@ -88,6 +88,10 @@ free_map_create (void)
 bool free_map_possible(size_t cnt)
 {
   size_t i;
+  if(cnt == 0)
+  {
+    return true;
+  }
 
   for(i =0; i<cnt; i++)
   {

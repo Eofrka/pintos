@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-empty-name into /tmp/lchcWZH7jm.dsk...
-Copying tests/filesys/extended/tar into /tmp/lchcWZH7jm.dsk...
-Writing command line to /tmp/ps8vVzc3Us.dsk...
+Copying tests/filesys/extended/dir-empty-name into /tmp/0fettjBfDD.dsk...
+Copying tests/filesys/extended/tar into /tmp/0fettjBfDD.dsk...
+Writing command line to /tmp/9STf8cLu2F.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-empty-name put tar run dir-empty-name
@@ -21,10 +21,10 @@ Executing 'dir-empty-name':
 (dir-empty-name) mkdir "" (must return false)
 dir-empty-name: exit(-1)
 Execution of 'dir-empty-name' complete.
-Timer: 1001 ticks
-Thread: 30 idle ticks, 895 kernel ticks, 79 user ticks
+Timer: 1053 ticks
+Thread: 30 idle ticks, 947 kernel ticks, 79 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 35 reads, 431 writes
+hd0:1: 33 reads, 432 writes
 hd1:0: 212 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1027 characters output

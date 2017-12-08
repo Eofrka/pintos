@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-vine into /tmp/24vhYdfqTY.dsk...
-Copying tests/filesys/extended/tar into /tmp/24vhYdfqTY.dsk...
-Writing command line to /tmp/8az4muThgR.dsk...
+Copying tests/filesys/extended/dir-vine into /tmp/D0RPSUMXZk.dsk...
+Copying tests/filesys/extended/tar into /tmp/D0RPSUMXZk.dsk...
+Writing command line to /tmp/4vikYGztva.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-vine put tar run dir-vine
@@ -21,10 +21,10 @@ Executing 'dir-vine':
 (dir-vine) creating many levels of files and directories...
 dir-vine: exit(-1)
 Execution of 'dir-vine' complete.
-Timer: 1023 ticks
-Thread: 30 idle ticks, 913 kernel ticks, 83 user ticks
+Timer: 1076 ticks
+Thread: 30 idle ticks, 967 kernel ticks, 82 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 38 reads, 439 writes
+hd0:1: 36 reads, 440 writes
 hd1:0: 216 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 999 characters output

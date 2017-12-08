@@ -1,6 +1,6 @@
-Copying tests/vm/mmap-null into /tmp/OvRdrkQT6P.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/OvRdrkQT6P.dsk...
-Writing command line to /tmp/e2kq0ZxZE5.dsk...
+Copying tests/vm/mmap-null into /tmp/qTcGVYy62p.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/qTcGVYy62p.dsk...
+Writing command line to /tmp/cIWykvIngT.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-null put sample.txt run mmap-null
@@ -23,10 +23,10 @@ Executing 'mmap-null':
 (mmap-null) end
 mmap-null: exit(0)
 Execution of 'mmap-null' complete.
-Timer: 552 ticks
-Thread: 30 idle ticks, 434 kernel ticks, 91 user ticks
+Timer: 572 ticks
+Thread: 30 idle ticks, 454 kernel ticks, 91 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 29 reads, 206 writes
+hd0:1: 28 reads, 207 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1041 characters output

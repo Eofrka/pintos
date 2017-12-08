@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-over-file into /tmp/H98L1ZswGf.dsk...
-Copying tests/filesys/extended/tar into /tmp/H98L1ZswGf.dsk...
-Writing command line to /tmp/rBLRi97kd2.dsk...
+Copying tests/filesys/extended/dir-over-file into /tmp/m2iArpuvR3.dsk...
+Copying tests/filesys/extended/tar into /tmp/m2iArpuvR3.dsk...
+Writing command line to /tmp/hyHHDFlSnj.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-over-file put tar run dir-over-file
@@ -21,13 +21,13 @@ Executing 'dir-over-file':
 (dir-over-file) mkdir "abc"
 dir-over-file: exit(-1)
 Execution of 'dir-over-file' complete.
-Timer: 996 ticks
-Thread: 30 idle ticks, 894 kernel ticks, 75 user ticks
+Timer: 1048 ticks
+Thread: 30 idle ticks, 946 kernel ticks, 75 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 35 reads, 431 writes
+hd0:1: 33 reads, 432 writes
 hd1:0: 212 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1001 characters output
+Console: 1002 characters output
 Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...

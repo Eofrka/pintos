@@ -34,7 +34,8 @@ void spte_free(struct hash_elem* he, void* aux UNUSED)
   {
     case SPTE_FRAME :
       ASSERT(spte->fte != NULL);
-      fte_free(spte->fte);
+      if(!spte->is_mmap_page)
+        fte_free(spte->fte);
       break;
     case SPTE_FILE :
       break;

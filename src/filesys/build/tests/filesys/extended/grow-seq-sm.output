@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/grow-seq-sm into /tmp/kqhRGmZLYG.dsk...
-Copying tests/filesys/extended/tar into /tmp/kqhRGmZLYG.dsk...
-Writing command line to /tmp/pD0IxiNeAB.dsk...
+Copying tests/filesys/extended/grow-seq-sm into /tmp/NplGR5tUAB.dsk...
+Copying tests/filesys/extended/tar into /tmp/NplGR5tUAB.dsk...
+Writing command line to /tmp/s1epz7z9PU.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-seq-sm put tar run grow-seq-sm
@@ -21,16 +21,20 @@ Executing 'grow-seq-sm':
 (grow-seq-sm) create "testme"
 (grow-seq-sm) open "testme"
 (grow-seq-sm) writing "testme"
-(grow-seq-sm) write 1234 bytes at offset 0 in "testme" failed: FAILED
-grow-seq-sm: exit(1)
+(grow-seq-sm) close "testme"
+(grow-seq-sm) open "testme" for verification
+(grow-seq-sm) verified contents of "testme"
+(grow-seq-sm) close "testme"
+(grow-seq-sm) end
+grow-seq-sm: exit(0)
 Execution of 'grow-seq-sm' complete.
-Timer: 1068 ticks
-Thread: 30 idle ticks, 898 kernel ticks, 143 user ticks
+Timer: 1267 ticks
+Thread: 30 idle ticks, 953 kernel ticks, 287 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 35 reads, 436 writes
+hd0:1: 33 reads, 449 writes
 hd1:0: 213 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1119 characters output
+Console: 1214 characters output
 Keyboard: 0 keys pressed
 Exception: 6 page faults
 Powering off...

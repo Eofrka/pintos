@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/grow-two-files into /tmp/9Pc7j7tz24.dsk...
-Copying tests/filesys/extended/tar into /tmp/9Pc7j7tz24.dsk...
-Writing command line to /tmp/d3nAMNcdBe.dsk...
+Copying tests/filesys/extended/grow-two-files into /tmp/z58Vo6RrIh.dsk...
+Copying tests/filesys/extended/tar into /tmp/z58Vo6RrIh.dsk...
+Writing command line to /tmp/GTOu2Pbmh5.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-two-files put tar run grow-two-files
@@ -23,16 +23,24 @@ Executing 'grow-two-files':
 (grow-two-files) open "a"
 (grow-two-files) open "b"
 (grow-two-files) write "a" and "b" alternately
-(grow-two-files) write 250 bytes at offset 0 in "a" returned 0: FAILED
-grow-two-files: exit(1)
+(grow-two-files) close "a"
+(grow-two-files) close "b"
+(grow-two-files) open "a" for verification
+(grow-two-files) verified contents of "a"
+(grow-two-files) close "a"
+(grow-two-files) open "b" for verification
+(grow-two-files) verified contents of "b"
+(grow-two-files) close "b"
+(grow-two-files) end
+grow-two-files: exit(0)
 Execution of 'grow-two-files' complete.
-Timer: 1150 ticks
-Thread: 30 idle ticks, 911 kernel ticks, 213 user ticks
+Timer: 1642 ticks
+Thread: 30 idle ticks, 964 kernel ticks, 651 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 36 reads, 441 writes
+hd0:1: 34 reads, 474 writes
 hd1:0: 215 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1207 characters output
+Console: 1435 characters output
 Keyboard: 0 keys pressed
 Exception: 9 page faults
 Powering off...

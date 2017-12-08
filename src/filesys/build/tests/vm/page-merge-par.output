@@ -1,6 +1,6 @@
-Copying tests/vm/page-merge-par into /tmp/uei7ZnIssQ.dsk...
-Copying tests/vm/child-sort into /tmp/uei7ZnIssQ.dsk...
-Writing command line to /tmp/mDrT96TNDz.dsk...
+Copying tests/vm/page-merge-par into /tmp/kC8SNHI4ry.dsk...
+Copying tests/vm/child-sort into /tmp/kC8SNHI4ry.dsk...
+Writing command line to /tmp/gdprQnlF6A.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put page-merge-par put child-sort run page-merge-par
@@ -23,22 +23,22 @@ Executing 'page-merge-par':
 (page-merge-par) sort chunk 1
 (page-merge-par) sort chunk 2
 (page-merge-par) sort chunk 3
+child-sort: exit(123)
 (page-merge-par) sort chunk 4
-child-sort: exit(123)
 (page-merge-par) sort chunk 5
-child-sort: exit(123)
 (page-merge-par) sort chunk 6
+child-sort: exit(123)
 child-sort: exit(123)
 (page-merge-par) sort chunk 7
 (page-merge-par) wait for child 0
+child-sort: exit(123)
 (page-merge-par) wait for child 1
-child-sort: exit(123)
-child-sort: exit(123)
 (page-merge-par) wait for child 2
 child-sort: exit(123)
 (page-merge-par) wait for child 3
 child-sort: exit(123)
 (page-merge-par) wait for child 4
+child-sort: exit(123)
 (page-merge-par) wait for child 5
 child-sort: exit(123)
 (page-merge-par) wait for child 6
@@ -49,13 +49,13 @@ child-sort: exit(123)
 (page-merge-par) end
 page-merge-par: exit(0)
 Execution of 'page-merge-par' complete.
-Timer: 88986 ticks
-Thread: 30 idle ticks, 943 kernel ticks, 88017 user ticks
+Timer: 92976 ticks
+Thread: 30 idle ticks, 991 kernel ticks, 91958 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 4449 reads, 6613 writes
+hd0:1: 4463 reads, 6614 writes
 hd1:0: 207 reads, 0 writes
-hd1:1: 2192 reads, 3384 writes
+hd1:1: 2504 reads, 3696 writes
 Console: 1829 characters output
 Keyboard: 0 keys pressed
-Exception: 1082 page faults
+Exception: 1122 page faults
 Powering off...
