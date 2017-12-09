@@ -244,7 +244,7 @@ int syscall_read(int fd, void* buffer, unsigned size)
   /* If fd == 0, read from STDIN(0). Use input_getc() to read from keyboard. */
   if(fd == 0)
   {
-    lock_acquire(&filesys_lock);
+    //lock_acquire(&filesys_lock);
     unsigned i =0;
     while(i < size)
     {    
@@ -258,7 +258,7 @@ int syscall_read(int fd, void* buffer, unsigned size)
       i++;
     }
     ret = (int)i;
-    lock_release(&filesys_lock);
+    //lock_release(&filesys_lock);
     return ret;
 
   }
@@ -271,7 +271,7 @@ int syscall_read(int fd, void* buffer, unsigned size)
   /* Read from file. */
   else
   {
-    lock_acquire(&filesys_lock);
+    //lock_acquire(&filesys_lock);
     struct file_descriptor_table_entry* fdte= find_fdte(fd);
     if(fdte != NULL)
     {
@@ -283,7 +283,7 @@ int syscall_read(int fd, void* buffer, unsigned size)
         uint8_t key = get_user((uint8_t*)buffer+i); 
         if(put_user((uint8_t*)(buffer+i), key) == false)
         {
-          lock_release(&filesys_lock);      
+          //lock_release(&filesys_lock);      
           syscall_exit(-1);
         }
         i++;
@@ -294,7 +294,7 @@ int syscall_read(int fd, void* buffer, unsigned size)
     {
       ret = -1;
     }
-    lock_release(&filesys_lock);
+    //lock_release(&filesys_lock);
     return ret;
   }
 }
@@ -304,7 +304,7 @@ int syscall_write(int fd, const void* buffer, unsigned size)
   /* If fd == 1, write to STDOUT(1). Use putbuf() to write to the console. */
   if(fd == 1)
   {
-    lock_acquire(&filesys_lock);
+    //lock_acquire(&filesys_lock);
     unsigned i =0;
     while(i < size)
     {
@@ -312,7 +312,7 @@ int syscall_write(int fd, const void* buffer, unsigned size)
       i++;
     }
     ret = (int)i;
-    lock_release(&filesys_lock);
+    //lock_release(&filesys_lock);
     return ret;
   }
   /* It is not allowed to write to the STDIN(1). Just return -1. */
@@ -324,7 +324,7 @@ int syscall_write(int fd, const void* buffer, unsigned size)
   /* Write to the file. */
   else
   {
-    lock_acquire(&filesys_lock);
+    //lock_acquire(&filesys_lock);
     struct file_descriptor_table_entry* fdte = find_fdte(fd);
     if(fdte != NULL)
     {
@@ -334,7 +334,7 @@ int syscall_write(int fd, const void* buffer, unsigned size)
     {
       ret = -1;
     }
-    lock_release(&filesys_lock);
+    //lock_release(&filesys_lock);
     return ret;
   }
 }
@@ -511,7 +511,7 @@ void syscall_munmap(mapid_t mapping)
   struct list_elem* iter;
   struct thread* curr = thread_current();
   struct list* mmap_table =&curr->mmap_table;
-  lock_acquire(&filesys_lock);
+  //lock_acquire(&filesys_lock);
   for(iter = list_begin(mmap_table); iter != list_end(mmap_table); iter = list_next(iter))
   {
     struct mmap_table_entry* mmap_te = list_entry(iter, struct mmap_table_entry, elem);
@@ -531,17 +531,17 @@ void syscall_munmap(mapid_t mapping)
         struct supplemental_page_table_entry* spte = spte_lookup(&curr->spt,upage);
         if(spte == NULL)
         {
-          lock_release(&filesys_lock);
+          //lock_release(&filesys_lock);
           return;
         }
 
-        struct frame_table_entry* fte = spte->fte;
         
+        struct frame_table_entry* fte = spte->fte;
         /* If the page is on physical memory. */
         if (fte != NULL  && fte->kpage != NULL)
         {
-          /* Remove the fte from frame table. */
           lock_acquire(&frame_lock);
+          /* Remove the fte from frame table. */
           if(frame_clock.clock_hand == &fte->elem)
           {
             frame_clock.clock_hand= list_next(&fte->elem);
@@ -572,14 +572,16 @@ void syscall_munmap(mapid_t mapping)
         SAFE_FREE(spte);
       }
       
+      lock_acquire(&filesys_lock);
       file_close(mmap_te->file);
+      lock_release(&filesys_lock);
       SAFE_FREE(mmap_te);
       curr->next_mapid--;
-      lock_release(&filesys_lock);
+      //lock_release(&filesys_lock);
       return;
     }
   }
-  lock_release(&filesys_lock);
+  //lock_release(&filesys_lock);
   return;
 }
 

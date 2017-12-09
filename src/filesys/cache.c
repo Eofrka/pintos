@@ -6,7 +6,7 @@
 #include "threads/malloc.h"
 
 
-#define WRITE_BEHIND_PERIOD 1000
+#define WRITE_BEHIND_PERIOD 800
 
 static void write_behind_thread(void* aux);
 static void read_ahead_thread(void* aux);

@@ -4,6 +4,7 @@
 #include <hash.h>
 #include "filesys/off_t.h"
 
+
 #define MAX_STACK_SIZE 0x800000
 
 /* Current spte's state. */
@@ -37,6 +38,7 @@ struct supplemental_page_table_entry
   struct hash_elem h_elem;                  /* Hash table element for supplemental page table. */
 
 };
+
 
 unsigned spte_hash(const struct hash_elem* he, void* aux);
 bool spte_less(const struct hash_elem* he_a, const struct hash_elem* he_b, void* aux);

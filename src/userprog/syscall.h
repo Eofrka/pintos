@@ -4,9 +4,6 @@
 /*******/
 #include "userprog/process.h"
 
-/* Global variable. */
-/* Filesys lock */
-struct lock filesys_lock;
 
 /* System call declarations. */
 /*****************************************************************************************************************************/

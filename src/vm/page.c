@@ -7,7 +7,6 @@
 #include "vm/swap.h"
 #include <stdio.h>
 
-
 /* Returns a hash value for spt. */
 unsigned spte_hash(const struct hash_elem* he, void* aux UNUSED)
 {

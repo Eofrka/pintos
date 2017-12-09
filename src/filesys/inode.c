@@ -58,6 +58,13 @@ struct inode
     bool removed;                       /* True if deleted, false otherwise. */
     int deny_write_cnt;                 /* 0: writes ok, >0: deny writes. */
     struct inode_disk data;             /* Inode content. */
+  /* pj4 */
+  /*******/
+    struct semaphore rw_mutex;
+    struct semaphore mutex;
+    struct semaphore turn;
+    int read_cnt;
+  /*******/
 };
 
 
@@ -78,7 +85,7 @@ static inline size_t length_to_logical_blocks(off_t length)
 static size_t get_additional_blocks(struct inode_disk* disk_inode, off_t final_length);
 static size_t get_child_blocks(off_t length);
 static void inode_release(struct inode* inode);
-static void file_growth(struct inode* inode, off_t final_length);
+static bool file_growth(struct inode* inode, off_t final_length);
 
 /* New static function definitions. */
 static size_t get_additional_blocks(struct inode_disk* disk_inode, off_t final_length)
@@ -220,16 +227,20 @@ static void inode_release(struct inode* inode)
 }
 
 
-static void file_growth(struct inode* inode, off_t final_length)
+static bool file_growth(struct inode* inode, off_t final_length)
 {
   struct inode_disk* disk_inode = &inode->data;
   off_t current_length = disk_inode->length;
   if(current_length >= final_length)
   {
     //file growth is not needed.
-    return;
+    return false;
   }
 
+  sema_down(&inode->turn);
+  sema_down(&inode->rw_mutex);
+  sema_up(&inode->turn);
+  
   size_t additional_blocks = 0;
   size_t current_child_blocks = get_child_blocks(current_length);
   size_t final_child_blocks = get_child_blocks(final_length);
@@ -380,6 +391,8 @@ static void file_growth(struct inode* inode, off_t final_length)
     disk_inode->length = final_length;
     buffer_cache_write_at(inode->sector, disk_inode, DISK_SECTOR_SIZE, 0);
   }
+
+  return true;
 
 }
 
@@ -705,7 +718,12 @@ inode_open (disk_sector_t sector)
   inode->removed = false;
   /* pj4 */
   /*******/
-  //disk_read (filesys_disk, inode->sector, &inode->data);
+
+  sema_init(&inode->rw_mutex, 1);
+  sema_init(&inode->mutex, 1);
+  sema_init(&inode->turn, 1);
+  sema_init(&inode->mutex, 1);
+  inode->read_cnt = 0;
   buffer_cache_read_at(sector, &inode->data, DISK_SECTOR_SIZE, 0);
   /*******/
   return inode;
@@ -778,6 +796,15 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
   //uint8_t *bounce = NULL;
   /*******/
 
+  sema_down(&inode->turn);
+  sema_down(&inode->mutex);
+  inode->read_cnt++;
+  if(inode->read_cnt == 1)
+    sema_down(&inode->rw_mutex);
+  sema_up(&inode->turn);
+  sema_up(&inode->mutex);
+
+
   while (size > 0) 
   {
     /* Disk sector to read, starting byte offset within sector. */
@@ -830,6 +857,11 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
   }
   //free (bounce);
 
+  sema_down(&inode->mutex);
+  inode->read_cnt--;
+  if(inode->read_cnt == 0)
+    sema_up(&inode->rw_mutex);
+  sema_up(&inode->mutex);
   return bytes_read;
 }
 
@@ -848,16 +880,15 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
   /*******/
   //uint8_t *bounce = NULL;
   /*******/
-
   if (inode->deny_write_cnt)
     return 0;
-
+  
   /* pj4 */
   /*******/
-  off_t final_length = offset+ size;
-  file_growth(inode, final_length);
-  /*******/
 
+  off_t final_length = offset+ size;
+  bool growth_occured = file_growth(inode, final_length);
+  /*******/
   while (size > 0) 
   {
     /* Sector to write, starting byte offset within sector. */
@@ -913,6 +944,8 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
     bytes_written += chunk_size;
   }
   //free (bounce);
+  if(growth_occured == true)
+    sema_up(&inode->rw_mutex);
 
   return bytes_written;
 }
@@ -943,3 +976,4 @@ inode_length (const struct inode *inode)
 {
   return inode->data.length;
 }
+

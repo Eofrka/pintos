@@ -307,6 +307,7 @@ process_exit (void)
   {
     syscall_munmap(curr->next_mapid-1);
   }
+
 /*******/  
 #endif
 
@@ -317,8 +318,6 @@ process_exit (void)
     syscall_close(curr->next_fd-1);
   }
 
-
-
   /* Call file_close() to call file_allow_write(). This intervene filesystem, 
   so lock_acquire() and lock_release() needed! */
   if(curr->executable != NULL)
@@ -327,15 +326,14 @@ process_exit (void)
     file_close(curr->executable);
     lock_release(&filesys_lock);
   }
-
   uint32_t *pd;
 
 /* pj3 */
 /*******/
 #ifdef VM
-
   /* Destroy supplemental page table. */
   spt_destroy(&curr->spt);
+
 /*******/  
 #endif
 

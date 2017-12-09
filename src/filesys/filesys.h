@@ -3,20 +3,20 @@
 
 #include <stdbool.h>
 #include "filesys/off_t.h"
-
 /* pj4 */
 /*******/
 #include "devices/disk.h"
+/*******/
+
+/* pj2 */
+/*******/
+#include "threads/synch.h"
+struct lock filesys_lock;
 /*******/
 /* Sectors of system file inodes. */
 #define FREE_MAP_SECTOR 0       /* Free map file inode sector. */
 #define ROOT_DIR_SECTOR 1       /* Root directory file inode sector. */
 
-/* pj4 */
-/*******/
-//#define FILESYS_DISK_MAX_BYTES 1<<23
-//#define FILESYS_DISK_MAX_SECTORS (FILESYS_DISK_MAX_BYTES / DISK_SECTOR_SIZE)
-/*******/
 
 /* Disk used for file system. */
 extern struct disk *filesys_disk;

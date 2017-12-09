@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-under-file into /tmp/63wBdj7Any.dsk...
-Copying tests/filesys/extended/tar into /tmp/63wBdj7Any.dsk...
-Writing command line to /tmp/SjKNhtnqbG.dsk...
+Copying tests/filesys/extended/dir-under-file into /tmp/HOAxlKi6pK.dsk...
+Copying tests/filesys/extended/tar into /tmp/HOAxlKi6pK.dsk...
+Writing command line to /tmp/38bJKEUZ9R.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-under-file put tar run dir-under-file
@@ -22,13 +22,13 @@ Executing 'dir-under-file':
 (dir-under-file) mkdir "abc" (must return false)
 dir-under-file: exit(-1)
 Execution of 'dir-under-file' complete.
-Timer: 1072 ticks
-Thread: 30 idle ticks, 948 kernel ticks, 98 user ticks
+Timer: 1084 ticks
+Thread: 30 idle ticks, 954 kernel ticks, 103 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 435 writes
 hd1:0: 212 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1060 characters output
+Console: 1061 characters output
 Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...

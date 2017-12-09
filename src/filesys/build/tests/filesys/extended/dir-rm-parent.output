@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-rm-parent into /tmp/MV2hepnTKw.dsk...
-Copying tests/filesys/extended/tar into /tmp/MV2hepnTKw.dsk...
-Writing command line to /tmp/8K1wOC7tNC.dsk...
+Copying tests/filesys/extended/dir-rm-parent into /tmp/xddFgckbNx.dsk...
+Copying tests/filesys/extended/tar into /tmp/xddFgckbNx.dsk...
+Writing command line to /tmp/KJJHKT5ZhL.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-rm-parent put tar run dir-rm-parent
@@ -21,8 +21,8 @@ Executing 'dir-rm-parent':
 (dir-rm-parent) mkdir "a"
 dir-rm-parent: exit(-1)
 Execution of 'dir-rm-parent' complete.
-Timer: 1048 ticks
-Thread: 30 idle ticks, 946 kernel ticks, 75 user ticks
+Timer: 1057 ticks
+Thread: 30 idle ticks, 955 kernel ticks, 75 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 432 writes
 hd1:0: 212 reads, 0 writes

@@ -1,12 +1,13 @@
 #include "vm/frame.h"
 #include "threads/malloc.h"
-#include "userprog/syscall.h"
+#include "filesys/filesys.h"
 #include "filesys/file.h"
 #include <string.h>
 #include <stdio.h>
 #include "userprog/pagedir.h"
 #include "threads/vaddr.h"
 #include "vm/swap.h"
+#include "threads/thread.h"
 
 /* Initilizes frame_lock and frame_table. */
 void frame_init(void)
@@ -22,7 +23,6 @@ void fte_free(struct frame_table_entry* fte)
 
   /* If the clock_hand points to the fte which we are going to free, Advance the clock_hand.
      This pointer manipulation is very important!!. */
-
   lock_acquire(&frame_lock);
   if(frame_clock.clock_hand == &fte->elem)
   {
@@ -34,6 +34,7 @@ void fte_free(struct frame_table_entry* fte)
   }
   
   list_remove(&fte->elem);
+  lock_release(&frame_lock);
   ASSERT(fte->kpage != NULL);
   struct supplemental_page_table_entry* spte = fte->spte;
   ASSERT(spte != NULL);
@@ -47,14 +48,16 @@ void fte_free(struct frame_table_entry* fte)
     dirty = dirty || spte->swap_idx != SWAP_IDX_DEFAULT;
     if(dirty)
     {
+      //lock_acquire(&filesys_lock);
       file_write_at(spte->file, fte->kpage, spte->page_read_bytes, spte->ofs);
+      //lock_release(&filesys_lock);
     }
   }
 
   palloc_free_page(fte->kpage);
   pagedir_clear_page(spte->pagedir, spte->upage);
   SAFE_FREE(fte);
-  lock_release(&frame_lock);
+
   
 }
 
@@ -154,13 +157,14 @@ bool fte_fetch(struct frame_table_entry* fte, struct supplemental_page_table_ent
     case SPTE_FILE :
     lock_acquire(&filesys_lock);
     file_seek(spte->file, spte->ofs);
+    lock_release(&filesys_lock);
     if (file_read (spte->file, fte->kpage, spte->page_read_bytes) != (int) spte->page_read_bytes)
     {
-      lock_release(&filesys_lock);
+      //lock_release(&filesys_lock);
       return false; 
     }
     memset ((uint8_t*)fte->kpage + spte->page_read_bytes, 0, spte->page_zero_bytes);
-    lock_release(&filesys_lock);
+    //lock_release(&filesys_lock);
     break;
     case SPTE_SWAP :
     swap_in(spte, fte);
@@ -337,11 +341,11 @@ void* frame_realloc(enum palloc_flags flags)
   {
     if(victim_spte->is_mmap_page)
     {
-      lock_acquire(&filesys_lock);
+      //lock_acquire(&filesys_lock);
       file_write_at(victim_spte->file, victim_fte->kpage, victim_spte->page_read_bytes, victim_spte->ofs);
       victim_spte->state = SPTE_FILE;
       victim_spte->fte = NULL;
-      lock_release(&filesys_lock);
+      //lock_release(&filesys_lock);
     }
     else
     {

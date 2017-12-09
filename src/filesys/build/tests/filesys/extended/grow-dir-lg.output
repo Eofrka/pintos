@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/grow-dir-lg into /tmp/01IfLvaMta.dsk...
-Copying tests/filesys/extended/tar into /tmp/01IfLvaMta.dsk...
-Writing command line to /tmp/vM5eAJFrA7.dsk...
+Copying tests/filesys/extended/grow-dir-lg into /tmp/57lyxOoZzT.dsk...
+Copying tests/filesys/extended/tar into /tmp/57lyxOoZzT.dsk...
+Writing command line to /tmp/CcrHfQaGps.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-dir-lg put tar run grow-dir-lg
@@ -21,8 +21,8 @@ Executing 'grow-dir-lg':
 (grow-dir-lg) mkdir /x
 grow-dir-lg: exit(-1)
 Execution of 'grow-dir-lg' complete.
-Timer: 1057 ticks
-Thread: 30 idle ticks, 958 kernel ticks, 74 user ticks
+Timer: 1065 ticks
+Thread: 30 idle ticks, 963 kernel ticks, 75 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 436 writes
 hd1:0: 214 reads, 0 writes
