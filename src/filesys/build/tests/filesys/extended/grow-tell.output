@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/grow-tell into /tmp/b5YIqMxaYa.dsk...
-Copying tests/filesys/extended/tar into /tmp/b5YIqMxaYa.dsk...
-Writing command line to /tmp/k8EZbHsSAP.dsk...
+Copying tests/filesys/extended/grow-tell into /tmp/aALJZjuGP9.dsk...
+Copying tests/filesys/extended/tar into /tmp/aALJZjuGP9.dsk...
+Writing command line to /tmp/QPzfeBwNBu.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-tell put tar run grow-tell
@@ -28,8 +28,8 @@ Executing 'grow-tell':
 (grow-tell) end
 grow-tell: exit(0)
 Execution of 'grow-tell' complete.
-Timer: 1292 ticks
-Thread: 30 idle ticks, 1019 kernel ticks, 246 user ticks
+Timer: 1356 ticks
+Thread: 30 idle ticks, 1082 kernel ticks, 247 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 442 writes
 hd1:0: 213 reads, 0 writes

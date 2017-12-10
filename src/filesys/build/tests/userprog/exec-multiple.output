@@ -1,6 +1,6 @@
-Copying tests/userprog/exec-multiple into /tmp/QBz8Kjx6zN.dsk...
-Copying tests/userprog/child-simple into /tmp/QBz8Kjx6zN.dsk...
-Writing command line to /tmp/5cQlORdfYQ.dsk...
+Copying tests/userprog/exec-multiple into /tmp/3pXVQVa25S.dsk...
+Copying tests/userprog/child-simple into /tmp/3pXVQVa25S.dsk...
+Writing command line to /tmp/YyFzWxpoBn.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put exec-multiple put child-simple run exec-multiple
@@ -29,13 +29,13 @@ child-simple: exit(81)
 (exec-multiple) end
 exec-multiple: exit(0)
 Execution of 'exec-multiple' complete.
-Timer: 1310 ticks
-Thread: 30 idle ticks, 954 kernel ticks, 329 user ticks
+Timer: 1369 ticks
+Thread: 30 idle ticks, 1013 kernel ticks, 329 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 55 reads, 398 writes
 hd1:0: 195 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1180 characters output
+Console: 1181 characters output
 Keyboard: 0 keys pressed
 Exception: 21 page faults
 Powering off...

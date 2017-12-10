@@ -1,0 +1,89 @@
+rm -f tmp.dsk
+pintos-mkdisk tmp.dsk 2
+pintos -v -k -T 60 --bochs  --fs-disk=tmp.dsk -p tests/filesys/extended/grow-root-sm -a grow-root-sm -p tests/filesys/extended/tar -a tar --swap-disk=4 -- -q   -f run grow-root-sm < /dev/null 2> tests/filesys/extended/grow-root-sm.errors |tee tests/filesys/extended/grow-root-sm.output
+Copying tests/filesys/extended/grow-root-sm into /tmp/MNXEHM8qPD.dsk...
+Copying tests/filesys/extended/tar into /tmp/MNXEHM8qPD.dsk...
+Writing command line to /tmp/5gESWDcxp4.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
+Kernel command line: -q -f put grow-root-sm put tar run grow-root-sm
+Pintos booting with 4,096 kB RAM...
+368 pages available in kernel pool.
+368 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
+hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
+hd1:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00021"
+hd1:1: detected 8,064 sector (3 MB) disk, model "Generic 1234", serial "BXHD00022"
+Formatting file system...done.
+Boot complete.
+Putting 'grow-root-sm' into the file system...
+Putting 'tar' into the file system...
+Executing 'grow-root-sm':
+(grow-root-sm) begin
+(grow-root-sm) creating and checking "file0"
+(grow-root-sm) creating and checking "file1"
+(grow-root-sm) creating and checking "file2"
+(grow-root-sm) creating and checking "file3"
+(grow-root-sm) creating and checking "file4"
+(grow-root-sm) creating and checking "file5"
+(grow-root-sm) creating and checking "file6"
+(grow-root-sm) creating and checking "file7"
+(grow-root-sm) creating and checking "file8"
+(grow-root-sm) creating and checking "file9"
+(grow-root-sm) creating and checking "file10"
+(grow-root-sm) creating and checking "file11"
+(grow-root-sm) creating and checking "file12"
+(grow-root-sm) creating and checking "file13"
+(grow-root-sm) creating and checking "file14"
+(grow-root-sm) creating and checking "file15"
+(grow-root-sm) creating and checking "file16"
+(grow-root-sm) creating and checking "file17"
+(grow-root-sm) creating and checking "file18"
+(grow-root-sm) creating and checking "file19"
+(grow-root-sm) end
+grow-root-sm: exit(0)
+Execution of 'grow-root-sm' complete.
+Timer: 2503 ticks
+Thread: 30 idle ticks, 1085 kernel ticks, 1391 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 33 reads, 477 writes
+hd1:0: 213 reads, 0 writes
+hd1:1: 0 reads, 0 writes
+Console: 1898 characters output
+Keyboard: 0 keys pressed
+Exception: 5 page faults
+Powering off...
+pintos -v -k -T 60  --bochs --fs-disk=tmp.dsk -g fs.tar -a tests/filesys/extended/grow-root-sm.tar --swap-disk=4 -- -q  run 'tar fs.tar /' < /dev/null 2> tests/filesys/extended/grow-root-sm-persistence.errors |tee tests/filesys/extended/grow-root-sm-persistence.output
+Writing command line to /tmp/GU0hCDqwBx.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
+Kernel command line: -q run 'tar fs.tar /' get fs.tar
+Pintos booting with 4,096 kB RAM...
+368 pages available in kernel pool.
+368 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
+hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
+hd1:0: detected 3,024 sector (1 MB) disk, model "Generic 1234", serial "BXHD00021"
+hd1:1: detected 8,064 sector (3 MB) disk, model "Generic 1234", serial "BXHD00022"
+Boot complete.
+Executing 'tar fs.tar /':
+/: open failed
+tar: exit(1)
+Execution of 'tar fs.tar /' complete.
+Getting 'fs.tar' from the file system...
+Timer: 326 ticks
+Thread: 30 idle ticks, 161 kernel ticks, 138 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 29 reads, 6 writes
+hd1:0: 0 reads, 3 writes
+hd1:1: 0 reads, 0 writes
+Console: 855 characters output
+Keyboard: 0 keys pressed
+Exception: 4 page faults
+Powering off...
+Copying tests/filesys/extended/grow-root-sm.tar out of /tmp/GAei6rogJK.dsk...
+rm -f tmp.dsk
+perl -I../.. ../../tests/filesys/extended/grow-root-sm.ck tests/filesys/extended/grow-root-sm tests/filesys/extended/grow-root-sm.result
+pass tests/filesys/extended/grow-root-sm

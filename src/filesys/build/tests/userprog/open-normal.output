@@ -1,6 +1,6 @@
-Copying tests/userprog/open-normal into /tmp/XWyzhmOYX8.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/XWyzhmOYX8.dsk...
-Writing command line to /tmp/NRUWz6HLMB.dsk...
+Copying tests/userprog/open-normal into /tmp/I3BHGtmPYO.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/I3BHGtmPYO.dsk...
+Writing command line to /tmp/uL3rOpK4cO.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put open-normal put sample.txt run open-normal
@@ -21,8 +21,8 @@ Executing 'open-normal':
 (open-normal) end
 open-normal: exit(0)
 Execution of 'open-normal' complete.
-Timer: 592 ticks
-Thread: 30 idle ticks, 487 kernel ticks, 78 user ticks
+Timer: 623 ticks
+Thread: 30 idle ticks, 519 kernel ticks, 77 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 28 reads, 206 writes
 hd1:0: 100 reads, 0 writes

@@ -60,10 +60,10 @@ struct inode
     struct inode_disk data;             /* Inode content. */
   /* pj4 */
   /*******/
-    struct semaphore rw_mutex;
-    struct semaphore mutex;
-    struct semaphore turn;
-    int read_cnt;
+  struct semaphore rw_mutex;
+  struct semaphore mutex;
+  struct semaphore turn;
+  int access_cnt;
   /*******/
 };
 
@@ -234,12 +234,16 @@ static bool file_growth(struct inode* inode, off_t final_length)
   if(current_length >= final_length)
   {
     //file growth is not needed.
+    sema_down(&inode->mutex);
+    inode->access_cnt++;
+    if(inode->access_cnt == 1)
+      sema_down(&inode->rw_mutex);
+    sema_up(&inode->turn);
+    sema_up(&inode->mutex);
     return false;
   }
 
-  sema_down(&inode->turn);
   sema_down(&inode->rw_mutex);
-  sema_up(&inode->turn);
 
   size_t additional_blocks = 0;
   size_t current_child_blocks = get_child_blocks(current_length);
@@ -391,7 +395,7 @@ static bool file_growth(struct inode* inode, off_t final_length)
     disk_inode->length = final_length;
     buffer_cache_write_at(inode->sector, disk_inode, DISK_SECTOR_SIZE, 0);
   }
-
+  sema_up(&inode->turn);
   return true;
 
 }
@@ -723,7 +727,7 @@ inode_open (disk_sector_t sector)
   sema_init(&inode->mutex, 1);
   sema_init(&inode->turn, 1);
   sema_init(&inode->mutex, 1);
-  inode->read_cnt = 0;
+  inode->access_cnt = 0;
   buffer_cache_read_at(sector, &inode->data, DISK_SECTOR_SIZE, 0);
   /*******/
   return inode;
@@ -798,8 +802,8 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
 
   sema_down(&inode->turn);
   sema_down(&inode->mutex);
-  inode->read_cnt++;
-  if(inode->read_cnt == 1)
+  inode->access_cnt++;
+  if(inode->access_cnt == 1)
     sema_down(&inode->rw_mutex);
   sema_up(&inode->turn);
   sema_up(&inode->mutex);
@@ -858,8 +862,8 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
   //free (bounce);
 
   sema_down(&inode->mutex);
-  inode->read_cnt--;
-  if(inode->read_cnt == 0)
+  inode->access_cnt--;
+  if(inode->access_cnt == 0)
     sema_up(&inode->rw_mutex);
   sema_up(&inode->mutex);
   return bytes_read;
@@ -886,7 +890,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
   /* pj4 */
   /*******/
 
-  
+  sema_down(&inode->turn);
   off_t final_length = offset+ size;
   bool growth_occured = file_growth(inode, final_length);
 
@@ -948,8 +952,17 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
   }
   //free (bounce);
   if(growth_occured == true)
+  {
     sema_up(&inode->rw_mutex);
-
+  }
+  else
+  {
+    sema_down(&inode->mutex);
+    inode->access_cnt--;
+    if(inode->access_cnt == 0)
+      sema_up(&inode->rw_mutex);
+    sema_up(&inode->mutex);
+  }
   return bytes_written;
 }
 

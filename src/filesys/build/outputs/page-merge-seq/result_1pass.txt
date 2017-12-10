@@ -1,0 +1,72 @@
+pintos -v -k -T 600 --bochs  --fs-disk=2 -p tests/vm/page-merge-seq -a page-merge-seq -p tests/vm/child-sort -a child-sort --swap-disk=4 -- -q   -f run page-merge-seq < /dev/null 2> tests/vm/page-merge-seq.errors |tee tests/vm/page-merge-seq.output
+Copying tests/vm/page-merge-seq into /tmp/AkPgF5RLev.dsk...
+Copying tests/vm/child-sort into /tmp/AkPgF5RLev.dsk...
+Writing command line to /tmp/W07CI8drl0.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
+Kernel command line: -q -f put page-merge-seq put child-sort run page-merge-seq
+Pintos booting with 4,096 kB RAM...
+368 pages available in kernel pool.
+368 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
+hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
+hd1:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00021"
+hd1:1: detected 8,064 sector (3 MB) disk, model "Generic 1234", serial "BXHD00022"
+Formatting file system...done.
+Boot complete.
+Putting 'page-merge-seq' into the file system...
+Putting 'child-sort' into the file system...
+Executing 'page-merge-seq':
+(page-merge-seq) begin
+(page-merge-seq) init
+(page-merge-seq) sort chunk 0
+child-sort: exit(123)
+(page-merge-seq) sort chunk 1
+child-sort: exit(123)
+(page-merge-seq) sort chunk 2
+child-sort: exit(123)
+(page-merge-seq) sort chunk 3
+child-sort: exit(123)
+(page-merge-seq) sort chunk 4
+child-sort: exit(123)
+(page-merge-seq) sort chunk 5
+child-sort: exit(123)
+(page-merge-seq) sort chunk 6
+child-sort: exit(123)
+(page-merge-seq) sort chunk 7
+child-sort: exit(123)
+(page-merge-seq) sort chunk 8
+child-sort: exit(123)
+(page-merge-seq) sort chunk 9
+child-sort: exit(123)
+(page-merge-seq) sort chunk 10
+child-sort: exit(123)
+(page-merge-seq) sort chunk 11
+child-sort: exit(123)
+(page-merge-seq) sort chunk 12
+child-sort: exit(123)
+(page-merge-seq) sort chunk 13
+child-sort: exit(123)
+(page-merge-seq) sort chunk 14
+child-sort: exit(123)
+(page-merge-seq) sort chunk 15
+child-sort: exit(123)
+(page-merge-seq) merge
+(page-merge-seq) verify
+(page-merge-seq) success, buf_idx=1,032,192
+(page-merge-seq) end
+page-merge-seq: exit(0)
+Execution of 'page-merge-seq' complete.
+Timer: 66049 ticks
+Thread: 30 idle ticks, 1183 kernel ticks, 64839 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 4529 reads, 4580 writes
+hd1:0: 205 reads, 0 writes
+hd1:1: 1464 reads, 2600 writes
+Console: 1980 characters output
+Keyboard: 0 keys pressed
+Exception: 1270 page faults
+Powering off...
+perl -I../.. ../../tests/vm/page-merge-seq.ck tests/vm/page-merge-seq tests/vm/page-merge-seq.result
+pass tests/vm/page-merge-seq

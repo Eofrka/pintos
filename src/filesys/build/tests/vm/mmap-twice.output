@@ -1,6 +1,6 @@
-Copying tests/vm/mmap-twice into /tmp/oPAvOEiErG.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/oPAvOEiErG.dsk...
-Writing command line to /tmp/G5H2uiDPiv.dsk...
+Copying tests/vm/mmap-twice into /tmp/AGo2Zq2UNu.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/AGo2Zq2UNu.dsk...
+Writing command line to /tmp/3dbR3AtP0W.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-twice put sample.txt run mmap-twice
@@ -27,8 +27,8 @@ Executing 'mmap-twice':
 (mmap-twice) end
 mmap-twice: exit(0)
 Execution of 'mmap-twice' complete.
-Timer: 678 ticks
-Thread: 30 idle ticks, 508 kernel ticks, 143 user ticks
+Timer: 709 ticks
+Thread: 30 idle ticks, 540 kernel ticks, 142 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 213 writes
 hd1:0: 104 reads, 0 writes
