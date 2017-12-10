@@ -14,6 +14,7 @@
 ./src/filesys/directory.h
 ./src/filesys/directory.c
 ./src/filesys/inode.h
+./src/vm/build/threads/kernel.lds.s
 ./src/vm/frame.h
 ./src/vm/swap.h
 ./src/vm/frame.c

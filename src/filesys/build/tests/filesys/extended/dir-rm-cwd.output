@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-rm-cwd into /tmp/bWoEqgBBST.dsk...
-Copying tests/filesys/extended/tar into /tmp/bWoEqgBBST.dsk...
-Writing command line to /tmp/cFWStCEKrL.dsk...
+Copying tests/filesys/extended/dir-rm-cwd into /tmp/OwuWbl6oGt.dsk...
+Copying tests/filesys/extended/tar into /tmp/OwuWbl6oGt.dsk...
+Writing command line to /tmp/k1AGVcsGpK.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-rm-cwd put tar run dir-rm-cwd
@@ -22,8 +22,8 @@ Executing 'dir-rm-cwd':
 (dir-rm-cwd) open "/": FAILED
 dir-rm-cwd: exit(1)
 Execution of 'dir-rm-cwd' complete.
-Timer: 1219 ticks
-Thread: 30 idle ticks, 1108 kernel ticks, 84 user ticks
+Timer: 1249 ticks
+Thread: 30 idle ticks, 1137 kernel ticks, 86 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 34 reads, 442 writes
 hd1:0: 217 reads, 0 writes

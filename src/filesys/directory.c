@@ -6,6 +6,7 @@
 #include "filesys/inode.h"
 #include "threads/malloc.h"
 
+
 /* A directory. */
 struct dir 
   {
@@ -24,9 +25,33 @@ struct dir_entry
 /* Creates a directory with space for ENTRY_CNT entries in the
    given SECTOR.  Returns true if successful, false on failure. */
 bool
-dir_create (disk_sector_t sector, size_t entry_cnt) 
+dir_create (disk_sector_t sector,disk_sector_t parent_sector, size_t entry_cnt) 
 {
-  return inode_create (sector, entry_cnt * sizeof (struct dir_entry), true);
+  if(inode_create (sector, (entry_cnt+2) * sizeof (struct dir_entry), true) == false)
+  {
+    return false;
+  }
+
+  struct inode* inode = inode_open(sector);
+  struct dir* dir;
+  if(inode != NULL)
+  {
+    dir = dir_open(inode);
+    if(dir_add(dir, ".", sector) == false || dir_add(dir, "..", parent_sector) == false)
+    {
+      dir_close(dir);
+      return false;
+    }
+    else
+    {
+      dir_close(dir);
+      return true;
+    }
+  }
+  else
+  {
+    return false;
+  }
 }
 
 /* Opens and returns the directory for the given INODE, of which

@@ -167,6 +167,17 @@ start_process (void *cmdline_)
     /* Set parent thread's load flag to true. */
     ps->parent->load = true;
     /* Awake parent thread's sema_exec. */
+    /* pj4 */
+    /*******/
+    if(ps->parent != NULL && ps->parent->cwd == NULL)
+    {
+      curr->cwd = dir_open_root();
+    }
+    else
+    {
+      curr->cwd = dir_reopen(ps->parent->cwd);
+    }
+    /********/
     sema_up(&ps->parent->sema_exec);
   }
   /*******/
@@ -807,20 +818,18 @@ setup_stack (void **esp, struct arguments* args)
     lock_release(&frame_lock);
     return false;
   }
-  lock_release(&frame_lock);
 
   /* 5. Fetch frame. */
   if(!fte_fetch(fte, spte))
   {
     /* May not occur. */
-    lock_acquire(&frame_lock);
     list_remove(&fte->elem);
-    lock_release(&frame_lock);
     palloc_free_page(fte->kpage);
     SAFE_FREE(fte);
 
     hash_delete(&curr->spt, &spte->h_elem);
     SAFE_FREE(spte);
+    lock_release(&frame_lock);
     return false;
   }
 
@@ -828,15 +837,14 @@ setup_stack (void **esp, struct arguments* args)
         swapped_in page's dirty bit must be cleared because of pagedir_set_page(). */
   if(!fte_install(fte, spte))
   {
-    lock_acquire(&frame_lock);
     list_remove(&fte->elem);
-    lock_release(&frame_lock);
     palloc_free_page(fte->kpage);
     SAFE_FREE(fte);
     
 
     hash_delete(&curr->spt, &spte->h_elem);
     SAFE_FREE(spte);
+    lock_release(&frame_lock);
     return false;
   }
   else
@@ -844,8 +852,10 @@ setup_stack (void **esp, struct arguments* args)
     /* 7. Finally, update the spte's state into SPTE_FRAME. */
     spte->state = SPTE_FRAME;
 
+    lock_release(&frame_lock);
     /* 8. Push arguments into user stack. */
     push_arguments(args, esp);
+
     return true;
   }
   

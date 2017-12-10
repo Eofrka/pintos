@@ -63,8 +63,6 @@ void swap_in(struct supplemental_page_table_entry* spte, struct frame_table_entr
   { 
     disk_read(swap_table.disk, (swap_idx*sectors_in_page)+i, (uint8_t*)fte->kpage + (i*DISK_SECTOR_SIZE));
   }
-
-
   /* Flip swap table's used_map to indicate that the swap slot is free. */
   bitmap_flip(swap_table.used_map, swap_idx);
   lock_release(&swap_table.lock);

@@ -40,19 +40,7 @@ void fte_free(struct frame_table_entry* fte)
   ASSERT(spte != NULL);
   ASSERT(spte->pagedir != NULL);
 
-  if(spte->is_mmap_page)
-  {
-    void* upage = spte->upage;
-    /* If the page is dirty, write it into file. */
-    bool dirty = pagedir_is_dirty(spte->pagedir, upage);
-    dirty = dirty || spte->swap_idx != SWAP_IDX_DEFAULT;
-    if(dirty)
-    {
-      //lock_acquire(&filesys_lock);
-      file_write_at(spte->file, fte->kpage, spte->page_read_bytes, spte->ofs);
-      //lock_release(&filesys_lock);
-    }
-  }
+
 
   palloc_free_page(fte->kpage);
   pagedir_clear_page(spte->pagedir, spte->upage);
@@ -74,39 +62,35 @@ bool handle_page_fault(struct supplemental_page_table_entry* spte)
     lock_release(&frame_lock);
     return false;
   }
-  lock_release(&frame_lock);
-
 
   /* 2. Fetch data into fte by using spte's information. */
   if(!fte_fetch(fte,spte))
   {
-    lock_acquire(&frame_lock);
     list_remove(&fte->elem);
-    lock_release(&frame_lock);
     palloc_free_page (fte->kpage);
     SAFE_FREE(fte);
 
     hash_delete(&curr->spt, &spte->h_elem);
     SAFE_FREE(spte);
+    lock_release(&frame_lock);
     return false;
   }
 
   /* 3. Install the page. swapped_in page's dirty bit must be cleared because of pagedir_set_page(). */
   if(!fte_install(fte, spte))
   {
-    lock_acquire(&frame_lock);
     list_remove(&fte->elem);
-    lock_release(&frame_lock);
     palloc_free_page(fte->kpage);
     SAFE_FREE(fte);
-
     hash_delete(&curr->spt, &spte->h_elem);
     SAFE_FREE(spte);
+    lock_release(&frame_lock);
     return false;
   }
 
   /* 4. Update the spte's state into SPTE_FRAME. */
   spte->state = SPTE_FRAME;
+  lock_release(&frame_lock);
   return true;
 
 }
@@ -146,18 +130,15 @@ struct frame_table_entry* fte_obtain(struct supplemental_page_table_entry* spte,
 /* Fetches the data into a frame, by reading it from the file system, or swap slots, or zeroing it. */
 bool fte_fetch(struct frame_table_entry* fte, struct supplemental_page_table_entry* spte)
 {
-  ASSERT(fte->kpage != NULL);
 
+  ASSERT(fte->kpage != NULL);
   switch(spte->state)
   {
     case SPTE_FRAME :
     PANIC("SPTE_FRAME is not available state to fetch");
     break;
     case SPTE_FILE :
-    lock_acquire(&filesys_lock);
-    file_seek(spte->file, spte->ofs);
-    lock_release(&filesys_lock);
-    if (file_read (spte->file, fte->kpage, spte->page_read_bytes) != (int) spte->page_read_bytes)
+    if (file_read_at(spte->file, fte->kpage, spte->page_read_bytes, spte->ofs) != (int) spte->page_read_bytes)
     {
       //lock_release(&filesys_lock);
       return false; 
@@ -250,7 +231,7 @@ void* frame_realloc(enum palloc_flags flags)
 
   /* Calculate the start fte and last fte for one loop searching. */
   struct list_elem* start = fc->clock_hand;
-  /*
+  
   struct list_elem* last;
   if(start ==list_begin(&frame_table))
   {
@@ -260,7 +241,7 @@ void* frame_realloc(enum palloc_flags flags)
   {
     last = list_prev(start);
   }
-  */
+  
 
   /* victim finding loop. */
   struct list_elem* iter = start;
@@ -271,12 +252,6 @@ void* frame_realloc(enum palloc_flags flags)
     iter_fte = list_entry(iter, struct frame_table_entry, elem);
     //printf("iter_fte->kpage: [0x%08x], iter_fte->spte: [0x%08x]\n", iter_fte->kpage, iter_fte->spte);
     ASSERT(iter_fte->spte != NULL);
-    if(iter_fte->spte->state != SPTE_FRAME)
-    {
-      frame_advance_iter(&iter);
-      fc->clock_hand=iter;
-      continue;
-    }
 
     uint32_t* pd = iter_fte->spte->pagedir;
     void* upage = iter_fte->spte->upage;
@@ -286,7 +261,6 @@ void* frame_realloc(enum palloc_flags flags)
       pagedir_set_accessed(pd, upage ,false);
 
       /* If iter is last, Get the victim_fte and set clock_hand right after the victim_fte. Then break.*/ 
-      /*
       if(iter == last)
       {
         frame_advance_iter(&iter);
@@ -296,7 +270,6 @@ void* frame_realloc(enum palloc_flags flags)
         fc->clock_hand=iter;
         break;
       }
-      */
       /* Else, just advance the iter and clock_hand. */
       frame_advance_iter(&iter);
       fc->clock_hand=iter;

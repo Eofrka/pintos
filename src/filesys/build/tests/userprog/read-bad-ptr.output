@@ -1,6 +1,6 @@
-Copying tests/userprog/read-bad-ptr into /tmp/1qApwshGFy.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/1qApwshGFy.dsk...
-Writing command line to /tmp/joHm9OxYPF.dsk...
+Copying tests/userprog/read-bad-ptr into /tmp/fChUKPie3D.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/fChUKPie3D.dsk...
+Writing command line to /tmp/0vV8qJbkjV.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put read-bad-ptr put sample.txt run read-bad-ptr
@@ -21,8 +21,8 @@ Executing 'read-bad-ptr':
 (read-bad-ptr) open "sample.txt"
 read-bad-ptr: exit(-1)
 Execution of 'read-bad-ptr' complete.
-Timer: 629 ticks
-Thread: 30 idle ticks, 520 kernel ticks, 82 user ticks
+Timer: 658 ticks
+Thread: 30 idle ticks, 547 kernel ticks, 84 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 28 reads, 206 writes
 hd1:0: 100 reads, 0 writes

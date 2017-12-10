@@ -1,5 +1,5 @@
-Copying tests/vm/mmap-write into /tmp/RVqiEaXfYj.dsk...
-Writing command line to /tmp/QvShKpFpy3.dsk...
+Copying tests/vm/mmap-write into /tmp/xdzH6GI8JT.dsk...
+Writing command line to /tmp/R3MN2QUFgb.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-write run mmap-write
@@ -23,8 +23,8 @@ Executing 'mmap-write':
 (mmap-write) end
 mmap-write: exit(0)
 Execution of 'mmap-write' complete.
-Timer: 676 ticks
-Thread: 30 idle ticks, 504 kernel ticks, 145 user ticks
+Timer: 703 ticks
+Thread: 30 idle ticks, 528 kernel ticks, 147 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 31 reads, 213 writes
 hd1:0: 101 reads, 0 writes

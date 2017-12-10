@@ -592,7 +592,15 @@ void syscall_munmap(mapid_t mapping)
 /*******/
 bool syscall_chdir(const char* dir)
 {
+  /* Q?
+  if(dir[0] == '\0')
+  {
+    return true;
+  }
+  */
+
   return false;
+
 }
 
 bool syscall_mkdir(const char* dir)
