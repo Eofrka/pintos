@@ -1,5 +1,5 @@
-Copying tests/filesys/base/sm-random into /tmp/6hx2HDtEfU.dsk...
-Writing command line to /tmp/OnUBNW3ovs.dsk...
+Copying tests/filesys/base/sm-random into /tmp/DGwoBTYWtn.dsk...
+Writing command line to /tmp/wnkE6T9vdT.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put sm-random run sm-random
@@ -24,8 +24,8 @@ Executing 'sm-random':
 (sm-random) end
 sm-random: exit(0)
 Execution of 'sm-random' complete.
-Timer: 861 ticks
-Thread: 30 idle ticks, 514 kernel ticks, 320 user ticks
+Timer: 864 ticks
+Thread: 30 idle ticks, 514 kernel ticks, 323 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 221 writes
 hd1:0: 104 reads, 0 writes

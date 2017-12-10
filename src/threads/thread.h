@@ -152,6 +152,11 @@ struct thread
 #endif    
 /*******/
 
+    /* pj4 */
+    /*******/
+    struct dir* cwd;                    /* Current working directory. */ 
+    /*******/
+
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */
   };

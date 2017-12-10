@@ -29,6 +29,16 @@ void syscall_munmap(mapid_t mapping);
 #endif
 /*******/
 
+
+/* pj4 */
+/*******/
+bool syscall_chdir(const char* dir);
+bool syscall_mkdir(const char* dir);
+bool syscall_readdir(int fd, char* name);
+bool syscall_isdir(int fd);
+int syscall_inumber(int fd);
+/*******/
+
 /*****************************************************************************************************************************/
 /*******/
 

@@ -51,19 +51,22 @@ void swap_out(struct supplemental_page_table_entry* victim_spte, struct frame_ta
 /* Swap in data using spte's inforamtion. */
 void swap_in(struct supplemental_page_table_entry* spte, struct frame_table_entry* fte)
 {
-  lock_acquire(&swap_table.lock);
   /* Get swap_idx from the spte. */
   size_t swap_idx = spte->swap_idx;
   size_t sectors_in_page = PGSIZE/DISK_SECTOR_SIZE;
   size_t i;
 
   /* Save the data into the fte's frame from the swap disk. */
+  lock_acquire(&frame_lock); 
   for(i=0; i<sectors_in_page; i++)
-  {
+  { 
     disk_read(swap_table.disk, (swap_idx*sectors_in_page)+i, (uint8_t*)fte->kpage + (i*DISK_SECTOR_SIZE));
   }
+  lock_release(&frame_lock);
 
-  /* Flip swap table's used_map to indicate that the swap slot is free. */ 
+
+  /* Flip swap table's used_map to indicate that the swap slot is free. */
+  lock_acquire(&swap_table.lock); 
   bitmap_flip(swap_table.used_map, swap_idx);
   lock_release(&swap_table.lock);
 

@@ -1,5 +1,5 @@
-Copying tests/filesys/base/lg-full into /tmp/TV4B9CS8VN.dsk...
-Writing command line to /tmp/O3ZgvXguMQ.dsk...
+Copying tests/filesys/base/lg-full into /tmp/zqgICiPvkH.dsk...
+Writing command line to /tmp/3aXBxVY6Xj.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put lg-full run lg-full
@@ -26,8 +26,8 @@ Executing 'lg-full':
 (lg-full) end
 lg-full: exit(0)
 Execution of 'lg-full' complete.
-Timer: 2507 ticks
-Thread: 30 idle ticks, 496 kernel ticks, 1984 user ticks
+Timer: 2512 ticks
+Thread: 30 idle ticks, 496 kernel ticks, 1989 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 184 reads, 510 writes
 hd1:0: 102 reads, 0 writes

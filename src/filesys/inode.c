@@ -35,7 +35,8 @@ struct inode_disk
     disk_sector_t direct_blocks[MAX_DIRECT_BLOCK_CNT];  /* Direct blocks. */
     disk_sector_t indirect_block;                       /* Indirect block. */
     disk_sector_t doubly_indirect_block;                /* Doubly indirect block. */
-    uint32_t unused[60];                                /* Not used. */
+    uint32_t is_dir;                                    /* Directory: 1, normal file: 0. */
+    uint32_t unused[59];                                /* Not used. */
     /*******/
 };
 
@@ -52,12 +53,12 @@ bytes_to_sectors (off_t size)
 /* In-memory inode. */
 struct inode 
 {
-    struct list_elem elem;              /* Element in inode list. */
-    disk_sector_t sector;               /* Sector number of disk location. */
-    int open_cnt;                       /* Number of openers. */
-    bool removed;                       /* True if deleted, false otherwise. */
-    int deny_write_cnt;                 /* 0: writes ok, >0: deny writes. */
-    struct inode_disk data;             /* Inode content. */
+  struct list_elem elem;              /* Element in inode list. */
+  disk_sector_t sector;               /* Sector number of disk location. */
+  int open_cnt;                       /* Number of openers. */
+  bool removed;                       /* True if deleted, false otherwise. */
+  int deny_write_cnt;                 /* 0: writes ok, >0: deny writes. */
+  struct inode_disk data;             /* Inode content. */
   /* pj4 */
   /*******/
   struct semaphore rw_mutex;
@@ -484,7 +485,7 @@ inode_init (void)
    Returns true if successful.
    Returns false if memory or disk allocation fails. */
 bool
-inode_create (disk_sector_t sector, off_t length)
+inode_create (disk_sector_t sector, off_t length, bool is_dir)
 {
   struct inode_disk *disk_inode = NULL;
   ASSERT (length >= 0);
@@ -494,41 +495,13 @@ inode_create (disk_sector_t sector, off_t length)
   ASSERT (sizeof *disk_inode == DISK_SECTOR_SIZE);
   disk_inode = calloc (1, sizeof *disk_inode);
 
-  /*
-  if (disk_inode != NULL)
-  {
-    size_t sectors = bytes_to_sectors (length);
-    disk_inode->length = length;
-    disk_inode->magic = INODE_MAGIC;
-    if (free_map_allocate (sectors, &disk_inode->start))
-    {
-
-      //disk_write (filesys_disk, sector, disk_inode);
-      buffer_cache_write_at(sector, disk_inode, DISK_SECTOR_SIZE, 0);
-      if (sectors > 0) 
-      {
-        static char zeros[DISK_SECTOR_SIZE];
-        size_t i;
-
-        for (i = 0; i < sectors; i++)
-        { 
-          //disk_write (filesys_disk, disk_inode->start + i, zeros); 
-          buffer_cache_write_at(disk_inode->start+i, zeros, DISK_SECTOR_SIZE,0);
-        }
-      }
-      success = true; 
-    } 
-    free (disk_inode);
-  }
-  return success;
-  */
-
   /* pj4 */
   /*******/
   if( disk_inode != NULL)
   { 
     disk_inode->length = 0;
     disk_inode->magic = INODE_MAGIC;
+    disk_inode->is_dir = is_dir;
     off_t final_length = length;
     size_t total_logical_blocks = length_to_logical_blocks(length);
 
@@ -726,7 +699,6 @@ inode_open (disk_sector_t sector)
   sema_init(&inode->rw_mutex, 1);
   sema_init(&inode->mutex, 1);
   sema_init(&inode->turn, 1);
-  sema_init(&inode->mutex, 1);
   inode->access_cnt = 0;
   buffer_cache_read_at(sector, &inode->data, DISK_SECTOR_SIZE, 0);
   /*******/

@@ -167,7 +167,7 @@ int syscall_wait(pid_t pid)
 bool syscall_create(const char* file, unsigned initial_size)
 {
   lock_acquire(&filesys_lock);
-  bool ret = filesys_create(file, initial_size);
+  bool ret = filesys_create(file, initial_size, false);
   lock_release(&filesys_lock);
   return ret;
 }
@@ -587,6 +587,33 @@ void syscall_munmap(mapid_t mapping)
 
 #endif
 /*******/
+
+/* pj4 */
+/*******/
+bool syscall_chdir(const char* dir)
+{
+  return false;
+}
+
+bool syscall_mkdir(const char* dir)
+{
+  return false;
+}
+bool syscall_readdir(int fd, char* name)
+{
+  return false;
+}
+bool syscall_isdir(int fd)
+{
+  return false;
+}
+int syscall_inumber(int fd)
+{
+  return -1;
+}
+/*******/
+
+
 /****************************************************************************************************************************/
 /*******/
 
@@ -738,6 +765,36 @@ syscall_handler (struct intr_frame *f)
     break;
 #endif     
 /*******/
+    case SYS_CHDIR:
+      arg1 = check_uaddr(esp+4, 4);
+      const char* dir = (char*)*(uint32_t*)arg1;
+      check_ustr(dir);
+      f->eax = (uint32_t)syscall_chdir(dir);
+      break;
+    case SYS_MKDIR:
+      arg1 = check_uaddr(esp+4, 4);
+      dir = (char*)*(uint32_t*)arg1;
+      check_ustr(dir);
+      f->eax = (uint32_t)syscall_mkdir(dir);
+      break;
+    case SYS_READDIR:
+      arg1 = check_uaddr(esp+4, 4);
+      fd = *(int*)arg1;
+      arg2 = check_uaddr(esp+8, 4);
+      char* name = (char*)*(uint32_t*)arg2;
+      check_ustr(name);
+      f->eax = (uint32_t)syscall_readdir(fd, name);
+      break;
+    case SYS_ISDIR:
+      arg1 = check_uaddr(esp+4,4);
+      fd = *(int*)arg1;
+      f->eax = (uint32_t)syscall_isdir(fd);
+      break;
+    case SYS_INUMBER:
+      arg1 = check_uaddr(esp+4, 4);
+      fd = *(int*)arg1;
+      f->eax = (uint32_t)syscall_inumber(fd);
+      break;
 
     default:
     syscall_exit(-1);

@@ -632,9 +632,14 @@ init_thread (struct thread *t, const char *name, int priority)
   t->esp = NULL;
   list_init(&t->mmap_table);
   t->next_mapid = 0;
-
 #endif
 /*******/  
+
+  /* pj4 */
+  /*******/
+  t->cwd = NULL;
+  /*******/
+
   t->magic = THREAD_MAGIC;
 }
 
