@@ -106,7 +106,6 @@ void buffer_cache_init(void)
     bce->accessed = false;
     bce->dirty = false;
     bce->rw_cnt = 0;
-    sema_init(&bce->rw_mutex, 1);
   }
   lock_init(&buffer_cache_lock);
   thread_create("write_behind_thread", PRI_MIN, write_behind_thread, NULL);
@@ -167,19 +166,17 @@ void buffer_cache_read_at(disk_sector_t sec_no, void* buffer, off_t size, off_t 
   }
   ASSERT(bce != NULL);
   ASSERT(bce->sec_no == sec_no);
-  lock_release(&buffer_cache_lock);
-  sema_down(&bce->rw_mutex);  
   bce->rw_cnt++;
-  sema_up(&bce->rw_mutex);
+  lock_release(&buffer_cache_lock);
 
   /* Actual read. */
   memcpy(buffer, bce->buffer + offset, size);
+
+
+  lock_acquire(&buffer_cache_lock);    
   bce->accessed = true;
-
-  sema_down(&bce->rw_mutex);    
   bce->rw_cnt--;
-  sema_up(&bce->rw_mutex);
-
+  lock_release(&buffer_cache_lock);
 }
 
 /* Writes BUFFER's data to bce which sec_no is SEC_NO. The amount of to_write bytes is SIZE and start position is OFFSET. */
@@ -227,20 +224,18 @@ void buffer_cache_write_at(disk_sector_t sec_no, const void* buffer, off_t size,
   ASSERT(bce != NULL);
   ASSERT(bce->sec_no == sec_no);
 
-
-  lock_release(&buffer_cache_lock);
-  sema_down(&bce->rw_mutex);  
   bce->rw_cnt++;
-  sema_up(&bce->rw_mutex);
+  lock_release(&buffer_cache_lock);
 
   /* Actual write. */
   memcpy(bce->buffer+offset, buffer, size);
-  bce->accessed = true;
-  bce->dirty = true;
 
-  sema_down(&bce->rw_mutex);  
+
+  lock_acquire(&buffer_cache_lock);
+  bce->accessed = true;
+  bce->dirty = true;    
   bce->rw_cnt--;
-  sema_up(&bce->rw_mutex);
+  lock_release(&buffer_cache_lock);
 
 
 }
@@ -300,14 +295,11 @@ struct buffer_cache_entry* buffer_cache_find_victim(void)
     while(true)
     {
       iter_bce = &buffer_cache[clock_index];
-      sema_down(&iter_bce->rw_mutex);
       if(iter_bce->rw_cnt > 0)
       {
-        sema_up(&iter_bce->rw_mutex);
         clock_index = (clock_index+1) % BUFFER_CACHE_SIZE;
         continue;
       }
-      sema_up(&iter_bce->rw_mutex);
       if(iter_bce->accessed == true)
       {
         iter_bce->accessed = false;

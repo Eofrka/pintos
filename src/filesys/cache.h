@@ -19,7 +19,7 @@ struct buffer_cache_entry
   uint8_t buffer[DISK_SECTOR_SIZE];         /* Block(sector) size buffer. */
 
   int rw_cnt;                               /*  Read or write count. */
-  struct semaphore rw_mutex;                /*  Mutex for rw_cnt. */
+  
 };
 
 

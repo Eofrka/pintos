@@ -1,5 +1,5 @@
-Copying tests/vm/mmap-bad-fd into /tmp/xRNS930sbU.dsk...
-Writing command line to /tmp/PWuDTcjR7H.dsk...
+Copying tests/vm/mmap-bad-fd into /tmp/wSyaMCCblg.dsk...
+Writing command line to /tmp/7sNgVvcKXR.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-bad-fd run mmap-bad-fd
@@ -20,8 +20,8 @@ Executing 'mmap-bad-fd':
 (mmap-bad-fd) end
 mmap-bad-fd: exit(0)
 Execution of 'mmap-bad-fd' complete.
-Timer: 576 ticks
-Thread: 30 idle ticks, 471 kernel ticks, 78 user ticks
+Timer: 565 ticks
+Thread: 30 idle ticks, 459 kernel ticks, 79 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 28 reads, 202 writes
 hd1:0: 98 reads, 0 writes

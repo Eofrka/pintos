@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/grow-create into /tmp/6NDX0xSmvT.dsk...
-Copying tests/filesys/extended/tar into /tmp/6NDX0xSmvT.dsk...
-Writing command line to /tmp/Vf9VJy3s5a.dsk...
+Copying tests/filesys/extended/grow-create into /tmp/vmQ7N0JUra.dsk...
+Copying tests/filesys/extended/tar into /tmp/vmQ7N0JUra.dsk...
+Writing command line to /tmp/yZEevgoU9m.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-create put tar run grow-create
@@ -25,8 +25,8 @@ Executing 'grow-create':
 (grow-create) end
 grow-create: exit(0)
 Execution of 'grow-create' complete.
-Timer: 1187 ticks
-Thread: 30 idle ticks, 1039 kernel ticks, 121 user ticks
+Timer: 1158 ticks
+Thread: 30 idle ticks, 1012 kernel ticks, 119 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 435 writes
 hd1:0: 212 reads, 0 writes

@@ -148,7 +148,9 @@ struct frame_table_entry* fte_obtain(struct supplemental_page_table_entry* spte,
 bool fte_fetch(struct frame_table_entry* fte, struct supplemental_page_table_entry* spte)
 {
   ASSERT(fte->kpage != NULL);
+  lock_acquire(&frame_lock);
   spte->is_fetched = false;
+  lock_release(&frame_lock);
   switch(spte->state)
   {
     case SPTE_FRAME :
@@ -178,7 +180,9 @@ bool fte_fetch(struct frame_table_entry* fte, struct supplemental_page_table_ent
     break;
 
   }
+  lock_acquire(&frame_lock);
   spte->is_fetched = true;
+  lock_release(&frame_lock);
   return true;
 }
 
@@ -249,8 +253,9 @@ void* frame_realloc(enum palloc_flags flags)
     fc->clock_hand = list_begin(&frame_table);
   }
 
-  /* Calculate the start fte and last fte for one loop searching. */
+  /* Calculate the start fte for one loop searching. */
   struct list_elem* start = fc->clock_hand;
+  /*
   struct list_elem* last;
   if(start ==list_begin(&frame_table))
   {
@@ -260,6 +265,7 @@ void* frame_realloc(enum palloc_flags flags)
   {
     last = list_prev(start);
   }
+  */
 
   /* victim finding loop. */
   struct list_elem* iter = start;
@@ -284,6 +290,7 @@ void* frame_realloc(enum palloc_flags flags)
       pagedir_set_accessed(pd, upage ,false);
 
       /* If iter is last, Get the victim_fte and set clock_hand right after the victim_fte. Then break.*/ 
+      /*
       if(iter == last)
       {
         frame_advance_iter(&iter);
@@ -293,6 +300,7 @@ void* frame_realloc(enum palloc_flags flags)
         fc->clock_hand=iter;
         break;
       }
+      */
       /* Else, just advance the iter and clock_hand. */
       frame_advance_iter(&iter);
       fc->clock_hand=iter;
