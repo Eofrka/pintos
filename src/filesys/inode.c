@@ -240,7 +240,7 @@ static bool file_growth(struct inode* inode, off_t final_length)
   sema_down(&inode->turn);
   sema_down(&inode->rw_mutex);
   sema_up(&inode->turn);
-  
+
   size_t additional_blocks = 0;
   size_t current_child_blocks = get_child_blocks(current_length);
   size_t final_child_blocks = get_child_blocks(final_length);
@@ -886,11 +886,14 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
   /* pj4 */
   /*******/
 
+  
   off_t final_length = offset+ size;
   bool growth_occured = file_growth(inode, final_length);
+
   /*******/
   while (size > 0) 
   {
+
     /* Sector to write, starting byte offset within sector. */
     disk_sector_t sector_idx = byte_to_sector (inode, offset);
     int sector_ofs = offset % DISK_SECTOR_SIZE;

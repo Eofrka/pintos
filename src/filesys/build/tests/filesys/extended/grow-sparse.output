@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/grow-sparse into /tmp/jUXH2QRxgH.dsk...
-Copying tests/filesys/extended/tar into /tmp/jUXH2QRxgH.dsk...
-Writing command line to /tmp/GHgp8gvdnk.dsk...
+Copying tests/filesys/extended/grow-sparse into /tmp/WJqIjJOxFG.dsk...
+Copying tests/filesys/extended/tar into /tmp/WJqIjJOxFG.dsk...
+Writing command line to /tmp/XO6daTJRxq.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-sparse put tar run grow-sparse
@@ -29,13 +29,13 @@ Executing 'grow-sparse':
 (grow-sparse) end
 grow-sparse: exit(0)
 Execution of 'grow-sparse' complete.
-Timer: 2575 ticks
-Thread: 30 idle ticks, 950 kernel ticks, 1598 user ticks
+Timer: 2680 ticks
+Thread: 30 idle ticks, 1036 kernel ticks, 1618 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 185 reads, 439 writes
 hd1:0: 213 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1258 characters output
+Console: 1259 characters output
 Keyboard: 0 keys pressed
 Exception: 23 page faults
 Powering off...

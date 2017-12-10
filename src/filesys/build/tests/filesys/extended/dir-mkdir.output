@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-mkdir into /tmp/6dLj3L7wJ9.dsk...
-Copying tests/filesys/extended/tar into /tmp/6dLj3L7wJ9.dsk...
-Writing command line to /tmp/ac2LqoN0Ku.dsk...
+Copying tests/filesys/extended/dir-mkdir into /tmp/LEbEtH34Yn.dsk...
+Copying tests/filesys/extended/tar into /tmp/LEbEtH34Yn.dsk...
+Writing command line to /tmp/amg9z19TwW.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put dir-mkdir put tar run dir-mkdir
@@ -21,13 +21,13 @@ Executing 'dir-mkdir':
 (dir-mkdir) mkdir "a"
 dir-mkdir: exit(-1)
 Execution of 'dir-mkdir' complete.
-Timer: 1053 ticks
-Thread: 30 idle ticks, 954 kernel ticks, 73 user ticks
+Timer: 1140 ticks
+Thread: 30 idle ticks, 1037 kernel ticks, 76 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 432 writes
 hd1:0: 212 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 968 characters output
+Console: 969 characters output
 Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...

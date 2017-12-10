@@ -305,13 +305,13 @@ int syscall_write(int fd, const void* buffer, unsigned size)
   if(fd == 1)
   {
     //lock_acquire(&filesys_lock);
-    unsigned i =0;
-    while(i < size)
-    {
-      putbuf(buffer+i, 1);
-      i++;
-    }
-    ret = (int)i;
+    //unsigned i =0;
+    //while(i < size)
+    //{
+    putbuf(buffer, size);
+      //i++;
+    //}
+    ret = (int)size;
     //lock_release(&filesys_lock);
     return ret;
   }

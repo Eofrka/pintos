@@ -105,14 +105,18 @@ void buffer_cache_init(void)
     bce->sec_no = SEC_NO_DEFAULT;
     bce->accessed = false;
     bce->dirty = false;
+    bce->rw_cnt = 0;
+    sema_init(&bce->rw_mutex, 1);
   }
   lock_init(&buffer_cache_lock);
   thread_create("write_behind_thread", PRI_MIN, write_behind_thread, NULL);
+
 
   list_init(&read_ahead_list);
   lock_init(&read_ahead_lock);
   sema_init(&read_ahead_sema, 0);
   thread_create("read_ahead_thread", PRI_MIN, read_ahead_thread, NULL);
+
   clock_index = -1;
 }
 
@@ -163,13 +167,19 @@ void buffer_cache_read_at(disk_sector_t sec_no, void* buffer, off_t size, off_t 
   }
   ASSERT(bce != NULL);
   ASSERT(bce->sec_no == sec_no);
-  
+  lock_release(&buffer_cache_lock);
+  sema_down(&bce->rw_mutex);  
+  bce->rw_cnt++;
+  sema_up(&bce->rw_mutex);
 
   /* Actual read. */
   memcpy(buffer, bce->buffer + offset, size);
   bce->accessed = true;
 
-  lock_release(&buffer_cache_lock);
+  sema_down(&bce->rw_mutex);    
+  bce->rw_cnt--;
+  sema_up(&bce->rw_mutex);
+
 }
 
 /* Writes BUFFER's data to bce which sec_no is SEC_NO. The amount of to_write bytes is SIZE and start position is OFFSET. */
@@ -217,12 +227,22 @@ void buffer_cache_write_at(disk_sector_t sec_no, const void* buffer, off_t size,
   ASSERT(bce != NULL);
   ASSERT(bce->sec_no == sec_no);
 
+
+  lock_release(&buffer_cache_lock);
+  sema_down(&bce->rw_mutex);  
+  bce->rw_cnt++;
+  sema_up(&bce->rw_mutex);
+
   /* Actual write. */
   memcpy(bce->buffer+offset, buffer, size);
   bce->accessed = true;
   bce->dirty = true;
 
-  lock_release(&buffer_cache_lock);
+  sema_down(&bce->rw_mutex);  
+  bce->rw_cnt--;
+  sema_up(&bce->rw_mutex);
+
+
 }
 
 
@@ -274,16 +294,24 @@ struct buffer_cache_entry* buffer_cache_find_victim(void)
     ASSERT(clock_index != -1);
 
     int start = clock_index;
-    int last = clock_index == 0? BUFFER_CACHE_SIZE-1: clock_index - 1;
+    //int last = clock_index == 0? BUFFER_CACHE_SIZE-1: clock_index - 1;
 
     struct buffer_cache_entry* iter_bce = NULL;
     while(true)
     {
       iter_bce = &buffer_cache[clock_index];
-      
+      sema_down(&iter_bce->rw_mutex);
+      if(iter_bce->rw_cnt > 0)
+      {
+        sema_up(&iter_bce->rw_mutex);
+        clock_index = (clock_index+1) % BUFFER_CACHE_SIZE;
+        continue;
+      }
+      sema_up(&iter_bce->rw_mutex);
       if(iter_bce->accessed == true)
       {
         iter_bce->accessed = false;
+        /*
         if(clock_index == last)
         {  
           clock_index = (clock_index+1) % BUFFER_CACHE_SIZE;
@@ -293,6 +321,9 @@ struct buffer_cache_entry* buffer_cache_find_victim(void)
         {
           clock_index = (clock_index+1) % BUFFER_CACHE_SIZE;
         }
+        */
+        clock_index = (clock_index+1) % BUFFER_CACHE_SIZE;
+
       }
       else
       {
@@ -301,12 +332,14 @@ struct buffer_cache_entry* buffer_cache_find_victim(void)
         break;
       }
     }
+    /*
     if(victim_bce ==NULL)
     {
       victim_bce = &buffer_cache[start];
       ASSERT(victim_bce->accessed == false);
       clock_index =(clock_index+1)% BUFFER_CACHE_SIZE;
     }
+    */
   }
   ASSERT(victim_bce != NULL);
   return victim_bce;
