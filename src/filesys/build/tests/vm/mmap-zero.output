@@ -1,5 +1,5 @@
-Copying tests/vm/mmap-zero into /tmp/ks1SPD9ZCi.dsk...
-Writing command line to /tmp/eNH6oGwxlx.dsk...
+Copying tests/vm/mmap-zero into /tmp/QkYOu1Q8tP.dsk...
+Writing command line to /tmp/lSK9iH3gwh.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put mmap-zero run mmap-zero
@@ -28,8 +28,8 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0x804811e
  cs=001b ds=0023 es=0023 ss=0023
 mmap-zero: exit(-1)
 Execution of 'mmap-zero' complete.
-Timer: 668 ticks
-Thread: 30 idle ticks, 488 kernel ticks, 153 user ticks
+Timer: 669 ticks
+Thread: 30 idle ticks, 489 kernel ticks, 153 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 28 reads, 205 writes
 hd1:0: 98 reads, 0 writes

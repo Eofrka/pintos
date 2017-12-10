@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/grow-seq-lg into /tmp/L1lhX92dRa.dsk...
-Copying tests/filesys/extended/tar into /tmp/L1lhX92dRa.dsk...
-Writing command line to /tmp/CNjEq50xuR.dsk...
+Copying tests/filesys/extended/grow-seq-lg into /tmp/uYBJoyNsqx.dsk...
+Copying tests/filesys/extended/tar into /tmp/uYBJoyNsqx.dsk...
+Writing command line to /tmp/eelGa3pzDJ.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -f put grow-seq-lg put tar run grow-seq-lg
@@ -28,8 +28,8 @@ Executing 'grow-seq-lg':
 (grow-seq-lg) end
 grow-seq-lg: exit(0)
 Execution of 'grow-seq-lg' complete.
-Timer: 3460 ticks
-Thread: 30 idle ticks, 1074 kernel ticks, 2359 user ticks
+Timer: 3457 ticks
+Thread: 30 idle ticks, 1073 kernel ticks, 2357 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 179 reads, 581 writes
 hd1:0: 213 reads, 0 writes
