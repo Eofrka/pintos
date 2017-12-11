@@ -199,10 +199,26 @@ bool syscall_create(const char* file, unsigned initial_size)
   return ret;
 }
 
+/* When valid remove, returns true. Otherwise, returns false. */
 bool syscall_remove (const char *file)
 {
+
+  if(file[0] == '\0')
+  {
+    return false;
+  }
+
+  size_t buffer_size = strlen(file) + 1; 
+  char* path = (char*)calloc (buffer_size, sizeof(char));
+  if( path == NULL)
+  {
+    PANIC("not enough memory allocating path(copy buffer) for dir");
+  }
+  strlcpy(path, file, buffer_size);
+  remove_redundancy(path,file,buffer_size);
+
   lock_acquire(&filesys_lock);
-  bool ret = filesys_remove(file);
+  bool ret = remove_file_or_dir(path);
   lock_release(&filesys_lock);
   return ret;
 }
@@ -487,7 +503,7 @@ void syscall_close(int fd)
 
   /* Find file descriptor table entry which fd is equal to parameter 'fd' in current thread's file descriptor table. If found fdte, remove fdte from the fdt, decrease thread's next_fd one, and
   close the file. Finally free the fdte which allocated at syscall_open(). Else, Do nothing. */
-  lock_acquire(&filesys_lock);
+
   for(iter = list_begin(&curr->fdt); iter != list_end(&curr->fdt); iter= list_next(iter))
   {
     fdte = list_entry(iter, struct file_descriptor_table_entry, elem);
@@ -502,15 +518,25 @@ void syscall_close(int fd)
     list_remove(iter);
     curr->next_fd--;    
     if(fdte->file != NULL && fdte->dir == NULL)
+    {
+      lock_acquire(&filesys_lock);
       file_close(fdte->file);
+      lock_release(&filesys_lock);
+    }
     else if(fdte->file == NULL && fdte->dir != NULL)
+    {
+      lock_acquire(&filesys_lock);
       dir_close(fdte->dir);
+      lock_release(&filesys_lock);
+    }
     else
+    {
       PANIC("ggm zzic han hon zong"); 
+    }
     SAFE_FREE(fdte);
 
   }
-  lock_release(&filesys_lock);
+
 }
 
 /* pj3 */
@@ -806,13 +832,20 @@ int syscall_inumber(int fd)
     return -1;
   }
 
+  int inumber=-1;
   if(fdte->dir != NULL && fdte->file == NULL)
   {
-    return inode_get_sector(dir_get_inode(fdte->dir));
+    lock_acquire(&filesys_lock);
+    inumber = inode_get_sector(dir_get_inode(fdte->dir));
+    lock_release(&filesys_lock);
+    return inumber;
   }
   else if(fdte->dir == NULL && fdte->file != NULL)
   {
-    return inode_get_sector(file_get_inode(fdte->file));
+    lock_acquire(&filesys_lock);
+    inumber = inode_get_sector(file_get_inode(fdte->file));
+    lock_release(&filesys_lock);
+    return inumber;
   }
   else
   {

@@ -220,10 +220,35 @@ dir_remove (struct dir *dir, const char *name)
   if (!lookup (dir, name, &e, &ofs))
     goto done;
 
-  /* Open inode. */
+  /* Open inode. (dir's inode) */
   inode = inode_open (e.inode_sector);
   if (inode == NULL)
     goto done;
+
+
+  /* Check inode is directory. If it is directory, check it is empty. */
+  if(inode_is_dir(inode) == true)
+  {
+    //(i) not opened inode(now open_cnt is 1)
+
+
+    //(ii) already opened inode(now open_cnt > 1)
+
+    struct dir_entry iter_e;
+    off_t ofs;
+    int de_size = sizeof(struct dir_entry);
+    for (ofs = de_size* 2; inode_read_at (inode, &iter_e, de_size, ofs) == de_size; ofs += de_size )
+    { 
+      if (iter_e.in_use == true)
+      {
+        goto done;
+      }
+    }
+
+    //At here, this dir is empty!
+
+
+  }
 
   /* Erase directory entry. */
   e.in_use = false;
@@ -306,7 +331,9 @@ bool change_dir(char* path)
   }
   else
   {
-    dir = dir_reopen(thread_current()->cwd);
+    struct dir* cwd = thread_current()->cwd;
+    ASSERT(cwd != NULL);
+    dir = dir_reopen(cwd);
   }
 
 
@@ -365,7 +392,9 @@ bool make_dir(char* path)
   }
   else
   { 
-    dir = dir_reopen(thread_current()->cwd);
+    struct dir* cwd = thread_current()->cwd;
+    ASSERT(cwd != NULL);
+    dir = dir_reopen(cwd);
   }
   if(dir ==  NULL)
   {
@@ -452,7 +481,9 @@ int open_file_or_dir(char* path, struct file** open_file, struct dir** open_dir)
   }
   else
   {
-    dir = dir_reopen(thread_current()->cwd);
+    struct dir* cwd = thread_current()->cwd;
+    ASSERT(cwd != NULL);
+    dir = dir_reopen(cwd);
   }
 
   if(dir == NULL)
@@ -494,7 +525,7 @@ int open_file_or_dir(char* path, struct file** open_file, struct dir** open_dir)
       dir = dir_open(inode);
       if(dir == NULL)
       {
-        return false;
+        return -1;
       }
       ret_ptr = strtok_r(NULL, "/", &next_ptr);
     }
@@ -555,7 +586,9 @@ bool create_file(char* path, unsigned initial_size)
   }
   else
   {
-    dir = dir_reopen(thread_current()->cwd);
+    struct dir* cwd = thread_current()->cwd;
+    ASSERT(cwd != NULL);
+    dir = dir_reopen(cwd);
   }
 
   if(dir == NULL)
@@ -571,7 +604,7 @@ bool create_file(char* path, unsigned initial_size)
 
   if(ret_ptr == NULL)
   {
-    //can not create "/".
+    //can not create root dir.
     return false;
   }
 
@@ -583,13 +616,13 @@ bool create_file(char* path, unsigned initial_size)
       dir_close(dir);
       if(is_exist == false)
       {
-        return -1;
+        return false;
       }
 
       is_dir = inode_is_dir(inode);
       if(is_dir == false)
       {
-        return -1;
+        return false;
       }
 
       dir = dir_open(inode);
@@ -625,6 +658,88 @@ bool create_file(char* path, unsigned initial_size)
   PANIC("If reached here, it may have bug on my code.");
   return false;
 }
+
+bool remove_file_or_dir(char* path)
+{
+  struct dir* dir;
+  struct inode* inode;
+
+  int start_ofs=0;
+  if(path[0] == '/')
+  {
+    dir = dir_open_root();
+    start_ofs = 1;
+  }
+  else
+  {
+    struct dir* cwd = thread_current()->cwd;
+    ASSERT(cwd != NULL);
+    dir = dir_reopen(cwd);
+  }
+  if(dir == NULL)
+  {
+    return false;
+  }
+
+  char* ret_ptr;
+  char* next_ptr;
+  ret_ptr= strtok_r(path + start_ofs, "/", &next_ptr);
+  bool is_exist = false;
+  bool is_dir = false;
+
+  if(ret_ptr == NULL)
+  {
+    //can not remove root dir.
+    return false;
+  }
+
+
+  while(ret_ptr)
+  {
+    if(next_ptr[0] != '\0')
+    {
+      is_exist = dir_lookup(dir, ret_ptr, &inode);
+      dir_close(dir);
+      if(is_exist == false)
+      {
+        return false;
+      }
+
+      is_dir = inode_is_dir(inode);
+      if(is_dir == false)
+      {
+        return false;
+      }
+
+      dir = dir_open(inode);
+      if(dir == NULL)
+      {
+        return false;
+      }
+      ret_ptr = strtok_r(NULL, "/", &next_ptr);
+    }
+    else
+    {
+      //not allowed to remove "." or "..".
+      if(!strcmp(".", ret_ptr) || !strcmp("..",ret_ptr))
+      {
+        dir_close(dir);
+        return false;
+      } 
+      bool success = ((dir != NULL) &&  dir_remove (dir, ret_ptr));
+      dir_close (dir); 
+
+      return success;
+      
+    }
+  }
+
+
+
+  PANIC("If reached here, it may have bug on my code.");
+  return false;
+}
+
 
 off_t dir_length(struct dir* dir)
 {

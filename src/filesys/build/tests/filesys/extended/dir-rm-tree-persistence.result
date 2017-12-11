@@ -1,2 +1,11 @@
 FAIL
-Prerequisite test tests/filesys/extended/dir-rm-tree failed.
+Extracted file system contents are not correct.
+dir-rm-tree is missing from the file system.
+tar is missing from the file system.
+
+Actual contents of file system:
+(empty)
+
+Expected contents of file system:
+dir-rm-tree: 54985-byte file
+tar: 56133-byte file
