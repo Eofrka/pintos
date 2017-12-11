@@ -1,12 +1,11 @@
-Copying tests/userprog/write-boundary into /tmp/qOjK30065s.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/qOjK30065s.dsk...
-Writing command line to /tmp/IfoEwUYXtm.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/userprog/write-boundary into /tmp/XQmWmRuebH.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/XQmWmRuebH.dsk...
+Writing command line to /tmp/VupfWvl9l4.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put write-boundary put sample.txt run write-boundary
 Pintos booting with 4,096 kB RAM...
 368 pages available in kernel pool.
-368 pages available in user pool.
+367 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -22,8 +21,8 @@ Executing 'write-boundary':
 (write-boundary) end
 write-boundary: exit(0)
 Execution of 'write-boundary' complete.
-Timer: 695 ticks
-Thread: 30 idle ticks, 565 kernel ticks, 103 user ticks
+Timer: 698 ticks
+Thread: 30 idle ticks, 567 kernel ticks, 104 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 29 reads, 214 writes
 hd1:0: 104 reads, 0 writes

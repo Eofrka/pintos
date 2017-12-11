@@ -1,3 +1,15 @@
 FAIL
-Error extracting file system:
-/: open failed
+Extracted file system contents are not correct.
+child-syn-rw is missing from the file system.
+logfile is missing from the file system.
+syn-rw is missing from the file system.
+tar is missing from the file system.
+
+Actual contents of file system:
+(empty)
+
+Expected contents of file system:
+child-syn-rw: 57281-byte file
+logfile: 4096-byte file
+syn-rw: 51806-byte file
+tar: 56133-byte file

@@ -1,11 +1,10 @@
-Copying tests/filesys/base/sm-seq-block into /tmp/EwXFH4sQGU.dsk...
-Writing command line to /tmp/r3L0WrYgMK.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/filesys/base/sm-seq-block into /tmp/8QRCfQYQuv.dsk...
+Writing command line to /tmp/gtLLEscYI1.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put sm-seq-block run sm-seq-block
 Pintos booting with 4,096 kB RAM...
 368 pages available in kernel pool.
-368 pages available in user pool.
+367 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -26,8 +25,8 @@ Executing 'sm-seq-block':
 (sm-seq-block) end
 sm-seq-block: exit(0)
 Execution of 'sm-seq-block' complete.
-Timer: 823 ticks
-Thread: 30 idle ticks, 532 kernel ticks, 264 user ticks
+Timer: 836 ticks
+Thread: 30 idle ticks, 533 kernel ticks, 276 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 29 reads, 225 writes
 hd1:0: 102 reads, 0 writes

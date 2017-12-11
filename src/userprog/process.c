@@ -329,6 +329,8 @@ process_exit (void)
     syscall_close(curr->next_fd-1);
   }
 
+  dir_close(curr->cwd);
+
   /* Call file_close() to call file_allow_write(). This intervene filesystem, 
   so lock_acquire() and lock_release() needed! */
   if(curr->executable != NULL)

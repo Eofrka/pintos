@@ -1,2 +1,15 @@
 FAIL
-Prerequisite test tests/filesys/extended/dir-mkdir failed.
+Extracted file system contents are not correct.
+a is missing from the file system.
+a/b is missing from the file system.
+dir-mkdir is missing from the file system.
+tar is missing from the file system.
+
+Actual contents of file system:
+(empty)
+
+Expected contents of file system:
+a: directory
+a/b: 512-byte file
+dir-mkdir: 51111-byte file
+tar: 56133-byte file

@@ -965,3 +965,16 @@ inode_length (const struct inode *inode)
   return inode->data.length;
 }
 
+
+/* pj4 */
+/*******/
+bool inode_is_dir(struct inode* inode)
+{
+  return inode->data.is_dir;
+}
+
+disk_sector_t inode_get_sector(struct inode* inode)
+{
+  return inode->sector;
+}
+/*******/

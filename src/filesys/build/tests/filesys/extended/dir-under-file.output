@@ -1,12 +1,11 @@
-Copying tests/filesys/extended/dir-under-file into /tmp/vzs03qNELY.dsk...
-Copying tests/filesys/extended/tar into /tmp/vzs03qNELY.dsk...
-Writing command line to /tmp/EJHnI8gVXN.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/filesys/extended/dir-under-file into /tmp/pu7Uo3H9PB.dsk...
+Copying tests/filesys/extended/tar into /tmp/pu7Uo3H9PB.dsk...
+Writing command line to /tmp/jGkZK4hL5w.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put dir-under-file put tar run dir-under-file
 Pintos booting with 4,096 kB RAM...
 368 pages available in kernel pool.
-368 pages available in user pool.
+367 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -23,8 +22,8 @@ Executing 'dir-under-file':
 (dir-under-file) end
 dir-under-file: exit(0)
 Execution of 'dir-under-file' complete.
-Timer: 1237 ticks
-Thread: 30 idle ticks, 1106 kernel ticks, 104 user ticks
+Timer: 1254 ticks
+Thread: 30 idle ticks, 1107 kernel ticks, 120 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 435 writes
 hd1:0: 212 reads, 0 writes

@@ -1,11 +1,16 @@
 #include "vm/swap.h"
 #include "threads/vaddr.h"
 #include "devices/disk.h"
+#include <debug.h>
 
 /* Initializes the swap_table. */
 void swap_init(void)
 {
   swap_table.disk = disk_get(1,1);
+  if(swap_table.disk == NULL)
+  {
+    PANIC("hd1:1 not present, swap disk initialization failed");
+  }
   lock_init(&swap_table.lock);
   size_t sectors_in_page = PGSIZE/DISK_SECTOR_SIZE;
    //# of sectors / (PGSIZE/DISK_SECTOR_SIZE)

@@ -7,8 +7,9 @@ userprog/syscall.o: ../../userprog/syscall.c ../../userprog/syscall.h \
   ../../threads/interrupt.h ../../threads/vaddr.h ../../threads/loader.h \
   ../../filesys/filesys.h ../../filesys/off_t.h ../../devices/disk.h \
   ../../lib/inttypes.h ../../threads/synch.h ../../threads/malloc.h \
-  ../../filesys/file.h ../../devices/input.h ../../threads/init.h \
-  ../../lib/round.h ../../vm/page.h ../../filesys/off_t.h \
-  ../../vm/frame.h ../../vm/page.h ../../threads/synch.h \
-  ../../threads/palloc.h ../../vm/swap.h ../../lib/kernel/bitmap.h \
-  ../../vm/frame.h ../../userprog/pagedir.h
+  ../../filesys/file.h ../../filesys/inode.h ../../devices/input.h \
+  ../../threads/init.h ../../lib/round.h ../../vm/page.h \
+  ../../filesys/off_t.h ../../vm/frame.h ../../vm/page.h \
+  ../../threads/synch.h ../../threads/palloc.h ../../vm/swap.h \
+  ../../lib/kernel/bitmap.h ../../vm/frame.h ../../userprog/pagedir.h \
+  ../../lib/string.h ../../filesys/directory.h ../../filesys/file.h

@@ -26,6 +26,12 @@
 #endif
 /*******/
 
+/* pj4 */
+/*******/
+#include <string.h>
+#include "filesys/directory.h"
+/*******/
+
 /* New static function declarations. */
 /*****************************************************************************************************************************/
 static int get_user(const uint8_t* uaddr); 
@@ -166,9 +172,30 @@ int syscall_wait(pid_t pid)
 
 bool syscall_create(const char* file, unsigned initial_size)
 {
+  if(file[0] == '\0')
+  {
+    return false;
+  }
+
+  size_t buffer_size = strlen(file) + 1; 
+  char* path = (char*)calloc (buffer_size, sizeof(char));
+  if( path == NULL)
+  {
+    PANIC("not enough memory allocating path(copy buffer) for dir");
+  }
+  strlcpy(path, file, buffer_size);
+  remove_redundancy(path,file,buffer_size);
+
+
   lock_acquire(&filesys_lock);
-  bool ret = filesys_create(file, initial_size);
+  bool ret = create_file(path, initial_size);
   lock_release(&filesys_lock);
+
+
+  //bool ret = filesys_create(file, initial_size);
+  
+
+  SAFE_FREE(path);
   return ret;
 }
 
@@ -181,17 +208,36 @@ bool syscall_remove (const char *file)
 }
 
 int syscall_open(const char* file)
-{
+{ 
   int ret;
-  struct file* open_file;
+  struct file* open_file = NULL;
+  struct dir* open_dir = NULL; 
   struct file_descriptor_table_entry* fdte;
+
+  if(file[0] == '\0')
+  {
+    return -1;
+  }
+  
+  size_t buffer_size = strlen(file) + 1; 
+  char* path = (char*)calloc (buffer_size, sizeof(char));
+  if( path == NULL)
+  {
+    PANIC("not enough memory allocating path(copy buffer) for file");
+  }
+  strlcpy(path, file, buffer_size);
+  remove_redundancy(path,file,buffer_size);
+
+  int k;
   lock_acquire(&filesys_lock);
-  open_file = filesys_open(file);
+  k = open_file_or_dir(path, &open_file, &open_dir);
+  lock_release(&filesys_lock);
+
+
 
   /* If cannot open file name 'file', return -1. */
-  if(open_file == NULL)
+  if(k!=0 && k !=1)
   {
-    lock_release(&filesys_lock);
     return -1;
   }
 
@@ -205,7 +251,17 @@ int syscall_open(const char* file)
   }
   fdte->fd = curr->next_fd;
   curr->next_fd++;
-  fdte->file = open_file;
+  if( k== 0)
+  {
+    fdte->file = open_file;
+    fdte->dir = NULL;
+  }
+  else
+  {
+    fdte->file = NULL;
+    fdte->dir = open_dir;
+
+  }
   fdte->elem.prev=  NULL;
   fdte->elem.next = NULL;
 
@@ -216,25 +272,44 @@ int syscall_open(const char* file)
   /* return value should not be 0 or 1. These two values are for STDIN(0), STDOUT(1). */
   ASSERT(ret != 0);
   ASSERT(ret != 1);
-  lock_release(&filesys_lock);
+  SAFE_FREE(path);
   return ret;
 }
 
 int syscall_filesize(int fd)
 {
-  lock_acquire(&filesys_lock);
+  if(fd < 2)
+  {
+    return -1;
+  }
+
+
   struct file_descriptor_table_entry* fdte = find_fdte(fd);
   int ret;
   if(fdte != NULL)
   {
-    ret = file_length(fdte->file);
+    if(fdte->file != NULL && fdte->dir == NULL)
+    {
+      lock_acquire(&filesys_lock);
+      ret = file_length(fdte->file);
+      lock_release(&filesys_lock);
+    }
+    else if(fdte->file == NULL && fdte->dir != NULL)
+    {
+      lock_acquire(&filesys_lock);
+      ret = dir_length(&fdte->dir);
+      lock_release(&filesys_lock);
+    }
+    else
+    {
+      PANIC("ggm zzic han hon zong"); 
+    }
   } 
   else
   {
     /* Q? If fdte == NULL, How to deal with it? */
     ret = -1;
   }
-  lock_release(&filesys_lock);
   return ret;
 }
 
@@ -252,7 +327,7 @@ int syscall_read(int fd, void* buffer, unsigned size)
       /* If buffer's address is not allowed to write, call syscall_exit(-1). */
       if(put_user((uint8_t*)(buffer+i), key) == false)
       {
-        lock_release(&filesys_lock);      
+        //lock_release(&filesys_lock);      
         syscall_exit(-1);
       }
       i++;
@@ -301,6 +376,12 @@ int syscall_read(int fd, void* buffer, unsigned size)
 int syscall_write(int fd, const void* buffer, unsigned size)
 {
   int ret = -1;
+
+  if(syscall_isdir(fd) == true)
+  {
+    return -1;
+  }
+
   /* If fd == 1, write to STDOUT(1). Use putbuf() to write to the console. */
   if(fd == 1)
   {
@@ -341,32 +422,59 @@ int syscall_write(int fd, const void* buffer, unsigned size)
 
 void syscall_seek(int fd, unsigned position)
 {
-  lock_acquire(&filesys_lock);
+
   struct file_descriptor_table_entry* fdte = find_fdte(fd);
   if(fdte != NULL)
   {
-    file_seek(fdte->file, position); 
+    if(fdte->file != NULL && fdte->dir == NULL)
+    {
+      lock_acquire(&filesys_lock);
+      file_seek(fdte->file, position);
+      lock_release(&filesys_lock);
+    }
+    else if(fdte->file == NULL && fdte->dir != NULL)
+    {
+      lock_acquire(&filesys_lock);
+      dir_seek(fdte->dir, position);
+      lock_release(&filesys_lock);
+    }
+    else
+    {
+      PANIC("ggm zzic han hon zong"); 
+    }
   }
-  lock_release(&filesys_lock);
   /* Q? If fdte == NULL, How to deal with it? */
 }
 
 unsigned syscall_tell(int fd)
 {
-  lock_acquire(&filesys_lock);
+
   struct file_descriptor_table_entry* fdte = find_fdte(fd);
   unsigned ret;
   if(fdte != NULL)
   {
-    ret = file_tell(fdte->file);
-
+    if(fdte->file != NULL && fdte->dir == NULL)
+    {
+      lock_acquire(&filesys_lock);
+      ret = file_tell(fdte->file);
+      lock_release(&filesys_lock);
+    }
+    else if(fdte->file == NULL && fdte->dir != NULL)
+    {
+      lock_acquire(&filesys_lock);
+      ret = dir_tell(fdte->dir);
+      lock_release(&filesys_lock);
+    }
+    else
+    {
+      PANIC("ggm zzic han hon zong"); 
+    }
   }
   else
   {
     /* Q? If fdte == NULL, How to deal with it? */
     ret = 0xffffffff;
   }
-  lock_release(&filesys_lock);
   return ret;
 }
 
@@ -393,7 +501,12 @@ void syscall_close(int fd)
   {
     list_remove(iter);
     curr->next_fd--;    
-    file_close(fdte->file);
+    if(fdte->file != NULL && fdte->dir == NULL)
+      file_close(fdte->file);
+    else if(fdte->file == NULL && fdte->dir != NULL)
+      dir_close(fdte->dir);
+    else
+      PANIC("ggm zzic han hon zong"); 
     SAFE_FREE(fdte);
 
   }
@@ -408,26 +521,38 @@ mapid_t syscall_mmap(int fd, void* addr)
 {
 
   /* 1. Find fdte from fdt. */
-  lock_acquire(&filesys_lock);
+
   struct file_descriptor_table_entry* fdte = find_fdte(fd);
   if(fdte == NULL)
   {
-    lock_release(&filesys_lock);
     return MAP_FAILED;
+  }
+
+  if(fdte->file == NULL && fdte->dir != NULL)
+  {
+    //directory is not allowed for mmap.
+    return MAP_FAILED;
+  }
+  else if(fdte->file == NULL && fdte->dir == NULL)
+  {
+    PANIC("ggm zzic han hon zong"); 
   }
 
 
   /* 2. Get the file from the fdte. */
+  lock_acquire(&filesys_lock);
   struct file* file = file_reopen(fdte->file);
+  lock_release(&filesys_lock);
   if(file == NULL)
   {
-    lock_release(&filesys_lock);
     return MAP_FAILED;
   }
+  lock_acquire(&filesys_lock);
   off_t length = file_length(file);
+  lock_release(&filesys_lock);
+
   if(length == 0)
   {
-    lock_release(&filesys_lock);
     return MAP_FAILED;
   }
 
@@ -450,7 +575,6 @@ mapid_t syscall_mmap(int fd, void* addr)
     struct supplemental_page_table_entry* spte = spte_create();
     if(spte == NULL)
     {
-      lock_release(&filesys_lock);
       return MAP_FAILED;
     }
 
@@ -469,7 +593,6 @@ mapid_t syscall_mmap(int fd, void* addr)
     if(!spte_insert(&curr->spt, spte))
     {
       SAFE_FREE(spte);
-      lock_release(&filesys_lock);
       return MAP_FAILED;
     }
 
@@ -487,7 +610,6 @@ mapid_t syscall_mmap(int fd, void* addr)
   struct mmap_table_entry* mmap_te = (struct mmap_table_entry*)malloc(sizeof(struct mmap_table_entry));
   if(mmap_te == NULL)
   {
-    lock_release(&filesys_lock);
     return MAP_FAILED;
   }
 
@@ -502,7 +624,6 @@ mapid_t syscall_mmap(int fd, void* addr)
 
   /* 6. Push mmap_te into current thread's mmap table. */
   list_push_back(&curr->mmap_table, &mmap_te->elem);
-  lock_release(&filesys_lock);
   return mmap_te->mapid;
 }
 
@@ -592,20 +713,56 @@ void syscall_munmap(mapid_t mapping)
 /*******/
 bool syscall_chdir(const char* dir)
 {
-  /* Q?
+
   if(dir[0] == '\0')
   {
     return true;
   }
-  */
+  
+  size_t buffer_size = strlen(dir) + 1; 
+  char* path = (char*)calloc (buffer_size, sizeof(char));
+  if( path == NULL)
+  {
+    PANIC("not enough memory allocating path(copy buffer) for dir");
+  }
+  strlcpy(path, dir, buffer_size);
+  remove_redundancy(path,dir,buffer_size);
 
-  return false;
+
+  lock_acquire(&filesys_lock);
+  bool ret = change_dir(path);
+  lock_release(&filesys_lock);
+  
+  SAFE_FREE(path);
+  return ret;
 
 }
 
 bool syscall_mkdir(const char* dir)
 {
-  return false;
+  if(dir[0] == '\0')
+  {
+    return false;
+  }
+  
+  size_t buffer_size = strlen(dir) + 1; 
+  char* path = (char*)calloc (buffer_size, sizeof(char));
+  if( path == NULL)
+  {
+    PANIC("not enough memory allocating path(copy buffer) for dir");
+  }
+  strlcpy(path, dir, buffer_size);
+  remove_redundancy(path,dir,buffer_size);
+
+  lock_acquire(&filesys_lock);
+  bool ret = make_dir(path);
+  lock_release(&filesys_lock);
+
+
+  SAFE_FREE(path);
+  return ret;
+
+
 }
 bool syscall_readdir(int fd, char* name)
 {
@@ -613,11 +770,55 @@ bool syscall_readdir(int fd, char* name)
 }
 bool syscall_isdir(int fd)
 {
-  return false;
+  //find fdte in current process's fdt.
+  if(fd < 2)
+  {
+    return false;
+  }
+  struct file_descriptor_table_entry* fdte = find_fdte(fd);
+  if(fdte == NULL)
+  {
+    return false;
+  }
+
+  if(fdte->dir != NULL && fdte->file == NULL)
+  {
+    return true;
+  }
+  else if(fdte->dir == NULL && fdte->file != NULL)
+  {
+    return false;
+  }
+  else
+  {
+    PANIC("ggm zzic han hon zong"); 
+  }
 }
 int syscall_inumber(int fd)
 {
-  return -1;
+  if(fd < 2)
+  {
+    return -1;
+  }
+  struct file_descriptor_table_entry* fdte = find_fdte(fd);
+  if(fdte == NULL)
+  {
+    return -1;
+  }
+
+  if(fdte->dir != NULL && fdte->file == NULL)
+  {
+    return inode_get_sector(dir_get_inode(fdte->dir));
+  }
+  else if(fdte->dir == NULL && fdte->file != NULL)
+  {
+    return inode_get_sector(file_get_inode(fdte->file));
+  }
+  else
+  {
+    PANIC("ggm zzic han hon zong"); 
+  }
+
 }
 /*******/
 
@@ -774,35 +975,35 @@ syscall_handler (struct intr_frame *f)
 #endif     
 /*******/
     case SYS_CHDIR:
-      arg1 = check_uaddr(esp+4, 4);
-      const char* dir = (char*)*(uint32_t*)arg1;
-      check_ustr(dir);
-      f->eax = (uint32_t)syscall_chdir(dir);
-      break;
+    arg1 = check_uaddr(esp+4, 4);
+    const char* dir = (char*)*(uint32_t*)arg1;
+    check_ustr(dir);
+    f->eax = (uint32_t)syscall_chdir(dir);
+    break;
     case SYS_MKDIR:
-      arg1 = check_uaddr(esp+4, 4);
-      dir = (char*)*(uint32_t*)arg1;
-      check_ustr(dir);
-      f->eax = (uint32_t)syscall_mkdir(dir);
-      break;
+    arg1 = check_uaddr(esp+4, 4);
+    dir = (char*)*(uint32_t*)arg1;
+    check_ustr(dir);
+    f->eax = (uint32_t)syscall_mkdir(dir);
+    break;
     case SYS_READDIR:
-      arg1 = check_uaddr(esp+4, 4);
-      fd = *(int*)arg1;
-      arg2 = check_uaddr(esp+8, 4);
-      char* name = (char*)*(uint32_t*)arg2;
-      check_ustr(name);
-      f->eax = (uint32_t)syscall_readdir(fd, name);
-      break;
+    arg1 = check_uaddr(esp+4, 4);
+    fd = *(int*)arg1;
+    arg2 = check_uaddr(esp+8, 4);
+    char* name = (char*)*(uint32_t*)arg2;
+    check_ustr(name);
+    f->eax = (uint32_t)syscall_readdir(fd, name);
+    break;
     case SYS_ISDIR:
-      arg1 = check_uaddr(esp+4,4);
-      fd = *(int*)arg1;
-      f->eax = (uint32_t)syscall_isdir(fd);
-      break;
+    arg1 = check_uaddr(esp+4,4);
+    fd = *(int*)arg1;
+    f->eax = (uint32_t)syscall_isdir(fd);
+    break;
     case SYS_INUMBER:
-      arg1 = check_uaddr(esp+4, 4);
-      fd = *(int*)arg1;
-      f->eax = (uint32_t)syscall_inumber(fd);
-      break;
+    arg1 = check_uaddr(esp+4, 4);
+    fd = *(int*)arg1;
+    f->eax = (uint32_t)syscall_inumber(fd);
+    break;
 
     default:
     syscall_exit(-1);

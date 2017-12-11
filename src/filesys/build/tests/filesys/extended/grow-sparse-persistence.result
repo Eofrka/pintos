@@ -1,3 +1,13 @@
 FAIL
-Error extracting file system:
-/: open failed
+Extracted file system contents are not correct.
+grow-sparse is missing from the file system.
+tar is missing from the file system.
+testfile is missing from the file system.
+
+Actual contents of file system:
+(empty)
+
+Expected contents of file system:
+grow-sparse: 51521-byte file
+tar: 56133-byte file
+testfile: 76543-byte file

@@ -56,7 +56,6 @@ read_line (char line[], size_t size)
     {
       char c;
       read (STDIN_FILENO, &c, 1);
-
       switch (c) 
         {
         case '\r':

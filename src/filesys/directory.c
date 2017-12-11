@@ -3,16 +3,15 @@
 #include <string.h>
 #include <list.h>
 #include "filesys/filesys.h"
-#include "filesys/inode.h"
 #include "threads/malloc.h"
 
+/* pj4 */
+/*******/
+#include "threads/thread.h"
+#include "filesys/free-map.h"
+#include "filesys/file.h"
+/*******/
 
-/* A directory. */
-struct dir 
-  {
-    struct inode *inode;                /* Backing store. */
-    off_t pos;                          /* Current position. */
-  };
 
 /* A single directory entry. */
 struct dir_entry 
@@ -259,3 +258,391 @@ dir_readdir (struct dir *dir, char name[NAME_MAX + 1])
     }
   return false;
 }
+
+/* pj4 */
+/*******/
+void remove_redundancy(char* dst, const char* src, size_t buffer_size)
+{
+  size_t i;
+  size_t j=0;
+
+  bool flag=false;
+  for(i=0; i<buffer_size; i++)
+  {
+
+    if(src[i] == '/' && flag == true)
+    {
+      continue;
+    }
+    
+    if(src[i] == '/')
+    {
+      flag=true;
+    }
+    else
+    {
+      flag=false;
+    }
+    dst[j] = src[i];
+    j++;
+  }
+
+
+}
+
+
+
+bool change_dir(char* path)
+{
+
+  struct dir* dir;
+  struct inode* inode;
+
+  int start_ofs=0;
+  if(path[0] == '/')
+  {
+    dir = dir_open_root();
+    start_ofs = 1;
+  }
+  else
+  {
+    dir = dir_reopen(thread_current()->cwd);
+  }
+
+
+  if(dir == NULL)
+  {
+    return false;
+  }
+
+
+  char* ret_ptr;
+  char* next_ptr;
+  ret_ptr= strtok_r(path + start_ofs, "/", &next_ptr);
+
+  bool is_exist = false;
+  bool is_dir = false;
+
+  while(ret_ptr)
+  {
+    is_exist = dir_lookup(dir, ret_ptr, &inode);
+    dir_close(dir);
+    if(is_exist == false)
+    {
+      return false;
+    }
+    
+    is_dir = inode_is_dir(inode);
+    if(is_dir == false)
+    {
+      return false;
+    }
+
+    dir = dir_open(inode);
+    if(dir == NULL)
+    {
+      return false;
+    }
+    ret_ptr = strtok_r(NULL, "/", &next_ptr);
+  }
+
+
+  dir_close(thread_current()->cwd);
+  thread_current()->cwd = dir;
+  return true;
+}
+
+bool make_dir(char* path)
+{
+  struct dir* dir;
+  struct inode* inode;
+
+  int start_ofs=0;
+  if(path[0] == '/')
+  {
+    dir = dir_open_root();
+    start_ofs = 1;
+  }
+  else
+  { 
+    dir = dir_reopen(thread_current()->cwd);
+  }
+  if(dir ==  NULL)
+  {
+    return false;
+  }
+  char* ret_ptr;
+  char* next_ptr;
+  ret_ptr= strtok_r(path + start_ofs, "/", &next_ptr);
+
+  bool is_exist = false;
+  bool is_dir = false;
+
+  if(ret_ptr == NULL)
+  {
+    //can not make root dir
+    return false;
+  }
+
+
+
+
+  while(ret_ptr)
+  {
+    if(next_ptr[0] != '\0')
+    {
+      is_exist = dir_lookup(dir, ret_ptr, &inode);
+      dir_close(dir);
+      if(is_exist == false)
+      {
+        return false;
+      }
+
+      is_dir = inode_is_dir(inode);
+      if(is_dir == false)
+      {
+        return false;
+      }
+
+      dir = dir_open(inode);
+      if(dir == NULL)
+      {
+        return false;
+      }
+      ret_ptr = strtok_r(NULL, "/", &next_ptr);
+    }
+    else
+    {
+      is_exist = dir_lookup(dir, ret_ptr, &inode);
+      if(is_exist == true)
+      {
+        dir_close(dir);
+        return false;
+      }
+      disk_sector_t inode_sector;
+      disk_sector_t parent_sector = inode_get_sector(dir->inode);
+      bool success = (dir != NULL
+        && free_map_allocate (1, &inode_sector)
+        && dir_create(inode_sector, parent_sector, 16)
+        && dir_add (dir, ret_ptr, inode_sector));
+      if (!success && inode_sector != 0) 
+        free_map_release (inode_sector, 1);
+      dir_close (dir);
+      return success;
+    }
+  }
+
+  PANIC("If reached here, it may have bug on my code.");
+  return false;
+
+}
+
+
+int open_file_or_dir(char* path, struct file** open_file, struct dir** open_dir)
+{
+
+  struct dir* dir;
+  struct inode* inode;
+
+  int start_ofs=0;
+  if(path[0] == '/')
+  {
+    dir = dir_open_root();
+    start_ofs = 1;
+  }
+  else
+  {
+    dir = dir_reopen(thread_current()->cwd);
+  }
+
+  if(dir == NULL)
+  {
+    return -1;
+  }
+
+
+  char* ret_ptr;
+  char* next_ptr;
+  ret_ptr= strtok_r(path + start_ofs, "/", &next_ptr);
+  bool is_exist = false;
+  bool is_dir = false;
+
+  if(ret_ptr == NULL)
+  {
+    //open root dir.
+    *open_dir = dir;
+    return 1;
+  }
+
+  while(ret_ptr)
+  {
+    if(next_ptr[0] != '\0')
+    {
+      is_exist = dir_lookup(dir, ret_ptr, &inode);
+      dir_close(dir);
+      if(is_exist == false)
+      {
+        return -1;
+      }
+
+      is_dir = inode_is_dir(inode);
+      if(is_dir == false)
+      {
+        return -1;
+      }
+
+      dir = dir_open(inode);
+      if(dir == NULL)
+      {
+        return false;
+      }
+      ret_ptr = strtok_r(NULL, "/", &next_ptr);
+    }
+    else
+    {
+      is_exist =dir_lookup(dir, ret_ptr, &inode);
+      dir_close(dir);
+      if(is_exist == false)
+      {
+        return -1;
+      }
+      is_dir =inode_is_dir(inode);
+      if(is_dir == false)
+      {
+        *open_file= file_open(inode);
+        if(*open_file == NULL)
+        {
+          return -1;
+        }
+        else
+        {
+          return 0;
+        }
+      }
+      else
+      {
+        *open_dir = dir_open(inode);
+        if(*open_dir == NULL)
+        {
+          return -1;
+        }
+        else
+        {
+          return 1;
+        }
+      }
+    }
+  }
+
+  printf("why???????????\n");
+  PANIC("If reached here, it may have bug on my code.");
+  return -1;
+
+
+}
+
+
+bool create_file(char* path, unsigned initial_size)
+{
+  struct dir* dir;
+  struct inode* inode;
+
+  int start_ofs=0;
+  if(path[0] == '/')
+  {
+    dir = dir_open_root();
+    start_ofs = 1;
+  }
+  else
+  {
+    dir = dir_reopen(thread_current()->cwd);
+  }
+
+  if(dir == NULL)
+  {
+    return false;
+  }
+
+  char* ret_ptr;
+  char* next_ptr;
+  ret_ptr= strtok_r(path + start_ofs, "/", &next_ptr);
+  bool is_exist = false;
+  bool is_dir = false;
+
+  if(ret_ptr == NULL)
+  {
+    //can not create "/".
+    return false;
+  }
+
+  while(ret_ptr)
+  {
+    if(next_ptr[0] != '\0')
+    {
+      is_exist = dir_lookup(dir, ret_ptr, &inode);
+      dir_close(dir);
+      if(is_exist == false)
+      {
+        return -1;
+      }
+
+      is_dir = inode_is_dir(inode);
+      if(is_dir == false)
+      {
+        return -1;
+      }
+
+      dir = dir_open(inode);
+      if(dir == NULL)
+      {
+        return false;
+      }
+      ret_ptr = strtok_r(NULL, "/", &next_ptr);
+    }
+    else
+    {
+      is_exist = dir_lookup(dir,ret_ptr,&inode);
+      if(is_exist == true)
+      {
+        dir_close(dir);
+        return false;
+      }
+
+      disk_sector_t inode_sector = 0;
+      bool success = (dir != NULL
+        && free_map_allocate (1, &inode_sector)
+        && inode_create (inode_sector, initial_size, false)
+        && dir_add (dir, ret_ptr, inode_sector));
+      if (!success && inode_sector != 0) 
+        free_map_release (inode_sector, 1);
+      dir_close (dir);
+
+      return success;
+      
+    }
+  }
+
+  PANIC("If reached here, it may have bug on my code.");
+  return false;
+}
+
+off_t dir_length(struct dir* dir)
+{
+  ASSERT (dir!= NULL);
+  return inode_length(dir->inode);
+}
+
+void dir_seek (struct dir *dir , off_t new_pos)
+{
+  ASSERT (dir != NULL);
+  ASSERT (new_pos >= 0);
+  dir->pos = new_pos;
+}
+
+off_t dir_tell (struct dir * dir)
+{
+  ASSERT (dir != NULL);
+  return dir->pos;
+}
+/*******/
+

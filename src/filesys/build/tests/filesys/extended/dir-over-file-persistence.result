@@ -1,2 +1,13 @@
 FAIL
-Prerequisite test tests/filesys/extended/dir-over-file failed.
+Extracted file system contents are not correct.
+abc is missing from the file system.
+dir-over-file is missing from the file system.
+tar is missing from the file system.
+
+Actual contents of file system:
+(empty)
+
+Expected contents of file system:
+abc: directory
+dir-over-file: 51027-byte file
+tar: 56133-byte file
