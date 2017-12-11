@@ -415,6 +415,7 @@ bool make_dir(char* path)
   if(ret_ptr == NULL)
   {
     //can not make root dir
+    dir_close(dir);
     return false;
   }
 
@@ -620,6 +621,7 @@ bool create_file(char* path, unsigned initial_size)
   if(ret_ptr == NULL)
   {
     //can not create root dir.
+    dir_close(dir);
     return false;
   }
 
@@ -711,6 +713,7 @@ bool remove_file_or_dir(char* path)
   if(ret_ptr == NULL)
   {
     //can not remove root dir.
+    dir_close(dir);
     return false;
   }
 
