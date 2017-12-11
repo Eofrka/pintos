@@ -1,4 +1,4 @@
-Writing command line to /tmp/3q35JSgGuW.dsk...
+Writing command line to /tmp/mWGybdrbpW.dsk...
 squish-pty bochs -q
 Kernel command line: -q run 'tar fs.tar /' get fs.tar
 Pintos booting with 4,096 kB RAM...
@@ -14,14 +14,14 @@ Executing 'tar fs.tar /':
 tar: exit(0)
 Execution of 'tar fs.tar /' complete.
 Getting 'fs.tar' from the file system...
-Timer: 292 ticks
-Thread: 30 idle ticks, 152 kernel ticks, 113 user ticks
+Timer: 4219 ticks
+Thread: 30 idle ticks, 637 kernel ticks, 3556 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 29 reads, 5 writes
-hd1:0: 0 reads, 3 writes
+hd0:1: 466 reads, 223 writes
+hd1:0: 0 reads, 217 writes
 hd1:1: 0 reads, 0 writes
-Console: 840 characters output
+Console: 847 characters output
 Keyboard: 0 keys pressed
 Exception: 4 page faults
 Powering off...
-Copying tests/filesys/extended/dir-rm-root.tar out of /tmp/T3aVlycE1K.dsk...
+Copying tests/filesys/extended/dir-rm-root.tar out of /tmp/4QZdfxWTqt.dsk...

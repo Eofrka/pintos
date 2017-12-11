@@ -14,7 +14,6 @@
 ./src/filesys/directory.h
 ./src/filesys/directory.c
 ./src/filesys/inode.h
-./src/vm/build/threads/kernel.lds.s
 ./src/vm/frame.h
 ./src/vm/swap.h
 ./src/vm/frame.c
@@ -49,7 +48,6 @@
 ./src/devices/vga.c
 ./src/threads/interrupt.h
 ./src/threads/intr-stubs.S
-./src/threads/build/threads/kernel.lds.s
 ./src/threads/interrupt.c
 ./src/threads/thread.c
 ./src/threads/start.S

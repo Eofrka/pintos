@@ -1,6 +1,6 @@
-Copying tests/vm/page-merge-par into /tmp/r0OMXFg65Q.dsk...
-Copying tests/vm/child-sort into /tmp/r0OMXFg65Q.dsk...
-Writing command line to /tmp/TP1ohfPuZU.dsk...
+Copying tests/vm/page-merge-par into /tmp/kr4g9yxRCn.dsk...
+Copying tests/vm/child-sort into /tmp/kr4g9yxRCn.dsk...
+Writing command line to /tmp/fZqCMVJC9M.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put page-merge-par put child-sort run page-merge-par
 Pintos booting with 4,096 kB RAM...
@@ -23,18 +23,18 @@ Executing 'page-merge-par':
 (page-merge-par) sort chunk 2
 child-sort: exit(123)
 (page-merge-par) sort chunk 3
-child-sort: exit(123)
 (page-merge-par) sort chunk 4
 child-sort: exit(123)
 (page-merge-par) sort chunk 5
+child-sort: exit(123)
 (page-merge-par) sort chunk 6
 child-sort: exit(123)
-child-sort: exit(123)
 (page-merge-par) sort chunk 7
+child-sort: exit(123)
 (page-merge-par) wait for child 0
 child-sort: exit(123)
-child-sort: exit(123)
 (page-merge-par) wait for child 1
+child-sort: exit(123)
 child-sort: exit(123)
 (page-merge-par) wait for child 2
 (page-merge-par) wait for child 3
@@ -48,10 +48,10 @@ child-sort: exit(123)
 (page-merge-par) end
 page-merge-par: exit(0)
 Execution of 'page-merge-par' complete.
-Timer: 94194 ticks
-Thread: 30 idle ticks, 1144 kernel ticks, 93023 user ticks
+Timer: 94189 ticks
+Thread: 30 idle ticks, 1145 kernel ticks, 93018 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 4396 reads, 6620 writes
+hd0:1: 4395 reads, 6620 writes
 hd1:0: 207 reads, 0 writes
 hd1:1: 1440 reads, 2640 writes
 Console: 1830 characters output

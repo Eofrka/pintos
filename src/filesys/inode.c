@@ -977,4 +977,10 @@ disk_sector_t inode_get_sector(struct inode* inode)
 {
   return inode->sector;
 }
+
+bool inode_is_removed(struct inode* inode)
+{
+  return inode->removed;
+
+}
 /*******/

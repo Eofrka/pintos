@@ -1,5 +1,5 @@
-Copying tests/filesys/base/sm-seq-block into /tmp/gz5nXxzEax.dsk...
-Writing command line to /tmp/r5HSDzx11H.dsk...
+Copying tests/filesys/base/sm-seq-block into /tmp/K3kO1FNn9c.dsk...
+Writing command line to /tmp/4z6W0gzXq6.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put sm-seq-block run sm-seq-block
 Pintos booting with 4,096 kB RAM...
@@ -25,8 +25,8 @@ Executing 'sm-seq-block':
 (sm-seq-block) end
 sm-seq-block: exit(0)
 Execution of 'sm-seq-block' complete.
-Timer: 836 ticks
-Thread: 30 idle ticks, 533 kernel ticks, 276 user ticks
+Timer: 835 ticks
+Thread: 30 idle ticks, 533 kernel ticks, 275 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 29 reads, 225 writes
 hd1:0: 102 reads, 0 writes

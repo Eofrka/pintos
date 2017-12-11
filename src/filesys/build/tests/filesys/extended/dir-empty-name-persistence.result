@@ -1,11 +1,1 @@
-FAIL
-Extracted file system contents are not correct.
-dir-empty-name is missing from the file system.
-tar is missing from the file system.
-
-Actual contents of file system:
-(empty)
-
-Expected contents of file system:
-dir-empty-name: 50956-byte file
-tar: 56133-byte file
+PASS

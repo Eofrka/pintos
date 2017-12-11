@@ -30,6 +30,7 @@
 /*******/
 #include <string.h>
 #include "filesys/directory.h"
+#define READDIR_MAX_LEN 15
 /*******/
 
 /* New static function declarations. */
@@ -178,11 +179,7 @@ bool syscall_create(const char* file, unsigned initial_size)
   }
 
   size_t buffer_size = strlen(file) + 1; 
-  char* path = (char*)calloc (buffer_size, sizeof(char));
-  if( path == NULL)
-  {
-    PANIC("not enough memory allocating path(copy buffer) for dir");
-  }
+  char path[buffer_size];
   strlcpy(path, file, buffer_size);
   remove_redundancy(path,file,buffer_size);
 
@@ -195,7 +192,6 @@ bool syscall_create(const char* file, unsigned initial_size)
   //bool ret = filesys_create(file, initial_size);
   
 
-  SAFE_FREE(path);
   return ret;
 }
 
@@ -209,11 +205,8 @@ bool syscall_remove (const char *file)
   }
 
   size_t buffer_size = strlen(file) + 1; 
-  char* path = (char*)calloc (buffer_size, sizeof(char));
-  if( path == NULL)
-  {
-    PANIC("not enough memory allocating path(copy buffer) for dir");
-  }
+  char path[buffer_size];
+
   strlcpy(path, file, buffer_size);
   remove_redundancy(path,file,buffer_size);
 
@@ -236,11 +229,7 @@ int syscall_open(const char* file)
   }
   
   size_t buffer_size = strlen(file) + 1; 
-  char* path = (char*)calloc (buffer_size, sizeof(char));
-  if( path == NULL)
-  {
-    PANIC("not enough memory allocating path(copy buffer) for file");
-  }
+  char path[buffer_size];
   strlcpy(path, file, buffer_size);
   remove_redundancy(path,file,buffer_size);
 
@@ -248,7 +237,6 @@ int syscall_open(const char* file)
   lock_acquire(&filesys_lock);
   k = open_file_or_dir(path, &open_file, &open_dir);
   lock_release(&filesys_lock);
-
 
 
   /* If cannot open file name 'file', return -1. */
@@ -288,7 +276,6 @@ int syscall_open(const char* file)
   /* return value should not be 0 or 1. These two values are for STDIN(0), STDOUT(1). */
   ASSERT(ret != 0);
   ASSERT(ret != 1);
-  SAFE_FREE(path);
   return ret;
 }
 
@@ -313,7 +300,7 @@ int syscall_filesize(int fd)
     else if(fdte->file == NULL && fdte->dir != NULL)
     {
       lock_acquire(&filesys_lock);
-      ret = dir_length(&fdte->dir);
+      ret = dir_length(fdte->dir);
       lock_release(&filesys_lock);
     }
     else
@@ -746,11 +733,7 @@ bool syscall_chdir(const char* dir)
   }
   
   size_t buffer_size = strlen(dir) + 1; 
-  char* path = (char*)calloc (buffer_size, sizeof(char));
-  if( path == NULL)
-  {
-    PANIC("not enough memory allocating path(copy buffer) for dir");
-  }
+  char path[buffer_size];
   strlcpy(path, dir, buffer_size);
   remove_redundancy(path,dir,buffer_size);
 
@@ -758,8 +741,6 @@ bool syscall_chdir(const char* dir)
   lock_acquire(&filesys_lock);
   bool ret = change_dir(path);
   lock_release(&filesys_lock);
-  
-  SAFE_FREE(path);
   return ret;
 
 }
@@ -772,11 +753,8 @@ bool syscall_mkdir(const char* dir)
   }
   
   size_t buffer_size = strlen(dir) + 1; 
-  char* path = (char*)calloc (buffer_size, sizeof(char));
-  if( path == NULL)
-  {
-    PANIC("not enough memory allocating path(copy buffer) for dir");
-  }
+  char path[buffer_size];
+
   strlcpy(path, dir, buffer_size);
   remove_redundancy(path,dir,buffer_size);
 
@@ -785,14 +763,44 @@ bool syscall_mkdir(const char* dir)
   lock_release(&filesys_lock);
 
 
-  SAFE_FREE(path);
   return ret;
 
 
 }
+/* Reads a directory entry from file descriptor fd, which must 
+   represent a directory. If successful, stores the null-terminated
+   file name in NAME, which must have room for READDIR_MAX_LEN+1 bytes,
+  and returns true. If no entries are left in the directory, returns false.*/
 bool syscall_readdir(int fd, char* name)
 {
-  return false;
+  if(fd < 2)
+  {
+    return false;
+  }
+  struct file_descriptor_table_entry* fdte = find_fdte(fd);
+  if(fdte == NULL)
+  {
+    return false;
+  }
+
+  if(fdte->dir != NULL && fdte->file == NULL)
+  {
+    struct dir* dir = fdte->dir;
+    lock_acquire(&filesys_lock);
+    bool ret= dir_readdir (dir, name);
+    lock_release(&filesys_lock);
+    return ret;
+  }
+  else if(fdte->dir == NULL && fdte->file != NULL)
+  {
+    return false;
+  }
+  else
+  {
+    PANIC("ggm zzic han hon zong"); 
+  }
+
+
 }
 bool syscall_isdir(int fd)
 {
@@ -985,7 +993,6 @@ syscall_handler (struct intr_frame *f)
     arg2 = check_uaddr(esp+8, 4);
     void* addr = (void*)*(uint32_t*)arg2;
 
-    bool is_invalid_addr;
     bool cond1 = addr == NULL;
     bool cond2 = ((uint32_t)addr & (uint32_t)PGMASK) != 0;
     bool cond3 = (uint32_t)addr >= ((uint32_t)PHYS_BASE - (uint32_t)MAX_STACK_SIZE);
@@ -1024,7 +1031,16 @@ syscall_handler (struct intr_frame *f)
     fd = *(int*)arg1;
     arg2 = check_uaddr(esp+8, 4);
     char* name = (char*)*(uint32_t*)arg2;
-    check_ustr(name);
+    check_uaddr((uint8_t*)name, READDIR_MAX_LEN);
+    
+    int k;
+    for(k=0; k<READDIR_MAX_LEN; k++)
+    {
+      if(put_user(name+k, name[k]) == false)
+      {
+        syscall_exit(-1);
+      }
+    }
     f->eax = (uint32_t)syscall_readdir(fd, name);
     break;
     case SYS_ISDIR:

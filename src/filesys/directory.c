@@ -272,20 +272,25 @@ dir_readdir (struct dir *dir, char name[NAME_MAX + 1])
 {
   struct dir_entry e;
 
-  while (inode_read_at (dir->inode, &e, sizeof e, dir->pos) == sizeof e) 
+  while (inode_read_at (dir->inode, &e, sizeof e, dir->pos + (sizeof(e))*2 ) == sizeof e) 
+  {
+    dir->pos += sizeof e;
+    //printf("e.in_use: %d\n", e.in_use);
+    if (e.in_use)
     {
-      dir->pos += sizeof e;
-      if (e.in_use)
-        {
-          strlcpy (name, e.name, NAME_MAX + 1);
-          return true;
-        } 
-    }
+      strlcpy (name, e.name, NAME_MAX + 1);
+      return true;
+    } 
+  }
+
   return false;
 }
 
+
 /* pj4 */
 /*******/
+/* syscall helper functions. */
+/******************************************************************************************************/
 void remove_redundancy(char* dst, const char* src, size_t buffer_size)
 {
   size_t i;
@@ -442,6 +447,11 @@ bool make_dir(char* path)
     }
     else
     {
+      if(inode_is_removed(dir_get_inode(dir)) == true)
+      {
+        dir_close(dir);
+        return false;
+      }
       is_exist = dir_lookup(dir, ret_ptr, &inode);
       if(is_exist == true)
       {
@@ -531,6 +541,11 @@ int open_file_or_dir(char* path, struct file** open_file, struct dir** open_dir)
     }
     else
     {
+      if(inode_is_removed(dir_get_inode(dir)) == true)
+      {
+        dir_close(dir);
+        return -1;
+      }
       is_exist =dir_lookup(dir, ret_ptr, &inode);
       dir_close(dir);
       if(is_exist == false)
@@ -634,6 +649,12 @@ bool create_file(char* path, unsigned initial_size)
     }
     else
     {
+      if(inode_is_removed(dir_get_inode(dir)) == true)
+      {
+        dir_close(dir);
+        return false;
+      }
+
       is_exist = dir_lookup(dir,ret_ptr,&inode);
       if(is_exist == true)
       {
@@ -740,6 +761,8 @@ bool remove_file_or_dir(char* path)
   return false;
 }
 
+
+/******************************************************************************************************/
 
 off_t dir_length(struct dir* dir)
 {

@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-rm-cwd into /tmp/KvhN0hYWZY.dsk...
-Copying tests/filesys/extended/tar into /tmp/KvhN0hYWZY.dsk...
-Writing command line to /tmp/uNCRXqs8Db.dsk...
+Copying tests/filesys/extended/dir-rm-cwd into /tmp/anMrniVCmn.dsk...
+Copying tests/filesys/extended/tar into /tmp/anMrniVCmn.dsk...
+Writing command line to /tmp/z6pr9F7pjk.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put dir-rm-cwd put tar run dir-rm-cwd
 Pintos booting with 4,096 kB RAM...
@@ -27,16 +27,19 @@ Executing 'dir-rm-cwd':
 (dir-rm-cwd) remove successful
 (dir-rm-cwd) open "/a" (must fail)
 (dir-rm-cwd) open "." (must fail)
-(dir-rm-cwd) open "." (must fail): FAILED
-dir-rm-cwd: exit(1)
+(dir-rm-cwd) open ".." (must fail)
+(dir-rm-cwd) create "x" (must fail)
+(dir-rm-cwd) verify "/a" is empty
+(dir-rm-cwd) end
+dir-rm-cwd: exit(0)
 Execution of 'dir-rm-cwd' complete.
-Timer: 1386 ticks
-Thread: 30 idle ticks, 1138 kernel ticks, 221 user ticks
+Timer: 1406 ticks
+Thread: 30 idle ticks, 1138 kernel ticks, 242 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 34 reads, 446 writes
 hd1:0: 217 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1308 characters output
+Console: 1388 characters output
 Keyboard: 0 keys pressed
 Exception: 4 page faults
 Powering off...

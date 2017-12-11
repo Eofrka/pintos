@@ -1,5 +1,5 @@
-Copying tests/userprog/create-long into /tmp/PHWJRr6Can.dsk...
-Writing command line to /tmp/HLMNcjF4Ms.dsk...
+Copying tests/userprog/create-long into /tmp/9FNnOZdWYw.dsk...
+Writing command line to /tmp/EBcF4wlTBO.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put create-long run create-long
 Pintos booting with 4,096 kB RAM...
@@ -19,8 +19,8 @@ Executing 'create-long':
 (create-long) end
 create-long: exit(0)
 Execution of 'create-long' complete.
-Timer: 639 ticks
-Thread: 30 idle ticks, 515 kernel ticks, 97 user ticks
+Timer: 640 ticks
+Thread: 30 idle ticks, 516 kernel ticks, 97 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 28 reads, 204 writes
 hd1:0: 98 reads, 0 writes
