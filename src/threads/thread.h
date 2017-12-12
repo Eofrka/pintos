@@ -191,14 +191,6 @@ int thread_get_load_avg (void);
 /**********************************************************************************************************************************/
 void thread_sleep(int64_t wakeup_ticks);
 void thread_awake(int64_t current_ticks);
-void thread_check_and_yield(void);
-void thread_check_and_yield_on_return(void);
-int thread_get_max_priority(struct list* list);
-void thread_donate_priority(struct thread* src);
-void thread_restore_priority(void);
-void thread_remove_and_insert_ordered(struct list* list, struct thread* t);
-void thread_dec_donation_level(struct thread* root, int dec);
-bool thread_priority_g(const struct list_elem* a, const struct list_elem* b, void* aux);
 /**********************************************************************************************************************************/
 /*******/
 
