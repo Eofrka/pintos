@@ -1,10 +1,10 @@
-Copying tests/vm/mmap-close into /tmp/3K3xfMAuSJ.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/3K3xfMAuSJ.dsk...
-Writing command line to /tmp/BFTx970llL.dsk...
+Copying tests/vm/mmap-close into /tmp/QPF3NCDNyx.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/QPF3NCDNyx.dsk...
+Writing command line to /tmp/YQzpbn5k0L.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put mmap-close put sample.txt run mmap-close
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -22,13 +22,13 @@ Executing 'mmap-close':
 (mmap-close) end
 mmap-close: exit(0)
 Execution of 'mmap-close' complete.
-Timer: 728 ticks
-Thread: 30 idle ticks, 592 kernel ticks, 109 user ticks
+Timer: 609 ticks
+Thread: 30 idle ticks, 488 kernel ticks, 94 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 39 reads, 212 writes
 hd1:0: 104 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1045 characters output
+Console: 1044 characters output
 Keyboard: 0 keys pressed
 Exception: 6 page faults
 Powering off...

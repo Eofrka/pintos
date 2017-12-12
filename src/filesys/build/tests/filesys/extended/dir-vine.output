@@ -1,10 +1,10 @@
-Copying tests/filesys/extended/dir-vine into /tmp/pqSclViEVV.dsk...
-Copying tests/filesys/extended/tar into /tmp/pqSclViEVV.dsk...
-Writing command line to /tmp/HWTehRWwmf.dsk...
+Copying tests/filesys/extended/dir-vine into /tmp/zNumnQNVIC.dsk...
+Copying tests/filesys/extended/tar into /tmp/zNumnQNVIC.dsk...
+Writing command line to /tmp/VHKzKJJyJn.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put dir-vine put tar run dir-vine
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -22,10 +22,10 @@ Executing 'dir-vine':
 (dir-vine) end
 dir-vine: exit(0)
 Execution of 'dir-vine' complete.
-Timer: 265200 ticks
-Thread: 30 idle ticks, 36278 kernel ticks, 228895 user ticks
+Timer: 204304 ticks
+Thread: 30 idle ticks, 19972 kernel ticks, 184305 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 3807 reads, 5189 writes
+hd0:1: 3807 reads, 5237 writes
 hd1:0: 216 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1094 characters output

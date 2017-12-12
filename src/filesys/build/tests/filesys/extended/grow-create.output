@@ -1,10 +1,10 @@
-Copying tests/filesys/extended/grow-create into /tmp/PDc0Z5h0Il.dsk...
-Copying tests/filesys/extended/tar into /tmp/PDc0Z5h0Il.dsk...
-Writing command line to /tmp/dhsAwaEwGj.dsk...
+Copying tests/filesys/extended/grow-create into /tmp/HGoq8s3LQ2.dsk...
+Copying tests/filesys/extended/tar into /tmp/HGoq8s3LQ2.dsk...
+Writing command line to /tmp/o86aQpZuG9.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put grow-create put tar run grow-create
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -24,13 +24,13 @@ Executing 'grow-create':
 (grow-create) end
 grow-create: exit(0)
 Execution of 'grow-create' complete.
-Timer: 1293 ticks
-Thread: 30 idle ticks, 1128 kernel ticks, 138 user ticks
+Timer: 1101 ticks
+Thread: 30 idle ticks, 960 kernel ticks, 114 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 38 reads, 434 writes
 hd1:0: 212 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1131 characters output
+Console: 1130 characters output
 Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...

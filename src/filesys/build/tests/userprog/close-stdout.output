@@ -1,9 +1,9 @@
-Copying tests/userprog/close-stdout into /tmp/ETK4GC43e6.dsk...
-Writing command line to /tmp/efjl4ha4Zd.dsk...
+Copying tests/userprog/close-stdout into /tmp/DXdXsSgUoc.dsk...
+Writing command line to /tmp/nkugXnIBfl.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put close-stdout run close-stdout
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -18,8 +18,8 @@ Executing 'close-stdout':
 (close-stdout) end
 close-stdout: exit(0)
 Execution of 'close-stdout' complete.
-Timer: 633 ticks
-Thread: 30 idle ticks, 530 kernel ticks, 76 user ticks
+Timer: 534 ticks
+Thread: 30 idle ticks, 443 kernel ticks, 64 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes

@@ -115,7 +115,7 @@ void buffer_cache_init(void)
   list_init(&read_ahead_list);
   lock_init(&read_ahead_lock);
   cond_init(&read_ahead_cond);
-  thread_create("read_ahead_thread", PRI_DEFAULT, read_ahead_thread, NULL);
+  thread_create("read_ahead_thread", PRI_MIN, read_ahead_thread, NULL);
   clock_index = -1;
 }
 

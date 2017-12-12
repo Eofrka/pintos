@@ -1,10 +1,10 @@
-Copying tests/vm/page-merge-stk into /tmp/ehPieBqMpl.dsk...
-Copying tests/vm/child-qsort into /tmp/ehPieBqMpl.dsk...
-Writing command line to /tmp/BvVmGikCsm.dsk...
+Copying tests/vm/page-merge-stk into /tmp/bFVqQW8SXC.dsk...
+Copying tests/vm/child-qsort into /tmp/bFVqQW8SXC.dsk...
+Writing command line to /tmp/WJ96gMguWt.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put page-merge-stk put child-qsort run page-merge-stk
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -21,22 +21,22 @@ Executing 'page-merge-stk':
 (page-merge-stk) sort chunk 0
 (page-merge-stk) sort chunk 1
 (page-merge-stk) sort chunk 2
-child-qsort: exit(72)
 (page-merge-stk) sort chunk 3
 child-qsort: exit(72)
 (page-merge-stk) sort chunk 4
 child-qsort: exit(72)
+child-qsort: exit(72)
 (page-merge-stk) sort chunk 5
 (page-merge-stk) sort chunk 6
 child-qsort: exit(72)
-child-qsort: exit(72)
 (page-merge-stk) sort chunk 7
+child-qsort: exit(72)
 child-qsort: exit(72)
 (page-merge-stk) wait for child 0
 (page-merge-stk) wait for child 1
 (page-merge-stk) wait for child 2
-child-qsort: exit(72)
 (page-merge-stk) wait for child 3
+child-qsort: exit(72)
 child-qsort: exit(72)
 (page-merge-stk) wait for child 4
 (page-merge-stk) wait for child 5
@@ -47,5 +47,14 @@ child-qsort: exit(72)
 (page-merge-stk) success, buf_idx=1,048,576
 (page-merge-stk) end
 page-merge-stk: exit(0)
-
-TIMEOUT after 60 seconds of host CPU time
+Execution of 'page-merge-stk' complete.
+Timer: 111914 ticks
+Thread: 30 idle ticks, 1484 kernel ticks, 110403 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 4545 reads, 6633 writes
+hd1:0: 213 reads, 0 writes
+hd1:1: 1440 reads, 2616 writes
+Console: 1834 characters output
+Keyboard: 0 keys pressed
+Exception: 986 page faults
+Powering off...

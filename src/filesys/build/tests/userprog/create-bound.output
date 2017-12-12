@@ -1,9 +1,9 @@
-Copying tests/userprog/create-bound into /tmp/iQl46OPRi7.dsk...
-Writing command line to /tmp/oWXY58K4AX.dsk...
+Copying tests/userprog/create-bound into /tmp/US6dSNjYTC.dsk...
+Writing command line to /tmp/KuZBiOCvst.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put create-bound run create-bound
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -19,13 +19,13 @@ Executing 'create-bound':
 (create-bound) end
 create-bound: exit(0)
 Execution of 'create-bound' complete.
-Timer: 689 ticks
-Thread: 30 idle ticks, 550 kernel ticks, 112 user ticks
+Timer: 574 ticks
+Thread: 30 idle ticks, 453 kernel ticks, 94 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 32 reads, 208 writes
 hd1:0: 100 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 976 characters output
+Console: 975 characters output
 Keyboard: 0 keys pressed
 Exception: 6 page faults
 Powering off...

@@ -1,9 +1,9 @@
-Copying tests/userprog/exec-missing into /tmp/Ag8eXJHf8s.dsk...
-Writing command line to /tmp/Ate5Q5jCrb.dsk...
+Copying tests/userprog/exec-missing into /tmp/vRXQc14Ean.dsk...
+Writing command line to /tmp/ENb8fghwvW.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put exec-missing run exec-missing
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -20,13 +20,13 @@ load: no-such-file: open failed
 (exec-missing) end
 exec-missing: exit(0)
 Execution of 'exec-missing' complete.
-Timer: 672 ticks
-Thread: 30 idle ticks, 541 kernel ticks, 104 user ticks
+Timer: 563 ticks
+Thread: 30 idle ticks, 449 kernel ticks, 87 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 32 reads, 201 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1010 characters output
+Console: 1009 characters output
 Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...

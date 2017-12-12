@@ -1,10 +1,10 @@
-Copying tests/filesys/extended/grow-tell into /tmp/ys8OUzOh3X.dsk...
-Copying tests/filesys/extended/tar into /tmp/ys8OUzOh3X.dsk...
-Writing command line to /tmp/i8Sg0mJngp.dsk...
+Copying tests/filesys/extended/grow-tell into /tmp/EFPm28x0TM.dsk...
+Copying tests/filesys/extended/tar into /tmp/EFPm28x0TM.dsk...
+Writing command line to /tmp/Le7FQZSi3n.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put grow-tell put tar run grow-tell
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -27,13 +27,13 @@ Executing 'grow-tell':
 (grow-tell) end
 grow-tell: exit(0)
 Execution of 'grow-tell' complete.
-Timer: 1431 ticks
-Thread: 30 idle ticks, 1135 kernel ticks, 269 user ticks
+Timer: 1219 ticks
+Thread: 30 idle ticks, 965 kernel ticks, 228 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 40 reads, 441 writes
 hd1:0: 213 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1185 characters output
+Console: 1184 characters output
 Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...

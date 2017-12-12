@@ -1,9 +1,9 @@
-Copying tests/userprog/args-multiple into /tmp/POa7XczWz2.dsk...
-Writing command line to /tmp/Y3cB9mAko1.dsk...
+Copying tests/userprog/args-multiple into /tmp/HiG239QxRo.dsk...
+Writing command line to /tmp/zAA4b38gtz.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put args-multiple run 'args-multiple some arguments for you!'
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -25,13 +25,13 @@ Executing 'args-multiple some arguments for you!':
 (args) end
 args-multiple: exit(0)
 Execution of 'args-multiple some arguments for you!' complete.
-Timer: 660 ticks
-Thread: 30 idle ticks, 532 kernel ticks, 101 user ticks
+Timer: 561 ticks
+Thread: 30 idle ticks, 445 kernel ticks, 89 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 199 writes
 hd1:0: 97 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1173 characters output
+Console: 1172 characters output
 Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...

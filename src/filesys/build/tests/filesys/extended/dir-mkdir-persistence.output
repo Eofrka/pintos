@@ -1,8 +1,8 @@
-Writing command line to /tmp/pi1X7tALyL.dsk...
+Writing command line to /tmp/Je9PdxBXlZ.dsk...
 squish-pty bochs -q
 Kernel command line: -q run 'tar fs.tar /' get fs.tar
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -14,8 +14,8 @@ Executing 'tar fs.tar /':
 tar: exit(0)
 Execution of 'tar fs.tar /' complete.
 Getting 'fs.tar' from the file system...
-Timer: 4436 ticks
-Thread: 30 idle ticks, 733 kernel ticks, 3676 user ticks
+Timer: 3963 ticks
+Thread: 30 idle ticks, 578 kernel ticks, 3358 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 478 reads, 223 writes
 hd1:0: 0 reads, 218 writes
@@ -24,4 +24,4 @@ Console: 847 characters output
 Keyboard: 0 keys pressed
 Exception: 4 page faults
 Powering off...
-Copying tests/filesys/extended/dir-mkdir.tar out of /tmp/2TPGDUNXE0.dsk...
+Copying tests/filesys/extended/dir-mkdir.tar out of /tmp/pMo55oDR0c.dsk...

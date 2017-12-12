@@ -1,10 +1,10 @@
-Copying tests/userprog/write-normal into /tmp/5Rts2Fhvkr.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/5Rts2Fhvkr.dsk...
-Writing command line to /tmp/0iZOP6KKP6.dsk...
+Copying tests/userprog/write-normal into /tmp/KZviTjIi4Y.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/KZviTjIi4Y.dsk...
+Writing command line to /tmp/LnS2E2wOQF.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put write-normal put sample.txt run write-normal
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -22,8 +22,8 @@ Executing 'write-normal':
 (write-normal) end
 write-normal: exit(0)
 Execution of 'write-normal' complete.
-Timer: 745 ticks
-Thread: 30 idle ticks, 590 kernel ticks, 128 user ticks
+Timer: 617 ticks
+Thread: 30 idle ticks, 484 kernel ticks, 106 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 211 writes
 hd1:0: 101 reads, 0 writes

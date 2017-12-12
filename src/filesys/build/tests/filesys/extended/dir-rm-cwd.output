@@ -1,10 +1,10 @@
-Copying tests/filesys/extended/dir-rm-cwd into /tmp/AbEJJEJdFf.dsk...
-Copying tests/filesys/extended/tar into /tmp/AbEJJEJdFf.dsk...
-Writing command line to /tmp/frvwJapa8u.dsk...
+Copying tests/filesys/extended/dir-rm-cwd into /tmp/X28rO3ElC1.dsk...
+Copying tests/filesys/extended/tar into /tmp/X28rO3ElC1.dsk...
+Writing command line to /tmp/DUzM1Arroa.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put dir-rm-cwd put tar run dir-rm-cwd
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -33,13 +33,13 @@ Executing 'dir-rm-cwd':
 (dir-rm-cwd) end
 dir-rm-cwd: exit(0)
 Execution of 'dir-rm-cwd' complete.
-Timer: 1456 ticks
-Thread: 30 idle ticks, 1182 kernel ticks, 247 user ticks
+Timer: 1225 ticks
+Thread: 30 idle ticks, 993 kernel ticks, 205 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 40 reads, 445 writes
 hd1:0: 217 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1388 characters output
+Console: 1387 characters output
 Keyboard: 0 keys pressed
 Exception: 4 page faults
 Powering off...

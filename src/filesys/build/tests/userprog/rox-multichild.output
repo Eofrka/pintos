@@ -1,10 +1,10 @@
-Copying tests/userprog/rox-multichild into /tmp/Dw1xyojtys.dsk...
-Copying tests/userprog/child-rox into /tmp/Dw1xyojtys.dsk...
-Writing command line to /tmp/PAQi5j1xql.dsk...
+Copying tests/userprog/rox-multichild into /tmp/eK8EMqRT0c.dsk...
+Copying tests/userprog/child-rox into /tmp/eK8EMqRT0c.dsk...
+Writing command line to /tmp/BRd0rjA5pG.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put rox-multichild put child-rox run rox-multichild
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -54,8 +54,8 @@ child-rox: exit(12)
 (rox-multichild) end
 rox-multichild: exit(0)
 Execution of 'rox-multichild' complete.
-Timer: 1793 ticks
-Thread: 30 idle ticks, 1188 kernel ticks, 578 user ticks
+Timer: 1533 ticks
+Thread: 30 idle ticks, 1007 kernel ticks, 499 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 179 reads, 427 writes
 hd1:0: 209 reads, 0 writes

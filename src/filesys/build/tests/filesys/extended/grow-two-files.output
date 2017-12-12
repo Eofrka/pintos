@@ -1,10 +1,10 @@
-Copying tests/filesys/extended/grow-two-files into /tmp/krkFGPuHdh.dsk...
-Copying tests/filesys/extended/tar into /tmp/krkFGPuHdh.dsk...
-Writing command line to /tmp/eoRvr46874.dsk...
+Copying tests/filesys/extended/grow-two-files into /tmp/G1dr0k8uvK.dsk...
+Copying tests/filesys/extended/tar into /tmp/G1dr0k8uvK.dsk...
+Writing command line to /tmp/yqqZ7tD2bY.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put grow-two-files put tar run grow-two-files
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -33,13 +33,13 @@ Executing 'grow-two-files':
 (grow-two-files) end
 grow-two-files: exit(0)
 Execution of 'grow-two-files' complete.
-Timer: 1897 ticks
-Thread: 30 idle ticks, 1161 kernel ticks, 709 user ticks
+Timer: 1644 ticks
+Thread: 30 idle ticks, 987 kernel ticks, 630 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 97 reads, 473 writes
+hd0:1: 96 reads, 473 writes
 hd1:0: 215 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1436 characters output
+Console: 1435 characters output
 Keyboard: 0 keys pressed
 Exception: 9 page faults
 Powering off...

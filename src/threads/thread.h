@@ -116,15 +116,6 @@ struct thread
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
     
-    /* pj1 */
-    /*******/
-    int old_priority;                   /* Old priority */
-    struct lock* lock;                  /* When thread calls lock_acquire(), if the target lock's holder is not NULL, this lock is set to the lock */
-    struct list lock_list;              /* When thread calls for lock_acquire(), if the target lock's holder is NULL, push the lock into the lock_list */
-    struct semaphore* sema;             /* Point the semaphore in which this thread is waiting */ 
-    int donation_level;                 /* Donation level for priority donation */
-    struct condition* cond;             /* Condition variable in which this thread is waiting encapsulated with semaphore_elem. */
-    /*******/
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */

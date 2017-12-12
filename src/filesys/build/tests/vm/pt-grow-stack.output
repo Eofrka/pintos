@@ -1,9 +1,9 @@
-Copying tests/vm/pt-grow-stack into /tmp/d7WwZAO5sv.dsk...
-Writing command line to /tmp/7b5pfDRRbz.dsk...
+Copying tests/vm/pt-grow-stack into /tmp/xM2SjgVruQ.dsk...
+Writing command line to /tmp/d2mKsgMG6B.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put pt-grow-stack run pt-grow-stack
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -19,8 +19,8 @@ Executing 'pt-grow-stack':
 (pt-grow-stack) end
 pt-grow-stack: exit(0)
 Execution of 'pt-grow-stack' complete.
-Timer: 696 ticks
-Thread: 30 idle ticks, 570 kernel ticks, 99 user ticks
+Timer: 589 ticks
+Thread: 30 idle ticks, 477 kernel ticks, 85 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 32 reads, 219 writes
 hd1:0: 107 reads, 0 writes

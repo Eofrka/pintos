@@ -1,10 +1,10 @@
-Copying tests/filesys/extended/grow-sparse into /tmp/BNRFrkFt25.dsk...
-Copying tests/filesys/extended/tar into /tmp/BNRFrkFt25.dsk...
-Writing command line to /tmp/kUwKieSMT3.dsk...
+Copying tests/filesys/extended/grow-sparse into /tmp/grUYWH0fGB.dsk...
+Copying tests/filesys/extended/tar into /tmp/grUYWH0fGB.dsk...
+Writing command line to /tmp/OOPVT4YIEl.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put grow-sparse put tar run grow-sparse
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -28,13 +28,13 @@ Executing 'grow-sparse':
 (grow-sparse) end
 grow-sparse: exit(0)
 Execution of 'grow-sparse' complete.
-Timer: 2864 ticks
-Thread: 30 idle ticks, 1134 kernel ticks, 1703 user ticks
+Timer: 2568 ticks
+Thread: 30 idle ticks, 964 kernel ticks, 1577 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 192 reads, 438 writes
+hd0:1: 191 reads, 438 writes
 hd1:0: 213 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1259 characters output
+Console: 1258 characters output
 Keyboard: 0 keys pressed
 Exception: 23 page faults
 Powering off...

@@ -1,10 +1,10 @@
-Copying tests/filesys/extended/grow-root-sm into /tmp/Vkjv2rMo8h.dsk...
-Copying tests/filesys/extended/tar into /tmp/Vkjv2rMo8h.dsk...
-Writing command line to /tmp/JsX4OYGfLP.dsk...
+Copying tests/filesys/extended/grow-root-sm into /tmp/Jzzj17D5Ga.dsk...
+Copying tests/filesys/extended/tar into /tmp/Jzzj17D5Ga.dsk...
+Writing command line to /tmp/v3BQ2leRxN.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put grow-root-sm put tar run grow-root-sm
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -40,8 +40,8 @@ Executing 'grow-root-sm':
 (grow-root-sm) end
 grow-root-sm: exit(0)
 Execution of 'grow-root-sm' complete.
-Timer: 3352 ticks
-Thread: 30 idle ticks, 1500 kernel ticks, 1825 user ticks
+Timer: 2582 ticks
+Thread: 30 idle ticks, 1157 kernel ticks, 1398 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 62 reads, 476 writes
 hd1:0: 213 reads, 0 writes

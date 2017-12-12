@@ -1,10 +1,10 @@
-Copying tests/vm/mmap-over-stk into /tmp/KlWAGRaQX5.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/KlWAGRaQX5.dsk...
-Writing command line to /tmp/89BTxLeTt8.dsk...
+Copying tests/vm/mmap-over-stk into /tmp/pJhcKL0S4s.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/pJhcKL0S4s.dsk...
+Writing command line to /tmp/xtewzreTpR.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put mmap-over-stk put sample.txt run mmap-over-stk
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -22,8 +22,8 @@ Executing 'mmap-over-stk':
 (mmap-over-stk) end
 mmap-over-stk: exit(0)
 Execution of 'mmap-over-stk' complete.
-Timer: 701 ticks
-Thread: 30 idle ticks, 575 kernel ticks, 99 user ticks
+Timer: 587 ticks
+Thread: 30 idle ticks, 476 kernel ticks, 84 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 206 writes
 hd1:0: 101 reads, 0 writes

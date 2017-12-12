@@ -1,9 +1,9 @@
-Copying tests/userprog/exec-bad-ptr into /tmp/oXpBOJnDDr.dsk...
-Writing command line to /tmp/WtuzpP4PTR.dsk...
+Copying tests/userprog/exec-bad-ptr into /tmp/oAfXs9WDcQ.dsk...
+Writing command line to /tmp/HFe7ojSntk.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put exec-bad-ptr run exec-bad-ptr
 Pintos booting with 4,096 kB RAM...
-370 pages available in kernel pool.
+371 pages available in kernel pool.
 370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
@@ -17,8 +17,8 @@ Executing 'exec-bad-ptr':
 (exec-bad-ptr) begin
 exec-bad-ptr: exit(-1)
 Execution of 'exec-bad-ptr' complete.
-Timer: 630 ticks
-Thread: 30 idle ticks, 530 kernel ticks, 73 user ticks
+Timer: 530 ticks
+Thread: 30 idle ticks, 443 kernel ticks, 60 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes
