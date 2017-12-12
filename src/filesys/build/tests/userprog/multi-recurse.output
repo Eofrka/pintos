@@ -1,5 +1,5 @@
-Copying tests/userprog/multi-recurse into /tmp/lVgQiU2gpt.dsk...
-Writing command line to /tmp/Vjb8GtB7wO.dsk...
+Copying tests/userprog/multi-recurse into /tmp/oqivtgauln.dsk...
+Writing command line to /tmp/Y9zcgOQv1k.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put multi-recurse run 'multi-recurse 15'
 Pintos booting with 4,096 kB RAM...
@@ -78,10 +78,10 @@ multi-recurse: exit(14)
 (multi-recurse) end 15
 multi-recurse: exit(15)
 Execution of 'multi-recurse 15' complete.
-Timer: 1853 ticks
-Thread: 30 idle ticks, 711 kernel ticks, 1115 user ticks
+Timer: 2093 ticks
+Thread: 30 idle ticks, 945 kernel ticks, 1121 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 31 reads, 224 writes
+hd0:1: 33 reads, 223 writes
 hd1:0: 109 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 2622 characters output

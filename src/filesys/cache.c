@@ -28,7 +28,6 @@ static void read_ahead_thread(void* aux UNUSED)
   while(true)
   {
     sema_down(&read_ahead_sema);
-
     lock_acquire(&read_ahead_lock);
     struct read_ahead_list_entry* rale = list_entry(list_pop_front(&read_ahead_list) , struct read_ahead_list_entry, elem);
     lock_release(&read_ahead_lock);
@@ -114,8 +113,7 @@ void buffer_cache_init(void)
   list_init(&read_ahead_list);
   lock_init(&read_ahead_lock);
   sema_init(&read_ahead_sema, 0);
-  thread_create("read_ahead_thread", PRI_MIN, read_ahead_thread, NULL);
-
+  //thread_create("read_ahead_thread", PRI_MAX, read_ahead_thread, NULL);
   clock_index = -1;
 }
 
@@ -288,7 +286,7 @@ struct buffer_cache_entry* buffer_cache_find_victim(void)
     }
     ASSERT(clock_index != -1);
 
-    int start = clock_index;
+    //int start = clock_index;
     //int last = clock_index == 0? BUFFER_CACHE_SIZE-1: clock_index - 1;
 
     struct buffer_cache_entry* iter_bce = NULL;

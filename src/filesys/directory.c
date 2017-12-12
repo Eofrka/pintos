@@ -580,7 +580,6 @@ int open_file_or_dir(char* path, struct file** open_file, struct dir** open_dir)
       }
     }
   }
-
   printf("why???????????\n");
   PANIC("If reached here, it may have bug on my code.");
   return -1;

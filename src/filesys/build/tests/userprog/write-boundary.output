@@ -1,6 +1,6 @@
-Copying tests/userprog/write-boundary into /tmp/fTCnRYtVwO.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/fTCnRYtVwO.dsk...
-Writing command line to /tmp/Q3A3ZQ6aoz.dsk...
+Copying tests/userprog/write-boundary into /tmp/p8hWqjr9rY.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/p8hWqjr9rY.dsk...
+Writing command line to /tmp/PEpmkkcOI3.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put write-boundary put sample.txt run write-boundary
 Pintos booting with 4,096 kB RAM...
@@ -21,13 +21,13 @@ Executing 'write-boundary':
 (write-boundary) end
 write-boundary: exit(0)
 Execution of 'write-boundary' complete.
-Timer: 697 ticks
-Thread: 30 idle ticks, 567 kernel ticks, 103 user ticks
+Timer: 751 ticks
+Thread: 30 idle ticks, 637 kernel ticks, 87 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 29 reads, 214 writes
+hd0:1: 31 reads, 213 writes
 hd1:0: 104 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1050 characters output
+Console: 1049 characters output
 Keyboard: 0 keys pressed
 Exception: 7 page faults
 Powering off...

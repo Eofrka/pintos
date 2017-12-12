@@ -1,5 +1,5 @@
-Copying tests/filesys/base/lg-create into /tmp/1YBftdPnJi.dsk...
-Writing command line to /tmp/R9TTldSaJM.dsk...
+Copying tests/filesys/base/lg-create into /tmp/tmk7r1z3R7.dsk...
+Writing command line to /tmp/rL5zuTkiwS.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put lg-create run lg-create
 Pintos booting with 4,096 kB RAM...
@@ -22,10 +22,10 @@ Executing 'lg-create':
 (lg-create) end
 lg-create: exit(0)
 Execution of 'lg-create' complete.
-Timer: 1994 ticks
-Thread: 30 idle ticks, 520 kernel ticks, 1448 user ticks
+Timer: 2112 ticks
+Thread: 30 idle ticks, 706 kernel ticks, 1379 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 179 reads, 360 writes
+hd0:1: 183 reads, 359 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1062 characters output

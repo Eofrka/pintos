@@ -1,5 +1,5 @@
-Copying tests/userprog/create-normal into /tmp/tp1NWNpPaZ.dsk...
-Writing command line to /tmp/sn7eT5muOD.dsk...
+Copying tests/userprog/create-normal into /tmp/vUhmN64Y4g.dsk...
+Writing command line to /tmp/g4vKbyvsaR.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put create-normal run create-normal
 Pintos booting with 4,096 kB RAM...
@@ -19,13 +19,13 @@ Executing 'create-normal':
 (create-normal) end
 create-normal: exit(0)
 Execution of 'create-normal' complete.
-Timer: 649 ticks
-Thread: 30 idle ticks, 516 kernel ticks, 106 user ticks
+Timer: 703 ticks
+Thread: 30 idle ticks, 578 kernel ticks, 98 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 205 writes
+hd0:1: 30 reads, 204 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 978 characters output
+Console: 977 characters output
 Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...

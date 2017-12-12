@@ -1,5 +1,5 @@
-Copying tests/userprog/bad-jump into /tmp/mbc6cyc4DH.dsk...
-Writing command line to /tmp/DHQnpiGg6b.dsk...
+Copying tests/userprog/bad-jump into /tmp/cLCujPmlqK.dsk...
+Writing command line to /tmp/ElGm2Hr0Q7.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put bad-jump run bad-jump
 Pintos booting with 4,096 kB RAM...
@@ -24,10 +24,10 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0
  cs=001b ds=0023 es=0023 ss=0023
 bad-jump: exit(-1)
 Execution of 'bad-jump' complete.
-Timer: 658 ticks
-Thread: 30 idle ticks, 514 kernel ticks, 117 user ticks
+Timer: 697 ticks
+Thread: 30 idle ticks, 565 kernel ticks, 105 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 202 writes
+hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1242 characters output

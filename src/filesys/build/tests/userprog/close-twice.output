@@ -1,6 +1,6 @@
-Copying tests/userprog/close-twice into /tmp/9EHG98AnS4.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/9EHG98AnS4.dsk...
-Writing command line to /tmp/JVk2WsoFSj.dsk...
+Copying tests/userprog/close-twice into /tmp/bBOY8EO5Lu.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/bBOY8EO5Lu.dsk...
+Writing command line to /tmp/pZrhbczpYi.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put close-twice put sample.txt run close-twice
 Pintos booting with 4,096 kB RAM...
@@ -23,10 +23,10 @@ Executing 'close-twice':
 (close-twice) end
 close-twice: exit(0)
 Execution of 'close-twice' complete.
-Timer: 674 ticks
-Thread: 30 idle ticks, 549 kernel ticks, 98 user ticks
+Timer: 724 ticks
+Thread: 30 idle ticks, 611 kernel ticks, 86 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 206 writes
+hd0:1: 30 reads, 205 writes
 hd1:0: 100 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1094 characters output

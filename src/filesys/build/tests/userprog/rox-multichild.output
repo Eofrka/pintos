@@ -1,6 +1,6 @@
-Copying tests/userprog/rox-multichild into /tmp/K9jEnwS8Y6.dsk...
-Copying tests/userprog/child-rox into /tmp/K9jEnwS8Y6.dsk...
-Writing command line to /tmp/AkiWT3P7Em.dsk...
+Copying tests/userprog/rox-multichild into /tmp/Z9p9Tq1zRp.dsk...
+Copying tests/userprog/child-rox into /tmp/Z9p9Tq1zRp.dsk...
+Writing command line to /tmp/zznvKvA81G.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put rox-multichild put child-rox run rox-multichild
 Pintos booting with 4,096 kB RAM...
@@ -54,10 +54,10 @@ child-rox: exit(12)
 (rox-multichild) end
 rox-multichild: exit(0)
 Execution of 'rox-multichild' complete.
-Timer: 1689 ticks
-Thread: 30 idle ticks, 1132 kernel ticks, 530 user ticks
+Timer: 1827 ticks
+Thread: 30 idle ticks, 1292 kernel ticks, 508 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 59 reads, 427 writes
+hd0:1: 63 reads, 426 writes
 hd1:0: 209 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1953 characters output

@@ -1,6 +1,6 @@
-Copying tests/userprog/exec-arg into /tmp/8c1nMbmXBk.dsk...
-Copying tests/userprog/child-args into /tmp/8c1nMbmXBk.dsk...
-Writing command line to /tmp/nWYhJeGBhH.dsk...
+Copying tests/userprog/exec-arg into /tmp/DZYWl3Rp5p.dsk...
+Copying tests/userprog/child-args into /tmp/DZYWl3Rp5p.dsk...
+Writing command line to /tmp/F6qeK0QMxg.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put exec-arg put child-args run exec-arg
 Pintos booting with 4,096 kB RAM...
@@ -27,10 +27,10 @@ child-args: exit(0)
 (exec-arg) end
 exec-arg: exit(0)
 Execution of 'exec-arg' complete.
-Timer: 1203 ticks
-Thread: 30 idle ticks, 1012 kernel ticks, 164 user ticks
+Timer: 1265 ticks
+Thread: 30 idle ticks, 1099 kernel ticks, 139 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 55 reads, 398 writes
+hd0:1: 59 reads, 397 writes
 hd1:0: 195 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1109 characters output

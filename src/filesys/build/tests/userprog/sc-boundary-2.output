@@ -1,5 +1,5 @@
-Copying tests/userprog/sc-boundary-2 into /tmp/211manmAFf.dsk...
-Writing command line to /tmp/KXNHn6tToF.dsk...
+Copying tests/userprog/sc-boundary-2 into /tmp/p4RgCOvE2N.dsk...
+Writing command line to /tmp/7fAEhCRMmW.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put sc-boundary-2 run sc-boundary-2
 Pintos booting with 4,096 kB RAM...
@@ -17,10 +17,10 @@ Executing 'sc-boundary-2':
 (sc-boundary-2) begin
 sc-boundary-2: exit(67)
 Execution of 'sc-boundary-2' complete.
-Timer: 633 ticks
-Thread: 30 idle ticks, 530 kernel ticks, 76 user ticks
+Timer: 671 ticks
+Thread: 30 idle ticks, 577 kernel ticks, 68 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 208 writes
+hd0:1: 30 reads, 207 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 927 characters output

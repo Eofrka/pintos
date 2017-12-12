@@ -1,6 +1,6 @@
-Copying tests/userprog/write-zero into /tmp/GRrlFAhoSm.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/GRrlFAhoSm.dsk...
-Writing command line to /tmp/zSYvCtDqES.dsk...
+Copying tests/userprog/write-zero into /tmp/gmdIynKFcc.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/gmdIynKFcc.dsk...
+Writing command line to /tmp/t8uuytVg71.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put write-zero put sample.txt run write-zero
 Pintos booting with 4,096 kB RAM...
@@ -21,10 +21,10 @@ Executing 'write-zero':
 (write-zero) end
 write-zero: exit(0)
 Execution of 'write-zero' complete.
-Timer: 662 ticks
-Thread: 30 idle ticks, 548 kernel ticks, 87 user ticks
+Timer: 713 ticks
+Thread: 30 idle ticks, 607 kernel ticks, 79 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 206 writes
+hd0:1: 30 reads, 205 writes
 hd1:0: 100 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1013 characters output

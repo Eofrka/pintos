@@ -1,6 +1,6 @@
-Copying tests/userprog/rox-child into /tmp/N7d7tQxstB.dsk...
-Copying tests/userprog/child-rox into /tmp/N7d7tQxstB.dsk...
-Writing command line to /tmp/Ra8BtCVnt6.dsk...
+Copying tests/userprog/rox-child into /tmp/Taay9Kfcb5.dsk...
+Copying tests/userprog/child-rox into /tmp/Taay9Kfcb5.dsk...
+Writing command line to /tmp/GCaouWNvqy.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put rox-child put child-rox run rox-child
 Pintos booting with 4,096 kB RAM...
@@ -30,10 +30,10 @@ child-rox: exit(12)
 (rox-child) end
 rox-child: exit(0)
 Execution of 'rox-child' complete.
-Timer: 1316 ticks
-Thread: 30 idle ticks, 1092 kernel ticks, 197 user ticks
+Timer: 1387 ticks
+Thread: 30 idle ticks, 1190 kernel ticks, 170 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 59 reads, 427 writes
+hd0:1: 63 reads, 426 writes
 hd1:0: 209 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1252 characters output

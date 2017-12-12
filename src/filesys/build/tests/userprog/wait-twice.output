@@ -1,6 +1,6 @@
-Copying tests/userprog/wait-twice into /tmp/UghjvCxZFD.dsk...
-Copying tests/userprog/child-simple into /tmp/UghjvCxZFD.dsk...
-Writing command line to /tmp/2ivqyHM0tg.dsk...
+Copying tests/userprog/wait-twice into /tmp/5EN8PRFMNb.dsk...
+Copying tests/userprog/child-simple into /tmp/5EN8PRFMNb.dsk...
+Writing command line to /tmp/yIaPYdrSdk.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put wait-twice put child-simple run wait-twice
 Pintos booting with 4,096 kB RAM...
@@ -24,10 +24,10 @@ child-simple: exit(81)
 (wait-twice) end
 wait-twice: exit(0)
 Execution of 'wait-twice' complete.
-Timer: 1194 ticks
-Thread: 30 idle ticks, 1012 kernel ticks, 155 user ticks
+Timer: 1260 ticks
+Thread: 30 idle ticks, 1102 kernel ticks, 132 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 55 reads, 398 writes
+hd0:1: 59 reads, 397 writes
 hd1:0: 195 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1093 characters output

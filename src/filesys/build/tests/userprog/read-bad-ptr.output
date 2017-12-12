@@ -1,6 +1,6 @@
-Copying tests/userprog/read-bad-ptr into /tmp/3g9YWocCCl.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/3g9YWocCCl.dsk...
-Writing command line to /tmp/JtPyhZDubf.dsk...
+Copying tests/userprog/read-bad-ptr into /tmp/ZCWZUfDRbY.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/ZCWZUfDRbY.dsk...
+Writing command line to /tmp/bYF9wtICLS.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put read-bad-ptr put sample.txt run read-bad-ptr
 Pintos booting with 4,096 kB RAM...
@@ -20,10 +20,10 @@ Executing 'read-bad-ptr':
 (read-bad-ptr) open "sample.txt"
 read-bad-ptr: exit(-1)
 Execution of 'read-bad-ptr' complete.
-Timer: 661 ticks
-Thread: 30 idle ticks, 549 kernel ticks, 85 user ticks
+Timer: 711 ticks
+Thread: 30 idle ticks, 607 kernel ticks, 77 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 206 writes
+hd0:1: 30 reads, 205 writes
 hd1:0: 100 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1013 characters output

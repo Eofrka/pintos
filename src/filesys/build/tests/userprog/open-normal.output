@@ -1,6 +1,6 @@
-Copying tests/userprog/open-normal into /tmp/7juqlPT9M2.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/7juqlPT9M2.dsk...
-Writing command line to /tmp/PtlpNO8Svj.dsk...
+Copying tests/userprog/open-normal into /tmp/k3QFoRHMl5.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/k3QFoRHMl5.dsk...
+Writing command line to /tmp/K2Kr0Z2tdC.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put open-normal put sample.txt run open-normal
 Pintos booting with 4,096 kB RAM...
@@ -20,10 +20,10 @@ Executing 'open-normal':
 (open-normal) end
 open-normal: exit(0)
 Execution of 'open-normal' complete.
-Timer: 658 ticks
-Thread: 30 idle ticks, 549 kernel ticks, 82 user ticks
+Timer: 708 ticks
+Thread: 30 idle ticks, 610 kernel ticks, 71 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 206 writes
+hd0:1: 30 reads, 205 writes
 hd1:0: 100 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 990 characters output

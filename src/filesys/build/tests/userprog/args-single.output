@@ -1,5 +1,5 @@
-Copying tests/userprog/args-single into /tmp/uzZzyiypRw.dsk...
-Writing command line to /tmp/FPiPGcPQWJ.dsk...
+Copying tests/userprog/args-single into /tmp/hR4X8wSL9p.dsk...
+Writing command line to /tmp/zKtjX8bGfx.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put args-single run 'args-single onearg'
 Pintos booting with 4,096 kB RAM...
@@ -22,10 +22,10 @@ Executing 'args-single onearg':
 (args) end
 args-single: exit(0)
 Execution of 'args-single onearg' complete.
-Timer: 627 ticks
-Thread: 30 idle ticks, 512 kernel ticks, 88 user ticks
+Timer: 665 ticks
+Thread: 30 idle ticks, 560 kernel ticks, 78 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 200 writes
+hd0:1: 30 reads, 199 writes
 hd1:0: 97 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1033 characters output

@@ -1,5 +1,5 @@
-Copying tests/userprog/close-stdout into /tmp/sVUfrBidJy.dsk...
-Writing command line to /tmp/IAiPSXQH8g.dsk...
+Copying tests/userprog/close-stdout into /tmp/q5dTPRVZZj.dsk...
+Writing command line to /tmp/cZXGtj4dxp.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put close-stdout run close-stdout
 Pintos booting with 4,096 kB RAM...
@@ -18,10 +18,10 @@ Executing 'close-stdout':
 (close-stdout) end
 close-stdout: exit(0)
 Execution of 'close-stdout' complete.
-Timer: 616 ticks
-Thread: 30 idle ticks, 515 kernel ticks, 74 user ticks
+Timer: 655 ticks
+Thread: 30 idle ticks, 566 kernel ticks, 62 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 202 writes
+hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 937 characters output

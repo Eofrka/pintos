@@ -1,5 +1,5 @@
-Copying tests/userprog/exec-bad-ptr into /tmp/AnNspZGP7Q.dsk...
-Writing command line to /tmp/NZ0KqUFuTs.dsk...
+Copying tests/userprog/exec-bad-ptr into /tmp/JeOwKuFtQp.dsk...
+Writing command line to /tmp/9o3w3jW0HE.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put exec-bad-ptr run exec-bad-ptr
 Pintos booting with 4,096 kB RAM...
@@ -17,10 +17,10 @@ Executing 'exec-bad-ptr':
 (exec-bad-ptr) begin
 exec-bad-ptr: exit(-1)
 Execution of 'exec-bad-ptr' complete.
-Timer: 613 ticks
-Thread: 30 idle ticks, 515 kernel ticks, 71 user ticks
+Timer: 652 ticks
+Thread: 30 idle ticks, 566 kernel ticks, 59 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 202 writes
+hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 919 characters output

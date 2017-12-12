@@ -1,5 +1,5 @@
-Copying tests/userprog/wait-bad-pid into /tmp/STpYV4HLCY.dsk...
-Writing command line to /tmp/HdKUF9A4YG.dsk...
+Copying tests/userprog/wait-bad-pid into /tmp/1rNft3e15C.dsk...
+Writing command line to /tmp/O3kKPgVIhL.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put wait-bad-pid run wait-bad-pid
 Pintos booting with 4,096 kB RAM...
@@ -18,10 +18,10 @@ Executing 'wait-bad-pid':
 (wait-bad-pid) end
 wait-bad-pid: exit(0)
 Execution of 'wait-bad-pid' complete.
-Timer: 616 ticks
-Thread: 30 idle ticks, 515 kernel ticks, 74 user ticks
+Timer: 655 ticks
+Thread: 30 idle ticks, 566 kernel ticks, 62 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 202 writes
+hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 937 characters output

@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-rm-tree into /tmp/5xmCu1Haq2.dsk...
-Copying tests/filesys/extended/tar into /tmp/5xmCu1Haq2.dsk...
-Writing command line to /tmp/BHAGvNY9F4.dsk...
+Copying tests/filesys/extended/dir-rm-tree into /tmp/oPpjUUifra.dsk...
+Copying tests/filesys/extended/tar into /tmp/oPpjUUifra.dsk...
+Writing command line to /tmp/lmrqEaqeka.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put dir-rm-tree put tar run dir-rm-tree
 Pintos booting with 4,096 kB RAM...
@@ -25,10 +25,10 @@ Executing 'dir-rm-tree':
 (dir-rm-tree) end
 dir-rm-tree: exit(0)
 Execution of 'dir-rm-tree' complete.
-Timer: 15329 ticks
-Thread: 30 idle ticks, 1152 kernel ticks, 14150 user ticks
+Timer: 22206 ticks
+Thread: 30 idle ticks, 8053 kernel ticks, 14126 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 283 reads, 752 writes
+hd0:1: 357 reads, 749 writes
 hd1:0: 220 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1195 characters output

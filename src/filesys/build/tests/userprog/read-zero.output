@@ -1,6 +1,6 @@
-Copying tests/userprog/read-zero into /tmp/mGONUHgfeu.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/mGONUHgfeu.dsk...
-Writing command line to /tmp/czHubuyiEx.dsk...
+Copying tests/userprog/read-zero into /tmp/Rn4vN8PyX6.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/Rn4vN8PyX6.dsk...
+Writing command line to /tmp/7Ct61POUkE.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put read-zero put sample.txt run read-zero
 Pintos booting with 4,096 kB RAM...
@@ -21,10 +21,10 @@ Executing 'read-zero':
 (read-zero) end
 read-zero: exit(0)
 Execution of 'read-zero' complete.
-Timer: 661 ticks
-Thread: 30 idle ticks, 548 kernel ticks, 86 user ticks
+Timer: 712 ticks
+Thread: 30 idle ticks, 609 kernel ticks, 76 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 206 writes
+hd0:1: 30 reads, 205 writes
 hd1:0: 100 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1004 characters output

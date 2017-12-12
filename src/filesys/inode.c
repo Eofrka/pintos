@@ -822,8 +822,18 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
     /* You should get rid of bounce buffers. Instead, copy data into and out of sectors in the buffer cache directly. */
     buffer_cache_read_at(sector_idx, buffer+bytes_read, chunk_size, sector_ofs);
 
+    
+    
+    /*
     disk_sector_t next_sector_idx = sector_idx + 1;
-    buffer_cache_read_ahead(next_sector_idx);
+    if(next_sector_idx < disk_size(filesys_disk))
+    {
+      buffer_cache_read_ahead(next_sector_idx);
+    }
+    */
+
+    
+
     /*******/
 
     /* Advance. */

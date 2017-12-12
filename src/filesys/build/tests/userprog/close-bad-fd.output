@@ -1,5 +1,5 @@
-Copying tests/userprog/close-bad-fd into /tmp/2JxOEiN0V1.dsk...
-Writing command line to /tmp/pZicrTzdAL.dsk...
+Copying tests/userprog/close-bad-fd into /tmp/TtT1YiZ44w.dsk...
+Writing command line to /tmp/PTcqXXy8ym.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put close-bad-fd run close-bad-fd
 Pintos booting with 4,096 kB RAM...
@@ -18,10 +18,10 @@ Executing 'close-bad-fd':
 (close-bad-fd) end
 close-bad-fd: exit(0)
 Execution of 'close-bad-fd' complete.
-Timer: 616 ticks
-Thread: 30 idle ticks, 515 kernel ticks, 74 user ticks
+Timer: 655 ticks
+Thread: 30 idle ticks, 566 kernel ticks, 62 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 202 writes
+hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 937 characters output

@@ -1,6 +1,6 @@
-Copying tests/userprog/open-boundary into /tmp/K38PcCg3ZZ.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/K38PcCg3ZZ.dsk...
-Writing command line to /tmp/PtVlqJcr2I.dsk...
+Copying tests/userprog/open-boundary into /tmp/7DDPvqtp6t.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/7DDPvqtp6t.dsk...
+Writing command line to /tmp/dbSY37ejxs.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put open-boundary put sample.txt run open-boundary
 Pintos booting with 4,096 kB RAM...
@@ -21,10 +21,10 @@ Executing 'open-boundary':
 (open-boundary) end
 open-boundary: exit(0)
 Execution of 'open-boundary' complete.
-Timer: 678 ticks
-Thread: 30 idle ticks, 558 kernel ticks, 93 user ticks
+Timer: 730 ticks
+Thread: 30 idle ticks, 621 kernel ticks, 82 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 210 writes
+hd0:1: 30 reads, 209 writes
 hd1:0: 102 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1040 characters output

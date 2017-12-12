@@ -1,6 +1,6 @@
-Copying tests/userprog/write-normal into /tmp/w2WFXqRbLZ.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/w2WFXqRbLZ.dsk...
-Writing command line to /tmp/pdmmuKve39.dsk...
+Copying tests/userprog/write-normal into /tmp/Rez6klpW2m.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/Rez6klpW2m.dsk...
+Writing command line to /tmp/5fJt0jnovX.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put write-normal put sample.txt run write-normal
 Pintos booting with 4,096 kB RAM...
@@ -22,10 +22,10 @@ Executing 'write-normal':
 (write-normal) end
 write-normal: exit(0)
 Execution of 'write-normal' complete.
-Timer: 708 ticks
-Thread: 30 idle ticks, 554 kernel ticks, 127 user ticks
+Timer: 778 ticks
+Thread: 30 idle ticks, 624 kernel ticks, 127 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 29 reads, 210 writes
+hd0:1: 31 reads, 209 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1063 characters output

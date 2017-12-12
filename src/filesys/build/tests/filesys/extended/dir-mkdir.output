@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-mkdir into /tmp/GpwbsKYra8.dsk...
-Copying tests/filesys/extended/tar into /tmp/GpwbsKYra8.dsk...
-Writing command line to /tmp/PZVPUG4Zx3.dsk...
+Copying tests/filesys/extended/dir-mkdir into /tmp/VGPlUs3Ep0.dsk...
+Copying tests/filesys/extended/tar into /tmp/VGPlUs3Ep0.dsk...
+Writing command line to /tmp/UJ7iAc9cQm.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put dir-mkdir put tar run dir-mkdir
 Pintos booting with 4,096 kB RAM...
@@ -24,10 +24,10 @@ Executing 'dir-mkdir':
 (dir-mkdir) end
 dir-mkdir: exit(0)
 Execution of 'dir-mkdir' complete.
-Timer: 1333 ticks
-Thread: 30 idle ticks, 1106 kernel ticks, 200 user ticks
+Timer: 1438 ticks
+Thread: 30 idle ticks, 1223 kernel ticks, 189 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 33 reads, 438 writes
+hd0:1: 37 reads, 437 writes
 hd1:0: 212 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1053 characters output

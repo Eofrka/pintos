@@ -234,7 +234,6 @@ free (void *p)
 #endif
   
           lock_acquire (&d->lock);
-
           /* Add block to free list. */
           list_push_front (&d->free_list, &b->free_elem);
 

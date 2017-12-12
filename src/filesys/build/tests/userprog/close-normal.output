@@ -1,6 +1,6 @@
-Copying tests/userprog/close-normal into /tmp/aVWt2hGhFn.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/aVWt2hGhFn.dsk...
-Writing command line to /tmp/Pby8IbdIsX.dsk...
+Copying tests/userprog/close-normal into /tmp/6b3tCCI2Ch.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/6b3tCCI2Ch.dsk...
+Writing command line to /tmp/XGH7p1J4xO.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put close-normal put sample.txt run close-normal
 Pintos booting with 4,096 kB RAM...
@@ -22,10 +22,10 @@ Executing 'close-normal':
 (close-normal) end
 close-normal: exit(0)
 Execution of 'close-normal' complete.
-Timer: 668 ticks
-Thread: 30 idle ticks, 548 kernel ticks, 93 user ticks
+Timer: 719 ticks
+Thread: 30 idle ticks, 607 kernel ticks, 85 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 206 writes
+hd0:1: 30 reads, 205 writes
 hd1:0: 100 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1065 characters output

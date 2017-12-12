@@ -1,5 +1,5 @@
-Copying tests/userprog/read-bad-fd into /tmp/mVLiDgpQYt.dsk...
-Writing command line to /tmp/zGVihDLWm4.dsk...
+Copying tests/userprog/read-bad-fd into /tmp/EuIno3yuYV.dsk...
+Writing command line to /tmp/lRnuLK13pA.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put read-bad-fd run read-bad-fd
 Pintos booting with 4,096 kB RAM...
@@ -18,10 +18,10 @@ Executing 'read-bad-fd':
 (read-bad-fd) end
 read-bad-fd: exit(0)
 Execution of 'read-bad-fd' complete.
-Timer: 616 ticks
-Thread: 30 idle ticks, 515 kernel ticks, 74 user ticks
+Timer: 655 ticks
+Thread: 30 idle ticks, 565 kernel ticks, 63 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 202 writes
+hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 929 characters output
