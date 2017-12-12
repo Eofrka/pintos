@@ -1,11 +1,11 @@
-Copying tests/userprog/read-boundary into /tmp/Rg08EW9AdS.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/Rg08EW9AdS.dsk...
-Writing command line to /tmp/U1qIaz9phZ.dsk...
+Copying tests/userprog/read-boundary into /tmp/VHF44i8pGL.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/VHF44i8pGL.dsk...
+Writing command line to /tmp/2tLq5LwrM2.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put read-boundary put sample.txt run read-boundary
 Pintos booting with 4,096 kB RAM...
-367 pages available in kernel pool.
-367 pages available in user pool.
+370 pages available in kernel pool.
+370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -21,13 +21,13 @@ Executing 'read-boundary':
 (read-boundary) end
 read-boundary: exit(0)
 Execution of 'read-boundary' complete.
-Timer: 753 ticks
-Thread: 30 idle ticks, 635 kernel ticks, 91 user ticks
+Timer: 724 ticks
+Thread: 30 idle ticks, 593 kernel ticks, 104 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 32 reads, 213 writes
+hd0:1: 36 reads, 213 writes
 hd1:0: 104 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1040 characters output
+Console: 1041 characters output
 Keyboard: 0 keys pressed
 Exception: 7 page faults
 Powering off...

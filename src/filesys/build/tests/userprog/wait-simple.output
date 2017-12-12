@@ -1,11 +1,11 @@
-Copying tests/userprog/wait-simple into /tmp/J4jK4U8zlr.dsk...
-Copying tests/userprog/child-simple into /tmp/J4jK4U8zlr.dsk...
-Writing command line to /tmp/sbAHb1W0TZ.dsk...
+Copying tests/userprog/wait-simple into /tmp/Y03fYj69Fx.dsk...
+Copying tests/userprog/child-simple into /tmp/Y03fYj69Fx.dsk...
+Writing command line to /tmp/Z3Nic4RnHd.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put wait-simple put child-simple run wait-simple
 Pintos booting with 4,096 kB RAM...
-367 pages available in kernel pool.
-367 pages available in user pool.
+370 pages available in kernel pool.
+370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -23,10 +23,10 @@ child-simple: exit(81)
 (wait-simple) end
 wait-simple: exit(0)
 Execution of 'wait-simple' complete.
-Timer: 1258 ticks
-Thread: 30 idle ticks, 1102 kernel ticks, 129 user ticks
+Timer: 1212 ticks
+Thread: 30 idle ticks, 1039 kernel ticks, 146 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 59 reads, 397 writes
+hd0:1: 62 reads, 397 writes
 hd1:0: 195 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1071 characters output

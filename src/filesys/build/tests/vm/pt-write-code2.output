@@ -1,11 +1,11 @@
-Copying tests/vm/pt-write-code2 into /tmp/e2ebqCYmnH.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/e2ebqCYmnH.dsk...
-Writing command line to /tmp/w3Jd2fuK6U.dsk...
+Copying tests/vm/pt-write-code2 into /tmp/2pB6s3nKD3.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/2pB6s3nKD3.dsk...
+Writing command line to /tmp/OA7BSCu2qW.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put pt-write-code2 put sample.txt run pt-write-code2
 Pintos booting with 4,096 kB RAM...
-368 pages available in kernel pool.
-367 pages available in user pool.
+370 pages available in kernel pool.
+370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -20,10 +20,10 @@ Executing 'pt-write-code2':
 (pt-write-code2) open "sample.txt"
 pt-write-code2: exit(-1)
 Execution of 'pt-write-code2' complete.
-Timer: 638 ticks
-Thread: 30 idle ticks, 533 kernel ticks, 78 user ticks
+Timer: 691 ticks
+Thread: 30 idle ticks, 577 kernel ticks, 87 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 28 reads, 207 writes
+hd0:1: 33 reads, 206 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1029 characters output

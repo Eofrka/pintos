@@ -8,7 +8,7 @@
 #include <list.h>
 
 
-#define BUFFER_CACHE_SIZE 64
+#define BUFFER_CACHE_SIZE 20
 #define SEC_NO_DEFAULT -1
 /* Buffer cache entry. */
 struct buffer_cache_entry
@@ -35,9 +35,9 @@ struct read_ahead_list_entry
   struct list_elem elem;                    /* List element for read ahead list. */
 };
 
-struct list read_ahead_list;                /* Read ahead list. */
-struct lock read_ahead_lock;                /* Lock for read ahead list. */
-struct semaphore read_ahead_sema;           /* Semaphore for read ahead. */
+struct list read_ahead_list;                          /* Read ahead list. */
+struct lock read_ahead_lock;                          /* Lock for read ahead list. */
+struct condition read_ahead_cond;                     /* Condition variable for read ahead. */
 
 
 void buffer_cache_init(void);

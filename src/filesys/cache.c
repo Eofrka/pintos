@@ -6,7 +6,7 @@
 #include "threads/malloc.h"
 
 
-#define WRITE_BEHIND_PERIOD 800
+#define WRITE_BEHIND_PERIOD 10000
 
 static void write_behind_thread(void* aux);
 static void read_ahead_thread(void* aux);
@@ -18,7 +18,6 @@ static void write_behind_thread(void* aux UNUSED)
   {
     buffer_cache_flush_all();
     timer_sleep(WRITE_BEHIND_PERIOD);
-
   }
 }
 
@@ -27,8 +26,11 @@ static void read_ahead_thread(void* aux UNUSED)
 {
   while(true)
   {
-    sema_down(&read_ahead_sema);
     lock_acquire(&read_ahead_lock);
+    while(list_empty(&read_ahead_list))
+    {
+      cond_wait(&read_ahead_cond, &read_ahead_lock);
+    }
     struct read_ahead_list_entry* rale = list_entry(list_pop_front(&read_ahead_list) , struct read_ahead_list_entry, elem);
     lock_release(&read_ahead_lock);
 
@@ -84,9 +86,9 @@ void buffer_cache_read_ahead(disk_sector_t sec_no)
   }
   rale->sec_no = sec_no;
   list_push_back(&read_ahead_list, &rale->elem);
-  lock_release(&read_ahead_lock);
 
-  sema_up(&read_ahead_sema);
+  cond_signal(&read_ahead_cond, &read_ahead_lock);
+  lock_release(&read_ahead_lock);
 
 }
 
@@ -112,8 +114,8 @@ void buffer_cache_init(void)
 
   list_init(&read_ahead_list);
   lock_init(&read_ahead_lock);
-  sema_init(&read_ahead_sema, 0);
-  //thread_create("read_ahead_thread", PRI_MAX, read_ahead_thread, NULL);
+  cond_init(&read_ahead_cond);
+  thread_create("read_ahead_thread", PRI_DEFAULT, read_ahead_thread, NULL);
   clock_index = -1;
 }
 

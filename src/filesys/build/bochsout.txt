@@ -30,7 +30,7 @@
 00000000000i[     ]   SB16 support: no
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support:  
-00000000000i[MEM0 ] allocated memory at 0x2b2a03c4e010. after alignment, vector=0x2b2a03c4f000
+00000000000i[MEM0 ] allocated memory at 0x2b37b4a86010. after alignment, vector=0x2b37b4a87000
 00000000000i[MEM0 ] 4.00MB
 00000000000i[MEM0 ] rom at 0xffff0000/65536 ('/usr/local/share/bochs/BIOS-bochs-latest')
 00000000000i[MEM0 ] rom at 0xc0000/32768 ('/usr/local/share/bochs/VGABIOS-lgpl-latest')
@@ -46,10 +46,10 @@
 00000000000i[     ] init_mem of 'extfpuirq' plugin device by virtual method
 00000000000i[     ] init_mem of 'speaker' plugin device by virtual method
 00000000000i[     ] init_dev of 'harddrv' plugin device by virtual method
-00000000000i[HD   ] HD on ata0-0: '/tmp/tEAZIKGAPq.dsk' 'flat' mode 
-00000000000i[HD   ] HD on ata0-1: '/tmp/8LYu1CanaO.dsk' 'flat' mode 
-00000000000i[HD   ] HD on ata1-0: '/tmp/MxcgFJ4Ts9.dsk' 'flat' mode 
-00000000000i[HD   ] HD on ata1-1: '/tmp/ImxuUyiBER.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata0-0: '/tmp/BvVmGikCsm.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata0-1: '/tmp/f0W6QYuBgs.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata1-0: '/tmp/ehPieBqMpl.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata1-1: '/tmp/Cwf7trB17E.dsk' 'flat' mode 
 00000000000i[HD   ] Using boot sequence disk, none, none
 00000000000i[HD   ] Floppy boot signature check is enabled
 00000000000i[     ] init_dev of 'keyboard' plugin device by virtual method
@@ -76,27 +76,3 @@
 00000793268i[BIOS ] ata0-1: PCHS=4/16/63 translation=none LCHS=4/16/63
 00000848672i[BIOS ] ata1-0: PCHS=1/16/63 translation=none LCHS=1/16/63
 00000904090i[BIOS ] ata1-1: PCHS=8/16/63 translation=none LCHS=8/16/63
-01144677996p[UNMP ] >>PANIC<< Shutdown port: shutdown requested
-01144677996i[SYS  ] Last time is 1144
-01144677996i[NGUI ] bx_nogui_gui_c::exit() not implemented yet.
-01144677996i[CPU  ] protected mode
-01144677996i[CPU  ] CS.d_b = 32 bit
-01144677996i[CPU  ] SS.d_b = 32 bit
-01144677996i[CPU  ] | EAX=0000006e  EBX=c01110c0  ECX=c002ff86  EDX=ffff8900
-01144677996i[CPU  ] | ESP=c002ff70  EBP=c002ff88  ESI=00000000  EDI=c01128e1
-01144677996i[CPU  ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af pf cf
-01144677996i[CPU  ] | SEG selector     base    limit G D
-01144677996i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
-01144677996i[CPU  ] |  CS:0008( 0001| 0|  0) 00000000 000fffff 1 1
-01144677996i[CPU  ] |  DS:0010( 0002| 0|  0) 00000000 000fffff 1 1
-01144677996i[CPU  ] |  SS:0010( 0002| 0|  0) 00000000 000fffff 1 1
-01144677996i[CPU  ] |  ES:0010( 0002| 0|  0) 00000000 000fffff 1 1
-01144677996i[CPU  ] |  FS:0023( 0004| 0|  3) 00000000 000fffff 1 1
-01144677996i[CPU  ] |  GS:0023( 0004| 0|  3) 00000000 000fffff 1 1
-01144677996i[CPU  ] | EIP=c0100077 (c0100076)
-01144677996i[CPU  ] | CR0=0x80010015 CR1=0 CR2=0x081b5000
-01144677996i[CPU  ] | CR3=0x00121000 CR4=0x00000000
-01144677996i[CPU  ] >> ee
-01144677996i[CPU  ] >> : out dx, al
-01144677996i[     ] restoring default signal behavior
-01144677996i[CTRL ] quit_sim called with exit code 1

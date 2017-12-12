@@ -1,8 +1,8 @@
-Copying tests/filesys/extended/dir-open into /tmp/VWbcLwylsW.dsk...
-Copying tests/filesys/extended/tar into /tmp/VWbcLwylsW.dsk...
-Writing command line to /tmp/PxV9Fda97V.dsk...
+Copying tests/filesys/extended/dir-vine into /tmp/pqSclViEVV.dsk...
+Copying tests/filesys/extended/tar into /tmp/pqSclViEVV.dsk...
+Writing command line to /tmp/HWTehRWwmf.dsk...
 squish-pty bochs -q
-Kernel command line: -q -f put dir-open put tar run dir-open
+Kernel command line: -q -f put dir-vine put tar run dir-vine
 Pintos booting with 4,096 kB RAM...
 370 pages available in kernel pool.
 370 pages available in user pool.
@@ -13,24 +13,22 @@ hd1:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00
 hd1:1: detected 8,064 sector (3 MB) disk, model "Generic 1234", serial "BXHD00022"
 Formatting file system...done.
 Boot complete.
-Putting 'dir-open' into the file system...
+Putting 'dir-vine' into the file system...
 Putting 'tar' into the file system...
-Executing 'dir-open':
-(dir-open) begin
-(dir-open) mkdir "xyzzy"
-(dir-open) open "xyzzy"
-(dir-open) write "xyzzy"
-(dir-open) write "xyzzy" (must return -1, actually -1)
-(dir-open) end
-dir-open: exit(0)
-Execution of 'dir-open' complete.
-Timer: 1334 ticks
-Thread: 30 idle ticks, 1141 kernel ticks, 166 user ticks
+Executing 'dir-vine':
+(dir-vine) begin
+(dir-vine) creating many levels of files and directories...
+(dir-vine) removing all but top 10 levels of files and directories...
+(dir-vine) end
+dir-vine: exit(0)
+Execution of 'dir-vine' complete.
+Timer: 265200 ticks
+Thread: 30 idle ticks, 36278 kernel ticks, 228895 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 40 reads, 437 writes
-hd1:0: 213 reads, 0 writes
+hd0:1: 3807 reads, 5189 writes
+hd1:0: 216 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1084 characters output
+Console: 1094 characters output
 Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...

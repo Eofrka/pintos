@@ -1,11 +1,11 @@
-Copying tests/userprog/rox-multichild into /tmp/Z9p9Tq1zRp.dsk...
-Copying tests/userprog/child-rox into /tmp/Z9p9Tq1zRp.dsk...
-Writing command line to /tmp/zznvKvA81G.dsk...
+Copying tests/userprog/rox-multichild into /tmp/Dw1xyojtys.dsk...
+Copying tests/userprog/child-rox into /tmp/Dw1xyojtys.dsk...
+Writing command line to /tmp/PAQi5j1xql.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put rox-multichild put child-rox run rox-multichild
 Pintos booting with 4,096 kB RAM...
-367 pages available in kernel pool.
-367 pages available in user pool.
+370 pages available in kernel pool.
+370 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
 hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
@@ -54,13 +54,13 @@ child-rox: exit(12)
 (rox-multichild) end
 rox-multichild: exit(0)
 Execution of 'rox-multichild' complete.
-Timer: 1827 ticks
-Thread: 30 idle ticks, 1292 kernel ticks, 508 user ticks
+Timer: 1793 ticks
+Thread: 30 idle ticks, 1188 kernel ticks, 578 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 63 reads, 426 writes
+hd0:1: 179 reads, 427 writes
 hd1:0: 209 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1953 characters output
+Console: 1954 characters output
 Keyboard: 0 keys pressed
 Exception: 25 page faults
 Powering off...
