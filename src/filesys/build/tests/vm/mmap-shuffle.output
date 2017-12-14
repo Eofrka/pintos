@@ -1,5 +1,5 @@
-Copying tests/vm/mmap-shuffle into /tmp/xMdsQtdson.dsk...
-Writing command line to /tmp/hqWNW1NcyG.dsk...
+Copying tests/vm/mmap-shuffle into /tmp/v0gbFfGlJA.dsk...
+Writing command line to /tmp/x9KFYP6OKM.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put mmap-shuffle run mmap-shuffle
 Pintos booting with 4,096 kB RAM...
@@ -32,8 +32,8 @@ Executing 'mmap-shuffle':
 (mmap-shuffle) end
 mmap-shuffle: exit(0)
 Execution of 'mmap-shuffle' complete.
-Timer: 26052 ticks
-Thread: 30 idle ticks, 503 kernel ticks, 25522 user ticks
+Timer: 26042 ticks
+Thread: 30 idle ticks, 498 kernel ticks, 25517 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 299 reads, 739 writes
 hd1:0: 108 reads, 0 writes

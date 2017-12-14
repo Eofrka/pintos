@@ -1,5 +1,5 @@
-Copying tests/filesys/base/lg-full into /tmp/M8G5u14L7c.dsk...
-Writing command line to /tmp/cj9sx070oR.dsk...
+Copying tests/filesys/base/lg-full into /tmp/69ooreZCM2.dsk...
+Writing command line to /tmp/zaxvqLGQ2Z.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put lg-full run lg-full
 Pintos booting with 4,096 kB RAM...
@@ -25,8 +25,8 @@ Executing 'lg-full':
 (lg-full) end
 lg-full: exit(0)
 Execution of 'lg-full' complete.
-Timer: 2350 ticks
-Thread: 30 idle ticks, 461 kernel ticks, 1862 user ticks
+Timer: 2337 ticks
+Thread: 30 idle ticks, 460 kernel ticks, 1850 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 189 reads, 509 writes
 hd1:0: 102 reads, 0 writes

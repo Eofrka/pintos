@@ -1,6 +1,6 @@
-Copying tests/vm/page-parallel into /tmp/ggZ6C2zdkY.dsk...
-Copying tests/vm/child-linear into /tmp/ggZ6C2zdkY.dsk...
-Writing command line to /tmp/hqZZl2xjce.dsk...
+Copying tests/vm/page-parallel into /tmp/2EITeJqZBS.dsk...
+Copying tests/vm/child-linear into /tmp/2EITeJqZBS.dsk...
+Writing command line to /tmp/nOoT6ueSpZ.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put page-parallel put child-linear run page-parallel
 Pintos booting with 4,096 kB RAM...
@@ -32,12 +32,12 @@ child-linear: exit(66)
 (page-parallel) end
 page-parallel: exit(0)
 Execution of 'page-parallel' complete.
-Timer: 55358 ticks
-Thread: 30 idle ticks, 949 kernel ticks, 54382 user ticks
+Timer: 55367 ticks
+Thread: 30 idle ticks, 947 kernel ticks, 54393 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 88 reads, 407 writes
 hd1:0: 200 reads, 0 writes
-hd1:1: 16504 reads, 20976 writes
+hd1:1: 16504 reads, 20968 writes
 Console: 1391 characters output
 Keyboard: 0 keys pressed
 Exception: 3107 page faults

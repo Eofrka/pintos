@@ -1,5 +1,5 @@
-Copying tests/filesys/base/sm-seq-random into /tmp/XIFjcily4x.dsk...
-Writing command line to /tmp/dsse2eW987.dsk...
+Copying tests/filesys/base/sm-seq-random into /tmp/40cWTosf14.dsk...
+Writing command line to /tmp/CBCXh2ZDCM.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put sm-seq-random run sm-seq-random
 Pintos booting with 4,096 kB RAM...
@@ -25,8 +25,8 @@ Executing 'sm-seq-random':
 (sm-seq-random) end
 sm-seq-random: exit(0)
 Execution of 'sm-seq-random' complete.
-Timer: 741 ticks
-Thread: 30 idle ticks, 465 kernel ticks, 249 user ticks
+Timer: 738 ticks
+Thread: 30 idle ticks, 464 kernel ticks, 247 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 35 reads, 224 writes
 hd1:0: 102 reads, 0 writes

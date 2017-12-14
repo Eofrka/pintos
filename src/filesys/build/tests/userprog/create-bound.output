@@ -1,5 +1,5 @@
-Copying tests/userprog/create-bound into /tmp/o3c4kkTrCE.dsk...
-Writing command line to /tmp/skz6fbPIzA.dsk...
+Copying tests/userprog/create-bound into /tmp/mNfq3sJwwv.dsk...
+Writing command line to /tmp/sLNuvRz62B.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put create-bound run create-bound
 Pintos booting with 4,096 kB RAM...
@@ -19,8 +19,8 @@ Executing 'create-bound':
 (create-bound) end
 create-bound: exit(0)
 Execution of 'create-bound' complete.
-Timer: 574 ticks
-Thread: 30 idle ticks, 453 kernel ticks, 94 user ticks
+Timer: 573 ticks
+Thread: 30 idle ticks, 452 kernel ticks, 94 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 32 reads, 208 writes
 hd1:0: 100 reads, 0 writes

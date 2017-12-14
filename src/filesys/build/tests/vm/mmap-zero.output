@@ -1,5 +1,5 @@
-Copying tests/vm/mmap-zero into /tmp/GtWETUUiNB.dsk...
-Writing command line to /tmp/5nY6Dol23z.dsk...
+Copying tests/vm/mmap-zero into /tmp/BaE83ogp2x.dsk...
+Writing command line to /tmp/VlVE3xE9B1.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put mmap-zero run mmap-zero
 Pintos booting with 4,096 kB RAM...
@@ -27,8 +27,8 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0x804811e
  cs=001b ds=0023 es=0023 ss=0023
 mmap-zero: exit(-1)
 Execution of 'mmap-zero' complete.
-Timer: 622 ticks
-Thread: 30 idle ticks, 449 kernel ticks, 146 user ticks
+Timer: 621 ticks
+Thread: 30 idle ticks, 446 kernel ticks, 148 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 32 reads, 204 writes
 hd1:0: 98 reads, 0 writes

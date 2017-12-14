@@ -1,6 +1,6 @@
-Copying tests/vm/page-merge-seq into /tmp/r7Lot0zOG7.dsk...
-Copying tests/vm/child-sort into /tmp/r7Lot0zOG7.dsk...
-Writing command line to /tmp/Y5F8NPg0Ji.dsk...
+Copying tests/vm/page-merge-seq into /tmp/LJRd4jwvw9.dsk...
+Copying tests/vm/child-sort into /tmp/LJRd4jwvw9.dsk...
+Writing command line to /tmp/kWlzHobZ0p.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put page-merge-seq put child-sort run page-merge-seq
 Pintos booting with 4,096 kB RAM...
@@ -56,10 +56,10 @@ child-sort: exit(123)
 (page-merge-seq) end
 page-merge-seq: exit(0)
 Execution of 'page-merge-seq' complete.
-Timer: 63656 ticks
-Thread: 30 idle ticks, 1559 kernel ticks, 62071 user ticks
+Timer: 63575 ticks
+Thread: 30 idle ticks, 1380 kernel ticks, 62169 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 4679 reads, 4579 writes
+hd0:1: 4659 reads, 4579 writes
 hd1:0: 205 reads, 0 writes
 hd1:1: 1448 reads, 2568 writes
 Console: 1980 characters output

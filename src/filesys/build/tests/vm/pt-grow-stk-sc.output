@@ -1,5 +1,5 @@
-Copying tests/vm/pt-grow-stk-sc into /tmp/DfYFRXuwku.dsk...
-Writing command line to /tmp/sQSk74rMia.dsk...
+Copying tests/vm/pt-grow-stk-sc into /tmp/26FrZ366lD.dsk...
+Writing command line to /tmp/LsfgU1FIk1.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put pt-grow-stk-sc run pt-grow-stk-sc
 Pintos booting with 4,096 kB RAM...
@@ -24,8 +24,8 @@ Executing 'pt-grow-stk-sc':
 (pt-grow-stk-sc) end
 pt-grow-stk-sc: exit(0)
 Execution of 'pt-grow-stk-sc' complete.
-Timer: 652 ticks
-Thread: 30 idle ticks, 460 kernel ticks, 165 user ticks
+Timer: 651 ticks
+Thread: 30 idle ticks, 460 kernel ticks, 164 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 36 reads, 212 writes
 hd1:0: 101 reads, 0 writes

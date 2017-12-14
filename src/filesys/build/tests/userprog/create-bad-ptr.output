@@ -1,5 +1,5 @@
-Copying tests/userprog/create-bad-ptr into /tmp/3UAMlcf65P.dsk...
-Writing command line to /tmp/cteBwa7JaH.dsk...
+Copying tests/userprog/create-bad-ptr into /tmp/xJONY3sM59.dsk...
+Writing command line to /tmp/5DCBmLDMr5.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put create-bad-ptr run create-bad-ptr
 Pintos booting with 4,096 kB RAM...
@@ -18,7 +18,7 @@ Executing 'create-bad-ptr':
 create-bad-ptr: exit(-1)
 Execution of 'create-bad-ptr' complete.
 Timer: 531 ticks
-Thread: 30 idle ticks, 442 kernel ticks, 62 user ticks
+Thread: 30 idle ticks, 444 kernel ticks, 60 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes

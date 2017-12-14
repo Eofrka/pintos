@@ -1,5 +1,5 @@
-Copying tests/filesys/base/sm-full into /tmp/oCwZMfqhDA.dsk...
-Writing command line to /tmp/o22uhRhYhf.dsk...
+Copying tests/filesys/base/sm-full into /tmp/saVcRohV2B.dsk...
+Writing command line to /tmp/XvFinObZrs.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put sm-full run sm-full
 Pintos booting with 4,096 kB RAM...
@@ -25,8 +25,8 @@ Executing 'sm-full':
 (sm-full) end
 sm-full: exit(0)
 Execution of 'sm-full' complete.
-Timer: 728 ticks
-Thread: 30 idle ticks, 463 kernel ticks, 238 user ticks
+Timer: 726 ticks
+Thread: 30 idle ticks, 465 kernel ticks, 234 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 35 reads, 224 writes
 hd1:0: 102 reads, 0 writes

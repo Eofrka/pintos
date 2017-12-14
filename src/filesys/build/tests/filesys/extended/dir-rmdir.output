@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-rmdir into /tmp/9RuFeSaTth.dsk...
-Copying tests/filesys/extended/tar into /tmp/9RuFeSaTth.dsk...
-Writing command line to /tmp/wJ2xlvRpsG.dsk...
+Copying tests/filesys/extended/dir-rmdir into /tmp/K8XD0w0K3Q.dsk...
+Copying tests/filesys/extended/tar into /tmp/K8XD0w0K3Q.dsk...
+Writing command line to /tmp/BEI3SC2jHU.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put dir-rmdir put tar run dir-rmdir
 Pintos booting with 4,096 kB RAM...
@@ -23,10 +23,10 @@ Executing 'dir-rmdir':
 (dir-rmdir) end
 dir-rmdir: exit(0)
 Execution of 'dir-rmdir' complete.
-Timer: 1133 ticks
-Thread: 30 idle ticks, 969 kernel ticks, 137 user ticks
+Timer: 1131 ticks
+Thread: 30 idle ticks, 968 kernel ticks, 136 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 40 reads, 435 writes
+hd0:1: 39 reads, 435 writes
 hd1:0: 212 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1048 characters output

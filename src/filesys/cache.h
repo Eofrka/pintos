@@ -35,10 +35,9 @@ struct read_ahead_list_entry
   struct list_elem elem;                    /* List element for read ahead list. */
 };
 
-struct list read_ahead_list;                          /* Read ahead list. */
-struct lock read_ahead_lock;                          /* Lock for read ahead list. */
-struct condition read_ahead_cond;                     /* Condition variable for read ahead. */
-
+struct list read_ahead_list;                /* Read ahead list. */
+struct lock read_ahead_lock;                /* Lock for read ahead list. */
+struct semaphore read_ahead_sema;           /* Semaphore for read ahead. */
 
 void buffer_cache_init(void);
 void buffer_cache_read_at(disk_sector_t sec_no, void* buffer, off_t size, off_t offset);

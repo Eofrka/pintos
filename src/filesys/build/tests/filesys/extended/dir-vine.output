@@ -1,6 +1,6 @@
-Copying tests/filesys/extended/dir-vine into /tmp/fmiqXp35ST.dsk...
-Copying tests/filesys/extended/tar into /tmp/fmiqXp35ST.dsk...
-Writing command line to /tmp/hxgeCS4i2v.dsk...
+Copying tests/filesys/extended/dir-vine into /tmp/ZJmUH1naCH.dsk...
+Copying tests/filesys/extended/tar into /tmp/ZJmUH1naCH.dsk...
+Writing command line to /tmp/QDNnnET259.dsk...
 squish-pty bochs -q
 Kernel command line: -q -f put dir-vine put tar run dir-vine
 Pintos booting with 4,096 kB RAM...
@@ -22,10 +22,10 @@ Executing 'dir-vine':
 (dir-vine) end
 dir-vine: exit(0)
 Execution of 'dir-vine' complete.
-Timer: 204304 ticks
-Thread: 30 idle ticks, 19972 kernel ticks, 184305 user ticks
+Timer: 203509 ticks
+Thread: 30 idle ticks, 19657 kernel ticks, 183825 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 3807 reads, 5237 writes
+hd0:1: 3807 reads, 5199 writes
 hd1:0: 216 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1094 characters output
