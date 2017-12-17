@@ -1,0 +1,567 @@
+       	       	     +-------------------------+
+		     |	 2017  fall  CS 330    |
+		     | PROJECT 4: FILE SYSTEMS |
+		     |	   DESIGN DOCUMENT     |
+		     +-------------------------+
+
+---- GROUP ----
+
+>> Fill in the names and email addresses of your group members.
+>> You can write this document in Korean! (We recommend!)
+
+Team Name: OSOS
+Team Number: 18 
+Yuhwan Chung yuhwan96@kaist.ac.kr
+ 
+
+---- PRELIMINARIES ----
+
+>> If you have any preliminary comments on your submission, notes for the
+>> TAs, or extra credit, please give them here.
+
+사용할 토큰 수: 7개
+기여도: Yuhwan Chung 100%
+pj1에서 Alarm Clock부분만 구현하고, pj2, pj3위에 누적하여 pj4를 했습니다.
+
+
+>> Please cite any offline or online sources you consulted while
+>> preparing your submission, other than the Pintos documentation, course
+>> text, lecture notes, and course staff.
+
+[file descriptor table]: http://ehclub.co.kr/1320
+[Readers/Writers Algorithm]: http://www.hazacs.com/2016/06/starvation-solution-for-readers-writers-problem.html
+[Read Ahead]: https://ko.wikipedia.org/wiki/%EC%83%9D%EC%82%B0%EC%9E%90-%EC%86%8C%EB%B9%84%EC%9E%90_%EB%AC%B8%EC%A0%9C
+
+		     INDEXED AND EXTENSIBLE FILES
+		     ============================
+
+---- DATA STRUCTURES ----
+
+>> A1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+filesys/inode.c
+
+#define MAX_DIRECT_BLOCK_CNT 64
+#define MAX_LOGICAL_BLOCK_CNT (MAX_DIRECT_BLOCK_CNT + 128 + 16384)
+
+/* On-disk inode.
+   Must be exactly DISK_SECTOR_SIZE bytes long. */
+struct inode_disk
+{
+    off_t length;                                       /* File size in bytes. */
+    unsigned magic;                                     /* Magic number. */
+	
+    //추가된 부분
+    disk_sector_t direct_blocks[MAX_DIRECT_BLOCK_CNT];  /* Direct blocks. */
+    disk_sector_t indirect_block;                       /* Indirect block. */
+    disk_sector_t doubly_indirect_block;                /* Doubly indirect block. */
+    uint32_t is_dir;                                    /* Directory: 1, normal file: 0. */
+    uint32_t unused[59];                                /* Not used. */
+    
+};
+
+disk_sector_t direct_blocks[MAX_DIRECT_BLOCK_CNT]: 64개의 direct block의 sector번호를 저장하고 있는 배열
+disk_sector_t indirect_block: 1개의 indirect block의 sector번호를 저장하고있다.
+disk_sector_t doubly_indirect_block: 1개의 doubly indirect block의 sector번호를 저장하고 있다.
+uint32_t is_dir: directory인지 여부를 나타내는 변수.
+uint32_t unused[59]: 512B를 맞추기위한 reserved 변수. 
+
+/* In-memory inode. */
+struct inode 
+{
+  struct list_elem elem;              /* Element in inode list. */
+  disk_sector_t sector;               /* Sector number of disk location. */
+  int open_cnt;                       /* Number of openers. */
+  bool removed;                       /* True if deleted, false otherwise. */
+  int deny_write_cnt;                 /* 0: writes ok, >0: deny writes. */
+  struct inode_disk data;             /* Inode content. */
+  //추가된 부분
+  struct semaphore rw_mutex;
+  struct semaphore mutex;
+  struct semaphore turn;
+  int access_cnt;
+};
+
+추가된 멤버변수들은 전부 Readers/Writers Algorithm을 위한것들이다.
+struct semaphore rw_mutex: Reader나 writer가 active한 access를 하고 있는 경우 이 semaphore의 value는 0이하이다.
+struct semaphore mutex: Access_cnt를 위한 mutex.
+struct semaphore turn: Fair한 Readers/Writers Algorithm을 구현하기 위한 semaphore.
+int access_cnt: Reader들과 file growth를 하지 않는 active한 writer들의 수.
+
+  
+>> A2: What is the maximum size of a file supported by your inode
+>> structure?  Show your work.
+
+disk_sector_t타입의 크기가 4B이고 on-disk inode인 struct inode_disk의 member변수로 64개의 direct block들의 sector번호, indirect block의 sector번호1개, 그리고 doubly indirect block의 섹터번호1개가 있으므로
+
+512B * (64 + 128 + 128 * 128) = 8,486,912B
+
+---- SYNCHRONIZATION ----
+
+>> A3: Explain how your code avoids a race if two processes attempt to
+>> extend a file at the same time.
+
+A3,A4,A5모두 연관되 내용이므로 여기다 한번에 적겠다.
+
+[Readers/Writers Algorithm]: http://www.hazacs.com/2016/06/starvation-solution-for-readers-writers-problem.html
+여기에 소개된 알고리즘을 약간 변형시켰는데,
+
+지금 pintos에서 적용되는 규칙은 다음과 같다
+1. File growth를 하지 않는 여러명의 writer들과, 여러명의 reader들은 서로 동시에 active한 작업가능.
+2. File growth를 하는 writer가 이미 먼저와서 active write을 하고 있는 도중이라면, 다른 어떠한 reader나 writer는
+동시에 active한 작업을 할 수 없고 이미 먼저 File growth를 하는 writer의 작업이 끝나기를 기다려야한다.
+3. 만약 이미 먼저 File growth를 하지 않는 여러명의 writer들이나 여러명의 reader들이 active한 작업을 하고 있는 중에
+File growth를 하는 writer가 도착한 경우 그놈은 기존에 active한 작업을 하고 있던 reader들과 writer들이 모두 끝나기를 기다려야한다.
+
+Reader
+
+  sema_down(&inode->turn);
+  sema_down(&inode->mutex);
+  inode->access_cnt++;
+  if(inode->access_cnt == 1)
+    sema_down(&inode->rw_mutex);
+  sema_up(&inode->turn);
+  sema_up(&inode->mutex);
+
+  //실제 read
+
+  sema_down(&inode->mutex);
+  inode->access_cnt--;
+  if(inode->access_cnt == 0)
+    sema_up(&inode->rw_mutex);
+  sema_up(&inode->mutex);
+
+
+Writer
+
+  sema_down(&inode->turn);
+
+  if(file_growth가 필요하다)
+  {
+     sema_down(&inode->rw_mutex);
+     //실제 file growth
+     sema_up(&inode->turn);
+  }
+  else
+  {
+    sema_down(&inode->mutex);
+    inode->access_cnt++;
+    if(inode->access_cnt == 1)
+      sema_down(&inode->rw_mutex);
+    sema_up(&inode->turn);
+    sema_up(&inode->mutex);
+  }
+
+  //실제 write
+
+  if(file growth가 발생했다면)
+  {
+    sema_up(&inode->rw_mutex);
+  }
+  else
+  {
+    sema_down(&inode->mutex);
+    inode->access_cnt--;
+    if(inode->access_cnt == 0)
+      sema_up(&inode->rw_mutex);
+    sema_up(&inode->mutex);
+  }
+
+
+굉장히 많은 경우의 수가 있겠으나 핵심만 요약하겠다.
+1. turn이라는 semaphore로 인해 A5에서 얘기하는 fairness가 해결된다. (그냥 알고리즘을 잘따라가다보면 turn의 존재로 인해 file growth가 필요한 writer가 무한대기하거나, 역으로 reader나 file growth를 하지 않는 writer가 무한대기 하는 현상을 해결 할 수 있다.) 
+2. Writer의 경우 왜 file growth유무에 따라 알고리즘이 나뉘냐면, 예를들어 초기 길이가 0인 파일에 write를 하려고 온 2명의 writer가
+있다고 가정해보자. 
+
+ W1은 37바이트를 write하려고 한다.       W2는 50바이트 write하려고 한다.
+
+초기file기준으로 두명의 W1, W2모두 file growth가 요구된다. 하지만 file growth를해야되는 writer는 오로지 한명만 실행되어야한다.
+이를 어떻게 보장할 수 있을까?
+
+(i)경쟁에서 만약에 W1이 이겨서 W1이 W2보다 먼저 turn을 획득했을 경우
+W2는 turn에서 일단 대기한다. W1은 역시 file growth가 필요한 경우이므로
+
+
+     sema_down(&inode->rw_mutex);
+     //실제 file growth
+     sema_up(&inode->turn);
+
+와 같은 루틴이 실행될것이다. 그리고 애초에 실제 file growth가 실행중이라는것은 현재 상황에 더이상의 reader들과 writer들이 없다는 상황이라는것을 보장할 수 있다. (access_cnt를 통해 최초로 들어온 reader나 writer가 rw_mutex를 잠가버리기 때문)
+
+실제 file growth가 일어나는 도중에 W2는 turn에서대기중이다. 그러다 W1이 turn에 sema_up()이라는 시그널을 보내주면 그제서야 깨어나는데,
+W2가 CPU를 선점한 경우를 생각해보자.W2가 바로 하는 일은 file growth가 필요한지 check하는 것이다. 그런데 37보다 50이 크므로 역시 File growth가 일어나야 하는 상황이다. 그래서 W2도
+
+     sema_down(&inode->rw_mutex);
+     //실제 file growth
+     sema_up(&inode->turn);
+
+와 같은 루틴이 실행되는데 이 때 rw_mutex는 이미 잠겨 있으므로(W1에 의해서) W2는 rw_mutex가 해제될때까지 기다린다.
+rw_mutex가 해제되는 시점은 시간이 흘러 file growth를 실행하고 write까지 성공적으로 끝마친 W1이 직접 rw_mutex에게
+sema_up()으로 대기중인 thread들중 하나를 깨우라는 신호를 준다.
+
+(ii)만약 반대로 W2가 race에서 이겨서 먼저 turn을 획득한 경우를 보자.
+50바이트를 쓸 것이므로 역시 file growth가 필요하다. 따라서
+
+     sema_down(&inode->rw_mutex);
+     //실제 file growth
+     sema_up(&inode->turn);
+
+와 같은 루틴이 W2에서 실행된다. (W1은 turn에서 대기중)
+그리고 W2가 file growth를 성공적으로 끝내고 turn에 sema_up()으로 시그널을 보내면 turn에서 대기하고 있던 W1이 깨어나 만약 CPU를 선점했다고
+가정해보자. W1은 37바이트를 써야되는데 깨어난 W1기준으로는 on-disk inode의 length값을 확인해보면 50으로 바껴있는것을 확인할 것이다.
+이 때는 file growth가 필요하지 않은 writer로 W1은 분류된다. 따라서
+  
+    sema_down(&inode->mutex);
+    inode->access_cnt++;
+    if(inode->access_cnt == 1)
+      sema_down(&inode->rw_mutex);
+    sema_up(&inode->turn);
+    sema_up(&inode->mutex);
+
+와 같은 루틴이 실행될 것이다. mutex를 잠그는 것까지는 성공적으로 진행되고 W1이 만약 최초로 access_cnt를 1로만든 놈이라면
+W1자체는 rw_mutex에서 대기하게 된다.(이미 W2에서 rw_mutex를 획득했기 때문) 그 이후로 도착하는 Reader나 Writer들은 모두
+W1이 mutex를 풀어줄때까지 mutex에서 대기할 것이다.
+
+기존에 이미 다른 Reader나 file growth가 필요없는 writer가 머저 와있어서 turn에서 W1보다 먼저기다리고 있었던 경우 비슷한 흐름으로
+최초로 access_cnt를 1로 증가시킨놈은 결국 rw_mutex에서 대기하게되고
+그렇게 되면 최초로 온 놈 말고는 전부 mutex에서 대기하게된다.
+
+그리고 시간이 흘러 file growth를 실행하고 write까지 성공적으로 끝마친 W2는 rw_mutex에서 대기중인 thread들에게 sema_up()으로 깨어나라는 신호를 준다.
+
+
+(i),(ii)에 의해 file growth를 하는 Writer는 오직 1명밖에 실행되지 않는다. 이정도면 A3에 대한 답은 충분히 됬을것 같다.
+
+3. 만약 A는 file의 끝을 읽으려고하고, B는 file의 끝에다 write를 하려고하는 상황이라고 가정해보자(A4상황)
+
+사실 이 경우 B는 file growth를 하려고 하는 Writer라고 볼 수 있고 A는 일반적인 Reader라고 볼 수 있다.
+
+(i)만약 운이 나쁜 경우 A가 B와의 race에서 이겨서 먼저 turn을 획득한 경우를 생각해보자.
+그러면 A는 
+
+  sema_down(&inode->turn);
+  sema_down(&inode->mutex);
+  inode->access_cnt++;
+  if(inode->access_cnt == 1)
+    sema_down(&inode->rw_mutex);
+  sema_up(&inode->turn);
+  sema_up(&inode->mutex);
+
+와같은 루틴이 실행될 것이다. 상황을 좀더 간단히 하기위해 시스템에 A, B외에는 다른 thread는 도착하지도 않고 기존에 미리 있지도 않았다고 가정해보자. 지금 시스템엔 오로지 A와B밖에 없다.
+
+A는 mutex를 획득하고 최초로 access_cnt를 1로만드는 놈이 된다. 따라서 rw_mutex를 획득하고 turn에서 대기중이던 B에게 신호를 보낸다.
+만약 B가 CPU를 선점했다 치면 B는 A가 미리 획득한 rw_mutex에서 대기하게 될 것이다.(file growth가 필요한 경우이므로)
+
+다시 A로 돌아와보면 A는 마저 mutex를 해제하고, 실제 read를 진행한다. 그런데 EOF이므로 읽은 바이트수는 0이다.
+
+  sema_down(&inode->mutex);
+  inode->access_cnt--;
+  if(inode->access_cnt == 0)
+    sema_up(&inode->rw_mutex);
+  sema_up(&inode->mutex);
+ 
+그래서 아쉬운 대로 정리작업을 한다. 정리작업을 하는 도중에 rw_mutex에서 대기중이던 B를 깨워준다.
+
+(i)경우가 운이 안좋다고 처음에 한이유를 알겠는가? A는 B가 write을 하기전에 먼저 실행되어 아무것도 읽지 못했다.
+
+
+(ii)운이 좋아서 B가 A보다 먼저 실행된 경우 B는 file growth를 해야하므로 B가 실행중이면 A는 B가 끝나기까지 대기한다. 그리고 시간이흘러
+B가 file growth와 write를 성공적으로 마친 다음 A가 실행되면, A는 B가 write한 부분 전체를 다 볼 수 있을것이다.
+
+
+한가지 해결방법은 B가 file growth가 필요한 경우이므로 이 때 priority를 증가시켰다가 다시 write을 다하고 원래대로 되돌려주는 방법이 있겠으나
+만약 A의 처음 priority가 PRI_MAX였다치면 결국 A와 B의 race가 발생할 수 밖에 없다. 뭐 예외적으로 시스템에서 허용하고 있는 PRI_MAX보다 1큰 값을 허용 시켜서 B가 이값을 임시로 갖도록 하는것도 한가지 방법일 것이다. 그런데 (i)의 경우도 내가 생각하기에는 큰 지장이 없는 동작이라고 생각된다.
+
+즉, A, B는충분히 turn을 먼저 잡기 위해 서로 경쟁을 할 수 있고 (i)과 같은 상황이 벌어지면 그야말로 할 수 없는 것이다. 따라서 user 입장에서
+read한 바이트수를 꼼꼼히 check(while loop를 돌면서 아마 시스템 프로그래밍같은 많이 다루는 내용일 것이다.)하여 원하는 바이트만큼 읽었을경우
+loop를 탈출하는 방식을 사용하면 A,B의 race문제는 해결될것이라고 생각한다.
+  
+
+
+>> A4: Suppose processes A and B both have file F open, both
+>> positioned at end-of-file.  If A reads and B writes F at the same
+>> time, A may read all, part, or none of what B writes.  However, A
+>> may not read data other than what B writes, e.g. if B writes
+>> nonzero data, A is not allowed to see all zeros.  Explain how your
+>> code avoids this race.
+
+>> A5: Explain how your synchronization design provides "fairness".
+>> File access is "fair" if readers cannot indefinitely block writers
+>> or vice versa.  That is, many processes reading from a file cannot
+>> prevent forever another process from writing the file, and many
+>> processes writing to a file cannot prevent another process forever
+>> from reading the file.
+
+
+---- RATIONALE ----
+
+>> A6: Is your inode structure a multilevel index?  If so, why did you
+>> choose this particular combination of direct, indirect, and doubly
+>> indirect blocks?  If not, why did you choose an alternative inode
+>> structure, and what advantages and disadvantages does your
+>> structure have, compared to a multilevel index?
+
+우선 doubly indirect block을 1개이상은 반드시 써야했기 때문에 얘는 1개만 포함시켰고,
+이것만으로도 충분하지만, direct block과 indirect block이 없다면 얘네들로 커버 가능한 파일 크기에 대해서 read/write시
+실제 저장되어있는 sector번호를 알아야 하고, 이를 구하기 위해서 indirect block을 disk로부터
+read(buffer cache를 구현 했다면 buffer_cache_read()) 해야 된다.
+그런데 이는 비효율적이다. 따라서 direct block과 indirect block도 추가했다.
+
+맨처음에는 indirect block또한 여러개로 둘려고 했지만 구현이 복잡해져서 1개만 뒀고,
+
+direct block은 512바이트 제한을 생각해보면 length, magic, indirect block, doubly indirect block, is_dir같은
+정보들 때문에 128개는 쓰일 수 없다. 그런데 123개를 하자니 숫자가 너무 예쁘지가 않고 2의 제곱수 단위를 갖고 있도록 하면
+깔끔할 것 같아서 128을 2로나눈 64개만 쓰기로했다. 그리고 64개로 해서 얻을 수 있는 소소한 장점중 하나는
+on-disk inode에에 또다른 데이터정보가 추가되더라도 빈공간이 넉넉하므로 direct block의 최대 개수를 조정할 필요가 없어진다.
+
+
+			    SUBDIRECTORIES
+			    ==============
+
+---- DATA STRUCTURES ----
+
+>> B1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+threads/thread.h
+
+struct thread에 추가된 변수
+
+	struct dir* cwd;
+
+struct dir* cwd: current working directory를 open해서 가지고 있다. 부모thread로 부터 상속 받는다.
+
+
+---- ALGORITHMS ----
+
+>> B2: Describe your code for traversing a user-specified path.  How
+>> do traversals of absolute and relative paths differ?
+
+1. 우선은 path name에 '/'가 중복으로 있으면 더러우니까 '/'중복제거를 해줬다.remove_redundancy()
+2. 중복이 제거된 path name에 대해서 맨앞에 바이트가 '/'이면 절대경로인 거고 아니라면 상대경로이다.
+
+ 2-1. 절대경로인 경우 root directory를 open한다.
+ 2-2. 상대경로인 경우 cwd를 reopen한다.(이미 open해서 관리하고 있으므로)
+
+3. 이제 절대경로는 root로부터, 상대경로는 cwd로부터 여행을 시작한다.
+4. strtok_r()을 이용하여 /단위로 subdirectory하나씩 dir_open을 통해 건너다니면서 최종 목적지 directory에
+도달할때까지 반복한다. 그리고 최종 목적지 directory에 도달했으면 적절한 연산
+(change dir, make dir, create file, open file, open dir, remove file, remove dir)을 해준다. 
+
+
+>> B3: Look over "pwd.c" in src/examples.  Briefly explain how it
+>> determines the present working directory.
+
+요구사항: cwd의 절대경로를 알고싶음.
+우선 현재 디렉터리인 cwd의 inode번호를 get_inumber("." ,&child_inum)을 통해 child_inum에 저장해둔다.
+이제 어떤식으로 할거냐면 역으로 root directory를 만날때까지(parent_inum == child_inum) 계속해서 중간중간 subdirectory의 name을
+/을 구분자까지 포함하여 연결시켜나가면서 cwd의 절대경로를 알아낼 것이다.
+
+loop:
+	".."라는 아주 편리한 녀석을 이요해 계속해서 부모 directory를 open해나가면서 open()의 return값 fd를 얻는다.
+	이 fd를 이용해 부모directory의 inode번호를 inumber(parent_fd)를 통해 알아낸다.
+	만약 parent_inum == child_inum이라면 root directory인 것이므로 loop를 탈출한다.
+        일치하지 않으면 부모디렉터리를 linear하게 전부다 readdir로 뒤져나가면서 child_inum과 일치하는 inumber를 가지는 directory entry를
+	찾아낸다. 그 찾아낸 directory entry의 name부분이 cwd의 절대경로명을 이루는 파츠이다. 이걸 prepend()를 통해 계속 이어나간다.
+	그리고 마지막으로 child_inum = parent_inum을 통해 advance시키고 계속 root directory가 될때까지 반복한다.
+
+loop를 탈출했다는것은 root directory까지 파고들어갔다는 소리이므로 /aa/bbb/ccc/dddd/eee/cwd_name같은 절대경로명을 이제는 얻을 수 있다.
+
+
+
+---- SYNCHRONIZATION ----
+
+>> B4: How do you prevent races on directory entries?  For example,
+>> only one of two simultaneous attempts to remove a single file
+>> should succeed, as should only one of two simultaneous attempts to
+>> create a file with the same name, and so on.
+
+시간이 부족해서 directory synchronization부분 솔직히 안하고 그냥 filesys_lock이라는 하나의 lock을 통해 관리했다. (syscall_read(), syscall_write()는 확실히 filesys_lock을 제거해줬다.)
+근데 그냥 단순히 구현 아이디를 적어보자면 inode에 lock을 하나 둬서 directory관련 연산시 이 lock을 잠갔다 풀어주면 될것 같다.
+
+
+>> B5: Does your implementation allow a directory to be removed if it
+>> is open by a process or if it is in use as a process's current
+>> working directory?  If so, what happens to that process's future
+>> file system operations?  If not, how do you prevent it?
+
+open된 directory의 삭제를 허용했다.
+
+remove된 디렉토리에서 file이나 directory를 open하는것을 금지시켰다.      
+
+filesys/directory.c
+open_file_or_dir()의 코드중 일부
+
+  if(inode_is_removed(dir_get_inode(dir)) == true)
+  {
+    dir_close(dir);
+    return -1; 
+  }
+
+remove된 디렉토리에서 file이나 directory의 생성을 금지시켰다.
+
+create_file()의 코드중 일부
+  
+  if(inode_is_removed(dir_get_inode(dir)) == true)
+  {
+    dir_close(dir);
+    return false;
+  }
+
+make_dir()의 코드중 일부
+
+  if(inode_is_removed(dir_get_inode(dir)) == true)
+  {
+    dir_close(dir);
+    return false;
+  }
+
+
+---- RATIONALE ----
+
+>> B6: Explain why you chose to represent the current directory of a
+>> process the way you did.
+
+struct dir*로 관리를 했는데, dir_open의 return type이 struct dir*라서 그냥 이렇게 결정했다.
+	
+
+			     BUFFER CACHE
+			     ============
+
+---- DATA STRUCTURES ----
+
+>> C1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+filesys/cache.h
+
+#define BUFFER_CACHE_SIZE 20
+#define SEC_NO_DEFAULT -1
+
+/* Buffer cache entry. */
+struct buffer_cache_entry
+{
+  bool valid;                               /* Loaded in buffer cache: true, Else: false. */
+  disk_sector_t sec_no;                     /* Key for buffer cache. */
+  bool accessed;                            /* Accessed. */
+  bool dirty;                               /* Dirty. */
+  uint8_t buffer[DISK_SECTOR_SIZE];         /* Block(sector) size buffer. */
+
+  int rw_cnt;                               /* Read or write count. */
+  
+};
+
+bool valid: 버퍼캐시 엔트리가 유효하면 true, 아니면 false.
+disk_sector_t sec_no: 이 sec_no에 저장된 block이 buffer_cache_entry의 buffer영역에 저장된다.
+bool accessed: buffer_cache_entry의 buffer영역에 Read나 write시 true로 세팅된다.
+bool dirty: buffer_cache_entry의 buffer영역에 write되면 true로 세팅된다.
+uint8_t buffer[DISK_SECTOR_SIZE]: DISK_SECTOR_SIZE bytes의 buffer영역. 이 영역을 통해 read/write를 한다.
+int rw_cnt: reader나 writer가 active한 reading이나 writing을 하고 있는 경우 몇명이 이 buffer_cache_entry에 대해서 하고 있는지 나타낸다.
+
+struct buffer_cache_entry buffer_cache[BUFFER_CACHE_SIZE]: Buffer Cache. 
+struct lock buffer_cache_lock: Lock for buffer cache.
+int clock_index: Clock index for cache replacement algorithm.
+
+struct read_ahead_list_entry
+{
+  disk_sector_t sec_no;                     /* Sector number for read ahead. */
+  struct list_elem elem;                    /* List element for read ahead list. */
+};
+
+disk_sector_t sec_no: read ahead용도로 쓰이는 sector번호.
+struct list_elem elem: read_ahead_list를 위한 element.
+
+struct list read_ahead_list: Read ahead list.
+struct lock read_ahead_lock: Lock for read ahead list. 
+struct semaphore read_ahead_sema: Semaphore for read ahead. 
+                                           
+
+---- ALGORITHMS ----
+
+>> C2: Describe how your cache replacement algorithm chooses a cache
+>> block to evict.
+
+clock알고리즘을 통해 구현했다.
+// buffer_cache_lock이 걸려 있는 상태 
+while(true)
+{
+	1. 만약 buffer_cache[clock_index]의 rw_cnt가 0보다 크다면 clock_index만 advance시키고 continue.
+	2-1. 만약 buffer_cache[clock_index]의 accessed비트가 1이라면 그걸 0으로 바꾸고 clock_index를 advance.
+	2-2. 만약 buffer_cache[clock_index]의 accessed비트가 0이라면 그놈이 victim이고, clock_index를 advance시키고 break. 
+		
+}
+
+
+>> C3: Describe your implementation of write-behind.
+
+buffer_cache_init()에서 write-behind작업을 처리해주는 thread를 하나 새로 생성했다.
+
+이 thread가 하는일은 무한루프를 돌면서 buffer_cache의 entry들 중에 dirty인 entry의 buffer영역을
+disk_write()을 통해 write해주고 일정시간동안 sleep한다.
+
+
+>> C4: Describe your implementation of read-ahead.
+
+inode_read_at()에서 자기가 읽을 sector_idx를 buffer_cahce_read_at()을 통해 읽은다음, sector_idx+1번쨰
+sector를 read_ahead하라고 global변수인 read_ahead_list에 넣고 read ahead thread에게 어떤 신호(sema_up(&read_ahead_sema))를 보내준다.
+
+그리고 미리 buffer_cache_init()에서 생성해준 read-ahead전용 thread가 무한루프를 돌면서 대기하다가(sema_down(&read_ahead_sema))
+일어나라는 신호를(sema_up(&read_ahead_sema))를 받으면 깨어나서 read_ahead_list에서 미리읽을 sector번호를 pop해온다음
+그 sector번호가 buffer_cache에 없다면 buffer_cache에 load한다.
+
+유한버퍼문제에서 무한버퍼로 생각하고 구현을 했다.
+
+
+---- SYNCHRONIZATION ----
+
+>> C5: When one process is actively reading or writing data in a
+>> buffer cache block, how are other processes prevented from evicting
+>> that block?
+
+buffer_cache_entry의 member변수중에 rw_cnt라는 변수가 있는데 이 변수가 0보다 클때는 active한 reading이나 writing이 이루어지고 있다는 뜻이다.
+따라서 eviction시 rw_cnt가 0보다 크면 후보에서 제외시키고 다음 buffer_cache_entry를 조사했다.
+이 rw_cnt변수는 하나의 buffer_cache_lock에 의해 보호가 되는데, 약간 비효율적일 수 는 있지만, A3,A4,A5에서 Readers/Writers 알고리즘을
+구현했기 때문에 memcpy를 하는 부분에서는 동시에 여러명의 reader나 file growth를 하지 않는 writer가 접근 가능하다.
+
+.
+>> C6: During the eviction of a block from the cache, how are other
+>> processes prevented from attempting to access the block?
+
+eviction과정을 하나의 buffer_cache_lock으로 잠근 상태에서 진행하였고 역시 그동안은 block에 access를 할 수 없도록 synchronization을 하였다.
+
+
+---- RATIONALE ----
+
+>> C7: Describe a file workload likely to benefit from buffer caching,
+>> and workloads likely to benefit from read-ahead and write-behind.
+
+buffer cache의 효율이 증대되는 workload: 크기가 작은 파일을 반복적으로 access하는 경우.
+read-ahaed의 효율이 증대되는 workload: 동영상 파일 같은 순차적 access를 주로하는경우.
+write-behind의 효율이 증대되는 workload: 크기가 작은 파일에 자잘자잘한 write가 일어나는 경우.
+
+			   SURVEY QUESTIONS
+			   ================
+
+Answering these questions is optional, but it will help us improve the
+course in future quarters.  Feel free to tell us anything you
+want--these questions are just to spur your thoughts.  You may also
+choose to respond anonymously in the course evaluations at the end of
+the quarter.
+
+>> In your opinion, was this assignment, or any one of the three problems
+>> in it, too easy or too hard?  Did it take too long or too little time?
+
+>> Did you find that working on a particular part of the assignment gave
+>> you greater insight into some aspect of OS design?
+
+>> Is there some particular fact or hint we should give students in
+>> future quarters to help them solve the problems?  Conversely, did you
+>> find any of our guidance to be misleading?
+
+>> Do you have any suggestions for the TAs to more effectively assist
+>> students in future quarters?
+
+>> Any other comments?

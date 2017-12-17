@@ -1,7 +1,8 @@
-Copying tests/filesys/base/syn-read into /tmp/V2gQZDjWre.dsk...
-Copying tests/filesys/base/child-syn-read into /tmp/V2gQZDjWre.dsk...
-Writing command line to /tmp/cW6vrUfyfX.dsk...
-squish-pty bochs -q
+Copying tests/filesys/base/syn-read into /tmp/iL9VucgpHN.dsk...
+Copying tests/filesys/base/child-syn-read into /tmp/iL9VucgpHN.dsk...
+Writing command line to /tmp/tC1Wa5xgNn.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put syn-read put child-syn-read run syn-read
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -31,33 +32,33 @@ Executing 'syn-read':
 (syn-read) exec child 8 of 10: "child-syn-read 7"
 (syn-read) exec child 9 of 10: "child-syn-read 8"
 (syn-read) exec child 10 of 10: "child-syn-read 9"
-child-syn-read: exit(1)
 child-syn-read: exit(0)
-child-syn-read: exit(4)
 (syn-read) wait for child 1 of 10 returned 0 (expected 0)
+child-syn-read: exit(1)
 (syn-read) wait for child 2 of 10 returned 1 (expected 1)
-child-syn-read: exit(5)
-child-syn-read: exit(7)
-child-syn-read: exit(3)
 child-syn-read: exit(2)
+child-syn-read: exit(4)
 (syn-read) wait for child 3 of 10 returned 2 (expected 2)
+child-syn-read: exit(3)
 (syn-read) wait for child 4 of 10 returned 3 (expected 3)
 (syn-read) wait for child 5 of 10 returned 4 (expected 4)
+child-syn-read: exit(5)
 (syn-read) wait for child 6 of 10 returned 5 (expected 5)
-child-syn-read: exit(8)
 child-syn-read: exit(6)
 (syn-read) wait for child 7 of 10 returned 6 (expected 6)
+child-syn-read: exit(9)
+child-syn-read: exit(8)
+child-syn-read: exit(7)
 (syn-read) wait for child 8 of 10 returned 7 (expected 7)
 (syn-read) wait for child 9 of 10 returned 8 (expected 8)
-child-syn-read: exit(9)
 (syn-read) wait for child 10 of 10 returned 9 (expected 9)
 (syn-read) end
 syn-read: exit(0)
 Execution of 'syn-read' complete.
-Timer: 7281 ticks
-Thread: 30 idle ticks, 2470 kernel ticks, 4784 user ticks
+Timer: 7478 ticks
+Thread: 30 idle ticks, 2666 kernel ticks, 4789 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 287 reads, 442 writes
+hd0:1: 323 reads, 442 writes
 hd1:0: 215 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 2397 characters output

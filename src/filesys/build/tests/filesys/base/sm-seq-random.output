@@ -1,6 +1,7 @@
-Copying tests/filesys/base/sm-seq-random into /tmp/40cWTosf14.dsk...
-Writing command line to /tmp/CBCXh2ZDCM.dsk...
-squish-pty bochs -q
+Copying tests/filesys/base/sm-seq-random into /tmp/PV9a8m4Vwu.dsk...
+Writing command line to /tmp/G2OClbTcjw.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put sm-seq-random run sm-seq-random
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -25,8 +26,8 @@ Executing 'sm-seq-random':
 (sm-seq-random) end
 sm-seq-random: exit(0)
 Execution of 'sm-seq-random' complete.
-Timer: 738 ticks
-Thread: 30 idle ticks, 464 kernel ticks, 247 user ticks
+Timer: 740 ticks
+Thread: 30 idle ticks, 467 kernel ticks, 246 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 35 reads, 224 writes
 hd1:0: 102 reads, 0 writes

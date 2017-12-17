@@ -1,7 +1,8 @@
-Copying tests/filesys/extended/grow-tell into /tmp/3oRSm8binq.dsk...
-Copying tests/filesys/extended/tar into /tmp/3oRSm8binq.dsk...
-Writing command line to /tmp/TU2ziGqz3L.dsk...
-squish-pty bochs -q
+Copying tests/filesys/extended/grow-tell into /tmp/SHgD5rajJK.dsk...
+Copying tests/filesys/extended/tar into /tmp/SHgD5rajJK.dsk...
+Writing command line to /tmp/mlWy3ciuEH.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put grow-tell put tar run grow-tell
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -27,8 +28,8 @@ Executing 'grow-tell':
 (grow-tell) end
 grow-tell: exit(0)
 Execution of 'grow-tell' complete.
-Timer: 1218 ticks
-Thread: 30 idle ticks, 963 kernel ticks, 228 user ticks
+Timer: 1217 ticks
+Thread: 30 idle ticks, 965 kernel ticks, 226 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 40 reads, 441 writes
 hd1:0: 213 reads, 0 writes

@@ -1,7 +1,8 @@
-Copying tests/filesys/extended/dir-under-file into /tmp/osCpM84cbS.dsk...
-Copying tests/filesys/extended/tar into /tmp/osCpM84cbS.dsk...
-Writing command line to /tmp/Gn21zTnoOs.dsk...
-squish-pty bochs -q
+Copying tests/filesys/extended/dir-under-file into /tmp/he9wV073nq.dsk...
+Copying tests/filesys/extended/tar into /tmp/he9wV073nq.dsk...
+Writing command line to /tmp/zLtpCw9cq7.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put dir-under-file put tar run dir-under-file
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -22,8 +23,8 @@ Executing 'dir-under-file':
 (dir-under-file) end
 dir-under-file: exit(0)
 Execution of 'dir-under-file' complete.
-Timer: 1086 ticks
-Thread: 30 idle ticks, 961 kernel ticks, 98 user ticks
+Timer: 1087 ticks
+Thread: 30 idle ticks, 962 kernel ticks, 98 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 38 reads, 434 writes
 hd1:0: 212 reads, 0 writes

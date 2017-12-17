@@ -1,7 +1,8 @@
-Copying tests/vm/mmap-exit into /tmp/bKdlQThQWB.dsk...
-Copying tests/vm/child-mm-wrt into /tmp/bKdlQThQWB.dsk...
-Writing command line to /tmp/xiM1JTQaNm.dsk...
-squish-pty bochs -q
+Copying tests/vm/mmap-exit into /tmp/roSzcXpVmg.dsk...
+Copying tests/vm/child-mm-wrt into /tmp/roSzcXpVmg.dsk...
+Writing command line to /tmp/xq18GRHHe1.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put mmap-exit put child-mm-wrt run mmap-exit
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -29,8 +30,8 @@ child-mm-wrt: exit(0)
 (mmap-exit) end
 mmap-exit: exit(0)
 Execution of 'mmap-exit' complete.
-Timer: 1167 ticks
-Thread: 30 idle ticks, 912 kernel ticks, 229 user ticks
+Timer: 1169 ticks
+Thread: 30 idle ticks, 913 kernel ticks, 229 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 69 reads, 412 writes
 hd1:0: 200 reads, 0 writes

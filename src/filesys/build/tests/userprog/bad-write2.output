@@ -1,6 +1,7 @@
-Copying tests/userprog/bad-write2 into /tmp/ovgjAO2Ipu.dsk...
-Writing command line to /tmp/CfrVWw0u66.dsk...
-squish-pty bochs -q
+Copying tests/userprog/bad-write2 into /tmp/njYWMxCxrf.dsk...
+Writing command line to /tmp/K5IC2y1n3u.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put bad-write2 run bad-write2
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -24,8 +25,8 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0x80480a6
  cs=001b ds=0023 es=0023 ss=0023
 bad-write2: exit(-1)
 Execution of 'bad-write2' complete.
-Timer: 577 ticks
-Thread: 30 idle ticks, 441 kernel ticks, 109 user ticks
+Timer: 579 ticks
+Thread: 30 idle ticks, 444 kernel ticks, 108 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes

@@ -1,6 +1,7 @@
-Copying tests/userprog/args-multiple into /tmp/3S7aMdPteM.dsk...
-Writing command line to /tmp/8KeqPilt3D.dsk...
-squish-pty bochs -q
+Copying tests/userprog/args-multiple into /tmp/nGxwecOdC2.dsk...
+Writing command line to /tmp/CKDfTe10NW.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put args-multiple run 'args-multiple some arguments for you!'
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -25,8 +26,8 @@ Executing 'args-multiple some arguments for you!':
 (args) end
 args-multiple: exit(0)
 Execution of 'args-multiple some arguments for you!' complete.
-Timer: 561 ticks
-Thread: 30 idle ticks, 445 kernel ticks, 89 user ticks
+Timer: 562 ticks
+Thread: 30 idle ticks, 447 kernel ticks, 88 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 199 writes
 hd1:0: 97 reads, 0 writes

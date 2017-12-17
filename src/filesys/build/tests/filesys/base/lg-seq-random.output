@@ -1,6 +1,7 @@
-Copying tests/filesys/base/lg-seq-random into /tmp/LPEjR222Li.dsk...
-Writing command line to /tmp/d2bf4rvisA.dsk...
-squish-pty bochs -q
+Copying tests/filesys/base/lg-seq-random into /tmp/WCluZ400tC.dsk...
+Writing command line to /tmp/in4hbRyR28.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put lg-seq-random run lg-seq-random
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -25,8 +26,8 @@ Executing 'lg-seq-random':
 (lg-seq-random) end
 lg-seq-random: exit(0)
 Execution of 'lg-seq-random' complete.
-Timer: 2472 ticks
-Thread: 30 idle ticks, 464 kernel ticks, 1981 user ticks
+Timer: 2473 ticks
+Thread: 30 idle ticks, 463 kernel ticks, 1983 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 189 reads, 509 writes
 hd1:0: 102 reads, 0 writes

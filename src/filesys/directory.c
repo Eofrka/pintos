@@ -143,6 +143,7 @@ bool
 dir_lookup (const struct dir *dir, const char *name,
             struct inode **inode) 
 {
+  inode_dir_lock_acquire(dir->inode);
   struct dir_entry e;
 
   ASSERT (dir != NULL);
@@ -153,6 +154,7 @@ dir_lookup (const struct dir *dir, const char *name,
   else
     *inode = NULL;
 
+  inode_dir_lock_release(dir->inode);
   return *inode != NULL;
 }
 
@@ -165,6 +167,7 @@ dir_lookup (const struct dir *dir, const char *name,
 bool
 dir_add (struct dir *dir, const char *name, disk_sector_t inode_sector) 
 {
+  inode_dir_lock_acquire(dir->inode);
   struct dir_entry e;
   off_t ofs;
   bool success = false;
@@ -174,8 +177,10 @@ dir_add (struct dir *dir, const char *name, disk_sector_t inode_sector)
 
   /* Check NAME for validity. */
   if (*name == '\0' || strlen (name) > NAME_MAX)
+  {
+    inode_dir_lock_release(dir->inode);
     return false;
-
+  }
   /* Check that NAME is not in use. */
   if (lookup (dir, name, NULL, NULL))
     goto done;
@@ -199,6 +204,7 @@ dir_add (struct dir *dir, const char *name, disk_sector_t inode_sector)
   success = inode_write_at (dir->inode, &e, sizeof e, ofs) == sizeof e;
 
  done:
+  inode_dir_lock_release(dir->inode);
   return success;
 }
 
@@ -208,6 +214,7 @@ dir_add (struct dir *dir, const char *name, disk_sector_t inode_sector)
 bool
 dir_remove (struct dir *dir, const char *name) 
 {
+  inode_dir_lock_acquire(dir->inode);
   struct dir_entry e;
   struct inode *inode = NULL;
   bool success = false;
@@ -261,6 +268,7 @@ dir_remove (struct dir *dir, const char *name)
 
  done:
   inode_close (inode);
+  inode_dir_lock_release(dir->inode);
   return success;
 }
 
@@ -271,7 +279,7 @@ bool
 dir_readdir (struct dir *dir, char name[NAME_MAX + 1])
 {
   struct dir_entry e;
-
+  inode_dir_lock_acquire(dir->inode);
   while (inode_read_at (dir->inode, &e, sizeof e, dir->pos + (sizeof(e))*2 ) == sizeof e) 
   {
     dir->pos += sizeof e;
@@ -279,10 +287,11 @@ dir_readdir (struct dir *dir, char name[NAME_MAX + 1])
     if (e.in_use)
     {
       strlcpy (name, e.name, NAME_MAX + 1);
+      inode_dir_lock_release(dir->inode);
       return true;
     } 
   }
-
+  inode_dir_lock_release(dir->inode);
   return false;
 }
 

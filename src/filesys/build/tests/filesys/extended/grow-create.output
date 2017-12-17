@@ -1,7 +1,8 @@
-Copying tests/filesys/extended/grow-create into /tmp/XJUh9oIhkS.dsk...
-Copying tests/filesys/extended/tar into /tmp/XJUh9oIhkS.dsk...
-Writing command line to /tmp/ApokYqmoFH.dsk...
-squish-pty bochs -q
+Copying tests/filesys/extended/grow-create into /tmp/fHviVbQR50.dsk...
+Copying tests/filesys/extended/tar into /tmp/fHviVbQR50.dsk...
+Writing command line to /tmp/Jm0kBEsaAi.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put grow-create put tar run grow-create
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -24,10 +25,10 @@ Executing 'grow-create':
 (grow-create) end
 grow-create: exit(0)
 Execution of 'grow-create' complete.
-Timer: 1100 ticks
-Thread: 30 idle ticks, 958 kernel ticks, 115 user ticks
+Timer: 1103 ticks
+Thread: 30 idle ticks, 961 kernel ticks, 116 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 38 reads, 434 writes
+hd0:1: 39 reads, 434 writes
 hd1:0: 212 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1130 characters output

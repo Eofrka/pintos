@@ -1,7 +1,8 @@
-Copying tests/userprog/wait-killed into /tmp/FWEHlOxOr2.dsk...
-Copying tests/userprog/child-bad into /tmp/FWEHlOxOr2.dsk...
-Writing command line to /tmp/r6ecO1iAKZ.dsk...
-squish-pty bochs -q
+Copying tests/userprog/wait-killed into /tmp/AY5TxN0MlN.dsk...
+Copying tests/userprog/child-bad into /tmp/AY5TxN0MlN.dsk...
+Writing command line to /tmp/mLGl8V9XDu.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put wait-killed put child-bad run wait-killed
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -23,8 +24,8 @@ child-bad: exit(-1)
 (wait-killed) end
 wait-killed: exit(0)
 Execution of 'wait-killed' complete.
-Timer: 1039 ticks
-Thread: 30 idle ticks, 883 kernel ticks, 129 user ticks
+Timer: 1040 ticks
+Thread: 30 idle ticks, 885 kernel ticks, 129 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 61 reads, 399 writes
 hd1:0: 196 reads, 0 writes

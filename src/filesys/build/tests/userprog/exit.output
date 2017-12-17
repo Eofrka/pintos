@@ -1,6 +1,7 @@
-Copying tests/userprog/exit into /tmp/8j8U10EMfk.dsk...
-Writing command line to /tmp/GqceZIPlij.dsk...
-squish-pty bochs -q
+Copying tests/userprog/exit into /tmp/C5ZTNUPq2K.dsk...
+Writing command line to /tmp/oW8YWwAmHe.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put exit run exit
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -17,8 +18,8 @@ Executing 'exit':
 (exit) begin
 exit: exit(57)
 Execution of 'exit' complete.
-Timer: 525 ticks
-Thread: 30 idle ticks, 440 kernel ticks, 58 user ticks
+Timer: 526 ticks
+Thread: 30 idle ticks, 441 kernel ticks, 58 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes

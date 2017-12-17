@@ -1,7 +1,8 @@
-Copying tests/filesys/extended/grow-seq-lg into /tmp/wcSeg8KijO.dsk...
-Copying tests/filesys/extended/tar into /tmp/wcSeg8KijO.dsk...
-Writing command line to /tmp/kH7DLYccSW.dsk...
-squish-pty bochs -q
+Copying tests/filesys/extended/grow-seq-lg into /tmp/HyNHUYPMXa.dsk...
+Copying tests/filesys/extended/tar into /tmp/HyNHUYPMXa.dsk...
+Writing command line to /tmp/6By37mVPEG.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put grow-seq-lg put tar run grow-seq-lg
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -27,8 +28,8 @@ Executing 'grow-seq-lg':
 (grow-seq-lg) end
 grow-seq-lg: exit(0)
 Execution of 'grow-seq-lg' complete.
-Timer: 3208 ticks
-Thread: 30 idle ticks, 962 kernel ticks, 2219 user ticks
+Timer: 3209 ticks
+Thread: 30 idle ticks, 964 kernel ticks, 2218 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 186 reads, 580 writes
 hd1:0: 213 reads, 0 writes

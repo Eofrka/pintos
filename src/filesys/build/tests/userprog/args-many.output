@@ -1,6 +1,7 @@
-Copying tests/userprog/args-many into /tmp/ni69BeRdZ4.dsk...
-Writing command line to /tmp/sK9VOhyAQn.dsk...
-squish-pty bochs -q
+Copying tests/userprog/args-many into /tmp/DRhUBof04B.dsk...
+Writing command line to /tmp/J9uimHybvB.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put args-many run 'args-many a b c d e f g h i j k l m n o p q r s t u v'
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -43,8 +44,8 @@ Executing 'args-many a b c d e f g h i j k l m n o p q r s t u v':
 (args) end
 args-many: exit(0)
 Execution of 'args-many a b c d e f g h i j k l m n o p q r s t u v' complete.
-Timer: 628 ticks
-Thread: 30 idle ticks, 448 kernel ticks, 153 user ticks
+Timer: 629 ticks
+Thread: 30 idle ticks, 449 kernel ticks, 153 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 199 writes
 hd1:0: 97 reads, 0 writes

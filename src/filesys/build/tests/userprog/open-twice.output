@@ -1,7 +1,8 @@
-Copying tests/userprog/open-twice into /tmp/SAEMDy6VQn.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/SAEMDy6VQn.dsk...
-Writing command line to /tmp/83AJR9mpRS.dsk...
-squish-pty bochs -q
+Copying tests/userprog/open-twice into /tmp/hTGFsCAaKr.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/hTGFsCAaKr.dsk...
+Writing command line to /tmp/8C5iJzRuaq.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put open-twice put sample.txt run open-twice
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -22,8 +23,8 @@ Executing 'open-twice':
 (open-twice) end
 open-twice: exit(0)
 Execution of 'open-twice' complete.
-Timer: 589 ticks
-Thread: 30 idle ticks, 472 kernel ticks, 90 user ticks
+Timer: 591 ticks
+Thread: 30 idle ticks, 472 kernel ticks, 92 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 205 writes
 hd1:0: 100 reads, 0 writes

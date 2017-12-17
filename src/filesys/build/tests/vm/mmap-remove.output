@@ -1,7 +1,8 @@
-Copying tests/vm/mmap-remove into /tmp/oWJjO7lZvp.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/oWJjO7lZvp.dsk...
-Writing command line to /tmp/BMrkMZoHXA.dsk...
-squish-pty bochs -q
+Copying tests/vm/mmap-remove into /tmp/YfThRWvimg.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/YfThRWvimg.dsk...
+Writing command line to /tmp/w1T855lczV.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put mmap-remove put sample.txt run mmap-remove
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -25,8 +26,8 @@ Executing 'mmap-remove':
 (mmap-remove) end
 mmap-remove: exit(0)
 Execution of 'mmap-remove' complete.
-Timer: 909 ticks
-Thread: 30 idle ticks, 495 kernel ticks, 387 user ticks
+Timer: 912 ticks
+Thread: 30 idle ticks, 500 kernel ticks, 385 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 49 reads, 297 writes
 hd1:0: 104 reads, 0 writes

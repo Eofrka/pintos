@@ -1,6 +1,7 @@
-Copying tests/vm/pt-grow-stack into /tmp/L33KMeNwSD.dsk...
-Writing command line to /tmp/Xq3rIo53OV.dsk...
-squish-pty bochs -q
+Copying tests/vm/pt-grow-stack into /tmp/O1O64nGmuT.dsk...
+Writing command line to /tmp/Pey9Fdc5he.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put pt-grow-stack run pt-grow-stack
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -19,8 +20,8 @@ Executing 'pt-grow-stack':
 (pt-grow-stack) end
 pt-grow-stack: exit(0)
 Execution of 'pt-grow-stack' complete.
-Timer: 589 ticks
-Thread: 30 idle ticks, 475 kernel ticks, 87 user ticks
+Timer: 591 ticks
+Thread: 30 idle ticks, 476 kernel ticks, 88 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 32 reads, 219 writes
 hd1:0: 107 reads, 0 writes

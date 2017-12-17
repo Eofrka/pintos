@@ -1,7 +1,8 @@
-Copying tests/filesys/extended/dir-over-file into /tmp/nwZqk6BvvH.dsk...
-Copying tests/filesys/extended/tar into /tmp/nwZqk6BvvH.dsk...
-Writing command line to /tmp/cq8sk1vqhI.dsk...
-squish-pty bochs -q
+Copying tests/filesys/extended/dir-over-file into /tmp/pX1biUEwLk.dsk...
+Copying tests/filesys/extended/tar into /tmp/pX1biUEwLk.dsk...
+Writing command line to /tmp/XsebdNI8WO.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put dir-over-file put tar run dir-over-file
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -22,8 +23,8 @@ Executing 'dir-over-file':
 (dir-over-file) end
 dir-over-file: exit(0)
 Execution of 'dir-over-file' complete.
-Timer: 1111 ticks
-Thread: 30 idle ticks, 965 kernel ticks, 119 user ticks
+Timer: 1115 ticks
+Thread: 30 idle ticks, 970 kernel ticks, 118 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 39 reads, 435 writes
 hd1:0: 212 reads, 0 writes

@@ -1,7 +1,8 @@
-Copying tests/vm/mmap-over-code into /tmp/TJrbmxEUXQ.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/TJrbmxEUXQ.dsk...
-Writing command line to /tmp/MgTzggMzsH.dsk...
-squish-pty bochs -q
+Copying tests/vm/mmap-over-code into /tmp/DEb02i0Cxj.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/DEb02i0Cxj.dsk...
+Writing command line to /tmp/RTcQLLoMjK.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put mmap-over-code put sample.txt run mmap-over-code
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -22,8 +23,8 @@ Executing 'mmap-over-code':
 (mmap-over-code) end
 mmap-over-code: exit(0)
 Execution of 'mmap-over-code' complete.
-Timer: 587 ticks
-Thread: 30 idle ticks, 473 kernel ticks, 87 user ticks
+Timer: 590 ticks
+Thread: 30 idle ticks, 477 kernel ticks, 86 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 206 writes
 hd1:0: 101 reads, 0 writes

@@ -1,0 +1,75 @@
+rm -f tmp.dsk
+pintos-mkdisk tmp.dsk 2
+pintos -v -k -T 60 --bochs  --fs-disk=tmp.dsk -p tests/filesys/extended/grow-seq-lg -a grow-seq-lg -p tests/filesys/extended/tar -a tar --swap-disk=4 -- -q   -f run grow-seq-lg < /dev/null 2> tests/filesys/extended/grow-seq-lg.errors |tee tests/filesys/extended/grow-seq-lg.output
+Copying tests/filesys/extended/grow-seq-lg into /tmp/lLrF8ZGlA0.dsk...
+Copying tests/filesys/extended/tar into /tmp/lLrF8ZGlA0.dsk...
+Writing command line to /tmp/eJboWuMSEQ.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
+Kernel command line: -q -f put grow-seq-lg put tar run grow-seq-lg
+Pintos booting with 4,096 kB RAM...
+371 pages available in kernel pool.
+370 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
+hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
+hd1:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00021"
+hd1:1: detected 8,064 sector (3 MB) disk, model "Generic 1234", serial "BXHD00022"
+Formatting file system...done.
+Boot complete.
+Putting 'grow-seq-lg' into the file system...
+Putting 'tar' into the file system...
+Executing 'grow-seq-lg':
+(grow-seq-lg) begin
+(grow-seq-lg) create "testme"
+(grow-seq-lg) open "testme"
+(grow-seq-lg) writing "testme"
+(grow-seq-lg) close "testme"
+(grow-seq-lg) open "testme" for verification
+(grow-seq-lg) verified contents of "testme"
+(grow-seq-lg) close "testme"
+(grow-seq-lg) end
+grow-seq-lg: exit(0)
+Execution of 'grow-seq-lg' complete.
+Timer: 3209 ticks
+Thread: 30 idle ticks, 964 kernel ticks, 2218 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 186 reads, 580 writes
+hd1:0: 213 reads, 0 writes
+hd1:1: 0 reads, 0 writes
+Console: 1216 characters output
+Keyboard: 0 keys pressed
+Exception: 22 page faults
+Powering off...
+pintos -v -k -T 60  --bochs --fs-disk=tmp.dsk -g fs.tar -a tests/filesys/extended/grow-seq-lg.tar --swap-disk=4 -- -q  run 'tar fs.tar /' < /dev/null 2> tests/filesys/extended/grow-seq-lg-persistence.errors |tee tests/filesys/extended/grow-seq-lg-persistence.output
+Writing command line to /tmp/x9xWXj4sOw.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
+Kernel command line: -q run 'tar fs.tar /' get fs.tar
+Pintos booting with 4,096 kB RAM...
+371 pages available in kernel pool.
+370 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hd0:0: detected 1,008 sector (504 kB) disk, model "Generic 1234", serial "BXHD00011"
+hd0:1: detected 4,032 sector (1 MB) disk, model "Generic 1234", serial "BXHD00012"
+hd1:0: detected 3,024 sector (1 MB) disk, model "Generic 1234", serial "BXHD00021"
+hd1:1: detected 8,064 sector (3 MB) disk, model "Generic 1234", serial "BXHD00022"
+Boot complete.
+Executing 'tar fs.tar /':
+tar: exit(0)
+Execution of 'tar fs.tar /' complete.
+Getting 'fs.tar' from the file system...
+Timer: 7944 ticks
+Thread: 30 idle ticks, 990 kernel ticks, 6927 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 765 reads, 366 writes
+hd1:0: 0 reads, 360 writes
+hd1:1: 0 reads, 0 writes
+Console: 847 characters output
+Keyboard: 0 keys pressed
+Exception: 4 page faults
+Powering off...
+Copying tests/filesys/extended/grow-seq-lg.tar out of /tmp/gMrZg5j7Dn.dsk...
+rm -f tmp.dsk
+perl -I../.. ../../tests/filesys/extended/grow-seq-lg.ck tests/filesys/extended/grow-seq-lg tests/filesys/extended/grow-seq-lg.result
+pass tests/filesys/extended/grow-seq-lg

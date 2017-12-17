@@ -1,7 +1,8 @@
-Copying tests/filesys/extended/dir-mk-tree into /tmp/UtUA0n8M3P.dsk...
-Copying tests/filesys/extended/tar into /tmp/UtUA0n8M3P.dsk...
-Writing command line to /tmp/cjSxO9vSRq.dsk...
-squish-pty bochs -q
+Copying tests/filesys/extended/dir-mk-tree into /tmp/AUMR7lTnbg.dsk...
+Copying tests/filesys/extended/tar into /tmp/AUMR7lTnbg.dsk...
+Writing command line to /tmp/zhOgKV0eNS.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put dir-mk-tree put tar run dir-mk-tree
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -23,8 +24,8 @@ Executing 'dir-mk-tree':
 (dir-mk-tree) end
 dir-mk-tree: exit(0)
 Execution of 'dir-mk-tree' complete.
-Timer: 9609 ticks
-Thread: 30 idle ticks, 2524 kernel ticks, 7059 user ticks
+Timer: 9744 ticks
+Thread: 30 idle ticks, 2513 kernel ticks, 7204 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 163 reads, 691 writes
 hd1:0: 217 reads, 0 writes

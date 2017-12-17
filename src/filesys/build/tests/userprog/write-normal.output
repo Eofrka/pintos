@@ -1,7 +1,8 @@
-Copying tests/userprog/write-normal into /tmp/som9665oaL.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/som9665oaL.dsk...
-Writing command line to /tmp/eLLmMtl1NR.dsk...
-squish-pty bochs -q
+Copying tests/userprog/write-normal into /tmp/ffrtpY5fKC.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/ffrtpY5fKC.dsk...
+Writing command line to /tmp/jnbPcinYaX.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put write-normal put sample.txt run write-normal
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -22,8 +23,8 @@ Executing 'write-normal':
 (write-normal) end
 write-normal: exit(0)
 Execution of 'write-normal' complete.
-Timer: 614 ticks
-Thread: 30 idle ticks, 481 kernel ticks, 106 user ticks
+Timer: 617 ticks
+Thread: 30 idle ticks, 484 kernel ticks, 106 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 211 writes
 hd1:0: 101 reads, 0 writes

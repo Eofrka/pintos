@@ -1,7 +1,8 @@
-Copying tests/vm/mmap-misalign into /tmp/G1QwUjG23Y.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/G1QwUjG23Y.dsk...
-Writing command line to /tmp/ATlrHwizHf.dsk...
-squish-pty bochs -q
+Copying tests/vm/mmap-misalign into /tmp/mJWLZusjem.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/mJWLZusjem.dsk...
+Writing command line to /tmp/TAhtkP8Zfq.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put mmap-misalign put sample.txt run mmap-misalign
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -22,8 +23,8 @@ Executing 'mmap-misalign':
 (mmap-misalign) end
 mmap-misalign: exit(0)
 Execution of 'mmap-misalign' complete.
-Timer: 587 ticks
-Thread: 30 idle ticks, 477 kernel ticks, 83 user ticks
+Timer: 589 ticks
+Thread: 30 idle ticks, 478 kernel ticks, 84 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 206 writes
 hd1:0: 101 reads, 0 writes

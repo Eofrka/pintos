@@ -1,6 +1,7 @@
-Copying tests/vm/pt-grow-bad into /tmp/kyffSgHfcl.dsk...
-Writing command line to /tmp/dJ4aI1hIs4.dsk...
-squish-pty bochs -q
+Copying tests/vm/pt-grow-bad into /tmp/nbla7mS2HN.dsk...
+Writing command line to /tmp/v3fRQ2vRY7.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put pt-grow-bad run pt-grow-bad
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -24,8 +25,8 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0x80480a3
  cs=001b ds=0023 es=0023 ss=0023
 pt-grow-bad: exit(-1)
 Execution of 'pt-grow-bad' complete.
-Timer: 578 ticks
-Thread: 30 idle ticks, 441 kernel ticks, 110 user ticks
+Timer: 579 ticks
+Thread: 30 idle ticks, 442 kernel ticks, 110 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes

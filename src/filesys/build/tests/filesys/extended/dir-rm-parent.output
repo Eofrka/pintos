@@ -1,7 +1,8 @@
-Copying tests/filesys/extended/dir-rm-parent into /tmp/Jj34rj0i9d.dsk...
-Copying tests/filesys/extended/tar into /tmp/Jj34rj0i9d.dsk...
-Writing command line to /tmp/CCMqqjqeTW.dsk...
-squish-pty bochs -q
+Copying tests/filesys/extended/dir-rm-parent into /tmp/RHllqoCzpD.dsk...
+Copying tests/filesys/extended/tar into /tmp/RHllqoCzpD.dsk...
+Writing command line to /tmp/Pq735YzMxP.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put dir-rm-parent put tar run dir-rm-parent
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -25,8 +26,8 @@ Executing 'dir-rm-parent':
 (dir-rm-parent) end
 dir-rm-parent: exit(0)
 Execution of 'dir-rm-parent' complete.
-Timer: 1183 ticks
-Thread: 30 idle ticks, 976 kernel ticks, 180 user ticks
+Timer: 1186 ticks
+Thread: 30 idle ticks, 978 kernel ticks, 181 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 41 reads, 437 writes
 hd1:0: 212 reads, 0 writes

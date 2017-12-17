@@ -1,7 +1,8 @@
-Copying tests/filesys/extended/dir-empty-name into /tmp/gEAGUZFrIx.dsk...
-Copying tests/filesys/extended/tar into /tmp/gEAGUZFrIx.dsk...
-Writing command line to /tmp/6f3E1H0J1b.dsk...
-squish-pty bochs -q
+Copying tests/filesys/extended/dir-empty-name into /tmp/8G1kL6ncWq.dsk...
+Copying tests/filesys/extended/tar into /tmp/8G1kL6ncWq.dsk...
+Writing command line to /tmp/Pn5qogTxKV.dsk...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
 Kernel command line: -q -f put dir-empty-name put tar run dir-empty-name
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -21,8 +22,8 @@ Executing 'dir-empty-name':
 (dir-empty-name) end
 dir-empty-name: exit(0)
 Execution of 'dir-empty-name' complete.
-Timer: 1052 ticks
-Thread: 30 idle ticks, 954 kernel ticks, 71 user ticks
+Timer: 1054 ticks
+Thread: 30 idle ticks, 955 kernel ticks, 72 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 36 reads, 431 writes
 hd1:0: 212 reads, 0 writes
