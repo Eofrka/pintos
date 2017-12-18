@@ -65,16 +65,8 @@ struct inode
   struct semaphore mutex;
   struct semaphore turn;
   int access_cnt;
-
-  struct lock dir_lock;
-  struct lock local_lock;                   
   /*******/
 };
-
-/* pj4 */
-/*******/
-struct lock open_inodes_lock;
-/*******/
 
 
 /* pj4 */
@@ -484,7 +476,6 @@ static struct list open_inodes;
 void
 inode_init (void) 
 {
-  lock_init(&open_inodes_lock);
   list_init (&open_inodes);
 }
 
@@ -680,7 +671,6 @@ inode_open (disk_sector_t sector)
   struct inode *inode;
 
   /* Check whether this inode is already open. */
-  lock_acquire(&open_inodes_lock);
   for (e = list_begin (&open_inodes); e != list_end (&open_inodes);
    e = list_next (e)) 
   {
@@ -688,17 +678,15 @@ inode_open (disk_sector_t sector)
     if (inode->sector == sector) 
     {
       inode_reopen (inode);
-      lock_release(&open_inodes_lock);
       return inode; 
     }
   }
+
   /* Allocate memory. */
   inode = malloc (sizeof *inode);
   if (inode == NULL)
-  {
-      lock_release(&open_inodes_lock);
-      return NULL;
-  }
+    return NULL;
+
   /* Initialize. */
   list_push_front (&open_inodes, &inode->elem);
   inode->sector = sector;
@@ -712,10 +700,7 @@ inode_open (disk_sector_t sector)
   sema_init(&inode->mutex, 1);
   sema_init(&inode->turn, 1);
   inode->access_cnt = 0;
-  lock_init(&inode->local_lock);
-  lock_init(&inode->dir_lock);
   buffer_cache_read_at(sector, &inode->data, DISK_SECTOR_SIZE, 0);
-  lock_release(&open_inodes_lock);
   /*******/
   return inode;
 }
@@ -725,11 +710,7 @@ struct inode *
 inode_reopen (struct inode *inode)
 {
   if (inode != NULL)
-  {
-    lock_acquire(&inode->local_lock);
     inode->open_cnt++;
-    lock_release(&inode->local_lock);
-  }
   return inode;
 }
 
@@ -751,13 +732,11 @@ inode_close (struct inode *inode)
     return;
 
   /* Release resources if this was the last opener. */
-  lock_acquire(&inode->local_lock);
   if (--inode->open_cnt == 0)
   {
-    lock_release(&inode->local_lock);
     /* Remove from inode list and release lock. */
-    lock_acquire(&open_inodes_lock);
     list_remove (&inode->elem);
+
     /* Deallocate blocks if removed. */
     if (inode->removed) 
     {
@@ -766,12 +745,8 @@ inode_close (struct inode *inode)
       inode_release(inode);
       /*******/ 
     }
+
     free (inode); 
-    lock_release(&open_inodes_lock);
-  }
-  else
-  {
-    lock_release(&inode->local_lock);
   }
 }
 
@@ -974,10 +949,8 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 void
 inode_deny_write (struct inode *inode) 
 {
-  lock_acquire(&inode->local_lock);
   inode->deny_write_cnt++;
   ASSERT (inode->deny_write_cnt <= inode->open_cnt);
-  lock_release(&inode->local_lock);
 }
 
 /* Re-enables writes to INODE.
@@ -986,11 +959,9 @@ inode_deny_write (struct inode *inode)
 void
 inode_allow_write (struct inode *inode) 
 {
-  lock_acquire(&inode->local_lock);
   ASSERT (inode->deny_write_cnt > 0);
   ASSERT (inode->deny_write_cnt <= inode->open_cnt);
   inode->deny_write_cnt--;
-  lock_release(&inode->local_lock);
 }
 
 /* Returns the length, in bytes, of INODE's data. */
@@ -1018,16 +989,4 @@ bool inode_is_removed(struct inode* inode)
   return inode->removed;
 
 }
-
-
-void inode_dir_lock_acquire(struct inode* inode)
-{
-  lock_acquire(&inode->dir_lock);
-}
-
-void inode_dir_lock_release(struct inode* inode)
-{
-  lock_release(&inode->dir_lock);
-}
-
 /*******/

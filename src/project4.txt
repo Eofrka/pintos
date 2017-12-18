@@ -82,9 +82,6 @@ struct inode
   struct semaphore mutex;
   struct semaphore turn;
   int access_cnt;
-
-  struct lock dir_lock;
-  struct lock local_lock;   
 };
 
 추가된 멤버변수들은 전부 Readers/Writers Algorithm을 위한것들이다.
@@ -93,11 +90,6 @@ struct semaphore mutex: Access_cnt를 위한 mutex.
 struct semaphore turn: Fair한 Readers/Writers Algorithm을 구현하기 위한 semaphore.
 int access_cnt: Reader들과 file growth를 하지 않는 active한 writer들의 수.
 
-struct lock dir_lock: directory연산을 할때 필요한 lock.
-struct lock local_lock: inode의 멤버변수들을 위한 lock.
-
-
-struct lock open_inodes_lock: open_inodes를 위한 lock.
   
 >> A2: What is the maximum size of a file supported by your inode
 >> structure?  Show your work.
@@ -282,7 +274,7 @@ B가 file growth와 write를 성공적으로 마친 다음 A가 실행되면, A�
 만약 A의 처음 priority가 PRI_MAX였다치면 결국 A와 B의 race가 발생할 수 밖에 없다. 뭐 예외적으로 시스템에서 허용하고 있는 PRI_MAX보다 1큰 값을 허용 시켜서 B가 이값을 임시로 갖도록 하는것도 한가지 방법일 것이다. 그런데 (i)의 경우도 내가 생각하기에는 큰 지장이 없는 동작이라고 생각된다.
 
 즉, A, B는충분히 turn을 먼저 잡기 위해 서로 경쟁을 할 수 있고 (i)과 같은 상황이 벌어지면 그야말로 할 수 없는 것이다. 따라서 user 입장에서
-read한 바이트수를 loop를 돌면서 꼼꼼히 check하여 원하는 바이트만큼 읽었을경우
+read한 바이트수를 꼼꼼히 check(while loop를 돌면서 아마 시스템 프로그래밍같은 많이 다루는 내용일 것이다.)하여 원하는 바이트만큼 읽었을경우
 loop를 탈출하는 방식을 사용하면 A,B의 race문제는 해결될것이라고 생각한다.
   
 
@@ -386,8 +378,9 @@ loop를 탈출했다는것은 root directory까지 파고들어갔다는 소리�
 >> should succeed, as should only one of two simultaneous attempts to
 >> create a file with the same name, and so on.
 
-dir_lookup(), dir_add(), dir_remove(), dir_readdir()같은 directory연산을 할때 해당 dir에 해당하는 inode의 member변수 dir_lock을
-사용하여 synchronization을 해주었다.
+시간이 부족해서 directory synchronization부분 솔직히 안하고 그냥 filesys_lock이라는 하나의 lock을 통해 관리했다. (syscall_read(), syscall_write()는 확실히 filesys_lock을 제거해줬다.)
+근데 그냥 단순히 구현 아이디를 적어보자면 inode에 lock을 하나 둬서 directory관련 연산시 이 lock을 잠갔다 풀어주면 될것 같다.
+
 
 >> B5: Does your implementation allow a directory to be removed if it
 >> is open by a process or if it is in use as a process's current

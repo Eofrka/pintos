@@ -64,7 +64,7 @@ process_execute (const char *cmdline)
 {
   /* pj2 */
   /*******/
-  //lock_acquire(&filesys_lock);
+  lock_acquire(&filesys_lock);
   /*******/
   char *fn_copy;
   tid_t tid;
@@ -111,12 +111,12 @@ process_execute (const char *cmdline)
   Before return, release filesys_lock. */
   if(curr->load == true)
   {
-    //lock_release(&filesys_lock);
+    lock_release(&filesys_lock);
     return tid;
   }
   else
   {
-    //lock_release(&filesys_lock);
+    lock_release(&filesys_lock);
     return PID_ERROR;
   }
   /*******/
@@ -335,9 +335,9 @@ process_exit (void)
   so lock_acquire() and lock_release() needed! */
   if(curr->executable != NULL)
   {
-    //lock_acquire(&filesys_lock);
+    lock_acquire(&filesys_lock);
     file_close(curr->executable);
-    //lock_release(&filesys_lock);
+    lock_release(&filesys_lock);
   }
   uint32_t *pd;
 

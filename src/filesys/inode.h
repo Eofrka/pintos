@@ -24,10 +24,6 @@ off_t inode_length (const struct inode *);
 bool inode_is_dir(struct inode* inode);
 disk_sector_t inode_get_sector(struct inode* inode);
 bool inode_is_removed(struct inode* inode);
-
-void inode_dir_lock_acquire(struct inode* inode);
-void inode_dir_lock_release(struct inode* inode);
-
 /*******/
 
 #endif /* filesys/inode.h */

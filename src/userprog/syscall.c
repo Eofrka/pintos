@@ -184,9 +184,9 @@ bool syscall_create(const char* file, unsigned initial_size)
   remove_redundancy(path,file,buffer_size);
 
 
-  //lock_acquire(&filesys_lock);
+  lock_acquire(&filesys_lock);
   bool ret = create_file(path, initial_size);
-  //lock_release(&filesys_lock);
+  lock_release(&filesys_lock);
 
 
   //bool ret = filesys_create(file, initial_size);
@@ -210,9 +210,9 @@ bool syscall_remove (const char *file)
   strlcpy(path, file, buffer_size);
   remove_redundancy(path,file,buffer_size);
 
-  //lock_acquire(&filesys_lock);
+  lock_acquire(&filesys_lock);
   bool ret = remove_file_or_dir(path);
-  //lock_release(&filesys_lock);
+  lock_release(&filesys_lock);
   return ret;
 }
 
@@ -234,9 +234,9 @@ int syscall_open(const char* file)
   remove_redundancy(path,file,buffer_size);
 
   int k;
-  //lock_acquire(&filesys_lock);
+  lock_acquire(&filesys_lock);
   k = open_file_or_dir(path, &open_file, &open_dir);
-  //lock_release(&filesys_lock);
+  lock_release(&filesys_lock);
 
 
   /* If cannot open file name 'file', return -1. */
@@ -293,15 +293,15 @@ int syscall_filesize(int fd)
   {
     if(fdte->file != NULL && fdte->dir == NULL)
     {
-      //lock_acquire(&filesys_lock);
+      lock_acquire(&filesys_lock);
       ret = file_length(fdte->file);
-      //lock_release(&filesys_lock);
+      lock_release(&filesys_lock);
     }
     else if(fdte->file == NULL && fdte->dir != NULL)
     {
-      //lock_acquire(&filesys_lock);
+      lock_acquire(&filesys_lock);
       ret = dir_length(fdte->dir);
-      //lock_release(&filesys_lock);
+      lock_release(&filesys_lock);
     }
     else
     {
@@ -431,15 +431,15 @@ void syscall_seek(int fd, unsigned position)
   {
     if(fdte->file != NULL && fdte->dir == NULL)
     {
-      //lock_acquire(&filesys_lock);
+      lock_acquire(&filesys_lock);
       file_seek(fdte->file, position);
-      //lock_release(&filesys_lock);
+      lock_release(&filesys_lock);
     }
     else if(fdte->file == NULL && fdte->dir != NULL)
     {
-      //lock_acquire(&filesys_lock);
+      lock_acquire(&filesys_lock);
       dir_seek(fdte->dir, position);
-      //lock_release(&filesys_lock);
+      lock_release(&filesys_lock);
     }
     else
     {
@@ -458,15 +458,15 @@ unsigned syscall_tell(int fd)
   {
     if(fdte->file != NULL && fdte->dir == NULL)
     {
-      //lock_acquire(&filesys_lock);
+      lock_acquire(&filesys_lock);
       ret = file_tell(fdte->file);
-      //lock_release(&filesys_lock);
+      lock_release(&filesys_lock);
     }
     else if(fdte->file == NULL && fdte->dir != NULL)
     {
-      //lock_acquire(&filesys_lock);
+      lock_acquire(&filesys_lock);
       ret = dir_tell(fdte->dir);
-      //lock_release(&filesys_lock);
+      lock_release(&filesys_lock);
     }
     else
     {
@@ -506,15 +506,15 @@ void syscall_close(int fd)
     curr->next_fd--;    
     if(fdte->file != NULL && fdte->dir == NULL)
     {
-      //lock_acquire(&filesys_lock);
+      lock_acquire(&filesys_lock);
       file_close(fdte->file);
-      //lock_release(&filesys_lock);
+      lock_release(&filesys_lock);
     }
     else if(fdte->file == NULL && fdte->dir != NULL)
     {
-      //lock_acquire(&filesys_lock);
+      lock_acquire(&filesys_lock);
       dir_close(fdte->dir);
-      //lock_release(&filesys_lock);
+      lock_release(&filesys_lock);
     }
     else
     {
@@ -553,16 +553,16 @@ mapid_t syscall_mmap(int fd, void* addr)
 
 
   /* 2. Get the file from the fdte. */
-  //lock_acquire(&filesys_lock);
+  lock_acquire(&filesys_lock);
   struct file* file = file_reopen(fdte->file);
-  //lock_release(&filesys_lock);
+  lock_release(&filesys_lock);
   if(file == NULL)
   {
     return MAP_FAILED;
   }
-  //lock_acquire(&filesys_lock);
+  lock_acquire(&filesys_lock);
   off_t length = file_length(file);
-  //lock_release(&filesys_lock);
+  lock_release(&filesys_lock);
 
   if(length == 0)
   {
@@ -706,9 +706,9 @@ void syscall_munmap(mapid_t mapping)
         SAFE_FREE(spte);
       }
       
-      //lock_acquire(&filesys_lock);
+      lock_acquire(&filesys_lock);
       file_close(mmap_te->file);
-      //lock_release(&filesys_lock);
+      lock_release(&filesys_lock);
       SAFE_FREE(mmap_te);
       curr->next_mapid--;
       //lock_release(&filesys_lock);
@@ -738,9 +738,9 @@ bool syscall_chdir(const char* dir)
   remove_redundancy(path,dir,buffer_size);
 
 
-  //lock_acquire(&filesys_lock);
+  lock_acquire(&filesys_lock);
   bool ret = change_dir(path);
-  //lock_release(&filesys_lock);
+  lock_release(&filesys_lock);
   return ret;
 
 }
@@ -758,9 +758,9 @@ bool syscall_mkdir(const char* dir)
   strlcpy(path, dir, buffer_size);
   remove_redundancy(path,dir,buffer_size);
 
-  //lock_acquire(&filesys_lock);
+  lock_acquire(&filesys_lock);
   bool ret = make_dir(path);
-  //lock_release(&filesys_lock);
+  lock_release(&filesys_lock);
 
 
   return ret;
@@ -786,9 +786,9 @@ bool syscall_readdir(int fd, char* name)
   if(fdte->dir != NULL && fdte->file == NULL)
   {
     struct dir* dir = fdte->dir;
-    //lock_acquire(&filesys_lock);
+    lock_acquire(&filesys_lock);
     bool ret= dir_readdir (dir, name);
-    //lock_release(&filesys_lock);
+    lock_release(&filesys_lock);
     return ret;
   }
   else if(fdte->dir == NULL && fdte->file != NULL)
@@ -843,16 +843,16 @@ int syscall_inumber(int fd)
   int inumber=-1;
   if(fdte->dir != NULL && fdte->file == NULL)
   {
-    //lock_acquire(&filesys_lock);
+    lock_acquire(&filesys_lock);
     inumber = inode_get_sector(dir_get_inode(fdte->dir));
-    //lock_release(&filesys_lock);
+    lock_release(&filesys_lock);
     return inumber;
   }
   else if(fdte->dir == NULL && fdte->file != NULL)
   {
-    //lock_acquire(&filesys_lock);
+    lock_acquire(&filesys_lock);
     inumber = inode_get_sector(file_get_inode(fdte->file));
-    //lock_release(&filesys_lock);
+    lock_release(&filesys_lock);
     return inumber;
   }
   else
