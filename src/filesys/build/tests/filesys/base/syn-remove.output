@@ -1,7 +1,6 @@
-Copying tests/filesys/base/syn-remove into /tmp/pIM8fk6EiF.dsk...
-Writing command line to /tmp/cg0hu81rkB.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/filesys/base/syn-remove into /tmp/JHzjlM5YvH.dsk...
+Writing command line to /tmp/qL5Vk9C4od.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put syn-remove run syn-remove
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -26,8 +25,8 @@ Executing 'syn-remove':
 (syn-remove) end
 syn-remove: exit(0)
 Execution of 'syn-remove' complete.
-Timer: 643 ticks
-Thread: 30 idle ticks, 467 kernel ticks, 149 user ticks
+Timer: 644 ticks
+Thread: 30 idle ticks, 464 kernel ticks, 153 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 35 reads, 217 writes
 hd1:0: 103 reads, 0 writes

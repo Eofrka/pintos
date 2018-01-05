@@ -1,8 +1,7 @@
-Copying tests/filesys/extended/grow-two-files into /tmp/l4trr6Bwyy.dsk...
-Copying tests/filesys/extended/tar into /tmp/l4trr6Bwyy.dsk...
-Writing command line to /tmp/fTxaoK3J2L.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/filesys/extended/grow-two-files into /tmp/M09pueKUgo.dsk...
+Copying tests/filesys/extended/tar into /tmp/M09pueKUgo.dsk...
+Writing command line to /tmp/J2HQvKtSqF.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put grow-two-files put tar run grow-two-files
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -34,8 +33,8 @@ Executing 'grow-two-files':
 (grow-two-files) end
 grow-two-files: exit(0)
 Execution of 'grow-two-files' complete.
-Timer: 1640 ticks
-Thread: 30 idle ticks, 981 kernel ticks, 632 user ticks
+Timer: 1642 ticks
+Thread: 30 idle ticks, 985 kernel ticks, 630 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 97 reads, 473 writes
 hd1:0: 215 reads, 0 writes

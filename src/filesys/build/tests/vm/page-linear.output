@@ -1,7 +1,6 @@
-Copying tests/vm/page-linear into /tmp/A7lt9x6r1i.dsk...
-Writing command line to /tmp/B16shHcx2R.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/vm/page-linear into /tmp/oXBq6rt33G.dsk...
+Writing command line to /tmp/p0piZgTrJg.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put page-linear run page-linear
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -24,8 +23,8 @@ Executing 'page-linear':
 (page-linear) end
 page-linear: exit(0)
 Execution of 'page-linear' complete.
-Timer: 36463 ticks
-Thread: 30 idle ticks, 470 kernel ticks, 35966 user ticks
+Timer: 36464 ticks
+Thread: 30 idle ticks, 469 kernel ticks, 35968 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 55 reads, 213 writes
 hd1:0: 104 reads, 0 writes

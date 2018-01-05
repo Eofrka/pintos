@@ -1,7 +1,6 @@
-Copying tests/userprog/create-long into /tmp/kiBRjvavHC.dsk...
-Writing command line to /tmp/OV45ti06AA.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/userprog/create-long into /tmp/CRWKa7U3nM.dsk...
+Writing command line to /tmp/4wDd7j0Kma.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put create-long run create-long
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -21,7 +20,7 @@ Executing 'create-long':
 create-long: exit(0)
 Execution of 'create-long' complete.
 Timer: 554 ticks
-Thread: 30 idle ticks, 444 kernel ticks, 83 user ticks
+Thread: 30 idle ticks, 443 kernel ticks, 84 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 32 reads, 203 writes
 hd1:0: 98 reads, 0 writes

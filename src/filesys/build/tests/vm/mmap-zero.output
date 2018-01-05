@@ -1,7 +1,6 @@
-Copying tests/vm/mmap-zero into /tmp/KEUciVxWXd.dsk...
-Writing command line to /tmp/Eth6HYxmsp.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/vm/mmap-zero into /tmp/S053ycXA38.dsk...
+Writing command line to /tmp/YLssMqePms.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put mmap-zero run mmap-zero
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -29,7 +28,7 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0x804811e
 mmap-zero: exit(-1)
 Execution of 'mmap-zero' complete.
 Timer: 621 ticks
-Thread: 30 idle ticks, 446 kernel ticks, 148 user ticks
+Thread: 30 idle ticks, 447 kernel ticks, 147 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 32 reads, 204 writes
 hd1:0: 98 reads, 0 writes

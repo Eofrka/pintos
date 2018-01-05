@@ -1,8 +1,7 @@
-Copying tests/filesys/extended/dir-open into /tmp/eyZ8wCeudC.dsk...
-Copying tests/filesys/extended/tar into /tmp/eyZ8wCeudC.dsk...
-Writing command line to /tmp/bZm1ATPwpN.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/filesys/extended/dir-open into /tmp/FfEsmctRvt.dsk...
+Copying tests/filesys/extended/tar into /tmp/FfEsmctRvt.dsk...
+Writing command line to /tmp/ZfIX600FZH.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put dir-open put tar run dir-open
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -25,8 +24,8 @@ Executing 'dir-open':
 (dir-open) end
 dir-open: exit(0)
 Execution of 'dir-open' complete.
-Timer: 1126 ticks
-Thread: 30 idle ticks, 966 kernel ticks, 133 user ticks
+Timer: 1127 ticks
+Thread: 30 idle ticks, 966 kernel ticks, 134 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 40 reads, 437 writes
 hd1:0: 213 reads, 0 writes

@@ -1,7 +1,6 @@
-Copying tests/userprog/halt into /tmp/oPs0o9IpXh.dsk...
-Writing command line to /tmp/RKk1Qk7Wr0.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/userprog/halt into /tmp/drFAfumV43.dsk...
+Writing command line to /tmp/doJrxu9Mqo.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put halt run halt
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -17,7 +16,7 @@ Putting 'halt' into the file system...
 Executing 'halt':
 (halt) begin
 Timer: 490 ticks
-Thread: 30 idle ticks, 414 kernel ticks, 49 user ticks
+Thread: 30 idle ticks, 417 kernel ticks, 46 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 199 writes
 hd1:0: 97 reads, 0 writes

@@ -1,8 +1,7 @@
-Copying tests/filesys/extended/dir-rmdir into /tmp/p4YH2cGGVc.dsk...
-Copying tests/filesys/extended/tar into /tmp/p4YH2cGGVc.dsk...
-Writing command line to /tmp/chUKW7QNXy.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/filesys/extended/dir-rmdir into /tmp/ORHpRdYc5Y.dsk...
+Copying tests/filesys/extended/tar into /tmp/ORHpRdYc5Y.dsk...
+Writing command line to /tmp/IG8Ltdq49v.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put dir-rmdir put tar run dir-rmdir
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -24,8 +23,8 @@ Executing 'dir-rmdir':
 (dir-rmdir) end
 dir-rmdir: exit(0)
 Execution of 'dir-rmdir' complete.
-Timer: 1131 ticks
-Thread: 30 idle ticks, 968 kernel ticks, 136 user ticks
+Timer: 1132 ticks
+Thread: 30 idle ticks, 964 kernel ticks, 141 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 39 reads, 435 writes
 hd1:0: 212 reads, 0 writes

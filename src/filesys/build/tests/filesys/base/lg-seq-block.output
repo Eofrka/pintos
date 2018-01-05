@@ -1,7 +1,6 @@
-Copying tests/filesys/base/lg-seq-block into /tmp/ezd7znRQ78.dsk...
-Writing command line to /tmp/JF5quvHzNH.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/filesys/base/lg-seq-block into /tmp/VE36yKi0EH.dsk...
+Writing command line to /tmp/od39DVmAlh.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put lg-seq-block run lg-seq-block
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -27,7 +26,7 @@ Executing 'lg-seq-block':
 lg-seq-block: exit(0)
 Execution of 'lg-seq-block' complete.
 Timer: 2463 ticks
-Thread: 30 idle ticks, 464 kernel ticks, 1972 user ticks
+Thread: 30 idle ticks, 462 kernel ticks, 1974 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 189 reads, 509 writes
 hd1:0: 102 reads, 0 writes

@@ -179,8 +179,8 @@ bool syscall_create(const char* file, unsigned initial_size)
   }
 
   size_t buffer_size = strlen(file) + 1; 
-  char path[buffer_size];
-  strlcpy(path, file, buffer_size);
+  char* path = (char*)calloc(buffer_size, sizeof(char));
+  //strlcpy(path, file, buffer_size);
   remove_redundancy(path,file,buffer_size);
 
 
@@ -191,7 +191,7 @@ bool syscall_create(const char* file, unsigned initial_size)
 
   //bool ret = filesys_create(file, initial_size);
   
-
+  SAFE_FREE(path);
   return ret;
 }
 
@@ -205,14 +205,14 @@ bool syscall_remove (const char *file)
   }
 
   size_t buffer_size = strlen(file) + 1; 
-  char path[buffer_size];
-
-  strlcpy(path, file, buffer_size);
+  char* path = (char*)calloc(buffer_size, sizeof(char));
+  //strlcpy(path, file, buffer_size);
   remove_redundancy(path,file,buffer_size);
 
   lock_acquire(&filesys_lock);
   bool ret = remove_file_or_dir(path);
   lock_release(&filesys_lock);
+  SAFE_FREE(path);
   return ret;
 }
 
@@ -229,15 +229,15 @@ int syscall_open(const char* file)
   }
   
   size_t buffer_size = strlen(file) + 1; 
-  char path[buffer_size];
-  strlcpy(path, file, buffer_size);
+  char* path = (char*)calloc(buffer_size, sizeof(char));
+  //strlcpy(path, file, buffer_size);
   remove_redundancy(path,file,buffer_size);
 
   int k;
   lock_acquire(&filesys_lock);
   k = open_file_or_dir(path, &open_file, &open_dir);
   lock_release(&filesys_lock);
-
+  SAFE_FREE(path);
 
   /* If cannot open file name 'file', return -1. */
   if(k!=0 && k !=1)
@@ -276,6 +276,7 @@ int syscall_open(const char* file)
   /* return value should not be 0 or 1. These two values are for STDIN(0), STDOUT(1). */
   ASSERT(ret != 0);
   ASSERT(ret != 1);
+
   return ret;
 }
 
@@ -733,14 +734,16 @@ bool syscall_chdir(const char* dir)
   }
   
   size_t buffer_size = strlen(dir) + 1; 
-  char path[buffer_size];
-  strlcpy(path, dir, buffer_size);
+
+  char* path = (char*)calloc(buffer_size, sizeof(char));
+  //strlcpy(path, dir, buffer_size);
   remove_redundancy(path,dir,buffer_size);
 
 
   lock_acquire(&filesys_lock);
   bool ret = change_dir(path);
   lock_release(&filesys_lock);
+  SAFE_FREE(path);
   return ret;
 
 }
@@ -753,16 +756,16 @@ bool syscall_mkdir(const char* dir)
   }
   
   size_t buffer_size = strlen(dir) + 1; 
-  char path[buffer_size];
 
-  strlcpy(path, dir, buffer_size);
+  char* path = (char*)calloc(buffer_size, sizeof(char));
+  //strlcpy(path, dir, buffer_size);
   remove_redundancy(path,dir,buffer_size);
 
   lock_acquire(&filesys_lock);
   bool ret = make_dir(path);
   lock_release(&filesys_lock);
 
-
+  SAFE_FREE(path);
   return ret;
 
 

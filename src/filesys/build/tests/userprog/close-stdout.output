@@ -1,7 +1,6 @@
-Copying tests/userprog/close-stdout into /tmp/XWGce6lvv0.dsk...
-Writing command line to /tmp/OCrbkaMjjQ.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/userprog/close-stdout into /tmp/ZdR6NiINAD.dsk...
+Writing command line to /tmp/tP7BASl7eB.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put close-stdout run close-stdout
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -19,8 +18,8 @@ Executing 'close-stdout':
 (close-stdout) end
 close-stdout: exit(0)
 Execution of 'close-stdout' complete.
-Timer: 532 ticks
-Thread: 30 idle ticks, 443 kernel ticks, 62 user ticks
+Timer: 533 ticks
+Thread: 30 idle ticks, 443 kernel ticks, 63 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes

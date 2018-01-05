@@ -1,7 +1,6 @@
-Copying tests/userprog/close-stdin into /tmp/ucoAkOX6ju.dsk...
-Writing command line to /tmp/P6JhUdzqxN.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/userprog/close-stdin into /tmp/FrRynpozPY.dsk...
+Writing command line to /tmp/kSVVX30blV.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put close-stdin run close-stdin
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -19,8 +18,8 @@ Executing 'close-stdin':
 (close-stdin) end
 close-stdin: exit(0)
 Execution of 'close-stdin' complete.
-Timer: 533 ticks
-Thread: 30 idle ticks, 442 kernel ticks, 64 user ticks
+Timer: 532 ticks
+Thread: 30 idle ticks, 441 kernel ticks, 64 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes

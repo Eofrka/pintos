@@ -1,8 +1,7 @@
-Copying tests/vm/mmap-twice into /tmp/N1sXCCSa7e.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/N1sXCCSa7e.dsk...
-Writing command line to /tmp/EDjyIJiFYQ.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/vm/mmap-twice into /tmp/4jPEyO8SIj.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/4jPEyO8SIj.dsk...
+Writing command line to /tmp/bA0muPcUab.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put mmap-twice put sample.txt run mmap-twice
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -27,8 +26,8 @@ Executing 'mmap-twice':
 (mmap-twice) end
 mmap-twice: exit(0)
 Execution of 'mmap-twice' complete.
-Timer: 648 ticks
-Thread: 30 idle ticks, 490 kernel ticks, 131 user ticks
+Timer: 650 ticks
+Thread: 30 idle ticks, 492 kernel ticks, 131 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 39 reads, 212 writes
 hd1:0: 104 reads, 0 writes

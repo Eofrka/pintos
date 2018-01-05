@@ -1,8 +1,7 @@
-Copying tests/filesys/extended/grow-sparse into /tmp/dJm2FFdgYM.dsk...
-Copying tests/filesys/extended/tar into /tmp/dJm2FFdgYM.dsk...
-Writing command line to /tmp/GZj2VQfZZI.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/filesys/extended/grow-sparse into /tmp/yrmcwudA5Y.dsk...
+Copying tests/filesys/extended/tar into /tmp/yrmcwudA5Y.dsk...
+Writing command line to /tmp/6CJVn4SSY1.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put grow-sparse put tar run grow-sparse
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -29,8 +28,8 @@ Executing 'grow-sparse':
 (grow-sparse) end
 grow-sparse: exit(0)
 Execution of 'grow-sparse' complete.
-Timer: 2555 ticks
-Thread: 30 idle ticks, 963 kernel ticks, 1565 user ticks
+Timer: 2556 ticks
+Thread: 30 idle ticks, 964 kernel ticks, 1565 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 191 reads, 438 writes
 hd1:0: 213 reads, 0 writes

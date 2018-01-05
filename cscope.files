@@ -75,6 +75,7 @@
 ./src/utils/squish-unix.c
 ./src/examples/cmp.c
 ./src/examples/rm.c
+./src/examples/mkfile.c
 ./src/examples/halt.c
 ./src/examples/bubsort.c
 ./src/examples/mcat.c
@@ -86,6 +87,7 @@
 ./src/examples/mkdir.c
 ./src/examples/pwd.c
 ./src/examples/insult.c
+./src/examples/busyio.c
 ./src/examples/cat.c
 ./src/examples/lineup.c
 ./src/examples/cp.c

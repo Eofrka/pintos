@@ -1,8 +1,7 @@
-Copying tests/vm/pt-write-code2 into /tmp/jJHYfAG71V.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/jJHYfAG71V.dsk...
-Writing command line to /tmp/XpSic39BJ8.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/vm/pt-write-code2 into /tmp/VKod04dwnU.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/VKod04dwnU.dsk...
+Writing command line to /tmp/QIlC89jlsN.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put pt-write-code2 put sample.txt run pt-write-code2
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -21,8 +20,8 @@ Executing 'pt-write-code2':
 (pt-write-code2) open "sample.txt"
 pt-write-code2: exit(-1)
 Execution of 'pt-write-code2' complete.
-Timer: 577 ticks
-Thread: 30 idle ticks, 475 kernel ticks, 75 user ticks
+Timer: 579 ticks
+Thread: 30 idle ticks, 476 kernel ticks, 76 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 206 writes
 hd1:0: 101 reads, 0 writes

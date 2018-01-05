@@ -1,7 +1,6 @@
-Copying tests/filesys/base/sm-random into /tmp/ME7fTk7coA.dsk...
-Writing command line to /tmp/B33kF93Vno.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/filesys/base/sm-random into /tmp/v0vq0XSuLv.dsk...
+Writing command line to /tmp/wQWg0EtpWk.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put sm-random run sm-random
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -25,7 +24,7 @@ Executing 'sm-random':
 sm-random: exit(0)
 Execution of 'sm-random' complete.
 Timer: 772 ticks
-Thread: 30 idle ticks, 489 kernel ticks, 256 user ticks
+Thread: 30 idle ticks, 488 kernel ticks, 257 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 35 reads, 220 writes
 hd1:0: 104 reads, 0 writes

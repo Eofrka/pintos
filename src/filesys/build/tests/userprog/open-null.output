@@ -1,7 +1,6 @@
-Copying tests/userprog/open-null into /tmp/KXNQe6J0L5.dsk...
-Writing command line to /tmp/IoNe45bxUI.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/userprog/open-null into /tmp/4wDbh6Xq6Q.dsk...
+Writing command line to /tmp/6EoX1FIbYs.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put open-null run open-null
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -18,8 +17,8 @@ Executing 'open-null':
 (open-null) begin
 open-null: exit(-1)
 Execution of 'open-null' complete.
-Timer: 529 ticks
-Thread: 30 idle ticks, 443 kernel ticks, 59 user ticks
+Timer: 528 ticks
+Thread: 30 idle ticks, 441 kernel ticks, 60 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes

@@ -1,7 +1,6 @@
-Copying tests/userprog/exec-missing into /tmp/fC7cflgt2k.dsk...
-Writing command line to /tmp/ecADB9hYPy.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/userprog/exec-missing into /tmp/x05Gw7gXau.dsk...
+Writing command line to /tmp/G9doO9H8h1.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put exec-missing run exec-missing
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -21,8 +20,8 @@ load: no-such-file: open failed
 (exec-missing) end
 exec-missing: exit(0)
 Execution of 'exec-missing' complete.
-Timer: 563 ticks
-Thread: 30 idle ticks, 450 kernel ticks, 86 user ticks
+Timer: 564 ticks
+Thread: 30 idle ticks, 451 kernel ticks, 86 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 32 reads, 201 writes
 hd1:0: 98 reads, 0 writes

@@ -1,8 +1,7 @@
-Copying tests/userprog/wait-simple into /tmp/SIhpdf9d6D.dsk...
-Copying tests/userprog/child-simple into /tmp/SIhpdf9d6D.dsk...
-Writing command line to /tmp/4hIoMx3N9o.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/userprog/wait-simple into /tmp/jd0SBZE5zA.dsk...
+Copying tests/userprog/child-simple into /tmp/jd0SBZE5zA.dsk...
+Writing command line to /tmp/dNNh2ym4gf.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put wait-simple put child-simple run wait-simple
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -24,10 +23,10 @@ child-simple: exit(81)
 (wait-simple) end
 wait-simple: exit(0)
 Execution of 'wait-simple' complete.
-Timer: 1034 ticks
-Thread: 30 idle ticks, 876 kernel ticks, 131 user ticks
+Timer: 1035 ticks
+Thread: 30 idle ticks, 878 kernel ticks, 130 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 62 reads, 397 writes
+hd0:1: 61 reads, 397 writes
 hd1:0: 195 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1070 characters output

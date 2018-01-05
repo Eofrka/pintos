@@ -50,6 +50,7 @@ void remove_redundancy(char* dst, const char* src, size_t buffer_size);
 bool change_dir(char* path);
 bool make_dir(char* path);
 int open_file_or_dir(char* path, struct file** open_file, struct dir** open_dir);
+struct file* open_exec_file(char* path, struct dir* dir, int start_ofs);
 bool create_file(char* path,unsigned initial_size);
 bool remove_file_or_dir(char* path);
 

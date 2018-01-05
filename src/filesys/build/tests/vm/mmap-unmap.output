@@ -1,8 +1,7 @@
-Copying tests/vm/mmap-unmap into /tmp/E4U7rcfXrU.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/E4U7rcfXrU.dsk...
-Writing command line to /tmp/VjyKzM5BkN.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/vm/mmap-unmap into /tmp/2GF7e9cU7H.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/2GF7e9cU7H.dsk...
+Writing command line to /tmp/sXl8ugW7kA.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put mmap-unmap put sample.txt run mmap-unmap
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -29,8 +28,8 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0x8048107
  cs=001b ds=0023 es=0023 ss=0023
 mmap-unmap: exit(-1)
 Execution of 'mmap-unmap' complete.
-Timer: 640 ticks
-Thread: 30 idle ticks, 482 kernel ticks, 131 user ticks
+Timer: 641 ticks
+Thread: 30 idle ticks, 483 kernel ticks, 131 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 35 reads, 210 writes
 hd1:0: 103 reads, 0 writes

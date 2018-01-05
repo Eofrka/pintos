@@ -1,7 +1,6 @@
-Copying tests/userprog/bad-read2 into /tmp/CewFtE67Xq.dsk...
-Writing command line to /tmp/v3p8BA0VLE.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/userprog/bad-read2 into /tmp/dsNpUkajPX.dsk...
+Writing command line to /tmp/z6c8To0fcy.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put bad-read2 run bad-read2
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -25,8 +24,8 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0x80480a6
  cs=001b ds=0023 es=0023 ss=0023
 bad-read2: exit(-1)
 Execution of 'bad-read2' complete.
-Timer: 578 ticks
-Thread: 30 idle ticks, 442 kernel ticks, 109 user ticks
+Timer: 577 ticks
+Thread: 30 idle ticks, 440 kernel ticks, 110 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 30 reads, 201 writes
 hd1:0: 98 reads, 0 writes

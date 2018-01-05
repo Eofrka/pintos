@@ -1,8 +1,7 @@
-Copying tests/vm/mmap-overlap into /tmp/DU1brgyqul.dsk...
-Copying tests/vm/zeros into /tmp/DU1brgyqul.dsk...
-Writing command line to /tmp/GRKJbZREV6.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/vm/mmap-overlap into /tmp/eljEPyhomx.dsk...
+Copying tests/vm/zeros into /tmp/eljEPyhomx.dsk...
+Writing command line to /tmp/z7u5VSGm0x.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put mmap-overlap put zeros run mmap-overlap
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -25,13 +24,13 @@ Executing 'mmap-overlap':
 (mmap-overlap) end
 mmap-overlap: exit(0)
 Execution of 'mmap-overlap' complete.
-Timer: 642 ticks
-Thread: 30 idle ticks, 514 kernel ticks, 101 user ticks
+Timer: 644 ticks
+Thread: 30 idle ticks, 518 kernel ticks, 99 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 35 reads, 220 writes
 hd1:0: 113 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1125 characters output
+Console: 1124 characters output
 Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...

@@ -400,6 +400,7 @@ bool make_dir(char* path)
     struct dir* cwd = thread_current()->cwd;
     ASSERT(cwd != NULL);
     dir = dir_reopen(cwd);
+    
   }
   if(dir ==  NULL)
   {
@@ -495,6 +496,7 @@ int open_file_or_dir(char* path, struct file** open_file, struct dir** open_dir)
     struct dir* cwd = thread_current()->cwd;
     ASSERT(cwd != NULL);
     dir = dir_reopen(cwd);
+    
   }
 
   if(dir == NULL)
@@ -584,6 +586,75 @@ int open_file_or_dir(char* path, struct file** open_file, struct dir** open_dir)
   PANIC("If reached here, it may have bug on my code.");
   return -1;
 
+
+}
+
+
+struct file* open_exec_file(char* path, struct dir* dir, int start_ofs)
+{
+  char* ret_ptr;
+  char* next_ptr;
+  ret_ptr= strtok_r(path + start_ofs, "/", &next_ptr);
+  bool is_exist = false;
+  bool is_dir = false;
+  struct inode* inode;
+  if(ret_ptr == NULL)
+  {
+    //root dir is not a exec file.
+    dir_close(dir);
+    return NULL;
+  }
+
+  while(ret_ptr)
+  {
+    if(next_ptr[0] != '\0')
+    {
+      is_exist = dir_lookup(dir, ret_ptr, &inode);
+      dir_close(dir);
+      if(is_exist == false)
+      {
+        return NULL;
+      }
+
+      is_dir = inode_is_dir(inode);
+      if(is_dir == false)
+      {
+        return NULL;
+      }
+
+      dir = dir_open(inode);
+      if(dir == NULL)
+      {
+        return NULL;
+      }
+      ret_ptr = strtok_r(NULL, "/", &next_ptr);
+    }
+    else
+    {
+      if(inode_is_removed(dir_get_inode(dir)) == true)
+      {
+        dir_close(dir);
+        return NULL;
+      }
+      is_exist =dir_lookup(dir, ret_ptr, &inode);
+      dir_close(dir);
+      if(is_exist == false)
+      {
+        return NULL;
+      }
+      is_dir =inode_is_dir(inode);
+      if(is_dir == false)
+      {
+        return file_open(inode);
+      }
+      else
+      {
+        return NULL;
+      }
+    }
+  }
+  PANIC("If reached here, it may have bug on my code.");
+  return NULL;
 
 }
 
@@ -697,6 +768,7 @@ bool remove_file_or_dir(char* path)
     struct dir* cwd = thread_current()->cwd;
     ASSERT(cwd != NULL);
     dir = dir_reopen(cwd);
+    
   }
   if(dir == NULL)
   {

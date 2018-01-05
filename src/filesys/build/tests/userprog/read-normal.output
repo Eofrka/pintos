@@ -1,8 +1,7 @@
-Copying tests/userprog/read-normal into /tmp/bA8VWZZkpA.dsk...
-Copying ../../tests/userprog/sample.txt into /tmp/bA8VWZZkpA.dsk...
-Writing command line to /tmp/45LlP3F285.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/userprog/read-normal into /tmp/WuQDPF2naA.dsk...
+Copying ../../tests/userprog/sample.txt into /tmp/WuQDPF2naA.dsk...
+Writing command line to /tmp/KIz0utqm65.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put read-normal put sample.txt run read-normal
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -24,8 +23,8 @@ Executing 'read-normal':
 (read-normal) end
 read-normal: exit(0)
 Execution of 'read-normal' complete.
-Timer: 594 ticks
-Thread: 30 idle ticks, 472 kernel ticks, 95 user ticks
+Timer: 596 ticks
+Thread: 30 idle ticks, 473 kernel ticks, 96 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 36 reads, 205 writes
 hd1:0: 100 reads, 0 writes

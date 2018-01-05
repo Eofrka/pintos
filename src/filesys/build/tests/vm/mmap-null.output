@@ -1,8 +1,7 @@
-Copying tests/vm/mmap-null into /tmp/o9Tyic05sA.dsk...
-Copying ../../tests/vm/sample.txt into /tmp/o9Tyic05sA.dsk...
-Writing command line to /tmp/i8lBnnSmQk.dsk...
-warning: can't find squish-pty, so terminal input will fail
-bochs -q
+Copying tests/vm/mmap-null into /tmp/qDTe59htk2.dsk...
+Copying ../../tests/vm/sample.txt into /tmp/qDTe59htk2.dsk...
+Writing command line to /tmp/gad87OCDSE.dsk...
+squish-pty bochs -q
 Kernel command line: -q -f put mmap-null put sample.txt run mmap-null
 Pintos booting with 4,096 kB RAM...
 371 pages available in kernel pool.
@@ -23,8 +22,8 @@ Executing 'mmap-null':
 (mmap-null) end
 mmap-null: exit(0)
 Execution of 'mmap-null' complete.
-Timer: 582 ticks
-Thread: 30 idle ticks, 475 kernel ticks, 80 user ticks
+Timer: 584 ticks
+Thread: 30 idle ticks, 474 kernel ticks, 83 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 33 reads, 206 writes
 hd1:0: 101 reads, 0 writes

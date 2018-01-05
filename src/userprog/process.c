@@ -64,7 +64,7 @@ process_execute (const char *cmdline)
 {
   /* pj2 */
   /*******/
-  lock_acquire(&filesys_lock);
+  //lock_acquire(&filesys_lock);
   /*******/
   char *fn_copy;
   tid_t tid;
@@ -72,17 +72,42 @@ process_execute (const char *cmdline)
   /* Make a copy of FILE_NAME.
      Otherwise there's a race between the caller and load(). */
   fn_copy = palloc_get_page (0);
-  if (fn_copy == NULL)
-    return TID_ERROR;
   strlcpy (fn_copy, cmdline, PGSIZE);
 
   /* pj2 */
   /*******/
   /* Not deal with file name > 16 */
   char* next;
-  char* tocken = strtok_r(fn_copy, " ", &next);
-  char file_name[16]={};
-  strlcpy(file_name, tocken, 16);
+  char* token = strtok_r(fn_copy, " ", &next);
+    
+  char file_name[16]={0,};
+  size_t buffer_size = strlen(token) + 1;
+  char* path = (char*)calloc(buffer_size, sizeof(char));
+  remove_redundancy(path, token, buffer_size);
+  
+  int start_ofs = 0;
+  if(path[0] == '/')
+  {
+    start_ofs=0;
+  }
+  
+  char* ret_ptr;
+  char* next_ptr;
+  ret_ptr= strtok_r(path + start_ofs, "/", &next_ptr);
+
+  while(ret_ptr)
+  {
+     if(next_ptr[0] != '\0')
+     {
+        ret_ptr = strtok_r(NULL, "/", &next_ptr);
+     }
+     else
+     {
+        strlcpy(file_name, ret_ptr, 16); 
+        break;
+     }
+  }
+  
   strlcpy (fn_copy, cmdline, PGSIZE);
   /*******/
 
@@ -97,6 +122,7 @@ process_execute (const char *cmdline)
 
   /* Create a new thread to execute FILE_NAME. */
   tid = thread_create (file_name, PRI_DEFAULT, start_process, fn_copy);
+  SAFE_FREE(path);
   /* pj2 */
   /*******/
   /* Wait loading in start_process(). */
@@ -111,12 +137,12 @@ process_execute (const char *cmdline)
   Before return, release filesys_lock. */
   if(curr->load == true)
   {
-    lock_release(&filesys_lock);
+    //lock_release(&filesys_lock);
     return tid;
   }
   else
   {
-    lock_release(&filesys_lock);
+    //lock_release(&filesys_lock);
     return PID_ERROR;
   }
   /*******/
@@ -169,13 +195,19 @@ start_process (void *cmdline_)
     /* Awake parent thread's sema_exec. */
     /* pj4 */
     /*******/
+    
     if(ps->parent != NULL && ps->parent->cwd == NULL)
     {
+      lock_acquire(&filesys_lock);
       curr->cwd = dir_open_root();
+      lock_release(&filesys_lock);
     }
     else
     {
+      lock_acquire(&filesys_lock);
       curr->cwd = dir_reopen(ps->parent->cwd);
+      lock_release(&filesys_lock);
+
     }
     /********/
     sema_up(&ps->parent->sema_exec);
@@ -478,6 +510,10 @@ load (char *cmdline, void (**eip) (void), void **esp)
   off_t file_ofs;
   bool success = false;
   int i;
+  int start_ofs = 0;
+  size_t buffer_size = 0;
+  char* path=NULL;
+  struct dir* dir = NULL;
 
 /* pj2 */
   /*******/
@@ -508,7 +544,39 @@ load (char *cmdline, void (**eip) (void), void **esp)
 /*******/  
 
   /* Open executable file. */
-  file = filesys_open (file_name);
+  lock_acquire(&filesys_lock);
+  buffer_size = strlen(file_name) + 1; 
+  path = (char*)malloc(sizeof(char) * buffer_size);
+  strlcpy(path, file_name, buffer_size);
+  
+  if(file_name[0] == '/')
+  {
+    dir = dir_open_root();
+    start_ofs = 1;
+  }
+  else
+  {
+    if(t->process->parent->tid == 1)
+    {
+      dir = dir_open_root();
+    }
+    else
+    {
+      dir= dir_reopen(t->process->parent->cwd);
+    }
+  }
+
+  if(dir == NULL)
+  {
+    printf("load: directory open failed\n");
+    goto done;
+  }
+
+  //t->cwd = dir;
+
+  //open_file_or_dir(file_name, &file, NULL);
+  file = open_exec_file(path, dir, start_ofs);
+  //file = filesys_open(file_name);
   if (file == NULL) 
   {
     printf ("load: %s: open failed\n", file_name);
@@ -613,13 +681,14 @@ load (char *cmdline, void (**eip) (void), void **esp)
 
   /* Free args */
   SAFE_FREE(args);
-  
+  SAFE_FREE(path);
   /* If failed, call file_close(file). */
-  if(success != true)
+  if(success != true )
   {
     file_close(file);
   }
   /*******/
+  lock_release(&filesys_lock);
   return success;
 }
 
